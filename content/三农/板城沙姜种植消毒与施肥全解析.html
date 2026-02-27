@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广西钦州板城沙姜种植技术指南 | 消毒与施肥全解析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Noto Sans SC', sans-serif;
+                background-color: #f7f5f0;
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c4a8' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            h1, h2, h3 {
+                font-family: 'Noto Serif SC', serif;
+            }
+        }
+        @layer components {
+            .ginger-card {
+                background: linear-gradient(135deg, #ffffff 0%, #faf8f3 100%);
+                border: 1px solid #e8e0d0;
+                box-shadow: 0 4px 20px rgba(139, 115, 85, 0.08);
+            }
+            .highlight-box {
+                background: linear-gradient(135deg, #fef9f3 0%, #fff5e6 100%);
+                border-left: 4px solid #d97706;
+            }
+            .warning-box {
+                background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+                border-left: 4px solid #dc2626;
+            }
+            .success-box {
+                background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+                border-left: 4px solid #16a34a;
+            }
+            .step-number {
+                background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+                box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+            }
+            .method-card {
+                transition: all 0.3s ease;
+            }
+            .method-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 24px rgba(139, 115, 85, 0.15);
+            }
+            .table-header {
+                background: linear-gradient(135deg, #92400e 0%, #78350f 100%);
+            }
+            .hover-row:hover {
+                background-color: #fffbeb;
+                transition: all 0.3s ease;
+            }
+            .check-item::before {
+                content: "✓";
+                color: #16a34a;
+                font-weight: bold;
+                margin-right: 8px;
+            }
+            .danger-item::before {
+                content: "✕";
+                color: #dc2626;
+                font-weight: bold;
+                margin-right: 8px;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="text-stone-800">
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden bg-gradient-to-br from-amber-900 via-amber-800 to-stone-900 text-white">
+        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10-10-4.477-10-10z' fill='%23ffffff' fill-opacity='0.4'/%3E%3C/svg%3E'); background-size: 100px 100px;"></div>
+        <div class="relative max-w-6xl mx-auto px-6 py-16 md:py-24">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="flex-1 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-amber-200 text-sm font-medium border border-white/20">
+                        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        广西钦州板城本地化种植方案
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+                        板城沙姜种植<br>
+                        <span class="text-amber-300">消毒与施肥技术指南</span>
+                    </h1>
+                    <p class="text-lg text-stone-200 max-w-2xl leading-relaxed">
+                        针对钦州高温高湿气候，详解姜瘟病预防、种子消毒浸泡、有机肥腐熟与科学施肥全流程。预防为主，综合防治。
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <a href="#disinfection" class="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-amber-600/30">
+                            查看消毒方案
+                        </a>
+                        <a href="#fertilizer" class="px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-lg font-semibold transition-all">
+                            查看施肥指南
+                        </a>
+                    </div>
+                </div>
+                <div class="flex-1 relative">
+                    <div class="relative w-full max-w-md mx-auto">
+                        <div class="absolute inset-0 bg-amber-500/20 blur-3xl rounded-full"></div>
+                        <div class="relative ginger-card rounded-2xl p-6 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <p class="text-sm text-stone-500 uppercase tracking-wider">核心要点</p>
+                                    <p class="text-2xl font-bold text-amber-700">三必须原则</p>
+                                </div>
+                                <div class="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center text-2xl">
+                                    🌱
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-100">
+                                    <span class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-bold text-sm">1</span>
+                                    <span class="text-sm font-medium text-stone-800">必须严格消毒</span>
+                                </div>
+                                <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
+                                    <span class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold text-sm">2</span>
+                                    <span class="text-sm font-medium text-stone-800">必须腐熟有机肥</span>
+                                </div>
+                                <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                                    <span class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">3</span>
+                                    <span class="text-sm font-medium text-stone-800">必须高垄深沟</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Quick Warning -->
+    <section class="max-w-6xl mx-auto px-6 -mt-8 relative z-10">
+        <div class="warning-box rounded-xl p-6 shadow-lg">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 text-2xl shrink-0">⚠️</div>
+                <div>
+                    <h3 class="font-bold text-red-800 text-lg mb-2">钦州地区特殊风险提示</h3>
+                    <p class="text-stone-700 leading-relaxed">
+                        钦州属<strong>亚热带季风气候</strong>，高温高湿（年均温22℃，年降水量1800mm+），<strong>姜瘟病（青枯病）</strong>是毁灭性病害，一旦发病绝收率超80%。必须严格执行消毒流程，<span class="text-red-600 font-bold">生石灰土壤消毒+种姜药剂浸泡</span>缺一不可。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disinfection Section -->
+    <section id="disinfection" class="max-w-6xl mx-auto px-6 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-stone-800 mb-4">消毒浸泡方案</h2>
+            <p class="text-stone-600 max-w-2xl mx-auto">预防姜瘟病和根腐病，四种方法根据地块历史选择</p>
+        </div>
+
+        <!-- Pre-treatment Steps -->
+        <div class="ginger-card rounded-2xl p-8 mb-8">
+            <h3 class="text-xl font-bold text-amber-800 mb-6 flex items-center gap-2">
+                <span class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center text-lg">🔍</span>
+                前置步骤：晒种与选种（必须做）
+            </h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-amber-50 rounded-xl p-5 border border-amber-100">
+                    <div class="w-12 h-12 bg-amber-200 rounded-full flex items-center justify-center text-2xl mb-4">☀️</div>
+                    <h4 class="font-bold text-stone-800 mb-2">晒种</h4>
+                    <p class="text-sm text-stone-600 mb-3">播种前暴晒<strong>1周</strong>（或至少1-2天）</p>
+                    <ul class="text-sm text-stone-700 space-y-1">
+                        <li class="check-item">促进发芽</li>
+                        <li class="check-item">紫外线消毒</li>
+                        <li class="check-item">减少水分防烂种</li>
+                    </ul>
+                </div>
+                <div class="bg-amber-50 rounded-xl p-5 border border-amber-100">
+                    <div class="w-12 h-12 bg-amber-200 rounded-full flex items-center justify-center text-2xl mb-4">🧅</div>
+                    <h4 class="font-bold text-stone-800 mb-2">选种</h4>
+                    <p class="text-sm text-stone-600 mb-3">单块重<strong>80g左右</strong>，色泽金黄</p>
+                    <ul class="text-sm text-stone-700 space-y-1">
+                        <li class="check-item">无腐烂、无病斑</li>
+                        <li class="check-item">芽眼健壮饱满</li>
+                        <li class="check-item">质地坚硬不软</li>
+                    </ul>
+                </div>
+                <div class="bg-amber-50 rounded-xl p-5 border border-amber-100">
+                    <div class="w-12 h-12 bg-amber-200 rounded-full flex items-center justify-center text-2xl mb-4">✂️</div>
+                    <h4 class="font-bold text-stone-800 mb-2">切姜（可选）</h4>
+                    <p class="text-sm text-stone-600 mb-3">大块姜切开，每块留<strong>2-3个芽眼</strong></p>
+                    <ul class="text-sm text-stone-700 space-y-1">
+                        <li class="check-item">提高种姜利用率</li>
+                        <li class="check-item">切口蘸草木灰</li>
+                        <li class="danger-item">切刀需消毒防传染</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Four Methods -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <!-- Method 1 -->
+            <div class="method-card ginger-card rounded-2xl p-6 border-2 border-amber-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-700 font-bold">1</div>
+                        <div>
+                            <h4 class="font-bold text-stone-800">福尔马林浸泡</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">推荐</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm py-2 border-b border-stone-100">
+                        <span class="text-stone-600">稀释比例</span>
+                        <span class="font-semibold">100倍液</span>
+                    </div>
+                    <div class="flex justify-between text-sm py-2 border-b border-stone-100">
+                        <span class="text-stone-600">浸泡时间</span>
+                        <span class="font-semibold">10-20分钟</span>
+                    </div>
+                    <div class="flex justify-between text-sm py-2">
+                        <span class="text-stone-600">后续处理</span>
+                        <span class="font-semibold">捞出晒干后种植</span>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-green-50 rounded-lg text-sm text-green-800">
+                    <strong>适用：</strong>大规模种植，预防土传病害效果最佳
+                </div>
+            </div>
+
+            <!-- Method 2 -->
+            <div class="method-card ginger-card rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center text-amber-700 font-bold">2</div>
+                        <div>
+                            <h4 class="font-bold text-stone-800">多菌灵+草木灰</h4>
+                            <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded-full">常规</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm py-2 border-b border-stone-100">
+                        <span class="text-stone-600">药剂浓度</span>
+                        <span class="font-semibold">50%多菌灵500倍液</span>
+                    </div>
+                    <div class="flex justify-between text-sm py-2 border-b border-stone-100">
+                        <span class="text-stone-600">浸泡时间</span>
+                        <span class="font-semibold">20分钟</span>
+                    </div>
+                    <div class="flex justify-between text-sm py-2">
+                        <span class="text-stone-600">后续处理</span>
+                        <span class="font-semibold">晾干后拌草木灰</span>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-amber-50 rounded-lg text-sm text-amber-800">
+                    <strong>适用：</strong>常规预防，成本较低，适合散户
+                </div>
+            </div>
+
+            <!-- Method 3 -->
+            <div class="method-card ginger-card rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center text-red-700 font-bold">3</div>
+                        <div>
+                            <h4 class="font-bold text-stone-800">噻菌铜（细菌性专用）</h4>
+                            <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">病害区必选</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm py-2 border-b border-stone-100">
+                        <span class="text-stone-600">药剂浓度</span>
+                        <span class="font-semibold">20%悬浮剂500倍液</span>
+                    </div>
+                    <div class="flex justify-between text-sm py-2 border-b border-stone-100">
+                        <span class="text-stone-600">浸泡时间</span>
+                        <span class="font-semibold">15-30分钟</span>
+                    </div>
+                    <div class="flex justify-between text-sm py-2">
+                        <span class="text-stone-600">特殊功效</span>
+                        <span class="font-semibold">专治姜瘟病（青枯病）</span>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-red-50 rounded-lg text-sm text-red-800">
+                    <strong>适用：</strong>往年有姜瘟病史的地块，必须选用
+                </div>
+            </div>
+
+            <!-- Method 4 -->
+            <div class="method-card ginger-card rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-700 font-bold">4</div>
+                        <div>
+                            <h4 class="font-bold text-stone-800">艾米森（进口）</h4>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">高端</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm py-2 border-b border-stone-100">
+                        <span class="text-stone-600">稀释比例</span>
+                        <span class="font-semibold">0.1%溶液</span>
+                    </div>
+                    <div class="flex justify-between text-sm py-2 border-b border-stone-100">
+                        <span class="text-stone-600">浸泡时间</span>
+                        <span class="font-semibold">20分钟</span>
+                    </div>
+                    <div class="flex justify-between text-sm py-2">
+                        <span class="text-stone-600">成本</span>
+                        <span class="font-semibold">较高</span>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
+                    <strong>适用：</strong>出口基地或高价值订单种植
+                </div>
+            </div>
+        </div>
+
+        <!-- Soil Disinfection -->
+        <div class="highlight-box rounded-2xl p-8">
+            <h3 class="text-xl font-bold text-amber-900 mb-6 flex items-center gap-2">
+                <span class="w-10 h-10 bg-amber-200 rounded-lg flex items-center justify-center text-lg">🌍</span>
+                土壤消毒（与种姜消毒同等重要）
+            </h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl p-5 shadow-sm">
+                    <div class="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-2xl mb-4">🚜</div>
+                    <h4 class="font-bold text-stone-800 mb-2">深耕晒垡</h4>
+                    <p class="text-sm text-stone-600 mb-3">冬季深翻<strong>30cm</strong>，晒田<strong>15-20天</strong></p>
+                    <p class="text-xs text-stone-500">目的：杀灭土传病菌，改善土壤结构</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm">
+                    <div class="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-2xl mb-4">🧂</div>
+                    <h4 class="font-bold text-stone-800 mb-2">生石灰消毒</h4>
+                    <p class="text-sm text-stone-600 mb-3">用量<strong>50-75kg/亩</strong>，均匀撒施后翻耕</p>
+                    <p class="text-xs text-stone-500">目的：调节pH至5.5-6.5，杀灭病菌</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm">
+                    <div class="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-2xl mb-4">🏔️</div>
+                    <h4 class="font-bold text-stone-800 mb-2">高垄深沟</h4>
+                    <p class="text-sm text-stone-600 mb-3">垄高<strong>20-30cm</strong>，沟深<strong>30cm</strong></p>
+                    <p class="text-xs text-stone-500">目的：防积水烂根，钦州多雨必备</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fertilizer Section -->
+    <section id="fertilizer" class="bg-white py-16">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-stone-800 mb-4">有机肥与施肥方案</h2>
+                <p class="text-stone-600">腐熟是关键，生肥禁用；基肥足，追肥巧</p>
+            </div>
+
+            <!-- Composting Standard -->
+            <div class="ginger-card rounded-2xl p-8 mb-8">
+                <h3 class="text-xl font-bold text-green-800 mb-6 flex items-center gap-2">
+                    <span class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-lg">♻️</span>
+                    有机肥腐熟标准（钦州高温快速腐熟法）
+                </h3>
+                <div class="grid md:grid-cols-5 gap-4 mb-6">
+                    <div class="text-center p-4 bg-green-50 rounded-xl">
+                        <div class="text-2xl mb-2">👁️</div>
+                        <p class="text-sm font-semibold text-stone-800">外观</p>
+                        <p class="text-xs text-stone-600 mt-1">黑褐色，无恶臭，有泥土味</p>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-xl">
+                        <div class="text-2xl mb-2">✋</div>
+                        <p class="text-sm font-semibold text-stone-800">质地</p>
+                        <p class="text-xs text-stone-600 mt-1">疏松，手握成团，一触即散</p>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-xl">
+                        <div class="text-2xl mb-2">🌡️</div>
+                        <p class="text-sm font-semibold text-stone-800">温度</p>
+                        <p class="text-xs text-stone-600 mt-1">降至常温（&lt;40℃）</p>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-xl">
+                        <div class="text-2xl mb-2">⏱️</div>
+                        <p class="text-sm font-semibold text-stone-800">时间</p>
+                        <p class="text-xs text-stone-600 mt-1">夏季2-3个月，冬季3-4个月</p>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-xl">
+                        <div class="text-2xl mb-2">🔍</div>
+                        <p class="text-sm font-semibold text-stone-800">虫卵</p>
+                        <p class="text-xs text-stone-600 mt-1">无可见虫卵、草籽</p>
+                    </div>
+                </div>
+                <div class="warning-box rounded-xl p-4">
+                    <p class="text-sm text-red-800">
+                        <strong>钦州快速腐熟技巧：</strong>利用夏季高温（30℃+），堆肥覆盖塑料膜保温；每10-15天翻堆一次；添加秸秆/稻壳调节碳氮比（25:1最佳）。<span class="font-bold">生粪直接施用=根腐病+地下害虫！</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Base Fertilizer -->
+            <div class="mb-8">
+                <h3 class="text-xl font-bold text-stone-800 mb-6 flex items-center gap-2">
+                    <span class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center text-lg">🌾</span>
+                    基肥方案（播种前施用）
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm ginger-card rounded-xl overflow-hidden">
+                        <thead class="table-header text-white">
+                            <tr>
+                                <th class="p-4 text-left font-semibold">肥料类型</th>
+                                <th class="p-4 text-left font-semibold">用量/亩</th>
+                                <th class="p-4 text-left font-semibold">施用方法</th>
+                                <th class="p-4 text-left font-semibold">核心作用</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover-row border-b border-stone-100">
+                                <td class="p-4 font-medium text-stone-800">腐熟农家肥（猪牛粪/鸡粪）</td>
+                                <td class="p-4 text-amber-700 font-bold">2000-3000公斤</td>
+                                <td class="p-4 text-stone-600">整地时均匀撒施，深翻入土</td>
+                                <td class="p-4 text-stone-600">提供长效有机质，改良土壤</td>
+                            </tr>
+                            <tr class="hover-row border-b border-stone-100">
+                                <td class="p-4 font-medium text-stone-800">过磷酸钙</td>
+                                <td class="p-4 text-amber-700 font-bold">50-75公斤</td>
+                                <td class="p-4 text-stone-600">与农家肥混合施用</td>
+                                <td class="p-4 text-stone-600">补充磷肥，促根发育</td>
+                            </tr>
+                            <tr class="hover-row border-b border-stone-100">
+                                <td class="p-4 font-medium text-stone-800">生石灰</td>
+                                <td class="p-4 text-amber-700 font-bold">50-75公斤</td>
+                                <td class="p-4 text-stone-600">翻犁时撒施</td>
+                                <td class="p-4 text-stone-600">土壤消毒，调节pH至5.5-6.5</td>
+                            </tr>
+                            <tr class="hover-row">
+                                <td class="p-4 font-medium text-stone-800">硫酸钾型复合肥(15-15-15)</td>
+                                <td class="p-4 text-amber-700 font-bold">30-50公斤</td>
+                                <td class="p-4 text-stone-600">沟施或穴施</td>
+                                <td class="p-4 text-stone-600">提供均衡氮磷钾</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Top Dressing -->
+            <div>
+                <h3 class="text-xl font-bold text-stone-800 mb-6 flex items-center gap-2">
+                    <span class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-lg">📅</span>
+                    追肥时间表（钦州气候适配）
+                </h3>
+                <div class="space-y-4">
+                    <!-- Stage 1 -->
+                    <div class="ginger-card rounded-xl p-6 flex flex-col md:flex-row gap-6 items-start">
+                        <div class="w-full md:w-48 shrink-0">
+                            <div class="bg-amber-100 rounded-lg p-4 text-center">
+                                <p class="text-sm text-stone-600">时期</p>
+                                <p class="text-lg font-bold text-amber-800">齐苗期</p>
+                                <p class="text-sm text-stone-500 mt-1">4月下旬-5月</p>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap gap-4 mb-3">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">腐熟粪水 1000-1500kg/亩</span>
+                                <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm">淋施</span>
+                            </div>
+                            <p class="text-stone-600 text-sm">出苗后及时补充养分，促进幼苗健壮生长。使用人畜粪尿必须充分腐熟，稀释后施用。</p>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2 -->
+                    <div class="ginger-card rounded-xl p-6 flex flex-col md:flex-row gap-6 items-start">
+                        <div class="w-full md:w-48 shrink-0">
+                            <div class="bg-amber-100 rounded-lg p-4 text-center">
+                                <p class="text-sm text-stone-600">时期</p>
+                                <p class="text-lg font-bold text-amber-800">幼苗期</p>
+                                <p class="text-sm text-stone-500 mt-1">5月</p>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap gap-4 mb-3">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">尿素或硝酸铵钙 5-8kg/亩</span>
+                                <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm">条施于行间，松土覆盖</span>
+                            </div>
+                            <p class="text-stone-600 text-sm">促进叶片生长，注意氮肥不宜过量，否则易徒长。结合中耕除草进行。</p>
+                        </div>
+                    </div>
+
+                    <!-- Stage 3 -->
+                    <div class="ginger-card rounded-xl p-6 flex flex-col md:flex-row gap-6 items-start">
+                        <div class="w-full md:w-48 shrink-0">
+                            <div class="bg-amber-100 rounded-lg p-4 text-center">
+                                <p class="text-sm text-stone-600">时期</p>
+                                <p class="text-lg font-bold text-amber-800">旺盛生长期</p>
+                                <p class="text-sm text-stone-500 mt-1">6-7月</p>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap gap-4 mb-3">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">复合肥(16-16-16) 20-25kg/亩</span>
+                                <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm">结合培土施用</span>
+                            </div>
+                            <p class="text-stone-600 text-sm">植株生长最快时期，需肥量大。结合培土进行，促进根系发育和茎叶生长。</p>
+                        </div>
+                    </div>
+
+                    <!-- Stage 4 -->
+                    <div class="ginger-card rounded-xl p-6 flex flex-col md:flex-row gap-6 items-start border-2 border-amber-300">
+                        <div class="w-full md:w-48 shrink-0">
+                            <div class="bg-red-100 rounded-lg p-4 text-center">
+                                <p class="text-sm text-red-600">★ 关键期</p>
+                                <p class="text-lg font-bold text-red-800">根茎膨大期</p>
+                                <p class="text-sm text-stone-500 mt-1">7-8月</p>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap gap-4 mb-3">
+                                <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-bold">高钾复合肥(18-12-24) 40-50kg/亩</span>
+                                <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm">重施，促块茎膨大</span>
+                            </div>
+                            <p class="text-stone-600 text-sm mb-2"><strong>最重要的一次追肥！</strong>决定产量和品质。增施钾肥促进块茎膨大，减少氮肥防止徒长。</p>
+                            <div class="bg-amber-50 rounded-lg p-3 text-sm text-amber-800">
+                                💡 钦州7-8月高温多雨，施肥后注意排水，防止养分流失和烂根
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 5 -->
+                    <div class="ginger-card rounded-xl p-6 flex flex-col md:flex-row gap-6 items-start">
+                        <div class="w-full md:w-48 shrink-0">
+                            <div class="bg-amber-100 rounded-lg p-4 text-center">
+                                <p class="text-sm text-stone-600">时期</p>
+                                <p class="text-lg font-bold text-amber-800">后期补充</p>
+                                <p class="text-sm text-stone-500 mt-1">9月后</p>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap gap-4 mb-3">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">磷酸二氢钾 0.2%溶液</span>
+                                <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm">叶面喷施，7-10天一次</span>
+                            </div>
+                            <p class="text-stone-600 text-sm">防止早衰，促进养分向块茎转移，提高产量和品质。可配合微量元素喷施。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Points -->
+    <section class="max-w-6xl mx-auto px-6 py-16">
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="success-box rounded-2xl p-6">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-2xl mb-4">✓</div>
+                <h3 class="font-bold text-green-800 text-lg mb-3">必须严格消毒</h3>
+                <ul class="text-sm text-green-700 space-y-2">
+                    <li>• 生石灰土壤消毒50-75kg/亩</li>
+                    <li>• 种姜福尔马林100倍液浸泡</li>
+                    <li>• 往年病区必须用噻菌铜</li>
+                    <li>• 深耕晒垡15-20天</li>
+                </ul>
+            </div>
+            <div class="success-box rounded-2xl p-6">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-2xl mb-4">✓</div>
+                <h3 class="font-bold text-green-800 text-lg mb-3">必须腐熟有机肥</h3>
+                <ul class="text-sm text-green-700 space-y-2">
+                    <li>• 农家肥腐熟2-3个月</li>
+                    <li>• 黑褐色、无恶臭、质地疏松</li>
+                    <li>• 禁用生粪防根腐病</li>
+                    <li>• 夏季高温快速腐熟法</li>
+                </ul>
+            </div>
+            <div class="success-box rounded-2xl p-6">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-2xl mb-4">✓</div>
+                <h3 class="font-bold text-green-800 text-lg mb-3">必须高垄深沟</h3>
+                <ul class="text-sm text-green-700 space-y-2">
+                    <li>• 垄高20-30cm</li>
+                    <li>• 沟深30cm防积水</li>
+                    <li>• 钦州台风季必备</li>
+                    <li>• 防姜瘟病和烂根</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Budget & Contacts -->
+    <section class="bg-gradient-to-br from-stone-100 to-amber-50 py-16">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Budget -->
+                <div class="ginger-card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-stone-800 mb-6 flex items-center gap-2">
+                        <span class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center text-lg">💰</span>
+                        首年种植投入预算（50亩示范）
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center py-2 border-b border-stone-100">
+                            <span class="text-stone-600">种姜（本地优选）</span>
+                            <span class="font-semibold">1.5-2万元</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-stone-100">
+                            <span class="text-stone-600">腐熟农家肥（100-150吨）</span>
+                            <span class="font-semibold">1-1.5万元</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-stone-100">
+                            <span class="text-stone-600">复合肥（2-3吨）</span>
+                            <span class="font-semibold">1-1.2万元</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-stone-100">
+                            <span class="text-stone-600">生石灰（2.5-3.75吨）</span>
+                            <span class="font-semibold">0.3-0.5万元</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-stone-100">
+                            <span class="text-stone-600">农药（消毒+防治）</span>
+                            <span class="font-semibold">0.5-0.8万元</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 bg-amber-50 rounded-lg px-3 mt-2">
+                            <span class="font-bold text-stone-800">合计</span>
+                            <span class="font-bold text-amber-700 text-lg">4.3-6万元</span>
+                        </div>
+                        <p class="text-xs text-stone-500 mt-2">约860-1200元/亩，首年保守亩产3000-4000斤，按7-8元/斤计算，亩产值2.1-3.2万元</p>
+                    </div>
+                </div>
+
+                <!-- Contacts -->
+                <div class="ginger-card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-stone-800 mb-6 flex items-center gap-2">
+                        <span class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-lg">📞</span>
+                        关键联系人
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 bg-white rounded-lg border border-stone-200">
+                            <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-bold">1</div>
+                            <div>
+                                <p class="font-bold text-stone-800">板城镇人民政府</p>
+                                <p class="text-lg text-amber-700 font-bold">0777-5406308</p>
+                                <p class="text-sm text-stone-500">表达合作意愿，请求对接大寺镇资源</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 bg-white rounded-lg border border-stone-200">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-700 font-bold">2</div>
+                            <div>
+                                <p class="font-bold text-stone-800">板城镇乡村建设综合服务中心</p>
+                                <p class="text-lg text-green-700 font-bold">0777-5407916</p>
+                                <p class="text-sm text-stone-500">本地有机肥源推荐、腐熟技术指导</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 bg-white rounded-lg border border-stone-200">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold">3</div>
+                            <div>
+                                <p class="font-bold text-stone-800">大寺镇农业服务中心副主任</p>
+                                <p class="text-lg text-blue-700 font-bold">胡宝期（0777-5718221转）</p>
+                                <p class="text-sm text-stone-500">技术合作、种苗供应、病虫害预警</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="mb-4">数据来源：钦州市农业技术推广中心、广西农业科学院、钦北区农业农村局、大寺镇农业服务中心</p>
+            <p class="text-sm">© 2025 广西钦州板城沙姜种植技术指南 | 严格消毒、腐熟有机肥、高垄深沟——三必须原则</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.ginger-card, .method-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `all 0.6s ease ${index * 0.05}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
