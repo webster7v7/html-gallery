@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>键盘功能键详解大全</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(56, 189, 248, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.8) 0%, rgba(14, 165, 233, 0.9) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-tab {
+            flex: 1;
+            min-width: 150px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.3s ease;
+            position: relative;
+            border-right: 1px solid rgba(56, 189, 248, 0.1);
+        }
+
+        .nav-tab:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: #e0f2fe;
+        }
+
+        .nav-tab.active {
+            color: #0ea5e9;
+            background: rgba(56, 189, 248, 0.15);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .key-section {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .key-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15);
+        }
+
+        .key-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .key-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-right: 20px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .key-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .key-section:hover .key-icon::after {
+            transform: rotate(45deg) translate(100%, 100%);
+        }
+
+        .key-title {
+            flex: 1;
+        }
+
+        .key-title h2 {
+            font-size: 1.8em;
+            color: #e0f2fe;
+            margin-bottom: 5px;
+        }
+
+        .key-title p {
+            color: #94a3b8;
+            font-size: 0.95em;
+        }
+
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .function-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .function-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #0ea5e9, #38bdf8);
+            transition: width 0.3s ease;
+        }
+
+        .function-card:hover {
+            transform: translateY(-3px);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.1);
+        }
+
+        .function-card:hover::before {
+            width: 8px;
+        }
+
+        .function-title {
+            font-weight: 600;
+            color: #38bdf8;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .function-title .key-combo {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-right: 10px;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 0 5px rgba(56, 189, 248, 0.3);
+        }
+
+        .function-desc {
+            color: #cbd5e1;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .hotkey-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .hotkey-table th {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .hotkey-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            color: #e2e8f0;
+        }
+
+        .hotkey-table tr:nth-child(even) {
+            background: rgba(15, 23, 42, 0.3);
+        }
+
+        .hotkey-table tr:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .highlight-note {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(56, 189, 248, 0.15));
+            border-left: 4px solid #0ea5e9;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #e0f2fe;
+            position: relative;
+        }
+
+        .highlight-note::before {
+            content: '💡';
+            position: absolute;
+            top: 15px;
+            left: -15px;
+            background: #0f172a;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        .brand-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .brand-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.15);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .brand-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #38bdf8;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        .brand-name {
+            font-weight: 600;
+            color: #e0f2fe;
+            margin-bottom: 8px;
+        }
+
+        .brand-features {
+            font-size: 0.85em;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .footer {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 30px;
+            text-align: center;
+            color: #94a3b8;
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+        }
+
+        .footer .icon {
+            color: #38bdf8;
+            margin: 0 5px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 5px #0ea5e9; }
+            to { box-shadow: 0 0 15px #38bdf8; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .nav-tab { min-width: 120px; padding: 15px 10px; font-size: 14px; }
+            .key-header { flex-direction: column; text-align: center; }
+            .key-icon { margin-right: 0; margin-bottom: 15px; }
+            .function-grid { grid-template-columns: 1fr; }
+            .hotkey-table { font-size: 0.9em; }
+            .hotkey-table th, .hotkey-table td { padding: 10px; }
+        }
+
+        .tab-content::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .tab-content::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .tab-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #0ea5e9, #38bdf8);
+            border-radius: 4px;
+        }
+
+        .tab-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #38bdf8, #0ea5e9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⌨️ 键盘功能键详解大全</h1>
+            <p>全面解析 Windows、Fn、Ctrl、Alt、Tab 键的功能与组合键</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('windows')">🪟 Windows键</button>
+            <button class="nav-tab" onclick="showTab('fn')">🔧 Fn键</button>
+            <button class="nav-tab" onclick="showTab('ctrl')">⚡ Ctrl键</button>
+            <button class="nav-tab" onclick="showTab('alt')">🔄 Alt键</button>
+            <button class="nav-tab" onclick="showTab('tab')">↹ Tab键</button>
+        </div>
+
+        <div class="content">
+            <!-- Windows键内容 -->
+            <div id="windows" class="tab-content active">
+                <div class="key-section">
+                    <div class="key-header">
+                        <div class="key-icon">🪟</div>
+                        <div class="key-title">
+                            <h2>Windows键功能详解</h2>
+                            <p>Windows徽标键，位于Ctrl和Alt键之间，是Windows系统的核心快捷键</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-note">
+                        <strong>基本功能：</strong>单独按下Windows键可快速打开/关闭"开始"菜单，是Windows操作系统的标志性按键。
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">常用组合快捷键</h3>
+                    <div class="function-grid">
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + D</span>
+                            </div>
+                            <div class="function-desc">显示/隐藏桌面，快速最小化所有窗口</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + E</span>
+                            </div>
+                            <div class="function-desc">打开文件资源管理器</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + R</span>
+                            </div>
+                            <div class="function-desc">打开"运行"对话框</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + L</span>
+                            </div>
+                            <div class="function-desc">锁定计算机</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + I</span>
+                            </div>
+                            <div class="function-desc">打开Windows设置</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + S</span>
+                            </div>
+                            <div class="function-desc">打开搜索/Cortana</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + Tab</span>
+                            </div>
+                            <div class="function-desc">打开任务视图，查看所有虚拟桌面</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + P</span>
+                            </div>
+                            <div class="function-desc">投影设置，切换显示模式</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + X</span>
+                            </div>
+                            <div class="function-desc">打开高级用户菜单（移动中心）</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + V</span>
+                            </div>
+                            <div class="function-desc">打开剪贴板历史记录</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + .</span>
+                            </div>
+                            <div class="function-desc">打开表情符号面板</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Win + ←/→</span>
+                            </div>
+                            <div class="function-desc">将窗口贴靠到屏幕左右侧</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin: 25px 0 15px;">高级功能组合</h3>
+                    <table class="hotkey-table">
+                        <thead>
+                            <tr>
+                                <th>组合键</th>
+                                <th>功能说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Win + Shift + S</span></td>
+                                <td>截图工具，支持矩形、任意形状、窗口和全屏截图</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Win + Ctrl + D</span></td>
+                                <td>创建新的虚拟桌面</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Win + Ctrl + ←/→</span></td>
+                                <td>在虚拟桌面之间切换</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Win + Ctrl + F4</span></td>
+                                <td>关闭当前虚拟桌面</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Win + 1/2/3...</span></td>
+                                <td>快速启动任务栏第1/2/3...个程序</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Win + + / -</span></td>
+                                <td>打开放大镜并放大/缩小</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Fn键内容 -->
+            <div id="fn" class="tab-content">
+                <div class="key-section">
+                    <div class="key-header">
+                        <div class="key-icon">🔧</div>
+                        <div class="key-title">
+                            <h2>Fn键功能详解</h2>
+                            <p>功能键（Function），笔记本键盘的核心控制键，实现硬件快速调节</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-note">
+                        <strong>重要特性：</strong>Fn键通常位于键盘左下角，需要与其他按键组合使用。不同品牌（联想、戴尔、惠普、华硕等）的Fn组合键功能可能有所差异，建议参考设备说明书。
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">Fn + F1-F12 标准功能</h3>
+                    <div class="function-grid">
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F1</span>
+                            </div>
+                            <div class="function-desc">静音/取消静音扬声器</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F2</span>
+                            </div>
+                            <div class="function-desc">降低扬声器音量</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F3</span>
+                            </div>
+                            <div class="function-desc">提高扬声器音量</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F4</span>
+                            </div>
+                            <div class="function-desc">使麦克风静音或取消静音</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F5</span>
+                            </div>
+                            <div class="function-desc">调暗显示屏亮度</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F6</span>
+                            </div>
+                            <div class="function-desc">调亮显示屏亮度</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F7</span>
+                            </div>
+                            <div class="function-desc">切换显示模式（投影/镜像）</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F8</span>
+                            </div>
+                            <div class="function-desc">启用/禁用飞行模式</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F9</span>
+                            </div>
+                            <div class="function-desc">启用/禁用触摸板</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F10</span>
+                            </div>
+                            <div class="function-desc">打开右键菜单</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F11</span>
+                            </div>
+                            <div class="function-desc">降低键盘背光亮度</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Fn + F12</span>
+                            </div>
+                            <div class="function-desc">提高键盘背光亮度</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin: 25px 0 15px;">Fn + 其他按键功能</h3>
+                    <table class="hotkey-table">
+                        <thead>
+                            <tr>
+                                <th>组合键</th>
+                                <th>功能说明</th>
+                                <th>适用场景</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Fn + ↑/↓</span></td>
+                                <td>调节屏幕亮度</td>
+                                <td>所有笔记本</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Fn + ←/→</span></td>
+                                <td>调节音量大小</td>
+                                <td>多媒体控制</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Fn + Esc</span></td>
+                                <td>启用/禁用Fn锁定功能</td>
+                                <td>功能键切换</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Fn + Space</span></td>
+                                <td>启用/禁用触摸板</td>
+                                <td>打字防误触</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Fn + PrintScreen</span></td>
+                                <td>截取屏幕并保存到剪贴板</td>
+                                <td>快速截图</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Fn + NumLock</span></td>
+                                <td>启用/禁用数字小键盘</td>
+                                <td>输入数字</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Fn + Home</span></td>
+                                <td>快速返回页面顶部</td>
+                                <td>浏览网页</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Fn + End</span></td>
+                                <td>快速跳转页面底部</td>
+                                <td>浏览网页</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Fn + Delete</span></td>
+                                <td>启用/禁用摄像头</td>
+                                <td>隐私保护</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="color: #2c3e50; margin: 25px 0 15px;">主流品牌Fn功能差异</h3>
+                    <div class="brand-grid">
+                        <div class="brand-card">
+                            <div class="brand-icon">💻</div>
+                            <div class="brand-name">联想 ThinkPad</div>
+                            <div class="brand-features">
+                                FnLock功能完善<br>
+                                Fn+Esc锁定功能键<br>
+                                商务功能优化
+                            </div>
+                        </div>
+                        <div class="brand-card">
+                            <div class="brand-icon">🖥️</div>
+                            <div class="brand-name">戴尔 Dell</div>
+                            <div class="brand-features">
+                                QuickSet软件控制<br>
+                                Fn+F3显示电源表<br>
+                                电源管理突出
+                            </div>
+                        </div>
+                        <div class="brand-card">
+                            <div class="brand-icon">🎮</div>
+                            <div class="brand-name">华硕 ASUS</div>
+                            <div class="brand-features">
+                                Fn+F5/F6调亮度<br>
+                                Fn+F9锁触摸板<br>
+                                游戏模式切换
+                            </div>
+                        </div>
+                        <div class="brand-card">
+                            <div class="brand-icon">🏢</div>
+                            <div class="brand-name">惠普 HP</div>
+                            <div class="brand-features">
+                                Fn+F4切换视频<br>
+                                Fn+F12系统信息<br>
+                                商业功能丰富
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-note" style="margin-top: 25px;">
+                        <strong>自定义设置：</strong>部分笔记本支持在BIOS或专用软件（如Lenovo Vantage、Dell QuickSet）中自定义Fn键功能，可根据个人习惯调整默认行为。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ctrl键内容 -->
+            <div id="ctrl" class="tab-content">
+                <div class="key-section">
+                    <div class="key-header">
+                        <div class="key-icon">⚡</div>
+                        <div class="key-title">
+                            <h2>Ctrl键功能详解</h2>
+                            <p>控制键（Control），最常用的组合键，实现编辑与系统控制功能</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-note">
+                        <strong>核心功能：</strong>Ctrl键是文本编辑和系统操作的核心，几乎所有软件都支持Ctrl组合键，是提高效率的必备技能。
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">文本编辑类快捷键</h3>
+                    <div class="function-grid">
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + C</span>
+                            </div>
+                            <div class="function-desc">复制选中内容到剪贴板</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + V</span>
+                            </div>
+                            <div class="function-desc">粘贴剪贴板内容</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + X</span>
+                            </div>
+                            <div class="function-desc">剪切选中内容</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + Z</span>
+                            </div>
+                            <div class="function-desc">撤销上一步操作</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + Y</span>
+                            </div>
+                            <div class="function-desc">重做/恢复撤销操作</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + A</span>
+                            </div>
+                            <div class="function-desc">全选当前内容</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + S</span>
+                            </div>
+                            <div class="function-desc">保存当前文件</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + P</span>
+                            </div>
+                            <div class="function-desc">打印当前文档</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + F</span>
+                            </div>
+                            <div class="function-desc">查找内容</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + H</span>
+                            </div>
+                            <div class="function-desc">查找并替换内容</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + N</span>
+                            </div>
+                            <div class="function-desc">新建文件/窗口</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Ctrl + O</span>
+                            </div>
+                            <div class="function-desc">打开文件</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin: 25px 0 15px;">系统操作类快捷键</h3>
+                    <table class="hotkey-table">
+                        <thead>
+                            <tr>
+                                <th>组合键</th>
+                                <th>功能说明</th>
+                                <th>使用场景</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Shift + Esc</span></td>
+                                <td>打开任务管理器</td>
+                                <td>系统响应慢时</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Alt + Delete</span></td>
+                                <td>打开安全选项菜单</td>
+                                <td>锁定/注销/任务管理器</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Shift + N</span></td>
+                                <td>新建文件夹</td>
+                                <td>文件管理</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Shift + T</span></td>
+                                <td>恢复关闭的浏览器标签页</td>
+                                <td>浏览器操作</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Tab</span></td>
+                                <td>切换标签页（向前）</td>
+                                <td>多标签应用</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Shift + Tab</span></td>
+                                <td>切换标签页（向后）</td>
+                                <td>多标签应用</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + W</span></td>
+                                <td>关闭当前窗口/标签页</td>
+                                <td>快速关闭</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Shift + V</span></td>
+                                <td>粘贴为纯文本</td>
+                                <td>去除格式粘贴</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="highlight-note" style="margin-top: 25px;">
+                        <strong>技巧提示：</strong>按住Ctrl键拖动文件可复制文件；按住Ctrl+Shift拖动可创建快捷方式；Ctrl+鼠标滚轮可缩放页面。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alt键内容 -->
+            <div id="alt" class="tab-content">
+                <div class="key-section">
+                    <div class="key-header">
+                        <div class="key-icon">🔄</div>
+                        <div class="key-title">
+                            <h2>Alt键功能详解</h2>
+                            <p>转换键（Alternate），主要用于菜单操作和特殊字符输入</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-note">
+                        <strong>核心功能：</strong>Alt键主要用于激活菜单栏、输入特殊字符（Alt+数字代码）以及与Ctrl键组合实现窗口控制。
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">窗口控制快捷键</h3>
+                    <div class="function-grid">
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + F4</span>
+                            </div>
+                            <div class="function-desc">关闭当前窗口或程序</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + Tab</span>
+                            </div>
+                            <div class="function-desc">切换应用程序窗口</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + Esc</span>
+                            </div>
+                            <div class="function-desc">按打开顺序切换窗口</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + Enter</span>
+                            </div>
+                            <div class="function-desc">查看文件属性/全屏切换</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + Space</span>
+                            </div>
+                            <div class="function-desc">打开当前窗口系统菜单</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + ←/→</span>
+                            </div>
+                            <div class="function-desc">浏览器后退/前进</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin: 25px 0 15px;">菜单与操作快捷键</h3>
+                    <table class="hotkey-table">
+                        <thead>
+                            <tr>
+                                <th>组合键</th>
+                                <th>功能说明</th>
+                                <th>应用场景</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Alt + F</span></td>
+                                <td>打开文件菜单</td>
+                                <td>大部分软件</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Alt + E</span></td>
+                                <td>打开编辑菜单</td>
+                                <td>大部分软件</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Alt + V</span></td>
+                                <td>打开查看菜单</td>
+                                <td>大部分软件</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Alt + H</span></td>
+                                <td>打开帮助菜单</td>
+                                <td>大部分软件</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Alt + 字母</span></td>
+                                <td>执行菜单中带下划线的命令</td>
+                                <td>菜单操作</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Alt + PrintScreen</span></td>
+                                <td>截取当前活动窗口</td>
+                                <td>精确截图</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Alt + Shift + Tab</span></td>
+                                <td>反向切换应用程序</td>
+                                <td>Alt+Tab的反向操作</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Alt + Ctrl + Tab</span></td>
+                                <td>打开3D窗口切换器（固定）</td>
+                                <td>Windows 3D效果</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="color: #2c3e50; margin: 25px 0 15px;">特殊字符输入（数字小键盘）</h3>
+                    <div class="highlight-note">
+                        <strong>使用方法：</strong>按住Alt键，然后在数字小键盘上输入数字代码，松开Alt键即可输入特殊字符。
+                    </div>
+                    <div class="function-grid" style="margin-top: 15px;">
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + 0169</span>
+                            </div>
+                            <div class="function-desc">输入版权符号 ©</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + 0174</span>
+                            </div>
+                            <div class="function-desc">输入注册商标符号 ®</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + 0153</span>
+                            </div>
+                            <div class="function-desc">输入商标符号 ™</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Alt + 0128</span>
+                            </div>
+                            <div class="function-desc">输入欧元符号 €</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab键内容 -->
+            <div id="tab" class="tab-content">
+                <div class="key-section">
+                    <div class="key-header">
+                        <div class="key-icon">↹</div>
+                        <div class="key-title">
+                            <h2>Tab键功能详解</h2>
+                            <p>制表键（Tabulator），主要用于文本缩进和界面焦点切换</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-note">
+                        <strong>核心功能：</strong>Tab键是"Tabulator"的缩写，最初用于制表，现代计算机中主要用于文本缩进、表单切换和游戏快速切换。
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">基础功能</h3>
+                    <div class="function-grid">
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Tab</span>
+                            </div>
+                            <div class="function-desc">文本缩进（通常4个空格）</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Tab</span>
+                            </div>
+                            <div class="function-desc">在表单元素间切换焦点</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Tab</span>
+                            </div>
+                            <div class="function-desc">在对话框中切换选项</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Tab</span>
+                            </div>
+                            <div class="function-desc">代码编辑器中自动补全</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #2c3e50; margin: 25px 0 15px;">高级组合功能</h3>
+                    <table class="hotkey-table">
+                        <thead>
+                            <tr>
+                                <th>组合键</th>
+                                <th>功能说明</th>
+                                <th>应用场景</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Shift + Tab</span></td>
+                                <td>反向切换焦点/减少缩进</td>
+                                <td>表单/代码编辑</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Tab</span></td>
+                                <td>切换标签页（向前）</td>
+                                <td>浏览器/编辑器</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Shift + Tab</span></td>
+                                <td>切换标签页（向后）</td>
+                                <td>浏览器/编辑器</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Alt + Tab</span></td>
+                                <td>切换应用程序</td>
+                                <td>多任务操作</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Win + Tab</span></td>
+                                <td>打开任务视图</td>
+                                <td>虚拟桌面管理</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Tab（游戏中）</span></td>
+                                <td>查看得分板/切换目标</td>
+                                <td>游戏操作</td>
+                            </tr>
+                            <tr>
+                                <td><span class="key-combo" style="margin: 0;">Ctrl + Alt + Tab</span></td>
+                                <td>固定窗口切换器</td>
+                                <td>选择窗口</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="color: #2c3e50; margin: 25px 0 15px;">特殊应用场景</h3>
+                    <div class="function-grid">
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Tab（命令行）</span>
+                            </div>
+                            <div class="function-desc">自动补全命令和文件名</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Tab（表格中）</span>
+                            </div>
+                            <div class="function-desc">横向移动到下一单元格</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Tab + Shift（表格）</span>
+                            </div>
+                            <div class="function-desc">横向移动到上一单元格</div>
+                        </div>
+                        <div class="function-card">
+                            <div class="function-title">
+                                <span class="key-combo">Tab（IDE中）</span>
+                            </div>
+                            <div class="function-desc">代码自动补全/格式化</div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-note" style="margin-top: 25px;">
+                        <strong>效率提示：</strong>在填写网页表单时，按Tab键可以快速在输入框间切换，比鼠标点击更快；在代码编辑器中，Tab键的缩进功能配合Shift+Tab的反向缩进，能大幅提升编码效率。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💡 <span class="icon">⌨️</span> 掌握快捷键，提升工作效率 <span class="icon">⚡</span></p>
+            <p>不同品牌和系统版本可能存在功能差异，请以实际设备为准</p>
+            <p style="margin-top: 15px; font-size: 0.9em;">Made with <span style="color: #e74c3c;">❤</span> by Keyboard Guide</p>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // 隐藏所有内容
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // 移除所有按钮的激活状态
+            const buttons = document.querySelectorAll('.nav-tab');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            // 显示选中的内容
+            document.getElementById(tabName).classList.add('active');
+            
+            // 激活对应的按钮
+            const activeButton = Array.from(buttons).find(button => 
+                button.textContent.includes({
+                    'windows': '🪟',
+                    'fn': '🔧', 
+                    'ctrl': '⚡',
+                    'alt': '🔄',
+                    'tab': '↹'
+                }[tabName])
+            );
+            if (activeButton) activeButton.classList.add('active');
+            
+            // 添加切换动画
+            document.getElementById(tabName).style.animation = 'none';
+            setTimeout(() => {
+                document.getElementById(tabName).style.animation = 'fadeIn 0.5s ease';
+            }, 10);
+        }
+
+        // 键盘导航支持
+        document.addEventListener('keydown', function(e) {
+            const tabs = ['windows', 'fn', 'ctrl', 'alt', 'tab'];
+            const currentIndex = tabs.findIndex(tab => 
+                document.getElementById(tab).classList.contains('active')
+            );
+            
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                showTab(tabs[currentIndex - 1]);
+            } else if (e.key === 'ArrowRight' && currentIndex < tabs.length - 1) {
+                showTab(tabs[currentIndex + 1]);
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('.nav-tab').forEach(button => {
+            button.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // 添加复制功能
+        document.querySelectorAll('.key-combo').forEach(combo => {
+            combo.addEventListener('click', function() {
+                const text = this.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = '✓ 已复制';
+                    this.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.style.background = 'linear-gradient(135deg, #0ea5e9, #38bdf8)';
+                    }, 1000);
+                });
+            });
+        });
+
+        // 页面加载完成后的动画
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.key-section').forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // 添加搜索功能（可选）
+        function searchHotkeys(query) {
+            const cards = document.querySelectorAll('.function-card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query.toLowerCase())) {
+                    card.style.display = 'block';
+                    card.style.background = 'linear-gradient(135deg, rgba(14, 165, 233, 0.3), rgba(56, 189, 248, 0.2))';
+                    setTimeout(() => {
+                        card.style.background = 'rgba(15, 23, 42, 0.7)';
+                    }, 2000);
+                } else {
+                    card.style.display = query ? 'none' : 'block';
+                }
+            });
+        }
+
+        // 添加键盘图标闪烁效果
+        setInterval(() => {
+            document.querySelectorAll('.key-icon').forEach(icon => {
+                icon.style.boxShadow = '0 0 25px rgba(56, 189, 248, 0.8)';
+                setTimeout(() => {
+                    icon.style.boxShadow = '0 0 15px rgba(56, 189, 248, 0.4)';
+                }, 500);
+            });
+        }, 3000);
+    </script>
+</body>
+</html>

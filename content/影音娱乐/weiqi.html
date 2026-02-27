@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>围棋之道 - 千年智慧的艺术</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink-black: #1a1a1a;
+            --paper-beige: #f4f1e8;
+            --stone-black: #2d2d2d;
+            --stone-white: #fafafa;
+            --accent-red: #c41e3a;
+            --shadow-ink: rgba(26, 26, 26, 0.1);
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--paper-beige);
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4.004-4c-2.205 0-3.996 1.79-3.996 4s1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239C92AC' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+            color: var(--ink-black);
+            overflow-x: hidden;
+        }
+        
+        .font-calligraphy {
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+        
+        /* 水墨晕染效果 */
+        .ink-wash {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ink-wash::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(45,45,45,0.03) 0%, transparent 70%);
+            animation: inkSpread 8s ease-in-out infinite;
+        }
+        
+        @keyframes inkSpread {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 0.8; }
+        }
+        
+        /* 棋子样式 */
+        .go-stone {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.3), inset -2px -2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .go-stone.black {
+            background: radial-gradient(circle at 30% 30%, #4a4a4a, #000000);
+        }
+        
+        .go-stone.white {
+            background: radial-gradient(circle at 30% 30%, #ffffff, #e0e0e0);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .go-stone:hover {
+            transform: scale(1.1);
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+        }
+        
+        /* 棋盘网格 */
+        .go-board {
+            display: grid;
+            grid-template-columns: repeat(19, 1fr);
+            gap: 0;
+            background: #dcb35c;
+            background-image: linear-gradient(to bottom right, #e6c878, #d4a84c);
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .board-point {
+            aspect-ratio: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .board-point::before,
+        .board-point::after {
+            content: '';
+            position: absolute;
+            background: #2d2d2d;
+        }
+        
+        .board-point::before {
+            width: 100%;
+            height: 1px;
+            top: 50%;
+            left: 0;
+        }
+        
+        .board-point::after {
+            width: 1px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+        }
+        
+        .star-point::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #2d2d2d;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        
+        /* 引用块样式 */
+        .quote-block {
+            border-left: 3px solid var(--stone-black);
+            background: linear-gradient(to right, rgba(45,45,45,0.05), transparent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+            font-style: italic;
+        }
+        
+        .quote-block::before {
+            content: '"';
+            font-size: 4rem;
+            position: absolute;
+            top: -1rem;
+            left: 0.5rem;
+            color: rgba(45,45,45,0.1);
+            font-family: serif;
+        }
+        
+        /* 导航点 */
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(45,45,45,0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .nav-dot.active {
+            background: var(--stone-black);
+            transform: scale(1.2);
+        }
+        
+        .nav-dot:hover {
+            border-color: var(--stone-black);
+        }
+        
+        /* 章节标题装饰 */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, var(--stone-black), transparent);
+        }
+        
+        /* 响应式字号 */
+        .text-responsive-4xl {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.2;
+        }
+        
+        .text-responsive-3xl {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+        }
+        
+        /* 淡入动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 卡片悬停效果 */
+        .wisdom-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(45,45,45,0.1);
+        }
+        
+        .wisdom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: rgba(45,45,45,0.3);
+        }
+        
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--paper-beige);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--stone-black);
+            border-radius: 4px;
+        }
+        
+        /* 交互式规则演示 */
+        .rule-demo {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .rule-demo:hover {
+            background: rgba(45,45,45,0.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 固定导航栏 -->
+    <nav class="fixed top-0 w-full bg-[#f4f1e8]/90 backdrop-blur-md z-50 border-b border-stone-800/10 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-stone-800 shadow-lg"></div>
+                    <div class="w-8 h-8 rounded-full bg-stone-100 border border-stone-300 shadow-lg -ml-4"></div>
+                    <span class="ml-2 font-calligraphy text-2xl text-stone-800">围棋之道</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm tracking-widest">
+                    <a href="#origin" class="hover:text-stone-500 transition-colors">起源</a>
+                    <a href="#rules" class="hover:text-stone-500 transition-colors">规则</a>
+                    <a href="#culture" class="hover:text-stone-500 transition-colors">文化</a>
+                    <a href="#philosophy" class="hover:text-stone-500 transition-colors">哲学</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <header class="relative min-h-screen flex items-center justify-center ink-wash pt-16 overflow-hidden">
+        <!-- 背景装饰棋子 -->
+        <div class="absolute top-20 left-10 opacity-10 transform rotate-12 hidden lg:block">
+            <div class="go-stone black w-32 h-32"></div>
+        </div>
+        <div class="absolute bottom-20 right-10 opacity-10 transform -rotate-12 hidden lg:block">
+            <div class="go-stone white w-40 h-40"></div>
+        </div>
+        
+        <div class="max-w-5xl mx-auto px-4 text-center z-10">
+            <div class="mb-6 inline-block">
+                <span class="px-4 py-2 border border-stone-800/30 rounded-full text-sm tracking-[0.2em] text-stone-600 bg-white/50 backdrop-blur">
+                    四艺之一 · 千年智慧
+                </span>
+            </div>
+            <h1 class="font-calligraphy text-responsive-4xl text-stone-900 mb-6 leading-tight">
+                天地之间，<br/>
+                <span class="text-stone-600">方圆之内</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-stone-600 max-w-2xl mx-auto leading-relaxed mb-12 font-light">
+                纵横十九路，黑白分明处。<br/>
+                千古无同局，一子定乾坤。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="document.getElementById('origin').scrollIntoView({behavior: 'smooth'})" 
+                        class="px-8 py-4 bg-stone-800 text-stone-50 rounded-lg shadow-lg hover:bg-stone-700 transition-all transform hover:scale-105 tracking-widest">
+                    探索起源
+                </button>
+                <button onclick="document.getElementById('rules').scrollIntoView({behavior: 'smooth'})" 
+                        class="px-8 py-4 border-2 border-stone-800 text-stone-800 rounded-lg hover:bg-stone-800 hover:text-stone-50 transition-all tracking-widest">
+                    了解规则
+                </button>
+            </div>
+            
+            <!-- 向下滚动提示 -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <svg class="w-6 h-6 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- 起源章节 -->
+    <section id="origin" class="py-24 relative">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <h2 class="text-responsive-3xl font-bold mb-6 section-title">尧造围棋</h2>
+                    <p class="text-lg text-stone-700 mb-6 leading-relaxed">
+                        围棋的起源，可追溯至四千多年前。先秦典籍<strong>《世本·作篇》</strong>记载：<span class="bg-stone-200/50 px-1 rounded">"尧造围棋，丹朱善之"</span>。
+                    </p>
+                    <div class="quote-block">
+                        <p class="text-lg text-stone-800 relative z-10">
+                            尧造围棋，以教子丹朱。或云：舜以子商均愚，故作围棋以教之。
+                        </p>
+                        <cite class="block mt-2 text-sm text-stone-500 not-italic">— 晋·张华《博物志》</cite>
+                    </div>
+                    <p class="text-stone-600 mt-6 leading-relaxed">
+                        传说尧帝之子丹朱性情顽劣，尧创制围棋以陶冶其性情、启迪智慧。这不仅是游戏的诞生，更是<strong"以棋育人"</strong>的教化哲学之始。1964年版《大英百科全书》亦采纳此说，将围棋发明时间定为<span class="font-semibold">公元前2356年</span>。
+                    </p>
+                    <div class="mt-8 flex items-center space-x-4 text-sm text-stone-500">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                            </svg>
+                            距今4000余年
+                        </span>
+                        <span>|</span>
+                        <span>世界上最古老的棋类游戏</span>
+                    </div>
+                </div>
+                <div class="fade-in relative">
+                    <div class="relative aspect-square max-w-md mx-auto">
+                        <!-- 古代画像风格装饰 -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-stone-300 to-stone-100 rounded-2xl transform rotate-3 shadow-xl"></div>
+                        <div class="absolute inset-0 bg-white rounded-2xl shadow-2xl overflow-hidden">
+                            <div class="h-full w-full bg-gradient-to-b from-amber-50 to-orange-50 flex items-center justify-center relative">
+                                <div class="text-center p-8">
+                                    <div class="font-calligraphy text-6xl text-stone-800 mb-4">尧</div>
+                                    <div class="w-24 h-1 bg-stone-800 mx-auto mb-4"></div>
+                                    <p class="text-stone-600 italic">圣王教化<br/>千古一人</p>
+                                </div>
+                                <!-- 装饰性棋盘局部 -->
+                                <div class="absolute bottom-4 right-4 opacity-20">
+                                    <div class="grid grid-cols-3 gap-1">
+                                        <div class="w-3 h-3 rounded-full bg-stone-800"></div>
+                                        <div class="w-3 h-3 rounded-full bg-white border border-stone-400"></div>
+                                        <div class="w-3 h-3 rounded-full bg-stone-800"></div>
+                                        <div class="w-3 h-3 rounded-full bg-white border border-stone-400"></div>
+                                        <div class="w-3 h-3 rounded-full bg-stone-800"></div>
+                                        <div class="w-3 h-3 rounded-full bg-white border border-stone-400"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 规则章节 - 交互式演示 -->
+    <section id="rules" class="py-24 bg-white/50 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-responsive-3xl font-bold mb-4 section-title mx-auto"> simplest rules, deepest game</h2>
+                <p class="text-stone-600 max-w-2xl mx-auto">围棋被称为"世上规则最简单而变化最复杂"的游戏，基本规则仅有<strong"两条半"</strong>。</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                <!-- 规则卡片1 -->
+                <div class="wisdom-card bg-white p-8 rounded-xl fade-in cursor-pointer group" onclick="highlightRule('liberty')">
+                    <div class="flex items-center justify-center w-16 h-16 bg-stone-100 rounded-full mb-6 group-hover:bg-stone-800 transition-colors">
+                        <span class="text-2xl font-bold text-stone-800 group-hover:text-white">气</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">吃子规则</h3>
+                    <p class="text-stone-600 mb-4">棋子需保留"气"（相邻空点）方可存活。当棋子被完全包围，失去所有气时，即被提取。</p>
+                    <div class="flex justify-center space-x-2 mt-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <div class="go-stone black w-8 h-8"></div>
+                        <div class="go-stone white w-8 h-8"></div>
+                    </div>
+                </div>
+
+                <!-- 规则卡片2 -->
+                <div class="wisdom-card bg-white p-8 rounded-xl fade-in cursor-pointer group" onclick="highlightRule('territory')">
+                    <div class="flex items-center justify-center w-16 h-16 bg-stone-100 rounded-full mb-6 group-hover:bg-stone-800 transition-colors">
+                        <span class="text-2xl font-bold text-stone-800 group-hover:text-white">地</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">占地规则</h3>
+                    <p class="text-stone-600 mb-4">以棋子围出空点（地盘）。终局时，统计双方围住的空点，占地多者获胜。</p>
+                    <div class="mt-4 p-4 bg-amber-50 rounded-lg border border-amber-200 text-sm text-amber-900">
+                        黑棋需贴3¾子，方能平衡先手优势
+                    </div>
+                </div>
+
+                <!-- 规则卡片3 -->
+                <div class="wisdom-card bg-white p-8 rounded-xl fade-in cursor-pointer group" onclick="highlightRule('ko')">
+                    <div class="flex items-center justify-center w-16 h-16 bg-stone-100 rounded-full mb-6 group-hover:bg-stone-800 transition-colors">
+                        <span class="text-2xl font-bold text-stone-800 group-hover:text-white">劫</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">劫争规则</h3>
+                    <p class="text-stone-600 mb-4">禁止立即回提（劫）。被提子后，须间隔一手（找劫材），方可回提，防止循环无解。</p>
+                    <div class="text-xs text-stone-400 mt-4 text-center italic">所谓"半条"规则</div>
+                </div>
+            </div>
+
+            <!-- 棋盘可视化 -->
+            <div class="fade-in">
+                <div class="bg-white p-4 md:p-8 rounded-2xl shadow-2xl max-w-3xl mx-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="font-bold text-lg">十九路棋盘</h4>
+                        <span class="text-sm text-stone-500">纵横十九，三百六十一子</span>
+                    </div>
+                    
+                    <!-- 小型棋盘展示 -->
+                    <div class="go-board" style="max-width: 600px; margin: 0 auto;">
+                        <!-- 动态生成棋盘点 -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const boards = document.querySelectorAll('.go-board');
+                                boards.forEach(board => {
+                                    // 生成9x9简化棋盘用于展示
+                                    for(let i = 0; i < 81; i++) {
+                                        const point = document.createElement('div');
+                                        point.className = 'board-point';
+                                        // 添加星位标记
+                                        if([20, 24, 36, 40, 44, 56, 60].includes(i)) {
+                                            point.classList.add('star-point');
+                                        }
+                                        board.appendChild(point);
+                                    }
+                                    
+                                    // 添加示例棋子
+                                    const points = board.querySelectorAll('.board-point');
+                                    // 天元
+                                    if(points[40]) {
+                                        const stone = document.createElement('div');
+                                        stone.className = 'go-stone black';
+                                        stone.style.width = '80%';
+                                        stone.style.height = '80%';
+                                        points[40].appendChild(stone);
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+                    
+                    <div class="mt-6 grid grid-cols-3 gap-4 text-center text-sm text-stone-600">
+                        <div>
+                            <span class="block text-2xl font-bold text-stone-900">19×19</span>
+                            <span>路棋盘</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-bold text-stone-900">361</span>
+                            <span>交叉点</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-bold text-stone-900">∞</span>
+                            <span>可能变化</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 文化章节 -->
+    <section id="culture" class="py-24 relative">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-12 gap-12">
+                <div class="md:col-span-4 fade-in">
+                    <h2 class="text-responsive-3xl font-bold mb-6 section-title">文人四友<br/><span class="text-stone-500 text-2xl">琴棋书画</span></h2>
+                    <p class="text-stone-600 mb-6 leading-relaxed">
+                        围棋位列"四艺"之一，是古代文人雅士<strong>修身养性、陶冶情操的必修技能</strong>。善棋者筹谋睿智，善琴者通达从容。
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3 p-4 bg-white/50 rounded-lg border border-stone-200 hover:border-stone-400 transition-colors">
+                            <span class="text-2xl">📚</span>
+                            <div>
+                                <h4 class="font-bold text-stone-800">《红楼梦》</h4>
+                                <p class="text-sm text-stone-600">大观园中主仆皆以围棋消遣，体现贵族精致生活文化。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-4 bg-white/50 rounded-lg border border-stone-200 hover:border-stone-400 transition-colors">
+                            <span class="text-2xl">⚔️</span>
+                            <div>
+                                <h4 class="font-bold text-stone-800">《天龙八部》</h4>
+                                <p class="text-sm text-stone-600">珍珑棋局，借围棋喻人生困境与破执顿悟。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-4 bg-white/50 rounded-lg border border-stone-200 hover:border-stone-400 transition-colors">
+                            <span class="text-2xl">👻</span>
+                            <div>
+                                <h4 class="font-bold text-stone-800">《棋魂》</h4>
+                                <p class="text-sm text-stone-600">跨越千年的围棋之魂，展现竞技与传承。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-8 fade-in">
+                    <div class="quote-block bg-white/80">
+                        <p class="text-xl md:text-2xl text-stone-800 relative z-10 leading-relaxed">
+                            有约不来过夜半，<br/>
+                            闲敲棋子落灯花。
+                        </p>
+                        <cite class="block mt-4 text-stone-500 not-italic">— 宋·赵师秀《约客》</cite>
+                    </div>
+                    
+                    <div class="mt-8 grid grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                            <h4 class="font-bold text-lg mb-2 text-stone-800">社交与文化</h4>
+                            <p class="text-sm text-stone-600">清代纪晓岚晚年自号<strong>“观弈道人”</strong>，与竹林寺主持对弈传为佳话。现代作家莫言等亦参与"作家围棋赛"。</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                            <h4 class="font-bold text-lg mb-2 text-stone-800">外交纽带</h4>
+                            <p class="text-sm text-stone-600">历史上作为<strong>“礼器”</strong>在朝贡体系中流转，现代更是外交破冰工具（中日围棋外交）。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 p-6 bg-gradient-to-r from-stone-800 to-stone-700 text-stone-100 rounded-xl shadow-lg">
+                        <h4 class="font-bold mb-2 flex items-center">
+                            <span class="mr-2">💡</span>
+                            文化密码
+                        </h4>
+                        <p class="text-stone-300 text-sm leading-relaxed">
+                            围棋不仅是游戏，更是东亚文化圈的<strong>精神纽带</strong>。在《易经》思想影响下，围棋被视为"研几"之物——在极细微处体察事物的本质。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 哲学章节 -->
+    <section id="philosophy" class="py-24 bg-stone-900 text-stone-100 relative overflow-hidden">
+        <!-- 背景纹理 -->
+        <div class="absolute inset-0 opacity-5" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px);"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-responsive-3xl font-bold mb-4 font-calligraphy">技进乎道</h2>
+                <p class="text-stone-400 max-w-2xl mx-auto text-lg">围棋是中华文明"道器合一"的典范，映射着儒家与道家的圣人智慧</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 儒家 -->
+                <div class="bg-stone-800/50 p-8 rounded-2xl border border-stone-700 fade-in hover:border-stone-500 transition-colors group">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-stone-700 rounded-full flex items-center justify-center text-2xl group-hover:bg-red-900 transition-colors">儒</div>
+                        <h3 class="text-2xl font-bold ml-4">立象比德</h3>
+                    </div>
+                    
+                    <div class="quote-block border-l-red-800 bg-stone-900/50">
+                        <p class="text-stone-300 italic">
+                            "局必方正，象地则也；道必正直，神明德也；棋有白黑，阴阳分也；骈罗列布，效天文也……"
+                        </p>
+                        <cite class="text-stone-500 text-sm mt-2 block">— 东汉·班固《弈旨》</cite>
+                    </div>
+                    
+                    <ul class="mt-6 space-y-3 text-stone-300">
+                        <li class="flex items-start">
+                            <span class="text-red-400 mr-2">◆</span>
+                            <span>棋盘方正象地，棋道正直比德</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-400 mr-2">◆</span>
+                            <span>上有天地之象，次有帝王之治</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-400 mr-2">◆</span>
+                            <span>培养<strong>“专心致志”</strong>与<strong>“为仁由己”</strong>的修身功夫</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 道家 -->
+                <div class="bg-stone-800/50 p-8 rounded-2xl border border-stone-700 fade-in hover:border-stone-500 transition-colors group">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-stone-700 rounded-full flex items-center justify-center text-2xl group-hover:bg-blue-900 transition-colors">道</div>
+                        <h3 class="text-2xl font-bold ml-4">阴阳之道</h3>
+                    </div>
+                    
+                    <div class="space-y-4 text-stone-300">
+                        <div class="p-4 bg-stone-900/50 rounded-lg border border-stone-700">
+                            <h4 class="text-blue-400 font-bold mb-1">周易具象</h4>
+                            <p class="text-sm">黑白二子对应<strong>“一阴一阳之谓道”</strong>；360点对应周天之数，天元为太极。</p>
+                        </div>
+                        
+                        <div class="p-4 bg-stone-900/50 rounded-lg border border-stone-700">
+                            <h4 class="text-blue-400 font-bold mb-1">有无之辩</h4>
+                            <p class="text-sm">棋子之"实"围出空点之"虚"，体现老子<strong>“有之以为利，无之以为用”</strong>。</p>
+                        </div>
+                        
+                        <div class="p-4 bg-stone-900/50 rounded-lg border border-stone-700">
+                            <h4 class="text-blue-400 font-bold mb-1">无为境界</h4>
+                            <p class="text-sm"><strong>“不得贪胜”“入界宜缓”</strong>——无为而无不为，不争而善胜。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 圣人映射 -->
+            <div class="mt-12 text-center fade-in">
+                <div class="inline-block p-8 bg-gradient-to-br from-stone-800 to-stone-900 rounded-2xl border border-stone-700 max-w-3xl">
+                    <h3 class="text-2xl font-bold mb-4 font-calligraphy text-amber-500">通天之戏</h3>
+                    <p class="text-stone-300 leading-relaxed mb-6">
+                        围棋是尧舜等上古圣王教化子弟的工具，将<strong">内圣外王</strong>的理想融入方寸之间。<br/>
+                        观棋如观天象，下棋如治天下，在黑白攻守之中体悟生生不息的天地大道。
+                    </p>
+                    <div class="flex justify-center space-x-8 text-sm text-stone-500">
+                        <span>棋盘即宇宙</span>
+                        <span class="text-stone-700">•</span>
+                        <span>行棋即人事</span>
+                        <span class="text-stone-700">•</span>
+                        <span>胜负即天道</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-stone-950 text-stone-500 py-12 border-t border-stone-900">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="flex justify-center items-center space-x-4 mb-6">
+                <div class="w-6 h-6 rounded-full bg-stone-800"></div>
+                <div class="w-6 h-6 rounded-full bg-stone-200"></div>
+            </div>
+            <p class="font-calligraphy text-2xl text-stone-400 mb-4">千古无同局</p>
+            <p class="text-sm">探索围棋的东方智慧 · 传承千年的文化瑰宝</p>
+        </div>
+    </footer>
+
+    <!-- 交互脚本 -->
+    <script>
+        // 滚动淡入动画
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+        // 规则高亮交互
+        function highlightRule(type) {
+            const cards = document.querySelectorAll('.wisdom-card');
+            cards.forEach(card => {
+                card.style.transform = 'scale(0.95)';
+                card.style.opacity = '0.6';
+            });
+            
+            event.currentTarget.style.transform = 'scale(1.05)';
+            event.currentTarget.style.opacity = '1';
+            
+            setTimeout(() => {
+                cards.forEach(card => {
+                    card.style.transform = '';
+                    card.style.opacity = '';
+                });
+            }, 1000);
+        }
+
+        // 导航栏滚动效果
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

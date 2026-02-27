@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正向代理 vs 反向代理 - 完全指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .flow-line {
+            stroke-dasharray: 5,5;
+            animation: dash 20s linear infinite;
+        }
+        
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -100;
+            }
+        }
+        
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        .tab-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .comparison-row:nth-child(even) {
+            background-color: rgba(102, 126, 234, 0.05);
+        }
+        
+        .icon-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden text-white pt-20 pb-32 px-4">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
+        
+        <div class="max-w-6xl mx-auto relative z-10 text-center">
+            <div class="inline-block mb-4 px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm text-sm font-medium border border-white/30">
+                <i class="fas fa-network-wired mr-2"></i>网络架构核心概念
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                正向代理 <span class="text-yellow-300 text-3xl align-middle mx-2">VS</span> 反向代理
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+                深入理解两种代理模式的本质区别、工作原理及应用场景
+            </p>
+            
+            <div class="mt-12 flex justify-center gap-4 flex-wrap">
+                <button onclick="scrollToSection('comparison')" class="px-8 py-3 bg-white text-purple-600 rounded-full font-semibold hover:bg-gray-100 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    查看对比
+                </button>
+                <button onclick="scrollToSection('workflow')" class="px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition">
+                    工作流程
+                </button>
+            </div>
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl icon-float"></div>
+        <div class="absolute bottom-20 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl icon-float" style="animation-delay: 1s;"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 -mt-20 relative z-20 pb-20">
+        
+        <!-- Quick Comparison Cards -->
+        <section id="comparison" class="grid md:grid-cols-2 gap-8 mb-16">
+            <!-- Forward Proxy Card -->
+            <div class="glass-effect rounded-2xl p-8 card-hover shadow-2xl border-t-4 border-blue-500 scroll-reveal">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-3xl">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">Forward Proxy</span>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">正向代理</h2>
+                <p class="text-gray-600 mb-6 text-lg leading-relaxed">
+                    代理<strong>客户端</strong>，隐藏客户端身份，代表用户访问外部资源。
+                </p>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center text-gray-700">
+                        <i class="fas fa-check-circle text-blue-500 mr-3"></i>
+                        <span>科学上网 / VPN</span>
+                    </div>
+                    <div class="flex items-center text-gray-700">
+                        <i class="fas fa-check-circle text-blue-500 mr-3"></i>
+                        <span>企业访问控制</span>
+                    </div>
+                    <div class="flex items-center text-gray-700">
+                        <i class="fas fa-check-circle text-blue-500 mr-3"></i>
+                        <span>内容缓存加速</span>
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                        <span>形象比喻：<strong>房产中介</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reverse Proxy Card -->
+            <div class="glass-effect rounded-2xl p-8 card-hover shadow-2xl border-t-4 border-purple-500 scroll-reveal">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600 text-3xl">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold">Reverse Proxy</span>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">反向代理</h2>
+                <p class="text-gray-600 mb-6 text-lg leading-relaxed">
+                    代理<strong>服务器</strong>，隐藏服务端身份，保护后端服务器集群。
+                </p>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center text-gray-700">
+                        <i class="fas fa-check-circle text-purple-500 mr-3"></i>
+                        <span>负载均衡 (Nginx)</span>
+                    </div>
+                    <div class="flex items-center text-gray-700">
+                        <i class="fas fa-check-circle text-purple-500 mr-3"></i>
+                        <span>SSL 终端 / HTTPS</span>
+                    </div>
+                    <div class="flex items-center text-gray-700">
+                        <i class="fas fa-check-circle text-purple-500 mr-3"></i>
+                        <span>WAF 安全防护</span>
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                        <span>形象比喻：<strong>酒店前台</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Comparison Table -->
+        <section class="glass-effect rounded-3xl p-8 mb-16 shadow-2xl scroll-reveal">
+            <h3 class="text-3xl font-bold text-center mb-10 gradient-text">核心维度对比</h3>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b-2 border-gray-200">
+                            <th class="text-left py-4 px-6 text-gray-600 font-semibold text-lg">对比维度</th>
+                            <th class="text-center py-4 px-6 text-blue-600 font-bold text-lg w-1/3">
+                                <i class="fas fa-arrow-right mr-2"></i>正向代理
+                            </th>
+                            <th class="text-center py-4 px-6 text-purple-600 font-bold text-lg w-1/3">
+                                <i class="fas fa-arrow-left mr-2"></i>反向代理
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        <tr class="comparison-row border-b border-gray-100 hover:bg-blue-50/50 transition">
+                            <td class="py-5 px-6 font-medium flex items-center">
+                                <i class="fas fa-bullseye text-gray-400 mr-3 w-5"></i>
+                                代理对象
+                            </td>
+                            <td class="py-5 px-6 text-center font-semibold text-blue-700">客户端 (Client)</td>
+                            <td class="py-5 px-6 text-center font-semibold text-purple-700">服务器 (Server)</td>
+                        </tr>
+                        <tr class="comparison-row border-b border-gray-100 hover:bg-purple-50/50 transition">
+                            <td class="py-5 px-6 font-medium flex items-center">
+                                <i class="fas fa-eye-slash text-gray-400 mr-3 w-5"></i>
+                                隐藏对象
+                            </td>
+                            <td class="py-5 px-6 text-center">隐藏客户端真实 IP</td>
+                            <td class="py-5 px-6 text-center">隐藏后端服务器信息</td>
+                        </tr>
+                        <tr class="comparison-row border-b border-gray-100 hover:bg-blue-50/50 transition">
+                            <td class="py-5 px-6 font-medium flex items-center">
+                                <i class="fas fa-map-marker-alt text-gray-400 mr-3 w-5"></i>
+                                部署位置
+                            </td>
+                            <td class="py-5 px-6 text-center">客户端侧 / 客户端可访问</td>
+                            <td class="py-5 px-6 text-center">服务器侧 / 数据中心</td>
+                        </tr>
+                        <tr class="comparison-row border-b border-gray-100 hover:bg-purple-50/50 transition">
+                            <td class="py-5 px-6 font-medium flex items-center">
+                                <i class="fas fa-user-cog text-gray-400 mr-3 w-5"></i>
+                                使用者知情
+                            </td>
+                            <td class="py-5 px-6 text-center">
+                                <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">需主动配置</span>
+                            </td>
+                            <td class="py-5 px-6 text-center">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">对客户端透明</span>
+                            </td>
+                        </tr>
+                        <tr class="comparison-row border-b border-gray-100 hover:bg-blue-50/50 transition">
+                            <td class="py-5 px-6 font-medium flex items-center">
+                                <i class="fas fa-tools text-gray-400 mr-3 w-5"></i>
+                                典型用途
+                            </td>
+                            <td class="py-5 px-6 text-center text-sm">翻墙、访问控制、缓存加速</td>
+                            <td class="py-5 px-6 text-center text-sm">负载均衡、安全防护、SSL终结</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-purple-50/50 transition">
+                            <td class="py-5 px-6 font-medium flex items-center">
+                                <i class="fas fa-code text-gray-400 mr-3 w-5"></i>
+                                配置复杂度
+                            </td>
+                            <td class="py-5 px-6 text-center">
+                                <div class="flex justify-center gap-1">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-gray-300"></i>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6 text-center">
+                                <div class="flex justify-center gap-1">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Interactive Workflow Visualization -->
+        <section id="workflow" class="mb-16 scroll-reveal">
+            <h3 class="text-3xl font-bold text-center mb-12 text-white">工作流程可视化</h3>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Forward Proxy Flow -->
+                <div class="glass-effect rounded-2xl p-8">
+                    <h4 class="text-xl font-bold mb-6 text-blue-600 flex items-center">
+                        <i class="fas fa-arrow-right mr-2"></i> 正向代理流程
+                    </h4>
+                    
+                    <div class="relative flex flex-col items-center space-y-6">
+                        <!-- Client -->
+                        <div class="w-full bg-blue-50 rounded-xl p-4 border-2 border-blue-200 flex items-center justify-between relative z-10">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-laptop"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-800">客户端</div>
+                                    <div class="text-sm text-gray-500">用户设备</div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-blue-600 font-mono bg-blue-100 px-2 py-1 rounded">知道代理存在</div>
+                        </div>
+                        
+                        <!-- Arrow -->
+                        <div class="text-blue-400 text-2xl animate-bounce">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        
+                        <!-- Proxy -->
+                        <div class="w-3/4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl p-4 text-white shadow-lg relative">
+                            <div class="absolute -left-2 top-1/2 w-4 h-4 bg-blue-400 transform -translate-y-1/2 rotate-45"></div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold">正向代理服务器</div>
+                                        <div class="text-xs opacity-90">Forward Proxy</div>
+                                    </div>
+                                </div>
+                                <div class="pulse-ring absolute inset-0 rounded-xl"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Arrow -->
+                        <div class="text-blue-400 text-2xl animate-bounce">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        
+                        <!-- Server -->
+                        <div class="w-full bg-gray-50 rounded-xl p-4 border-2 border-gray-200 flex items-center justify-between opacity-80">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-800">目标服务器</div>
+                                    <div class="text-sm text-gray-500">Google / 被屏蔽网站</div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-500 font-mono bg-gray-200 px-2 py-1 rounded">只知道代理IP</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500 text-sm text-gray-700">
+                        <strong>关键特征：</strong>客户端主动配置代理地址，所有请求先发送到代理服务器，由代理转发到目标。
+                    </div>
+                </div>
+
+                <!-- Reverse Proxy Flow -->
+                <div class="glass-effect rounded-2xl p-8">
+                    <h4 class="text-xl font-bold mb-6 text-purple-600 flex items-center">
+                        <i class="fas fa-arrow-left mr-2"></i> 反向代理流程
+                    </h4>
+                    
+                    <div class="relative flex flex-col items-center space-y-6">
+                        <!-- Client -->
+                        <div class="w-full bg-purple-50 rounded-xl p-4 border-2 border-purple-200 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white mr-4">
+                                    <i class="fas fa-laptop"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-800">客户端</div>
+                                    <div class="text-sm text-gray-500">浏览器 / App</div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-purple-600 font-mono bg-purple-100 px-2 py-1 rounded">以为是真实服务器</div>
+                        </div>
+                        
+                        <!-- Arrow -->
+                        <div class="text-purple-400 text-2xl animate-bounce">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        
+                        <!-- Proxy -->
+                        <div class="w-3/4 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl p-4 text-white shadow-lg relative">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-server"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold">反向代理服务器</div>
+                                        <div class="text-xs opacity-90">Nginx / CDN</div>
+                                    </div>
+                                </div>
+                                <div class="pulse-ring absolute inset-0 rounded-xl"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Distribution Arrows -->
+                        <div class="flex justify-center gap-8 text-purple-400 text-2xl">
+                            <i class="fas fa-arrow-down-left transform rotate-45"></i>
+                            <i class="fas fa-arrow-down"></i>
+                            <i class="fas fa-arrow-down-right transform -rotate-45"></i>
+                        </div>
+                        
+                        <!-- Backend Servers -->
+                        <div class="grid grid-cols-3 gap-2 w-full">
+                            <div class="bg-gray-100 rounded-lg p-3 text-center border border-gray-300">
+                                <i class="fas fa-server text-gray-600 mb-1"></i>
+                                <div class="text-xs font-semibold text-gray-700">Server 1</div>
+                            </div>
+                            <div class="bg-gray-100 rounded-lg p-3 text-center border border-gray-300">
+                                <i class="fas fa-server text-gray-600 mb-1"></i>
+                                <div class="text-xs font-semibold text-gray-700">Server 2</div>
+                            </div>
+                            <div class="bg-gray-100 rounded-lg p-3 text-center border border-gray-300">
+                                <i class="fas fa-server text-gray-600 mb-1"></i>
+                                <div class="text-xs font-semibold text-gray-700">Server 3</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500 text-sm text-gray-700">
+                        <strong>关键特征：</strong>客户端无感知，请求发送到代理，代理根据策略分发到后端集群，隐藏真实服务器。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases -->
+        <section class="grid md:grid-cols-2 gap-8 mb-16">
+            <div class="glass-effect rounded-2xl p-8 scroll-reveal">
+                <h3 class="text-2xl font-bold mb-6 text-blue-600">
+                    <i class="fas fa-shield-alt mr-2"></i>正向代理适用场景
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-start p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border-l-4 border-blue-500">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mr-4 flex-shrink-0">
+                            <i class="fas fa-unlock"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-1">科学上网 / VPN</h4>
+                            <p class="text-sm text-gray-600">访问被地区限制或屏蔽的外部网站，如 Google、YouTube</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border-l-4 border-blue-500">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mr-4 flex-shrink-0">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-1">企业访问控制</h4>
+                            <p class="text-sm text-gray-600">监控和限制员工访问特定网站，提高工作专注度</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border-l-4 border-blue-500">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mr-4 flex-shrink-0">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-1">缓存加速</h4>
+                            <p class="text-sm text-gray-600">缓存常用资源，减少带宽消耗，加速重复访问</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-effect rounded-2xl p-8 scroll-reveal">
+                <h3 class="text-2xl font-bold mb-6 text-purple-600">
+                    <i class="fas fa-server mr-2"></i>反向代理适用场景
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-start p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border-l-4 border-purple-500">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mr-4 flex-shrink-0">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-1">负载均衡</h4>
+                            <p class="text-sm text-gray-600">将流量分发到多台服务器，避免单点故障，提升并发能力</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border-l-4 border-purple-500">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mr-4 flex-shrink-0">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-1">SSL 终端 / HTTPS</h4>
+                            <p class="text-sm text-gray-600">统一处理 HTTPS 加密解密，减轻后端服务器计算压力</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition border-l-4 border-purple-500">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mr-4 flex-shrink-0">
+                            <i class="fas fa-shield-virus"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-1">WAF 安全防护</h4>
+                            <p class="text-sm text-gray-600">防御 SQL 注入、XSS 攻击，隐藏真实服务器 IP</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analogy Section -->
+        <section class="glass-effect rounded-3xl p-10 mb-16 scroll-reveal">
+            <h3 class="text-3xl font-bold text-center mb-10 gradient-text">形象比喻理解</h3>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="text-center group">
+                    <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-5xl shadow-xl group-hover:scale-110 transition duration-300">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-gray-800 mb-3">正向代理 = 房产中介</h4>
+                    <p class="text-gray-600 leading-relaxed">
+                        你想买房（访问网站），但找不到房源（被屏蔽），于是找中介（代理）。<br>
+                        <strong>中介知道你是谁</strong>，但<strong>卖家只知道中介</strong>，不知道你是真正的买家。
+                    </p>
+                    <div class="mt-4 inline-flex items-center text-blue-600 text-sm font-medium">
+                        <i class="fas fa-user-secret mr-2"></i>
+                        保护客户端隐私
+                    </div>
+                </div>
+
+                <div class="text-center group">
+                    <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white text-5xl shadow-xl group-hover:scale-110 transition duration-300">
+                        <i class="fas fa-concierge-bell"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-gray-800 mb-3">反向代理 = 酒店前台</h4>
+                    <p class="text-gray-600 leading-relaxed">
+                        你打电话给酒店总机（访问网站），前台（代理）转接到具体房间。<br>
+                        <strong>你不知道房间号</strong>，也<strong>不知道酒店有多少间房</strong>（后端服务器），只知道总机号码。
+                    </p>
+                    <div class="mt-4 inline-flex items-center text-purple-600 text-sm font-medium">
+                        <i class="fas fa-user-shield mr-2"></i>
+                        保护服务端安全
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Implementation -->
+        <section class="glass-effect rounded-3xl p-8 mb-16 scroll-reveal">
+            <h3 class="text-3xl font-bold mb-8 text-center gradient-text">技术实现示例</h3>
+            
+            <div class="bg-gray-900 rounded-2xl p-6 overflow-hidden">
+                <div class="flex items-center justify-between mb-4 border-b border-gray-700 pb-4">
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <div class="text-gray-400 text-sm font-mono">nginx.conf</div>
+                    <button onclick="copyCode()" class="text-gray-400 hover:text-white transition">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6 text-sm font-mono leading-relaxed">
+                    <div>
+                        <div class="text-gray-400 mb-2"># 正向代理配置</div>
+                        <div class="text-purple-400">server</div>
+                        <div class="text-white pl-4">{</div>
+                        <div class="text-green-400 pl-8">resolver <span class="text-yellow-300">8.8.8.8</span>;</div>
+                        <div class="text-green-400 pl-8">listen <span class="text-yellow-300">8080</span>;</div>
+                        <div class="text-blue-400 pl-8">location /</div>
+                        <div class="text-white pl-8">{</div>
+                        <div class="text-green-400 pl-12">proxy_pass <span class="text-yellow-300">$scheme://$host$request_uri</span>;</div>
+                        <div class="text-white pl-8">}</div>
+                        <div class="text-white pl-4">}</div>
+                    </div>
+                    
+                    <div>
+                        <div class="text-gray-400 mb-2"># 反向代理配置</div>
+                        <div class="text-purple-400">server</div>
+                        <div class="text-white pl-4">{</div>
+                        <div class="text-green-400 pl-8">listen <span class="text-yellow-300">80</span>;</div>
+                        <div class="text-green-400 pl-8">server_name <span class="text-yellow-300">example.com</span>;</div>
+                        <div class="text-blue-400 pl-8">location /</div>
+                        <div class="text-white pl-8">{</div>
+                        <div class="text-green-400 pl-12">proxy_pass <span class="text-yellow-300">http://backend_cluster</span>;</div>
+                        <div class="text-green-400 pl-12">proxy_set_header Host $host;</div>
+                        <div class="text-white pl-8">}</div>
+                        <div class="text-white pl-4">}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center text-gray-600 text-sm">
+                <i class="fas fa-info-circle mr-2"></i>
+                两者使用相同的 Nginx 软件，只是配置逻辑不同：<span class="text-blue-600 font-semibold">proxy_pass</span> 指向外部为正向，指向内部 upstream 为反向
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="text-center text-white pb-10 scroll-reveal">
+            <h3 class="text-3xl font-bold mb-6">一句话总结</h3>
+            <div class="glass-effect rounded-2xl p-8 max-w-4xl mx-auto text-gray-800 text-xl leading-relaxed font-medium">
+                <span class="text-blue-600 font-bold">正向代理</span> 是客户端的"代言人"，隐藏用户身份访问外部世界；<br>
+                <span class="text-purple-600 font-bold">反向代理</span> 是服务器的"门面担当"，保护后端集群并优化访问体验。
+            </div>
+            
+            <div class="mt-12 flex justify-center gap-4">
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="px-6 py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-white hover:bg-white/30 transition">
+                    <i class="fas fa-arrow-up mr-2"></i>返回顶部
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+
+        // Smooth Scroll Function
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Copy Code Function
+        function copyCode() {
+            const code = `server {
+    resolver 8.8.8.8;
+    listen 8080;
+    location / {
+        proxy_pass $scheme://$host$request_uri;
+    }
+}`;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('代码已复制到剪贴板！');
+            });
+        }
+
+        // Interactive Tab Switching (if needed for future expansion)
+        function switchTab(tabName) {
+            // Implementation for any future tab interactions
+            console.log('Switched to:', tabName);
+        }
+    </script>
+</body>
+</html>

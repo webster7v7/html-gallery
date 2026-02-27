@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git 命令大全 | 交互式参考手册</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        git: {
+                            orange: '#F05033',
+                            dark: '#1E1E1E',
+                            light: '#F0F0F0',
+                            blue: '#3498db',
+                            green: '#2ecc71',
+                            red: '#e74c3c',
+                            yellow: '#f1c40f'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .code-block {
+            background: #1E1E1E;
+            color: #D4D4D4;
+            font-family: 'Fira Code', monospace;
+            position: relative;
+            overflow-x: auto;
+        }
+        .code-keyword { color: #569CD6; }
+        .code-string { color: #CE9178; }
+        .code-comment { color: #6A9955; }
+        .code-function { color: #DCDCAA; }
+        .code-param { color: #9CDCFE; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .dark .glass-card {
+            background: rgba(30, 30, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .command-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.5s ease forwards;
+        }
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .copy-btn {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .command-card:hover .copy-btn {
+            opacity: 1;
+        }
+        .category-badge {
+            transition: all 0.3s;
+        }
+        .category-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(240, 80, 51, 0.3);
+        }
+        .category-badge.active {
+            background-color: #F05033;
+            color: white;
+            border-color: #F05033;
+        }
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(240, 80, 51, 0.2);
+        }
+        .syntax-highlighter {
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300 font-sans">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <i class="fab fa-git-alt text-3xl text-git-orange"></i>
+                    <span class="text-xl font-bold bg-gradient-to-r from-git-orange to-orange-600 bg-clip-text text-transparent font-mono">
+                        Git Commands
+                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <i class="fas fa-moon dark:hidden text-gray-600"></i>
+                        <i class="fas fa-sun hidden dark:block text-git-orange"></i>
+                    </button>
+                    <a href="https://git-scm.com/doc" target="_blank" class="hidden sm:block px-4 py-2 bg-git-orange text-white rounded-full hover:bg-orange-700 transition-colors text-sm font-bold">
+                        官方文档
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-git-orange/10 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto text-center">
+            <div class="inline-block mb-6 px-4 py-1 rounded-full bg-git-orange/10 text-git-orange text-sm font-mono border border-git-orange/20">
+                v2.40.0 Reference
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+                <span class="bg-gradient-to-r from-git-orange to-orange-600 bg-clip-text text-transparent">Git</span>
+                <span class="text-gray-700 dark:text-gray-200">命令大全</span>
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
+                完整的 Git 命令参考手册，包含常用操作、高级技巧和最佳实践
+            </p>
+
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto relative">
+                <input type="text" 
+                       id="searchInput" 
+                       placeholder="搜索命令 (例如: commit, rebase, stash...)" 
+                       class="search-input w-full px-6 py-4 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:border-git-orange transition-all shadow-lg"
+                       oninput="filterCommands()">
+                <i class="fas fa-search absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="flex justify-center gap-8 mt-8 text-sm text-gray-600 dark:text-gray-400">
+                <span><i class="fas fa-terminal text-git-orange mr-2"></i><span id="commandCount">50+</span> 命令</span>
+                <span><i class="fas fa-tags text-git-orange mr-2"></i>10 分类</span>
+                <span><i class="fas fa-bolt text-git-orange mr-2"></i>实时搜索</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Category Filter -->
+    <section class="sticky top-16 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap gap-2 justify-center" id="categoryFilters">
+                <button onclick="filterByCategory('all')" class="category-badge active px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="all">
+                    全部
+                </button>
+                <button onclick="filterByCategory('config')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="config">
+                    配置
+                </button>
+                <button onclick="filterByCategory('init')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="init">
+                    初始化
+                </button>
+                <button onclick="filterByCategory('basic')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="basic">
+                    基础操作
+                </button>
+                <button onclick="filterByCategory('branch')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="branch">
+                    分支管理
+                </button>
+                <button onclick="filterByCategory('remote')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="remote">
+                    远程操作
+                </button>
+                <button onclick="filterByCategory('undo')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="undo">
+                    撤销/回退
+                </button>
+                <button onclick="filterByCategory('advanced')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="advanced">
+                    高级操作
+                </button>
+                <button onclick="filterByCategory('stash')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="stash">
+                    暂存
+                </button>
+                <button onclick="filterByCategory('tag')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="tag">
+                    标签
+                </button>
+                <button onclick="filterByCategory('submodule')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="submodule">
+                    子模块
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="commandsGrid">
+            
+            <!-- Config Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="config">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git config</h3>
+                        </div>
+                        <button onclick="copyCommand('git config --global user.name \"Your Name\"')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors" title="复制">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">配置 Git 环境变量，包括用户名、邮箱、编辑器偏好等。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 设置全局用户名</span><br>
+                            git config --global <span class="code-param">user.name</span> <span class="code-string">"Your Name"</span><br><br>
+                            <span class="code-comment"># 设置全局邮箱</span><br>
+                            git config --global <span class="code-param">user.email</span> <span class="code-string">"email@example.com"</span><br><br>
+                            <span class="code-comment"># 设置默认编辑器</span><br>
+                            git config --global <span class="code-param">core.editor</span> <span class="code-string">"vim"</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs rounded">配置</span>
+                        <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded">入门</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="config">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git config --list</h3>
+                        </div>
+                        <button onclick="copyCommand('git config --list')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">查看当前所有的 Git 配置信息。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 列出所有配置</span><br>
+                            git config --list<br><br>
+                            <span class="code-comment"># 查看特定配置</span><br>
+                            git config <span class="code-param">user.name</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Init Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="init">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git init</h3>
+                        </div>
+                        <button onclick="copyCommand('git init')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">在当前目录初始化一个新的 Git 仓库，创建 .git 子目录。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 初始化仓库</span><br>
+                            git init<br><br>
+                            <span class="code-comment"># 初始化裸仓库（用于服务器）</span><br>
+                            git init --bare <span class="code-string">project.git</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs rounded">初始化</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="init">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git clone</h3>
+                        </div>
+                        <button onclick="copyCommand('git clone https://github.com/user/repo.git')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">从远程仓库克隆项目到本地，自动设置远程连接。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 克隆仓库</span><br>
+                            git clone <span class="code-string">https://github.com/user/repo.git</span><br><br>
+                            <span class="code-comment"># 克隆指定分支</span><br>
+                            git clone -b <span class="code-param">develop</span> <span class="code-string">https://...</span><br><br>
+                            <span class="code-comment"># 浅克隆（最近历史）</span><br>
+                            git clone --depth <span class="code-param">1</span> <span class="code-string">https://...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="basic">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-git-orange"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git status</h3>
+                        </div>
+                        <button onclick="copyCommand('git status')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">检查工作区文件状态，显示已修改、已暂存和未跟踪的文件。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 简短格式</span><br>
+                            git status -s<br><br>
+                            <span class="code-comment"># 分支信息</span><br>
+                            git status -b
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs rounded">常用</span>
+                        <span class="px-2 py-1 bg-git-orange/10 text-git-orange text-xs rounded">状态</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="basic">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-git-orange"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git add</h3>
+                        </div>
+                        <button onclick="copyCommand('git add .')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">将文件更改添加到暂存区（Index），准备提交。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 添加所有更改</span><br>
+                            git add .<br><br>
+                            <span class="code-comment"># 添加特定文件</span><br>
+                            git add <span class="code-string">filename.txt</span><br><br>
+                            <span class="code-comment"># 交互式添加</span><br>
+                            git add -p
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="basic">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-git-orange"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git commit</h3>
+                        </div>
+                        <button onclick="copyCommand('git commit -m \"message\"')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">将暂存区的更改保存到本地仓库，创建新的提交记录。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 基本提交</span><br>
+                            git commit -m <span class="code-string">"feat: add login function"</span><br><br>
+                            <span class="code-comment"># 修改最后一次提交</span><br>
+                            git commit --amend<br><br>
+                            <span class="code-comment"># 跳过暂存直接提交已跟踪文件</span><br>
+                            git commit -a -m <span class="code-string">"message"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="basic">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-git-orange"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git log</h3>
+                        </div>
+                        <button onclick="copyCommand('git log --oneline --graph')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">查看提交历史记录，支持多种格式和筛选选项。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 图形化日志</span><br>
+                            git log --oneline --graph --all<br><br>
+                            <span class="code-comment"># 查看文件历史</span><br>
+                            git log -p <span class="code-string">filename</span><br><br>
+                            <span class="code-comment"># 统计信息</span><br>
+                            git log --stat
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="basic">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-git-orange"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git diff</h3>
+                        </div>
+                        <button onclick="copyCommand('git diff')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">显示工作区与暂存区、暂存区与最新提交之间的差异。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 查看未暂存的更改</span><br>
+                            git diff<br><br>
+                            <span class="code-comment"># 查看已暂存的更改</span><br>
+                            git diff --staged<br><br>
+                            <span class="code-comment"># 查看特定文件的差异</span><br>
+                            git diff <span class="code-string">filename</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="basic">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-git-orange"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git rm / mv</h3>
+                        </div>
+                        <button onclick="copyCommand('git rm filename')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">从 Git 中删除或移动文件，并记录这些更改。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 删除文件并暂存</span><br>
+                            git rm <span class="code-string">filename</span><br><br>
+                            <span class="code-comment"># 仅停止跟踪但保留文件</span><br>
+                            git rm --cached <span class="code-string">filename</span><br><br>
+                            <span class="code-comment"># 移动/重命名</span><br>
+                            git mv <span class="code-string">old</span> <span class="code-string">new</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="branch">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git branch</h3>
+                        </div>
+                        <button onclick="copyCommand('git branch')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">列出、创建或删除分支。分支是 Git 的核心特性之一。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 列出本地分支</span><br>
+                            git branch<br><br>
+                            <span class="code-comment"># 创建新分支</span><br>
+                            git branch <span class="code-param">feature-x</span><br><br>
+                            <span class="code-comment"># 删除已合并分支</span><br>
+                            git branch -d <span class="code-param">feature-x</span><br><br>
+                            <span class="code-comment"># 强制删除</span><br>
+                            git branch -D <span class="code-param">feature-x</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-xs rounded">分支</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="branch">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git checkout</h3>
+                        </div>
+                        <button onclick="copyCommand('git checkout -b new-branch')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">切换分支或恢复工作区文件。Git 2.23+ 推荐使用 switch/restore。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 切换分支</span><br>
+                            git checkout <span class="code-param">main</span><br><br>
+                            <span class="code-comment"># 创建并切换</span><br>
+                            git checkout -b <span class="code-param">feature-x</span><br><br>
+                            <span class="code-comment"># 切换到提交（分离 HEAD）</span><br>
+                            git checkout <span class="code-param">abc123</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="branch">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git switch / restore</h3>
+                        </div>
+                        <button onclick="copyCommand('git switch main')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">Git 2.23+ 引入的实验性命令，更清晰分离切换分支和恢复文件的功能。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 切换分支（替代 checkout）</span><br>
+                            git switch <span class="code-param">main</span><br><br>
+                            <span class="code-comment"># 创建并切换</span><br>
+                            git switch -c <span class="code-param">feature-x</span><br><br>
+                            <span class="code-comment"># 恢复文件（替代 checkout --）</span><br>
+                            git restore <span class="code-string">filename</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="branch">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git merge</h3>
+                        </div>
+                        <button onclick="copyCommand('git merge feature-branch')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">将指定分支的更改合并到当前分支，可能产生合并提交。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 合并分支</span><br>
+                            git merge <span class="code-param">feature-x</span><br><br>
+                            <span class="code-comment"># 压缩合并（创建一个提交）</span><br>
+                            git merge --squash <span class="code-param">feature-x</span><br><br>
+                            <span class="code-comment"># 快进合并</span><br>
+                            git merge --ff-only <span class="code-param">feature-x</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="branch">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git rebase</h3>
+                        </div>
+                        <button onclick="copyCommand('git rebase main')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">变基操作，将提交移动到新的基础提交上，用于保持线性历史。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 变基到主分支</span><br>
+                            git rebase <span class="code-param">main</span><br><br>
+                            <span class="code-comment"># 交互式变基（修改历史）</span><br>
+                            git rebase -i <span class="code-param">HEAD~3</span><br><br>
+                            <span class="code-comment"># 继续变基（解决冲突后）</span><br>
+                            git rebase --continue
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remote Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="remote">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git remote</h3>
+                        </div>
+                        <button onclick="copyCommand('git remote -v')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">管理远程仓库连接，查看、添加、删除远程仓库地址。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 查看远程仓库</span><br>
+                            git remote -v<br><br>
+                            <span class="code-comment"># 添加远程仓库</span><br>
+                            git remote add <span class="code-param">origin</span> <span class="code-string">https://...</span><br><br>
+                            <span class="code-comment"># 修改远程 URL</span><br>
+                            git remote set-url <span class="code-param">origin</span> <span class="code-string">https://...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs rounded">远程</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="remote">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git push</h3>
+                        </div>
+                        <button onclick="copyCommand('git push origin main')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">将本地分支的提交上传到远程仓库。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 推送到远程</span><br>
+                            git push <span class="code-param">origin main</span><br><br>
+                            <span class="code-comment"># 推送所有分支</span><br>
+                            git push --all <span class="code-param">origin</span><br><br>
+                            <span class="code-comment"># 强制推送（谨慎使用）</span><br>
+                            git push -f <span class="code-param">origin main</span><br><br>
+                            <span class="code-comment"># 设置上游分支</span><br>
+                            git push -u <span class="code-param">origin main</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="remote">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git pull</h3>
+                        </div>
+                        <button onclick="copyCommand('git pull origin main')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">从远程仓库获取最新更改并合并到当前分支（fetch + merge）。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 拉取并合并</span><br>
+                            git pull <span class="code-param">origin main</span><br><br>
+                            <span class="code-comment"># 拉取并变基（推荐）</span><br>
+                            git pull --rebase <span class="code-param">origin main</span><br><br>
+                            <span class="code-comment"># 仅快进</span><br>
+                            git pull --ff-only
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="remote">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git fetch</h3>
+                        </div>
+                        <button onclick="copyCommand('git fetch origin')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">从远程仓库下载最新更改，但不自动合并，允许你先审查更改。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 获取所有远程分支</span><br>
+                            git fetch <span class="code-param">origin</span><br><br>
+                            <span class="code-comment"># 获取特定分支</span><br>
+                            git fetch <span class="code-param">origin main</span><br><br>
+                            <span class="code-comment"># 清理已删除的远程分支</span><br>
+                            git fetch --prune
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Undo Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="undo">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git reset</h3>
+                        </div>
+                        <button onclick="copyCommand('git reset HEAD~1')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">重置当前 HEAD 到指定状态，用于撤销提交（会修改历史）。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 软重置（保留更改到暂存区）</span><br>
+                            git reset --soft <span class="code-param">HEAD~1</span><br><br>
+                            <span class="code-comment"># 混合重置（默认，保留更改到工作区）</span><br>
+                            git reset --mixed <span class="code-param">HEAD~1</span><br><br>
+                            <span class="code-comment"># 硬重置（丢弃更改，危险！）</span><br>
+                            git reset --hard <span class="code-param">HEAD~1</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs rounded">危险</span>
+                        <span class="px-2 py-1 bg-git-orange/10 text-git-orange text-xs rounded">撤销</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="undo">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git revert</h3>
+                        </div>
+                        <button onclick="copyCommand('git revert HEAD')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">创建一个新的提交来撤销指定提交的更改，安全地撤销已推送的提交。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 撤销最后一次提交</span><br>
+                            git revert <span class="code-param">HEAD</span><br><br>
+                            <span class="code-comment"># 撤销特定提交（不自动提交）</span><br>
+                            git revert -n <span class="code-param">abc123</span><br><br>
+                            <span class="code-comment"># 撤销合并提交</span><br>
+                            git revert -m <span class="code-param">1</span> <span class="code-param">abc123</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="undo">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git clean</h3>
+                        </div>
+                        <button onclick="copyCommand('git clean -fd')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">从工作区删除未跟踪的文件（未被 Git 管理的文件）。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 查看将被删除的文件（干运行）</span><br>
+                            git clean -n<br><br>
+                            <span class="code-comment"># 删除未跟踪的文件和目录</span><br>
+                            git clean -fd<br><br>
+                            <span class="code-comment"># 包括被忽略的文件</span><br>
+                            git clean -fdx
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="undo">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git reflog</h3>
+                        </div>
+                        <button onclick="copyCommand('git reflog')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">记录所有分支的更新记录，是后悔药，可找回丢失的提交。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 查看引用日志</span><br>
+                            git reflog<br><br>
+                            <span class="code-comment"># 恢复到特定状态</span><br>
+                            git reset --hard <span class="code-param">HEAD@{2}</span><br><br>
+                            <span class="code-comment"># 查看特定分支的 reflog</span><br>
+                            git reflog <span class="code-param">main</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stash Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="stash">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git stash</h3>
+                        </div>
+                        <button onclick="copyCommand('git stash push -m \"message\"')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">临时保存工作区的更改，让你可以切换到其他分支工作。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 暂存更改</span><br>
+                            git stash push -m <span class="code-string">"描述信息"</span><br><br>
+                            <span class="code-comment"># 包含未跟踪文件</span><br>
+                            git stash -u<br><br>
+                            <span class="code-comment"># 查看暂存列表</span><br>
+                            git stash list<br><br>
+                            <span class="code-comment"># 恢复最近的暂存</span><br>
+                            git stash pop<br><br>
+                            <span class="code-comment"># 应用到工作区但不删除</span><br>
+                            git stash apply
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 text-xs rounded">暂存</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tag Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="tag">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git tag</h3>
+                        </div>
+                        <button onclick="copyCommand('git tag -a v1.0 -m \"version 1.0\"')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">创建标签用于标记特定的提交，通常用于版本发布（v1.0, v2.0）。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 创建附注标签</span><br>
+                            git tag -a <span class="code-param">v1.0</span> -m <span class="code-string">"版本 1.0"</span><br><br>
+                            <span class="code-comment"># 创建轻量标签</span><br>
+                            git tag <span class="code-param">v1.0-lw</span><br><br>
+                            <span class="code-comment"># 推送标签到远程</span><br>
+                            git push origin <span class="code-param">v1.0</span><br><br>
+                            <span class="code-comment"># 推送所有标签</span><br>
+                            git push origin --tags
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs rounded">版本</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="advanced">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git cherry-pick</h3>
+                        </div>
+                        <button onclick="copyCommand('git cherry-pick abc123')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">选择性地将特定提交的更改应用到当前分支，而不合并整个分支。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 挑选单个提交</span><br>
+                            git cherry-pick <span class="code-param">abc123</span><br><br>
+                            <span class="code-comment"># 挑选多个提交</span><br>
+                            git cherry-pick <span class="code-param">abc123</span> <span class="code-param">def456</span><br><br>
+                            <span class="code-comment"># 挑选范围</span><br>
+                            git cherry-pick <span class="code-param">abc123</span>^..<span class="code-param">def456</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded">高级</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="advanced">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git bisect</h3>
+                        </div>
+                        <button onclick="copyCommand('git bisect start')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">二分查找工具，用于快速定位引入 Bug 的提交。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 开始二分查找</span><br>
+                            git bisect start<br><br>
+                            <span class="code-comment"># 标记当前为坏提交</span><br>
+                            git bisect bad<br><br>
+                            <span class="code-comment"># 标记已知的好提交</span><br>
+                            git bisect good <span class="code-param">v1.0</span><br><br>
+                            <span class="code-comment"># 结束查找</span><br>
+                            git bisect reset
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="advanced">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git worktree</h3>
+                        </div>
+                        <button onclick="copyCommand('git worktree add ../branch-name branch-name')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">管理多个工作树，允许同时检出多个分支到不同目录。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 为分支创建新工作目录</span><br>
+                            git worktree add ../feature-branch <span class="code-param">feature</span><br><br>
+                            <span class="code-comment"># 列出工作树</span><br>
+                            git worktree list<br><br>
+                            <span class="code-comment"># 删除工作树</span><br>
+                            git worktree remove <span class="code-string">../feature-branch</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submodule Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="submodule">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-git-orange">git submodule</h3>
+                        </div>
+                        <button onclick="copyCommand('git submodule add https://github.com/user/repo.git path/to/submodule')" class="copy-btn p-2 text-gray-500 hover:text-git-orange transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">管理嵌套的 Git 仓库，允许在一个项目中包含其他项目。</p>
+                    
+                    <div class="syntax-highlighter rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="code-block bg-transparent">
+                            <span class="code-comment"># 添加子模块</span><br>
+                            git submodule add <span class="code-string">https://...</span> <span class="code-param">path</span><br><br>
+                            <span class="code-comment"># 初始化并更新</span><br>
+                            git submodule update --init --recursive<br><br>
+                            <span class="code-comment"># 更新子模块</span><br>
+                            git submodule update --remote
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs rounded">子模块</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-20">
+            <i class="fas fa-search text-6xl text-gray-300 dark:text-gray-700 mb-4"></i>
+            <p class="text-xl text-gray-500 dark:text-gray-400">没有找到匹配的命令</p>
+            <button onclick="resetFilters()" class="mt-4 px-6 py-2 bg-git-orange text-white rounded-full hover:bg-orange-700 transition-colors">
+                重置筛选
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <i class="fab fa-git-alt text-4xl text-git-orange mb-4"></i>
+            <p class="text-gray-600 dark:text-gray-400 mb-4 font-mono">git commit -m "Stay curious, keep coding"</p>
+            <div class="flex justify-center space-x-6 text-sm text-gray-500">
+                <span>© 2025 Git Command Reference</span>
+                <span>•</span>
+                <a href="https://git-scm.com/doc" target="_blank" class="hover:text-git-orange transition-colors">官方文档</a>
+                <span>•</span>
+                <span>Made with <i class="fas fa-heart text-red-500"></i></span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 right-8 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+        <i class="fas fa-check-circle text-green-500"></i>
+        <span>已复制到剪贴板</span>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Initialize theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Copy Command Function
+        function copyCommand(command) {
+            navigator.clipboard.writeText(command).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('复制失败:', err);
+            });
+        }
+
+        // Show Toast
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+        }
+
+        // Filter by Category
+        let currentCategory = 'all';
+        
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update button styles
+            document.querySelectorAll('.category-badge').forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            applyFilters();
+        }
+
+        // Filter by Search
+        function filterCommands() {
+            applyFilters();
+        }
+
+        // Apply both filters
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.command-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const categories = card.dataset.categories.split(' ');
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p').textContent.toLowerCase();
+                
+                const matchesCategory = currentCategory === 'all' || categories.includes(currentCategory);
+                const matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
+                
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                    visibleCount++;
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+
+            // Show/hide no results message
+            const noResults = document.getElementById('noResults');
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            // Update count
+            document.getElementById('commandCount').textContent = visibleCount;
+        }
+
+        // Reset Filters
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            filterByCategory('all');
+        }
+
+        // Stagger animation on load
+        window.addEventListener('load', () => {
+            const cards = document.querySelectorAll('.command-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.animationDelay = `${index * 0.05}s`;
+                }, index * 50);
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body>
+</html>

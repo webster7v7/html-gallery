@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 发展史 | 从 1.0 到 11 25H2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                    },
+                    colors: {
+                        windows: {
+                            blue: '#0078D4',
+                            light: '#00A4EF',
+                            dark: '#005A9E',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .timeline-line {
+            background: linear-gradient(to bottom, #0078D4, #00A4EF, #0078D4);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .glass-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .version-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .version-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .version-icon {
+            transition: transform 0.3s ease;
+        }
+        .version-card:hover .version-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #0078D4 0%, #00A4EF 50%, #0078D4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300 font-sans overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <i class="fab fa-windows text-3xl text-windows-blue"></i>
+                    <span class="text-xl font-bold bg-gradient-to-r from-windows-blue to-windows-light bg-clip-text text-transparent">
+                        Windows 发展史
+                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <i class="fas fa-moon dark:hidden text-gray-600"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    <a href="#latest" class="hidden sm:block px-4 py-2 bg-windows-blue text-white rounded-full hover:bg-windows-dark transition-colors text-sm font-medium">
+                        查看最新版本
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-blue-900/20 transition-colors duration-500"></div>
+        
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-windows-blue/10 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-windows-light/5 rounded-full blur-3xl animate-pulse-slow"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="mb-8 inline-block">
+                <i class="fab fa-windows text-6xl md:text-8xl text-windows-blue animate-float mb-6 block"></i>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                <span class="gradient-text">Windows</span>
+                <span class="block text-gray-700 dark:text-gray-200 mt-2">40 年进化史</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+                从 1985 年的图形界面革命到 2025 年的 AI 时代，<br>
+                探索世界上最具影响力的操作系统演变历程
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="document.getElementById('timeline').scrollIntoView({behavior: 'smooth'})" 
+                        class="px-8 py-4 bg-windows-blue text-white rounded-full font-semibold hover:bg-windows-dark transform hover:scale-105 transition-all shadow-lg hover:shadow-xl flex items-center gap-2">
+                    <span>开始探索</span>
+                    <i class="fas fa-arrow-down animate-bounce"></i>
+                </button>
+                <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span>已更新至 Windows 11 25H2</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-2xl text-gray-400"></i>
+        </div>
+    </header>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-white dark:bg-gray-800/50 border-y border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="space-y-2">
+                    <div class="text-4xl font-bold text-windows-blue">40<span class="text-2xl">年</span></div>
+                    <div class="text-gray-600 dark:text-gray-400 text-sm">发展历程</div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-4xl font-bold text-windows-blue">15<span class="text-2xl">+</span></div>
+                    <div class="text-gray-600 dark:text-gray-400 text-sm">主要版本</div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-4xl font-bold text-windows-blue">10<span class="text-2xl">亿+</span></div>
+                    <div class="text-gray-600 dark:text-gray-400 text-sm">全球设备</div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-4xl font-bold text-windows-blue">2025</div>
+                    <div class="text-gray-600 dark:text-gray-400 text-sm">最新版本</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-32 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Section Header -->
+            <div class="text-center mb-20">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">版本时间线</h2>
+                <p class="text-gray-600 dark:text-gray-400">点击卡片查看详细信息</p>
+            </div>
+
+            <!-- Timeline Container -->
+            <div class="relative">
+                <!-- Center Line -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full timeline-line rounded-full hidden md:block"></div>
+
+                <!-- Windows 1.0 -->
+                <div class="version-card mb-16 flex flex-col md:flex-row items-center w-full">
+                    <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
+                        <div class="glass-card p-6 rounded-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer group" onclick="toggleDetails('win1')">
+                            <div class="flex items-center justify-between md:justify-end mb-2">
+                                <span class="text-3xl font-bold text-gray-300 dark:text-gray-700 group-hover:text-windows-blue transition-colors">1985</span>
+                                <i class="fas fa-desktop text-2xl text-windows-blue ml-3 version-icon"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">Windows 1.0</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">代号：Interface Manager</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                微软首个图形界面操作系统，引入鼠标支持、下拉菜单和窗口化应用。最初需要DOS支持运行。
+                            </p>
+                            <div id="win1" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500">
+                                <ul class="space-y-1 list-disc list-inside">
+                                    <li>16位图形界面</li>
+                                    <li>内置计算器、记事本、画图</li>
+                                    <li>需要MS-DOS 2.0</li>
+                                    <li>售价：$99</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 order-1 md:order-2 mb-4 md:mb-0 flex md:justify-start justify-center">
+                        <div class="w-4 h-4 bg-windows-blue rounded-full border-4 border-white dark:border-gray-900 z-10 shadow-lg"></div>
+                    </div>
+                </div>
+
+                <!-- Windows 3.0 -->
+                <div class="version-card mb-16 flex flex-col md:flex-row items-center w-full">
+                    <div class="md:w-1/2 md:pr-12 order-1 mb-4 md:mb-0 flex md:justify-end justify-center">
+                        <div class="w-4 h-4 bg-windows-blue rounded-full border-4 border-white dark:border-gray-900 z-10 shadow-lg"></div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 order-2">
+                        <div class="glass-card p-6 rounded-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer group" onclick="toggleDetails('win3')">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-window-maximize text-2xl text-windows-blue mr-3 version-icon"></i>
+                                <span class="text-3xl font-bold text-gray-300 dark:text-gray-700 group-hover:text-windows-blue transition-colors">1990</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">Windows 3.0</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">首个商业成功的Windows</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                真正的转折点，引入程序管理器和文件管理器，支持虚拟内存和VGA图形，两年内售出1000万份。
+                            </p>
+                            <div id="win3" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500">
+                                <ul class="space-y-1 list-disc list-inside">
+                                    <li>改进的内存管理</li>
+                                    <li>支持386保护模式</li>
+                                    <li>TrueType字体</li>
+                                    <li>纸牌游戏首次亮相</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Windows 95 -->
+                <div class="version-card mb-16 flex flex-col md:flex-row items-center w-full">
+                    <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
+                        <div class="glass-card p-6 rounded-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer group border-2 border-transparent hover:border-windows-blue/30" onclick="toggleDetails('win95')">
+                            <div class="flex items-center justify-between md:justify-end mb-2">
+                                <span class="text-3xl font-bold text-windows-blue">1995</span>
+                                <i class="fas fa-star text-2xl text-windows-blue ml-3 version-icon"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2 text-windows-blue">Windows 95</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">开始菜单的诞生</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                革命性版本，引入开始菜单、任务栏和IE浏览器。发布时引起万人空巷的抢购热潮，定义了现代Windows界面。
+                            </p>
+                            <div id="win95" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500">
+                                <ul class="space-y-1 list-disc list-inside">
+                                    <li>即插即用 (Plug and Play)</li>
+                                    <li>32位操作系统</li>
+                                    <li>长文件名支持</li>
+                                    <li>内置TCP/IP协议</li>
+                                    <li>启动音效由Brian Eno创作</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 order-1 md:order-2 mb-4 md:mb-0 flex md:justify-start justify-center">
+                        <div class="w-6 h-6 bg-windows-blue rounded-full border-4 border-white dark:border-gray-900 z-10 shadow-lg animate-pulse"></div>
+                    </div>
+                </div>
+
+                <!-- Windows XP -->
+                <div class="version-card mb-16 flex flex-col md:flex-row items-center w-full">
+                    <div class="md:w-1/2 md:pr-12 order-1 mb-4 md:mb-0 flex md:justify-end justify-center">
+                        <div class="w-4 h-4 bg-windows-blue rounded-full border-4 border-white dark:border-gray-900 z-10 shadow-lg"></div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 order-2">
+                        <div class="glass-card p-6 rounded-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer group border-2 border-transparent hover:border-windows-blue/30" onclick="toggleDetails('winxp')">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-gem text-2xl text-windows-blue mr-3 version-icon"></i>
+                                <span class="text-3xl font-bold text-windows-blue">2001</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2 text-windows-blue">Windows XP</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3"> Luna 视觉风格</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                史上最长寿的Windows版本，标志性的蓝天白云壁纸和Luna主题。支持长达13年，是许多人心中的经典。
+                            </p>
+                            <div id="winxp" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500">
+                                <ul class="space-y-1 list-disc list-inside">
+                                    <li>全新的Luna视觉风格</li>
+                                    <li>改进的启动速度</li>
+                                    <li>远程桌面功能</li>
+                                    <li>支持刻录CD</li>
+                                    <li>2014年停止支持</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Windows 7 -->
+                <div class="version-card mb-16 flex flex-col md:flex-row items-center w-full">
+                    <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
+                        <div class="glass-card p-6 rounded-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer group border-2 border-transparent hover:border-windows-blue/30" onclick="toggleDetails('win7')">
+                            <div class="flex items-center justify-between md:justify-end mb-2">
+                                <span class="text-3xl font-bold text-windows-blue">2009</span>
+                                <i class="fas fa-thumbs-up text-2xl text-windows-blue ml-3 version-icon"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2 text-windows-blue">Windows 7</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Vista的完美继任者</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                修复了Vista的问题，引入Aero Snap、改进的任务栏。被广泛认为是微软最成功的操作系统之一。
+                            </p>
+                            <div id="win7" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500">
+                                <ul class="space-y-1 list-disc list-inside">
+                                    <li>库 (Libraries) 功能</li>
+                                    <li>跳转列表 (Jump Lists)</li>
+                                    <li>多点触控支持</li>
+                                    <li>HomeGroup网络共享</li>
+                                    <li>2020年停止支持</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 order-1 md:order-2 mb-4 md:mb-0 flex md:justify-start justify-center">
+                        <div class="w-4 h-4 bg-windows-blue rounded-full border-4 border-white dark:border-gray-900 z-10 shadow-lg"></div>
+                    </div>
+                </div>
+
+                <!-- Windows 10 -->
+                <div class="version-card mb-16 flex flex-col md:flex-row items-center w-full">
+                    <div class="md:w-1/2 md:pr-12 order-1 mb-4 md:mb-0 flex md:justify-end justify-center">
+                        <div class="w-4 h-4 bg-windows-blue rounded-full border-4 border-white dark:border-gray-900 z-10 shadow-lg"></div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 order-2">
+                        <div class="glass-card p-6 rounded-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer group border-2 border-transparent hover:border-windows-blue/30" onclick="toggleDetails('win10')">
+                            <div class="flex items-center mb-2">
+                                <i class="fab fa-windows text-2xl text-windows-blue mr-3 version-icon"></i>
+                                <span class="text-3xl font-bold text-windows-blue">2015</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2 text-windows-blue">Windows 10</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">最后一个Windows版本？</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                回归开始菜单，引入Cortana、Microsoft Edge和Windows Hello。采用"Windows即服务"模式，持续功能更新。
+                            </p>
+                            <div id="win10" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500">
+                                <ul class="space-y-1 list-disc list-inside">
+                                    <li>虚拟桌面</li>
+                                    <li>通用Windows平台 (UWP)</li>
+                                    <li>WSL子系统</li>
+                                    <li>游戏模式</li>
+                                    <li>2025年10月停止支持</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Windows 11 -->
+                <div class="version-card mb-16 flex flex-col md:flex-row items-center w-full" id="latest">
+                    <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
+                        <div class="glass-card p-6 rounded-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer group bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-windows-blue/30" onclick="toggleDetails('win11')">
+                            <div class="flex items-center justify-between md:justify-end mb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2 py-1 bg-windows-blue text-white text-xs rounded-full animate-pulse">最新</span>
+                                    <span class="text-3xl font-bold text-windows-blue">2021-2025</span>
+                                </div>
+                                <i class="fab fa-windows text-2xl text-windows-blue ml-3 version-icon"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2 text-windows-blue">Windows 11</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">现代设计与AI时代</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                全新居中的开始菜单，圆角设计，Android应用支持，以及Copilot AI助手。2025年9月发布25H2更新，持续进化。
+                            </p>
+                            <div id="win11" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500">
+                                <ul class="space-y-1 list-disc list-inside text-left md:text-right">
+                                    <li>全新的Fluent Design</li>
+                                    <li>DirectStorage游戏加速</li>
+                                    <li>Snap Layouts窗口布局</li>
+                                    <li>Teams集成</li>
+                                    <li>Windows Copilot AI (24H2/25H2)</li>
+                                    <li>Wi-Fi 7 与 USB4 支持</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 order-1 md:order-2 mb-4 md:mb-0 flex md:justify-start justify-center">
+                        <div class="w-6 h-6 bg-windows-blue rounded-full border-4 border-white dark:border-gray-900 z-10 shadow-lg ring-4 ring-windows-blue/30 animate-pulse"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Comparison -->
+    <section class="py-20 bg-white dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">版本对比</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 rounded-2xl hover:scale-105 transition-transform cursor-pointer" onclick="highlight Era('classic')">
+                    <div class="h-32 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg mb-4 flex items-center justify-center">
+                        <i class="fas fa-desktop text-4xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">经典时代</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">1985-2000</p>
+                    <p class="mt-2 text-sm">Windows 1.0 - 3.1 - 95 - 98 - ME</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl hover:scale-105 transition-transform cursor-pointer" onclick="highlightEra('modern')">
+                    <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg mb-4 flex items-center justify-center">
+                        <i class="fab fa-windows text-4xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">现代时代</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">2001-2014</p>
+                    <p class="mt-2 text-sm">Windows XP - Vista - 7 - 8/8.1</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl hover:scale-105 transition-transform cursor-pointer ring-2 ring-windows-blue" onclick="highlightEra('current')">
+                    <div class="h-32 bg-gradient-to-br from-windows-blue to-purple-600 rounded-lg mb-4 flex items-center justify-center">
+                        <i class="fab fa-windows text-4xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-windows-blue">当代时代</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">2015-至今</p>
+                    <p class="mt-2 text-sm">Windows 10 - 11 (24H2/25H2)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <i class="fab fa-windows text-4xl mb-4 text-windows-blue"></i>
+            <p class="text-gray-400 mb-4">Windows 发展史 | 从图形界面到 AI 时代</p>
+            <div class="flex justify-center space-x-6 text-sm text-gray-500">
+                <span>© 2025 Microsoft History</span>
+                <span>•</span>
+                <span>Designed with Tailwind CSS</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Check system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.version-card').forEach((el) => observer.observe(el));
+
+        // Toggle Details
+        function toggleDetails(id) {
+            const element = document.getElementById(id);
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+                element.style.maxHeight = element.scrollHeight + 'px';
+            } else {
+                element.style.maxHeight = '0px';
+                setTimeout(() => element.classList.add('hidden'), 300);
+            }
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+        });
+
+        // Highlight Era (visual feedback)
+        function highlightEra(era) {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.style.opacity = '0.5';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                }, 300);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!--
+---
+title: "渐变背景生成器"
+description: "实时预览的渐变背景生成工具，支持多种渐变模式"
+category: "tools"
+tags: ["gradient", "generator", "css"]
+date: "2025-02-25"
+author: "webster"
+---
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>渐变背景生成器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2rem;
+    }
+    .preview {
+      height: 300px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+    .controls {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+    .control-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .color-inputs {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .color-input {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    input[type="color"] {
+      width: 50px;
+      height: 40px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    select, button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    select {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      width: 100%;
+    }
+    button {
+      background: #667eea;
+      color: #fff;
+      width: 100%;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #5a6fd6;
+      transform: translateY(-2px);
+    }
+    .code-output {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-family: monospace;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>渐变背景生成器</h1>
+    
+    <div class="preview" id="preview"></div>
+    
+    <div class="controls">
+      <div class="control-group">
+        <label>渐变颜色</label>
+        <div class="color-inputs">
+          <div class="color-input">
+            <input type="color" id="color1" value="#667eea">
+            <span>颜色 1</span>
+          </div>
+          <div class="color-input">
+            <input type="color" id="color2" value="#764ba2">
+            <span>颜色 2</span>
+          </div>
+          <div class="color-input">
+            <input type="color" id="color3" value="#f093fb">
+            <span>颜色 3</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label>渐变类型</label>
+        <select id="gradientType">
+          <option value="linear">线性渐变</option>
+          <option value="radial">径向渐变</option>
+          <option value="conic">锥形渐变</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>渐变角度</label>
+        <select id="gradientAngle">
+          <option value="to right">向右</option>
+          <option value="to left">向左</option>
+          <option value="to bottom">向下</option>
+          <option value="to top">向上</option>
+          <option value="to bottom right">右下</option>
+          <option value="to top left">左上</option>
+        </select>
+      </div>
+      
+      <button onclick="copyCode()">复制 CSS 代码</button>
+      
+      <div class="code-output" id="codeOutput"></div>
+    </div>
+  </div>
+
+  <script>
+    const preview = document.getElementById('preview');
+    const color1 = document.getElementById('color1');
+    const color2 = document.getElementById('color2');
+    const color3 = document.getElementById('color3');
+    const gradientType = document.getElementById('gradientType');
+    const gradientAngle = document.getElementById('gradientAngle');
+    const codeOutput = document.getElementById('codeOutput');
+
+    function updateGradient() {
+      const c1 = color1.value;
+      const c2 = color2.value;
+      const c3 = color3.value;
+      const type = gradientType.value;
+      const angle = gradientAngle.value;
+
+      let gradient;
+      let cssCode;
+
+      switch (type) {
+        case 'linear':
+          gradient = `linear-gradient(${angle}, ${c1}, ${c2}, ${c3})`;
+          cssCode = `background: ${gradient};`;
+          break;
+        case 'radial':
+          gradient = `radial-gradient(circle, ${c1}, ${c2}, ${c3})`;
+          cssCode = `background: ${gradient};`;
+          break;
+        case 'conic':
+          gradient = `conic-gradient(from 0deg, ${c1}, ${c2}, ${c3}, ${c1})`;
+          cssCode = `background: ${gradient};`;
+          break;
+      }
+
+      preview.style.background = gradient;
+      codeOutput.textContent = cssCode;
+    }
+
+    function copyCode() {
+      navigator.clipboard.writeText(codeOutput.textContent).then(() => {
+        alert('CSS 代码已复制到剪贴板！');
+      });
+    }
+
+    color1.addEventListener('input', updateGradient);
+    color2.addEventListener('input', updateGradient);
+    color3.addEventListener('input', updateGradient);
+    gradientType.addEventListener('change', updateGradient);
+    gradientAngle.addEventListener('change', updateGradient);
+
+    updateGradient();
+  </script>
+</body>
+</html>

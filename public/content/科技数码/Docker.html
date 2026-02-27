@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker 命令大全 | 容器化技术参考手册</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        docker: {
+                            blue: '#0db7ed',
+                            dark: '#1D63ED',
+                            navy: '#002C66',
+                            light: '#E5F5FC'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .code-block {
+            background: #1E1E1E;
+            color: #D4D4D4;
+            font-family: 'Fira Code', monospace;
+        }
+        .syntax-keyword { color: #569CD6; }
+        .syntax-string { color: #CE9178; }
+        .syntax-comment { color: #6A9955; }
+        .syntax-flag { color: #9CDCFE; }
+        .syntax-image { color: #4EC9B0; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .dark .glass-card {
+            background: rgba(30, 30, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .command-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.5s ease forwards;
+        }
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .copy-btn {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .command-card:hover .copy-btn {
+            opacity: 1;
+        }
+        .category-badge {
+            transition: all 0.3s;
+        }
+        .category-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 183, 237, 0.3);
+        }
+        .category-badge.active {
+            background-color: #0db7ed;
+            color: white;
+            border-color: #0db7ed;
+        }
+        .whale-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .docker-gradient {
+            background: linear-gradient(135deg, #0db7ed 0%, #1D63ED 100%);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300 font-sans">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <i class="fab fa-docker text-3xl text-docker-blue"></i>
+                    <span class="text-xl font-bold bg-gradient-to-r from-docker-blue to-blue-600 bg-clip-text text-transparent font-mono">
+                        Docker Commands
+                    </span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <i class="fas fa-moon dark:hidden text-gray-600"></i>
+                        <i class="fas fa-sun hidden dark:block text-docker-blue"></i>
+                    </button>
+                    <a href="https://docs.docker.com/" target="_blank" class="hidden sm:block px-4 py-2 bg-docker-blue text-white rounded-full hover:bg-blue-600 transition-colors text-sm font-bold">
+                        官方文档
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-docker-blue/10 rounded-full blur-3xl whale-float"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl whale-float" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto text-center">
+            <div class="inline-block mb-6 px-4 py-1 rounded-full bg-docker-blue/10 text-docker-blue text-sm font-mono border border-docker-blue/20">
+                Engine v24.0+ Reference
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+                <span class="bg-gradient-to-r from-docker-blue to-blue-600 bg-clip-text text-transparent">Docker</span>
+                <span class="text-gray-700 dark:text-gray-200">命令大全</span>
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
+                从基础容器操作到高级网络配置，<br>
+                完整的容器化技术命令参考手册
+            </p>
+
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto relative">
+                <input type="text" 
+                       id="searchInput" 
+                       placeholder="搜索命令 (例如: run, compose, network...)" 
+                       class="w-full px-6 py-4 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:border-docker-blue focus:ring-2 focus:ring-docker-blue/20 transition-all shadow-lg"
+                       oninput="filterCommands()">
+                <i class="fas fa-search absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="flex justify-center gap-8 mt-8 text-sm text-gray-600 dark:text-gray-400">
+                <span><i class="fas fa-cube text-docker-blue mr-2"></i><span id="commandCount">60+</span> 命令</span>
+                <span><i class="fas fa-layer-group text-docker-blue mr-2"></i>12 分类</span>
+                <span><i class="fas fa-bolt text-docker-blue mr-2"></i>实时搜索</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Category Filter -->
+    <section class="sticky top-16 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap gap-2 justify-center" id="categoryFilters">
+                <button onclick="filterByCategory('all')" class="category-badge active px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="all">
+                    全部
+                </button>
+                <button onclick="filterByCategory('basic')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="basic">
+                    基础信息
+                </button>
+                <button onclick="filterByCategory('image')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="image">
+                    镜像管理
+                </button>
+                <button onclick="filterByCategory('container')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="container">
+                    容器生命周期
+                </button>
+                <button onclick="filterByCategory('exec')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="exec">
+                    容器操作
+                </button>
+                <button onclick="filterByCategory('network')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="network">
+                    网络
+                </button>
+                <button onclick="filterByCategory('volume')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="volume">
+                    存储卷
+                </button>
+                <button onclick="filterByCategory('compose')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="compose">
+                    Docker Compose
+                </button>
+                <button onclick="filterByCategory('system')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="system">
+                    系统管理
+                </button>
+                <button onclick="filterByCategory('registry')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="registry">
+                    仓库
+                </button>
+                <button onclick="filterByCategory('advanced')" class="category-badge px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium transition-all" data-category="advanced">
+                    高级
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="commandsGrid">
+
+            <!-- Basic Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="basic">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker version</h3>
+                        </div>
+                        <button onclick="copyCommand('docker version')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">显示 Docker 客户端和服务端的版本信息。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 查看版本</span><br>
+                            docker version<br><br>
+                            <span class="syntax-comment"># 仅查看客户端</span><br>
+                            docker version --format <span class="syntax-string">'{{.Client.Version}}'</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs rounded">基础</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="basic">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker info</h3>
+                        </div>
+                        <button onclick="copyCommand('docker info')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">显示 Docker 系统范围的信息，包括镜像数、容器数、存储驱动等。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 系统信息</span><br>
+                            docker info<br><br>
+                            <span class="syntax-comment"># 查看特定信息</span><br>
+                            docker info --format <span class="syntax-string">'{{json .}}'</span> | jq
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="image">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker pull</h3>
+                        </div>
+                        <button onclick="copyCommand('docker pull ubuntu:latest')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">从仓库拉取镜像或仓库到本地。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 拉取最新版</span><br>
+                            docker pull <span class="syntax-image">ubuntu</span>:<span class="syntax-flag">latest</span><br><br>
+                            <span class="syntax-comment"># 拉取特定版本</span><br>
+                            docker pull <span class="syntax-image">nginx</span>:<span class="syntax-flag">1.24</span><br><br>
+                            <span class="syntax-comment"># 从私有仓库拉取</span><br>
+                            docker pull <span class="syntax-string">registry.example.com/myapp:v1</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs rounded">镜像</span>
+                        <span class="px-2 py-1 bg-docker-blue/10 text-docker-blue text-xs rounded">常用</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="image">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker build</h3>
+                        </div>
+                        <button onclick="copyCommand('docker build -t myapp:latest .')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">通过 Dockerfile 构建镜像。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 基础构建</span><br>
+                            docker build -t <span class="syntax-image">myapp</span>:<span class="syntax-flag">latest</span> .<br><br>
+                            <span class="syntax-comment"># 指定 Dockerfile</span><br>
+                            docker build -f <span class="syntax-string">Dockerfile.prod</span> -t <span class="syntax-image">myapp</span> .<br><br>
+                            <span class="syntax-comment"># 不使用缓存</span><br>
+                            docker build --no-cache -t <span class="syntax-image">myapp</span> .<br><br>
+                            <span class="syntax-comment"># 构建时变量</span><br>
+                            docker build --build-arg <span class="syntax-flag">VERSION</span>=<span class="syntax-string">1.0</span> -t <span class="syntax-image">myapp</span> .
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="image">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker images</h3>
+                        </div>
+                        <button onclick="copyCommand('docker images')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">列出本地镜像。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 列出所有镜像</span><br>
+                            docker images<br><br>
+                            <span class="syntax-comment"># 仅显示 ID</span><br>
+                            docker images -q<br><br>
+                            <span class="syntax-comment"># 显示中间层</span><br>
+                            docker images -a<br><br>
+                            <span class="syntax-comment"># 过滤悬空镜像</span><br>
+                            docker images --filter <span class="syntax-string">"dangling=true"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="image">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker rmi</h3>
+                        </div>
+                        <button onclick="copyCommand('docker rmi image_id')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">删除一个或多个镜像。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 删除指定镜像</span><br>
+                            docker rmi <span class="syntax-image">ubuntu:latest</span><br><br>
+                            <span class="syntax-comment"># 强制删除</span><br>
+                            docker rmi -f <span class="syntax-image">ubuntu</span><br><br>
+                            <span class="syntax-comment"># 删除所有悬空镜像</span><br>
+                            docker rmi $(docker images -f <span class="syntax-string">"dangling=true"</span> -q)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="image">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker tag</h3>
+                        </div>
+                        <button onclick="copyCommand('docker tag source_image:tag target_image:tag')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">给镜像打标签，用于版本控制或推送到不同仓库。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 标记镜像</span><br>
+                            docker tag <span class="syntax-image">myapp</span>:<span class="syntax-flag">v1</span> <span class="syntax-image">registry.com/myapp</span>:<span class="syntax-flag">v1</span><br><br>
+                            <span class="syntax-comment"># 给现有镜像添加 latest 标签</span><br>
+                            docker tag <span class="syntax-image">myapp</span>:<span class="syntax-flag">1.0</span> <span class="syntax-image">myapp</span>:<span class="syntax-flag">latest</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Container Lifecycle -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="container">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-docker-blue"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker run</h3>
+                        </div>
+                        <button onclick="copyCommand('docker run -d -p 80:80 --name web nginx')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">创建并启动新容器，这是最常用的命令之一。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 后台运行并映射端口</span><br>
+                            docker run <span class="syntax-flag">-d</span> <span class="syntax-flag">-p</span> <span class="syntax-string">80:80</span> <span class="syntax-flag">--name</span> web <span class="syntax-image">nginx</span><br><br>
+                            <span class="syntax-comment"># 交互式终端</span><br>
+                            docker run <span class="syntax-flag">-it</span> <span class="syntax-flag">--rm</span> <span class="syntax-image">ubuntu</span> bash<br><br>
+                            <span class="syntax-comment"># 挂载卷</span><br>
+                            docker run <span class="syntax-flag">-v</span> <span class="syntax-string">/host/path:/container/path</span> <span class="syntax-image">nginx</span><br><br>
+                            <span class="syntax-comment"># 设置环境变量</span><br>
+                            docker run <span class="syntax-flag">-e</span> <span class="syntax-string">MYSQL_ROOT_PASSWORD=secret</span> <span class="syntax-image">mysql</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-docker-blue/10 text-docker-blue text-xs rounded">核心</span>
+                        <span class="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs rounded">常用</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="container">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-docker-blue"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker ps</h3>
+                        </div>
+                        <button onclick="copyCommand('docker ps -a')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">列出容器。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 运行中的容器</span><br>
+                            docker ps<br><br>
+                            <span class="syntax-comment"># 所有容器（包括停止的）</span><br>
+                            docker ps <span class="syntax-flag">-a</span><br><br>
+                            <span class="syntax-comment"># 显示容器大小</span><br>
+                            docker ps <span class="syntax-flag">-s</span><br><br>
+                            <span class="syntax-comment"># 过滤</span><br>
+                            docker ps --filter <span class="syntax-string">"status=exited"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="container">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-docker-blue"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker start/stop/restart</h3>
+                        </div>
+                        <button onclick="copyCommand('docker start container_name')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">管理容器运行状态。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 启动容器</span><br>
+                            docker start <span class="syntax-image">container_name</span><br><br>
+                            <span class="syntax-comment"># 停止容器（发送 SIGTERM）</span><br>
+                            docker stop <span class="syntax-image">container_name</span><br><br>
+                            <span class="syntax-comment"># 强制停止（发送 SIGKILL）</span><br>
+                            docker kill <span class="syntax-image">container_name</span><br><br>
+                            <span class="syntax-comment"># 重启</span><br>
+                            docker restart <span class="syntax-image">container_name</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="container">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-docker-blue"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker rm</h3>
+                        </div>
+                        <button onclick="copyCommand('docker rm container_id')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">删除一个或多个容器。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 删除已停止的容器</span><br>
+                            docker rm <span class="syntax-image">container_id</span><br><br>
+                            <span class="syntax-comment"># 强制删除运行中的容器</span><br>
+                            docker rm <span class="syntax-flag">-f</span> <span class="syntax-image">container_id</span><br><br>
+                            <span class="syntax-comment"># 删除所有已停止容器</span><br>
+                            docker container prune<br><br>
+                            <span class="syntax-comment"># 删除并挂载卷</span><br>
+                            docker rm <span class="syntax-flag">-v</span> <span class="syntax-image">container_id</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Container Operations -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="exec">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker exec</h3>
+                        </div>
+                        <button onclick="copyCommand('docker exec -it container_name bash')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">在运行中的容器内执行命令，常用于进入容器调试。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 进入容器交互式 shell</span><br>
+                            docker exec <span class="syntax-flag">-it</span> <span class="syntax-image">container_name</span> bash<br><br>
+                            <span class="syntax-comment"># 以 root 身份执行</span><br>
+                            docker exec <span class="syntax-flag">-u</span> <span class="syntax-string">0</span> <span class="syntax-image">container_name</span> sh<br><br>
+                            <span class="syntax-comment"># 后台执行命令</span><br>
+                            docker exec <span class="syntax-flag">-d</span> <span class="syntax-image">container_name</span> touch /tmp/file
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-xs rounded">调试</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="exec">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker logs</h3>
+                        </div>
+                        <button onclick="copyCommand('docker logs -f container_name')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">获取容器日志。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 查看日志</span><br>
+                            docker logs <span class="syntax-image">container_name</span><br><br>
+                            <span class="syntax-comment"># 实时跟踪（类似 tail -f）</span><br>
+                            docker logs <span class="syntax-flag">-f</span> <span class="syntax-image">container_name</span><br><br>
+                            <span class="syntax-comment"># 显示最后 100 行</span><br>
+                            docker logs <span class="syntax-flag">--tail</span> <span class="syntax-string">100</span> <span class="syntax-image">container_name</span><br><br>
+                            <span class="syntax-comment"># 显示时间戳</span><br>
+                            docker logs <span class="syntax-flag">-t</span> <span class="syntax-image">container_name</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="exec">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker cp</h3>
+                        </div>
+                        <button onclick="copyCommand('docker cp container:/path/to/file /host/path')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">在容器和主机之间复制文件。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 容器到主机</span><br>
+                            docker cp <span class="syntax-image">container</span>:<span class="syntax-string">/app/file.txt</span> <span class="syntax-string">./local/</span><br><br>
+                            <span class="syntax-comment"># 主机到容器</span><br>
+                            docker cp <span class="syntax-string">./local/file.txt</span> <span class="syntax-image">container</span>:<span class="syntax-string">/app/</span><br><br>
+                            <span class="syntax-comment"># 复制整个目录</span><br>
+                            docker cp <span class="syntax-image">container</span>:<span class="syntax-string">/app</span> <span class="syntax-string">./backup</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="exec">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker inspect</h3>
+                        </div>
+                        <button onclick="copyCommand('docker inspect container_name')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">查看容器或镜像的详细信息（JSON 格式）。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 查看容器信息</span><br>
+                            docker inspect <span class="syntax-image">container_name</span><br><br>
+                            <span class="syntax-comment"># 提取特定字段（如 IP 地址）</span><br>
+                            docker inspect <span class="syntax-flag">--format</span>=<span class="syntax-string">'{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'</span> <span class="syntax-image">container</span><br><br>
+                            <span class="syntax-comment"># 查看镜像历史</span><br>
+                            docker inspect <span class="syntax-image">image:tag</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="exec">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker stats</h3>
+                        </div>
+                        <button onclick="copyCommand('docker stats')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">实时显示容器资源使用情况（CPU、内存、网络、IO）。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 监控所有容器</span><br>
+                            docker stats<br><br>
+                            <span class="syntax-comment"># 监控特定容器</span><br>
+                            docker stats <span class="syntax-image">container_name</span><br><br>
+                            <span class="syntax-comment"># 不截断输出</span><br>
+                            docker stats <span class="syntax-flag">--no-trunc</span><br><br>
+                            <span class="syntax-comment"># 仅显示 ID、CPU、内存</span><br>
+                            docker stats <span class="syntax-flag">--format</span> <span class="syntax-string">"table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="network">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker network</h3>
+                        </div>
+                        <button onclick="copyCommand('docker network ls')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">管理 Docker 网络，包括创建、连接、断开和删除网络。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 列出网络</span><br>
+                            docker network ls<br><br>
+                            <span class="syntax-comment"># 创建桥接网络</span><br>
+                            docker network create <span class="syntax-flag">--driver</span> bridge <span class="syntax-image">my-network</span><br><br>
+                            <span class="syntax-comment"># 连接容器到网络</span><br>
+                            docker network connect <span class="syntax-image">my-network</span> <span class="syntax-image">container</span><br><br>
+                            <span class="syntax-comment"># 断开网络</span><br>
+                            docker network disconnect <span class="syntax-image">my-network</span> <span class="syntax-image">container</span><br><br>
+                            <span class="syntax-comment"># 查看网络详情</span><br>
+                            docker network inspect <span class="syntax-image">my-network</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs rounded">网络</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volume Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="volume">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker volume</h3>
+                        </div>
+                        <button onclick="copyCommand('docker volume create my-vol')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">管理 Docker 数据卷，用于持久化存储。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 创建卷</span><br>
+                            docker volume create <span class="syntax-image">my-vol</span><br><br>
+                            <span class="syntax-comment"># 列出卷</span><br>
+                            docker volume ls<br><br>
+                            <span class="syntax-comment"># 查看卷详情</span><br>
+                            docker volume inspect <span class="syntax-image">my-vol</span><br><br>
+                            <span class="syntax-comment"># 删除未使用的卷</span><br>
+                            docker volume prune<br><br>
+                            <span class="syntax-comment"># 删除特定卷</span><br>
+                            docker volume rm <span class="syntax-image">my-vol</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-xs rounded">存储</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compose Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="compose">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker compose up</h3>
+                        </div>
+                        <button onclick="copyCommand('docker compose up -d')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">构建、（重新）创建、启动和附加到容器（用于 docker-compose.yml）。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 后台启动所有服务</span><br>
+                            docker compose up <span class="syntax-flag">-d</span><br><br>
+                            <span class="syntax-comment"># 构建镜像后启动</span><br>
+                            docker compose up <span class="syntax-flag">--build</span><br><br>
+                            <span class="syntax-comment"># 强制重新创建容器</span><br>
+                            docker compose up <span class="syntax-flag">--force-recreate</span><br><br>
+                            <span class="syntax-comment"># 缩放服务实例数</span><br>
+                            docker compose up <span class="syntax-flag">-d</span> <span class="syntax-flag">--scale</span> <span class="syntax-string">web=3</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs rounded">Compose</span>
+                        <span class="px-2 py-1 bg-docker-blue/10 text-docker-blue text-xs rounded">编排</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="compose">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker compose down</h3>
+                        </div>
+                        <button onclick="copyCommand('docker compose down -v')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">停止并移除容器、网络、镜像和卷。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 停止并删除容器和网络</span><br>
+                            docker compose down<br><br>
+                            <span class="syntax-comment"># 同时删除卷</span><br>
+                            docker compose down <span class="syntax-flag">-v</span><br><br>
+                            <span class="syntax-comment"># 同时删除镜像</span><br>
+                            docker compose down <span class="syntax-flag">--rmi</span> all<br><br>
+                            <span class="syntax-comment"># 删除孤儿容器</span><br>
+                            docker compose down <span class="syntax-flag">--remove-orphans</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="compose">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker compose ps/logs</h3>
+                        </div>
+                        <button onclick="copyCommand('docker compose logs -f')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">查看 Compose 项目状态和服务日志。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 列出运行的服务</span><br>
+                            docker compose ps<br><br>
+                            <span class="syntax-comment"># 查看所有服务日志</span><br>
+                            docker compose logs <span class="syntax-flag">-f</span><br><br>
+                            <span class="syntax-comment"># 查看特定服务日志</span><br>
+                            docker compose logs <span class="syntax-flag">-f</span> <span class="syntax-image">web</span><br><br>
+                            <span class="syntax-comment"># 执行服务命令</span><br>
+                            docker compose exec <span class="syntax-image">web</span> sh
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="system">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker system</h3>
+                        </div>
+                        <button onclick="copyCommand('docker system prune')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">管理 Docker 系统，包括清理未使用的数据。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 清理未使用的数据（容器、网络、镜像、缓存）</span><br>
+                            docker system prune<br><br>
+                            <span class="syntax-comment"># 清理所有未使用数据（包括卷）</span><br>
+                            docker system prune <span class="syntax-flag">-a</span> <span class="syntax-flag">--volumes</span><br><br>
+                            <span class="syntax-comment"># 查看磁盘使用</span><br>
+                            docker system df<br><br>
+                            <span class="syntax-comment"># 详细查看</span><br>
+                            docker system df <span class="syntax-flag">-v</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs rounded">维护</span>
+                        <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs rounded">危险</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="system">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker top</h3>
+                        </div>
+                        <button onclick="copyCommand('docker top container_name')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">查看容器中运行的进程（类似 Linux top）。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 查看容器进程</span><br>
+                            docker top <span class="syntax-image">container_name</span><br><br>
+                            <span class="syntax-comment"># 显示帮助</span><br>
+                            docker <span class="syntax-flag">--help</span><br><br>
+                            <span class="syntax-comment"># 查看事件</span><br>
+                            docker events <span class="syntax-flag">--since</span> <span class="syntax-string">'1h'</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Registry Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="registry">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker push</h3>
+                        </div>
+                        <button onclick="copyCommand('docker push registry.com/myimage:tag')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">推送镜像到仓库。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 推送到 Docker Hub</span><br>
+                            docker push <span class="syntax-image">username/image</span>:<span class="syntax-flag">tag</span><br><br>
+                            <span class="syntax-comment"># 推送到私有仓库</span><br>
+                            docker push <span class="syntax-image">registry.example.com/project/image</span>:<span class="syntax-flag">v1</span><br><br>
+                            <span class="syntax-comment"># 登录仓库</span><br>
+                            docker login <span class="syntax-image">registry.example.com</span><br><br>
+                            <span class="syntax-comment"># 登出</span><br>
+                            docker logout
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 text-xs rounded">仓库</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Commands -->
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="advanced">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker commit</h3>
+                        </div>
+                        <button onclick="copyCommand('docker commit container_id new_image:tag')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">从容器的更改创建新镜像（不推荐用于生产，建议使用 Dockerfile）。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 提交容器为新镜像</span><br>
+                            docker commit <span class="syntax-image">container_id</span> <span class="syntax-image">new_image</span>:<span class="syntax-flag">v2</span><br><br>
+                            <span class="syntax-comment"># 带作者和消息</span><br>
+                            docker commit <span class="syntax-flag">-a</span> <span class="syntax-string">"Author"</span> <span class="syntax-flag">-m</span> <span class="syntax-string">"message"</span> <span class="syntax-image">container</span> <span class="syntax-image">image</span>:<span class="syntax-flag">tag</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded">高级</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="advanced">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker export/import</h3>
+                        </div>
+                        <button onclick="copyCommand('docker export container_id > backup.tar')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">导出容器文件系统为 tar 包，或从 tar 包创建镜像。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 导出容器</span><br>
+                            docker export <span class="syntax-image">container_id</span> <span class="syntax-keyword">></span> <span class="syntax-string">backup.tar</span><br><br>
+                            <span class="syntax-comment"># 导入为镜像</span><br>
+                            docker import <span class="syntax-string">backup.tar</span> <span class="syntax-image">new_image</span>:<span class="syntax-flag">tag</span><br><br>
+                            <span class="syntax-comment"># 保存镜像（带历史）</span><br>
+                            docker save <span class="syntax-image">image</span>:<span class="syntax-flag">tag</span> <span class="syntax-keyword">></span> <span class="syntax-string">image.tar</span><br><br>
+                            <span class="syntax-comment"># 加载镜像</span><br>
+                            docker load <span class="syntax-keyword"><</span> <span class="syntax-string">image.tar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-card glass-card rounded-xl overflow-hidden" data-categories="advanced">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                            <h3 class="text-xl font-bold font-mono text-docker-blue">docker buildx</h3>
+                        </div>
+                        <button onclick="copyCommand('docker buildx build --platform linux/amd64,linux/arm64 -t myimage:latest .')" class="copy-btn p-2 text-gray-500 hover:text-docker-blue transition-colors">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">Docker BuildKit 扩展，支持多平台构建和高级构建功能。</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-4 mb-3 text-sm font-mono overflow-x-auto">
+                        <div class="text-gray-300">
+                            <span class="syntax-comment"># 多平台构建</span><br>
+                            docker buildx build <span class="syntax-flag">--platform</span> <span class="syntax-string">linux/amd64,linux/arm64</span> -t <span class="syntax-image">myimage</span> .<br><br>
+                            <span class="syntax-comment"># 构建并推送</span><br>
+                            docker buildx build <span class="syntax-flag">--push</span> -t <span class="syntax-image">user/image</span> .<br><br>
+                            <span class="syntax-comment"># 创建 builder 实例</span><br>
+                            docker buildx create <span class="syntax-flag">--name</span> <span class="syntax-image">mybuilder</span> <span class="syntax-flag">--use</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-20">
+            <i class="fas fa-search text-6xl text-gray-300 dark:text-gray-700 mb-4"></i>
+            <p class="text-xl text-gray-500 dark:text-gray-400">没有找到匹配的命令</p>
+            <button onclick="resetFilters()" class="mt-4 px-6 py-2 bg-docker-blue text-white rounded-full hover:bg-blue-600 transition-colors">
+                重置筛选
+            </button>
+        </div>
+    </main>
+
+    <!-- Tips Section -->
+    <section class="py-16 bg-docker-blue/5 dark:bg-docker-blue/10 border-y border-docker-blue/20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold mb-8 text-center text-docker-blue">实用技巧</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+                    <i class="fas fa-trash-alt text-docker-blue text-2xl mb-3"></i>
+                    <h3 class="font-bold mb-2">一键清理</h3>
+                    <code class="text-sm bg-gray-100 dark:bg-gray-900 p-2 rounded block mt-2">docker system prune -a --volumes</code>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">清理所有未使用的容器、网络、镜像和构建缓存</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+                    <i class="fas fa-terminal text-docker-blue text-2xl mb-3"></i>
+                    <h3 class="font-bold mb-2">快捷进入容器</h3>
+                    <code class="text-sm bg-gray-100 dark:bg-gray-900 p-2 rounded block mt-2">docker exec -it $(docker ps -q) sh</code>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">快速进入最后一个运行的容器</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+                    <i class="fas fa-file-export text-docker-blue text-2xl mb-3"></i>
+                    <h3 class="font-bold mb-2">查看容器 IP</h3>
+                    <code class="text-sm bg-gray-100 dark:bg-gray-900 p-2 rounded block mt-2">docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <i class="fab fa-docker text-5xl text-docker-blue mb-4 whale-float"></i>
+            <p class="text-gray-600 dark:text-gray-400 mb-4 font-mono">docker run -d --name happiness -p 8080:80 life:latest</p>
+            <div class="flex justify-center space-x-6 text-sm text-gray-500">
+                <span>© 2025 Docker Command Reference</span>
+                <span>•</span>
+                <a href="https://docs.docker.com/" target="_blank" class="hover:text-docker-blue transition-colors">官方文档</a>
+                <span>•</span>
+                <span>Made with <i class="fas fa-heart text-red-500"></i></span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 right-8 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+        <i class="fas fa-check-circle text-green-500"></i>
+        <span>已复制到剪贴板</span>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Initialize theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Copy Command Function
+        function copyCommand(command) {
+            navigator.clipboard.writeText(command).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('复制失败:', err);
+            });
+        }
+
+        // Show Toast
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+        }
+
+        // Filter by Category
+        let currentCategory = 'all';
+        
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update button styles
+            document.querySelectorAll('.category-badge').forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            applyFilters();
+        }
+
+        // Filter by Search
+        function filterCommands() {
+            applyFilters();
+        }
+
+        // Apply both filters
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.command-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const categories = card.dataset.categories.split(' ');
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p').textContent.toLowerCase();
+                
+                const matchesCategory = currentCategory === 'all' || categories.includes(currentCategory);
+                const matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
+                
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                    visibleCount++;
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+
+            // Show/hide no results message
+            const noResults = document.getElementById('noResults');
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            // Update count
+            document.getElementById('commandCount').textContent = visibleCount + '+';
+        }
+
+        // Reset Filters
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            filterByCategory('all');
+        }
+
+        // Stagger animation on load
+        window.addEventListener('load', () => {
+            const cards = document.querySelectorAll('.command-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.animationDelay = `${index * 0.05}s`;
+                }, index * 50);
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body>
+</html>
