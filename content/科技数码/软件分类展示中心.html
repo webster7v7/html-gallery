@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软件分类展示中心 | Software Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%); min-height: 100vh; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
+        .glass-card:hover { transform: translateY(-5px); border-color: rgba(59, 130, 246, 0.5); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.2); }
+        .gradient-text { background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .platform-badge { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(59, 130, 246, 0.3); }
+        .github-badge { background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.2)); border: 1px solid rgba(34, 197, 94, 0.3); }
+        .grid-pattern { background-image: radial-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px); background-size: 30px 30px; }
+        .category-active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; }
+        .stat-card { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(59, 130, 246, 0.2); }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.4; } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+    </style>
+<base target="_blank">
+</head>
+<body class="text-gray-100 overflow-x-hidden">
+    <div class="fixed inset-0 grid-pattern pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" style="animation: pulse 4s infinite;"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" style="animation: pulse 4s infinite 2s;"></div>
+
+    <!-- Header -->
+    <header class="relative z-10 glass sticky top-0 border-b border-gray-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center" style="box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);">
+                        <i class="fas fa-layer-group text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold gradient-text">软件分类中心</h1>
+                        <p class="text-xs text-gray-400">Software Classification Center</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-400">
+                        <span class="flex items-center"><i class="fab fa-github mr-1"></i> 开源</span>
+                        <span class="w-1 h-1 bg-gray-600 rounded-full"></span>
+                        <span class="flex items-center"><i class="fas fa-shopping-cart mr-1"></i> 商业</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 pt-12 pb-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 animate-float">
+                <span class="gradient-text">跨平台软件资源库</span>
+            </h2>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
+                精心整理的 Windows、Linux、Android 软件分类，按 GitHub 开源与商业软件分类，助你快速找到所需工具
+            </p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-8">
+                <div class="stat-card rounded-xl p-4">
+                    <div class="text-2xl font-bold text-blue-400">92</div>
+                    <div class="text-xs text-gray-400">Windows 软件</div>
+                </div>
+                <div class="stat-card rounded-xl p-4">
+                    <div class="text-2xl font-bold text-purple-400">4</div>
+                    <div class="text-xs text-gray-400">Linux 工具</div>
+                </div>
+                <div class="stat-card rounded-xl p-4">
+                    <div class="text-2xl font-bold text-cyan-400">17</div>
+                    <div class="text-xs text-gray-400">Android 应用</div>
+                </div>
+                <div class="stat-card rounded-xl p-4">
+                    <div class="text-2xl font-bold text-green-400">45</div>
+                    <div class="text-xs text-gray-400">GitHub 开源</div>
+                </div>
+            </div>
+
+            <div class="max-w-2xl mx-auto relative">
+                <input type="text" id="searchInput" placeholder="搜索软件名称或功能..." 
+                    class="w-full px-6 py-4 rounded-2xl glass text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-all"
+                    oninput="filterSoftware()">
+                <i class="fas fa-search absolute right-6 top-1/2 -translate-y-1/2 text-gray-500"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Tabs -->
+    <section class="relative z-10 px-4 sm:px-6 lg:px-8 mb-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass rounded-2xl p-2 flex flex-wrap gap-2 justify-center">
+                <button onclick="filterByPlatform('all')" class="filter-btn category-active px-6 py-2 rounded-xl text-sm font-medium transition-all" data-platform="all">全部平台</button>
+                <button onclick="filterByPlatform('windows')" class="filter-btn px-6 py-2 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all" data-platform="windows"><i class="fab fa-windows mr-2"></i>Windows</button>
+                <button onclick="filterByPlatform('linux')" class="filter-btn px-6 py-2 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all" data-platform="linux"><i class="fab fa-linux mr-2"></i>Linux</button>
+                <button onclick="filterByPlatform('android')" class="filter-btn px-6 py-2 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all" data-platform="android"><i class="fab fa-android mr-2"></i>Android</button>
+                <div class="w-px h-8 bg-gray-700 mx-2 hidden md:block"></div>
+                <button onclick="filterBySource('all')" class="source-btn px-4 py-2 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all" data-source="all">全部来源</button>
+                <button onclick="filterBySource('github')" class="source-btn px-4 py-2 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all" data-source="github"><i class="fab fa-github mr-1"></i>开源</button>
+                <button onclick="filterBySource('commercial')" class="source-btn px-4 py-2 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all" data-source="commercial"><i class="fas fa-crown mr-1"></i>商业</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <main class="relative z-10 px-4 sm:px-6 lg:px-8 pb-20">
+        <div class="max-w-7xl mx-auto">
+
+            <!-- Windows Section -->
+            <div id="windows-section" class="platform-section mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+                            <i class="fab fa-windows text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Windows 软件</h3>
+                            <p class="text-sm text-gray-400">92 款精选工具</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <span class="px-3 py-1 rounded-full text-xs github-badge text-green-400">45 开源</span>
+                        <span class="px-3 py-1 rounded-full text-xs platform-badge text-blue-400">47 商业</span>
+                    </div>
+                </div>
+
+                <div class="mb-8 source-section" data-source="github">
+                    <h4 class="text-lg font-semibold text-gray-300 mb-4 flex items-center">
+                        <i class="fab fa-github text-green-400 mr-2"></i>开源软件 (GitHub)<span class="ml-2 text-xs text-gray-500">45款</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Stirling-PDF" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-file-pdf text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Stirling-PDF</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">本地PDF工具箱（合并、拆分、压缩、OCR、转换、签名等）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>生产力工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Escrcpy" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-mobile-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Escrcpy</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">安卓投屏控制工具（Scrcpy的Electron GUI封装）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>设备管理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="AriaNg GUI" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-cloud-download-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">AriaNg GUI</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Aria2下载器的图形界面（HTTP/FTP/BT/磁力链下载）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>下载工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Motrix" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
+                                    <i class="fas fa-download text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Motrix</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">全能下载器（支持BT、磁力、百度网盘等）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>下载工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="OBS Studio" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-video text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">OBS Studio</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">开源直播录屏软件（推流、场景切换、滤镜插件）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>直播录制</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Blender" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                                    <i class="fas fa-cube text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Blender</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">全能3D创作套件（建模、雕刻、动画、渲染、合成、视频剪辑）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>3D创作</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="SideFX Houdini" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                                    <i class="fas fa-magic text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">SideFX Houdini</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">程序化3D特效软件（影视级粒子、流体、刚体模拟）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>影视特效</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Unreal Engine" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-gamepad text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Unreal Engine</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">虚幻引擎（3A游戏开发、实时渲染、虚拟制片）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>游戏引擎</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="PyCharm Community" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-python text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">PyCharm Community</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">JetBrains Python IDE（代码补全、调试、Git集成）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>开发工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="GitHub Desktop" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-github text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">GitHub Desktop</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">GitHub官方Git客户端（可视化仓库管理）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>版本控制</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Android Studio" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-android text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Android Studio</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">谷歌官方安卓开发IDE</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>移动开发</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="VS Code" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-code text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">VS Code</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">微软开源代码编辑器（插件生态最丰富）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>代码编辑</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Docker Desktop" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-docker text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Docker Desktop</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">容器化开发环境（运行Linux容器）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>容器化</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Everything" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-search text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Everything</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">极速本地文件搜索（基于NTFS索引）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>文件管理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="7-Zip" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-file-archive text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">7-Zip</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">开源压缩解压工具（7z格式压缩率最高）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>压缩工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="PotPlayer" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-pink-700 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">PotPlayer</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">全能播放器（格式支持最全，可播HDR）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>媒体播放</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="HBuilderX" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-code text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">HBuilderX</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">DCloud出品的跨平台开发工具（Vue/Uni-app）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>开发工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="DataEase" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-chart-bar text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">DataEase</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">开源数据可视化分析工具（BI报表）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>数据分析</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="DevEco Studio" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-mobile-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">DevEco Studio</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">华为鸿蒙应用开发IDE</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>移动开发</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Wireshark" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-network-wired text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Wireshark</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">网络协议分析器（抓包、排查网络问题）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>网络工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="OpenCode" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-robot text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">OpenCode</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">AI编程助手（类似GitHub Copilot）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>AI工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Termius" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                                    <i class="fas fa-terminal text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Termius</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">跨平台SSH/SFTP客户端（服务器管理）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>服务器工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="IntelliJ IDEA" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-code text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">IntelliJ IDEA</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">JetBrains旗舰Java/Kotlin IDE</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>开发工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="PixPin" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-700 flex items-center justify-center">
+                                    <i class="fas fa-cut text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">PixPin</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">截图工具（长截图、OCR、贴图、录屏）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>截图工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Coodesker" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-desktop text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Coodesker</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">桌面整理工具（自动分类图标到盒子）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>桌面工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Syncthing" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-sync text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Syncthing</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">点对点文件同步（无中心服务器，隐私安全）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>文件同步</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Geek Uninstaller" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-trash-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Geek Uninstaller</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">深度卸载工具（清理注册表残留）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>系统清理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="MusicFree" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-music text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">MusicFree</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">开源音乐播放器（插件化音源，无版权音乐）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>音乐播放</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="FFmpeg" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-film text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">FFmpeg</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">音视频处理命令行工具（转换、剪辑、推流核心）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>音视频处理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="yt-dlp" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-youtube text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">yt-dlp</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">命令行视频下载器（YouTube/B站等800+站点）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>下载工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="MPV" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-play text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">MPV</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">极简开源播放器（命令行驱动，配置灵活）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>媒体播放</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Pandoc" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-file-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Pandoc</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">文档格式转换神器（Markdown↔Word/PDF/HTML等）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>文档转换</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="resvg" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-image text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">resvg</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">SVG渲染库/工具（高质量SVG转PNG）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>图像处理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="rimage" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                                    <i class="fas fa-compress-arrows-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">rimage</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">图片批量压缩优化（基于Rust，保质量减体积）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>图像优化</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="qBittorrent" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-download text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">qBittorrent</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">开源BT客户端（无广告，支持RSS自动下载）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>BT下载</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="V2RayN" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">V2RayN</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">V2Ray代理客户端（VMess/VLESS/Trojan协议）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>网络代理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Clash Verge" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-network-wired text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Clash Verge</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Clash内核代理客户端（规则分流、订阅管理）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>网络代理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="ContextMenuManager" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-mouse-pointer text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">ContextMenuManager</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">右键菜单管理工具（增删菜单项）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>系统优化</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Nexus" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
+                                    <i class="fas fa-dock text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Nexus</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">桌面Dock栏工具（仿macOS程序坞）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>桌面美化</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Keyviz" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-pink-700 flex items-center justify-center">
+                                    <i class="fas fa-keyboard text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Keyviz</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">实时显示按键操作（录屏演示用）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>演示工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Windows11轻松设置" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-windows text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Windows11轻松设置</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Win11优化工具（关闭推荐、右键恢复经典）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>系统优化</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="CCleaner" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-broom text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">CCleaner</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">系统清理工具（注册表清理、启动项管理）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>系统清理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="OpenAL" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-volume-up text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">OpenAL</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">音频API（游戏3D音效，通常随游戏安装）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>音频工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="qimgv" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-image text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">qimgv</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">轻量图片查看器（快速浏览、基本编辑）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>图像查看</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Navicat Premium" data-platform="windows" data-source="github">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-database text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Navicat Premium</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">数据库管理GUI（MySQL/PostgreSQL/MongoDB等）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>数据库</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="source-section" data-source="commercial">
+                    <h4 class="text-lg font-semibold text-gray-300 mb-4 flex items-center">
+                        <i class="fas fa-crown text-amber-400 mr-2"></i>商业软件<span class="ml-2 text-xs text-gray-500">47款</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Internet Download Manager" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-download text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Internet Download Manager</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">多线程下载加速器（浏览器集成，断点续传）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>下载加速</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="SnapAny" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-cloud-download-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">SnapAny</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">多平台视频解析下载（抖音/B站/YouTube等）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>下载工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Bilinote" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-pink-700 flex items-center justify-center">
+                                    <i class="fas fa-sticky-note text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Bilinote</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">B站笔记工具（视频时间戳笔记、导出）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>笔记工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Core Temp" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-thermometer-half text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Core Temp</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">CPU温度监控（显示每个核心温度）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>硬件监控</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="图吧工具箱" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-tools text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">图吧工具箱</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">硬件检测合集（CPU-Z/GPU-Z/AIDA64等绿色版）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>硬件检测</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="DownKyi" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-pink-700 flex items-center justify-center">
+                                    <i class="fas fa-download text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">DownKyi</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">B站视频下载工具（支持4K/弹幕/封面）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>下载工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Dewatermark" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-700 flex items-center justify-center">
+                                    <i class="fas fa-eraser text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Dewatermark</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">AI去水印工具（图片/视频水印移除）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>AI图像处理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="CorelDRAW" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-pen-nib text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">CorelDRAW</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">矢量图形设计软件（排版、Logo、插画）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>平面设计</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="SAI" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-paint-brush text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">SAI</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">轻量级数字绘画软件（流畅勾线，赛璐璐风格）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>数字绘画</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="DaVinci Resolve" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-film text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">DaVinci Resolve</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">专业视频调色剪辑（免费版功能已很强）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>视频剪辑</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Adobe Premiere Pro" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-video text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Adobe Premiere Pro</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">行业标准视频剪辑软件</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>视频剪辑</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Adobe After Effects" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-magic text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Adobe After Effects</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">动态图形与视觉特效合成</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>影视特效</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Adobe Audition" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-microphone text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Adobe Audition</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">专业音频编辑（降噪、混音、播客制作）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>音频编辑</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Adobe Photoshop" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-image text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Adobe Photoshop</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">图像处理行业标准（修图、合成、设计）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>图像处理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Microsoft Office" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                                    <i class="fas fa-file-word text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Microsoft Office</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">办公套件（Word/Excel/PowerPoint/Outlook）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>办公软件</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="WPS Office" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-file-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">WPS Office</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">国产办公套件（兼容Office，PDF功能强）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>办公软件</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="希沃白板" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-chalkboard text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">希沃白板</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">教育互动课件工具（课堂投屏、学科工具）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>教育工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="iSlide" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-file-powerpoint text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">iSlide</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">PPT插件（模板、图表、一键排版）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>PPT插件</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="XMind" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-project-diagram text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">XMind</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">思维导图软件（逻辑梳理、头脑风暴）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>思维导图</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="EdrawMax" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-draw-polygon text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">EdrawMax</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">全类型图表绘制（流程图、甘特图、架构图）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>图表绘制</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="UU远程" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-gamepad text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">UU远程</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">网易游戏远程串流（低延迟玩游戏）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>游戏串流</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="ToDesk" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-desktop text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">ToDesk</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">国产远程桌面（个人版免费，跨平台）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>远程控制</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="RustDesk" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-desktop text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">RustDesk</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">开源远程桌面（安全高效，跨平台）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>远程控制</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="向日葵远程" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                                    <i class="fas fa-sun text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">向日葵远程</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">国产老牌远程控制（开机棒等硬件生态）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>远程控制</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="ZBrush" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-cube text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">ZBrush</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">数字雕刻软件（高模细节，影视游戏角色）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>3D雕刻</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="3ds Max" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-cube text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">3ds Max</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Autodesk三维建模渲染（建筑可视化、游戏资产）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>3D建模</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Maya" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-700 flex items-center justify-center">
+                                    <i class="fas fa-film text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Maya</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Autodesk影视动画全流程（绑定、动画、特效）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>影视动画</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Cinema 4D" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-cube text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Cinema 4D</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Maxon三维软件（运动图形MoGraph最强）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>3D设计</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="GameBox" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-gamepad text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">GameBox</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">游戏盒子（860+款Steam游戏一键下载）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>游戏平台</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="OneRecord" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-record-vinyl text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">OneRecord</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">多平台直播录制工具（50+平台，自动录制）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>直播录制</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="顺网云电脑" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-cloud text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">顺网云电脑</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">云游戏/云电脑服务（低配置玩3A）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>云游戏</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Steam" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-steam text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Steam</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">全球最大游戏分发平台</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>游戏平台</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Wallpaper Engine" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-image text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Wallpaper Engine</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">动态壁纸软件（创意工坊资源极多）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>桌面美化</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="VTube Studio" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-pink-700 flex items-center justify-center">
+                                    <i class="fas fa-user-astronaut text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">VTube Studio</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">虚拟主播面捕软件（Live2D皮套驱动）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>虚拟主播</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Warudo" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-video text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Warudo</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">3D虚拟主播软件（UE5渲染，多平台推流）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>虚拟主播</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="格式工厂" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-exchange-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">格式工厂</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">国产格式转换工具（视频/音频/图片/光驱）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>格式转换</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="搜图神器" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-search text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">搜图神器</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">聚合全网图片搜索引擎，以图搜图，4K/8K壁纸下载</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>图像搜索</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="扣扣图" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-700 flex items-center justify-center">
+                                    <i class="fas fa-cut text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">扣扣图</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">AI智能抠图工具（一键去背景，批量处理）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>AI图像处理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="MagicView" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                    <i class="fas fa-eye text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">MagicView</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">高性能图片查看器（支持70+格式，无广告）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>图像查看</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="qBittorrent" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-download text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">qBittorrent</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">开源BT客户端（无广告，支持RSS自动下载）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>BT下载</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="AdsPower Browser" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                                    <i class="fas fa-fingerprint text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">AdsPower Browser</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">指纹浏览器（多账号防关联，跨境电商用）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>浏览器</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="变色龙加速器" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-tachometer-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">变色龙加速器</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">游戏加速器（降低延迟、减少丢包）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>游戏加速</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="火绒安全软件" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">火绒安全软件</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">国产杀毒软件（弹窗拦截、启动项管理口碑好）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>安全防护</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="NVIDIA App" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-microchip text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">NVIDIA App</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">NVIDIA显卡控制面板替代（驱动更新、游戏优化）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>显卡管理</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="NVIDIA Broadcast" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                    <i class="fas fa-video text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">NVIDIA Broadcast</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">AI直播辅助（降噪、虚拟背景、眼神接触）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>直播辅助</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Iriun Webcam" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                    <i class="fas fa-mobile text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Iriun Webcam</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">手机变电脑摄像头（无线连接）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>设备工具</div>
+                        </div>
+
+                        <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="文件管理命名标准格式" data-platform="windows" data-source="commercial">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                                    <i class="fas fa-file-alt text-white"></i>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                            </div>
+                            <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">文件管理命名标准格式</h5>
+                            <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">文件批量重命名工具（标准化命名规则）</p>
+                            <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>文件管理</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Linux Section -->
+            <div id="linux-section" class="platform-section mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-yellow-600 to-orange-700 flex items-center justify-center">
+                            <i class="fab fa-linux text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Linux 工具</h3>
+                            <p class="text-sm text-gray-400">4 款开源工具</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full text-xs github-badge text-green-400">全部开源</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="3x-ui" data-platform="linux" data-source="github">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-network-wired text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">3x-ui</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Xray面板（可视化VLESS/Vmess代理节点管理）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>网络代理</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="1Panel" data-platform="linux" data-source="github">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-server text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">1Panel</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">国产Linux服务器面板（Docker/网站/数据库管理）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>服务器管理</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Docker" data-platform="linux" data-source="github">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-docker text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Docker</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">容器运行时（应用隔离部署）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>容器化</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Docker Compose" data-platform="linux" data-source="github">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                <i class="fas fa-layer-group text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Docker Compose</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">多容器编排工具（YAML定义服务栈）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>容器编排</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Android Section -->
+            <div id="android-section" class="platform-section mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center">
+                            <i class="fab fa-android text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Android 应用</h3>
+                            <p class="text-sm text-gray-400">17 款精选应用</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <span class="px-3 py-1 rounded-full text-xs github-badge text-green-400">1 开源</span>
+                        <span class="px-3 py-1 rounded-full text-xs platform-badge text-blue-400">16 商业</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="HelloTalk" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                <i class="fas fa-comments text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">HelloTalk</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">语言交换社交APP（与母语者互学语言）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>语言学习</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Clone App" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-clone text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Clone App</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">应用多开工具（微信/游戏双开）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>应用多开</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Bitget Wallet" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                                <i class="fas fa-wallet text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Bitget Wallet</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">加密货币钱包（Web3资产管理）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>加密货币</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Duolingo" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                <i class="fas fa-language text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Duolingo</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">游戏化语言学习APP</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>语言学习</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="Z-Library" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-book text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">Z-Library</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">电子书下载（需配合官方APP或镜像）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>电子书</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="APKPure" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                <i class="fas fa-android text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">APKPure</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">第三方APK应用商店（谷歌商店替代品）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>应用商店</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="LiteApks" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-download text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">LiteApks</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">轻量版APK下载站（去广告版应用）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>应用下载</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="ZArchiver Pro" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                                <i class="fas fa-file-archive text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">ZArchiver Pro</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">安卓压缩解压工具（支持7z/rar/zip）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>压缩工具</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="AIDA64" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-microchip text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">AIDA64</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">硬件检测工具（手机传感器、电池、屏幕信息）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>硬件检测</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="12306" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-train text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">12306</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">中国铁路官方购票APP</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>交通出行</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="航旅纵横" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-plane text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">航旅纵横</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">航班动态/值机/电子登机牌（中航信官方）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>航空出行</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="中国气象" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-cloud-sun text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">中国气象</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">官方天气预报（数据权威，灾害预警）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>天气应用</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="泰尔网测" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-tachometer-alt text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">泰尔网测</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">工信部旗下网速测试（测速标准严格）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>网速测试</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="AdGuard" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">AdGuard</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">广告拦截工具（系统级过滤，需ROOT/VPN模式）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>广告拦截</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="李跳跳" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                                <i class="fas fa-ad text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">李跳跳</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">自动跳过APP开屏广告（规则驱动，需侧载）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>广告拦截</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="网飞猫" data-platform="android" data-source="commercial">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                                <i class="fas fa-tv text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30"><i class="fas fa-crown mr-1"></i>商业</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">网飞猫</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Netflix影视聚合（非官方，资源爬取类）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>影视聚合</div>
+                    </div>
+
+                    <div class="software-card glass-card rounded-xl p-4 cursor-pointer group" data-name="MusicFree" data-platform="android" data-source="github">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                                <i class="fas fa-music text-white"></i>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs github-badge text-green-400 border border-green-500/30"><i class="fab fa-github mr-1"></i>Open Source</span>
+                        </div>
+                        <h5 class="font-semibold text-white mb-1 group-hover:text-blue-400 transition-colors">MusicFree</h5>
+                        <p class="text-xs text-gray-400" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">开源音乐播放器（插件导入音源，无广告）</p>
+                        <div class="mt-3 flex items-center text-xs text-gray-500"><i class="fas fa-tag mr-1"></i>音乐播放</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 glass border-t border-gray-700/50 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-500 text-sm"><i class="fas fa-code mr-2"></i>软件分类展示中心 | 数据更新时间：2026-03-02</p>
+            <p class="text-gray-600 text-xs mt-2">按 GitHub 开源与商业软件分类整理 | 跨平台资源库</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentPlatform = 'all';
+        let currentSource = 'all';
+        let searchQuery = '';
+
+        function filterByPlatform(platform) {
+            currentPlatform = platform;
+            updateFilterButtons();
+            applyFilters();
+        }
+
+        function filterBySource(source) {
+            currentSource = source;
+            updateSourceButtons();
+            applyFilters();
+        }
+
+        function filterSoftware() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            applyFilters();
+        }
+
+        function updateFilterButtons() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.platform === currentPlatform) {
+                    btn.classList.add('category-active');
+                    btn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-gray-700/50');
+                } else {
+                    btn.classList.remove('category-active');
+                    btn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-gray-700/50');
+                }
+            });
+        }
+
+        function updateSourceButtons() {
+            document.querySelectorAll('.source-btn').forEach(btn => {
+                if (btn.dataset.source === currentSource) {
+                    btn.classList.add('category-active');
+                    btn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-gray-700/50');
+                } else {
+                    btn.classList.remove('category-active');
+                    btn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-gray-700/50');
+                }
+            });
+        }
+
+        function applyFilters() {
+            const cards = document.querySelectorAll('.software-card');
+            const sections = document.querySelectorAll('.platform-section');
+
+            cards.forEach(card => {
+                const platform = card.dataset.platform;
+                const source = card.dataset.source;
+                const name = card.dataset.name.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+
+                const matchPlatform = currentPlatform === 'all' || platform === currentPlatform;
+                const matchSource = currentSource === 'all' || source === currentSource;
+                const matchSearch = searchQuery === '' || name.includes(searchQuery) || description.includes(searchQuery);
+
+                if (matchPlatform && matchSource && matchSearch) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            sections.forEach(section => {
+                const visibleCards = section.querySelectorAll('.software-card[style*="block"], .software-card:not([style*="none"])');
+                if (visibleCards.length === 0) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
