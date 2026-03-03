@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甜妹城市指南 | 中国甜妹高发地地图</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            font-family: 'Noto Sans SC', 'Quicksand', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #f8b500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px -15px rgba(255, 107, 157, 0.4);
+        }
+        
+        .blob {
+            position: absolute;
+            filter: blur(40px);
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        .tag-pop {
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0);
+        }
+        
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .heart-beat {
+            animation: heartbeat 2s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10% { transform: scale(1.1); }
+            20% { transform: scale(1); }
+            30% { transform: scale(1.1); }
+            40% { transform: scale(1); }
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .city-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,240,245,0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,182,193,0.3);
+        }
+        
+        .rating-star {
+            color: #ffb6c1;
+            text-shadow: 0 0 10px rgba(255,182,193,0.5);
+        }
+        
+        .spot-tag {
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 100%);
+            border: 1px solid rgba(255,182,193,0.3);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gradient-to-br from-pink-50 via-white to-purple-50 min-h-screen overflow-x-hidden">
+
+    <!-- Floating Blobs Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="blob bg-pink-300 w-96 h-96 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="blob bg-purple-300 w-80 h-80 rounded-full top-1/3 right-0 translate-x-1/3" style="animation-delay: 2s"></div>
+        <div class="blob bg-yellow-200 w-72 h-72 rounded-full bottom-0 left-1/3 translate-y-1/2" style="animation-delay: 4s"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="relative z-50 px-6 py-4 flex justify-between items-center max-w-7xl mx-auto">
+        <div class="flex items-center gap-2">
+            <i data-lucide="heart" class="w-8 h-8 text-pink-500 heart-beat fill-pink-500"></i>
+            <span class="text-2xl font-bold gradient-text">甜妹地图</span>
+        </div>
+        <div class="hidden md:flex gap-6 text-gray-600 font-medium">
+            <a href="#cities" class="hover:text-pink-500 transition-colors">城市推荐</a>
+            <a href="#guide" class="hover:text-pink-500 transition-colors">脱单指南</a>
+            <a href="#style" class="hover:text-pink-500 transition-colors">风格识别</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative z-10 pt-20 pb-32 px-6 text-center max-w-5xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 shadow-sm border border-pink-200 mb-8 scroll-reveal">
+            <span class="flex h-2 w-2 rounded-full bg-pink-500 animate-pulse"></span>
+            <span class="text-sm text-gray-600 font-medium">基于2025-2026全网数据整理</span>
+        </div>
+        
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight scroll-reveal" style="transition-delay: 0.1s">
+            寻找你的<span class="gradient-text">甜妹</span>
+            <br>
+            <span class="text-3xl md:text-5xl text-gray-700 font-light">温柔治愈系女友指南</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed scroll-reveal" style="transition-delay: 0.2s">
+            从杭州西湖到成都太古里，我们为你筛选出中国甜妹密度最高、性格最温柔、脱单友好度最佳的城市。
+            <br>
+            <span class="text-pink-500 font-medium">不是辣妹，不是御姐，专找胶原蛋白满满的治愈系甜妹。</span>
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-4 scroll-reveal" style="transition-delay: 0.3s">
+            <button onclick="scrollToSection('cities')" class="px-8 py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full font-semibold shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 transform hover:scale-105 transition-all flex items-center gap-2">
+                <i data-lucide="map-pin"></i>
+                查看城市排行
+            </button>
+            <button onclick="scrollToSection('guide')" class="px-8 py-4 bg-white text-gray-700 border-2 border-pink-200 rounded-full font-semibold hover:border-pink-400 hover:text-pink-500 transition-all flex items-center gap-2">
+                <i data-lucide="book-open"></i>
+                脱单攻略
+            </button>
+        </div>
+    </header>
+
+    <!-- Top 3 Cities Section -->
+    <section id="cities" class="relative z-10 px-6 pb-20 max-w-7xl mx-auto">
+        <div class="text-center mb-16 scroll-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">甜妹高发城市 TOP 3</h2>
+            <p class="text-gray-600">综合颜值密度、性格温柔度、脱单友好度排序</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Hangzhou -->
+            <div class="city-card rounded-3xl p-8 card-hover scroll-reveal relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-200/50 to-transparent rounded-bl-full"></div>
+                <div class="relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="text-5xl font-bold text-pink-200">01</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-2">杭州</h3>
+                        </div>
+                        <div class="flex gap-1">
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-pink-500"></i>
+                            <span>浙江省 · 江南水乡</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-lucide="thermometer" class="w-4 h-4 text-pink-500"></i>
+                            <span>气候：温和湿润，四季分明</span>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-700 leading-relaxed mb-6 text-sm">
+                        <strong class="text-pink-600">甜妹精神故乡。</strong>杭妹风格"甜而不腻"：长发飘飘、精致穿搭、温柔知性、笑起来有小酒窝或梨涡。西湖边、湖滨银泰、武林广场，随便逛都能撞见野生甜妹。
+                    </p>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">甜妹出没地</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-pink-700 font-medium">西湖边</span>
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-pink-700 font-medium">湖滨银泰</span>
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-pink-700 font-medium">钱江新城</span>
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-pink-700 font-medium">武林广场</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-pink-100">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">脱单难度</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">中等偏低</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">女生整体素质高、教育好，偏传统顾家，对感情慢热但一旦喜欢很黏人。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chengdu -->
+            <div class="city-card rounded-3xl p-8 card-hover scroll-reveal relative overflow-hidden group" style="transition-delay: 0.1s">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-200/50 to-transparent rounded-bl-full"></div>
+                <div class="relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="text-5xl font-bold text-purple-200">02</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-2">成都</h3>
+                        </div>
+                        <div class="flex gap-1">
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-purple-500"></i>
+                            <span>四川省 · 天府之国</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-lucide="thermometer" class="w-4 h-4 text-purple-500"></i>
+                            <span>气候：湿润温和，美食天堂</span>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-700 leading-relaxed mb-6 text-sm">
+                        <strong class="text-purple-600">甜辣混搭之都。</strong>川妹子基础颜值高，"甜中带点小俏皮"：皮肤白、五官软萌、爱笑、性格温和包容。宽窄巷子、太古里、人民公园，甜妹出没率爆表。
+                    </p>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">甜妹出没地</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-purple-700 font-medium bg-purple-50">宽窄巷子</span>
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-purple-700 font-medium bg-purple-50">太古里</span>
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-purple-700 font-medium bg-purple-50">锦里</span>
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-purple-700 font-medium bg-purple-50">人民公园</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-purple-100">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">脱单难度</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">容易</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">生活节奏慢、社交开放，外地人友好。火锅局、茶馆约会超级自然，女生包容度高。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suzhou/Nanjing -->
+            <div class="city-card rounded-3xl p-8 card-hover scroll-reveal relative overflow-hidden group" style="transition-delay: 0.2s">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-200/50 to-transparent rounded-bl-full"></div>
+                <div class="relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="text-5xl font-bold text-blue-200">03</span>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-2">苏州/无锡</h3>
+                        </div>
+                        <div class="flex gap-1">
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 rating-star text-gray-300"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-blue-500"></i>
+                            <span>江苏省 · 江南水乡</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i data-lucide="thermometer" class="w-4 h-4 text-blue-500"></i>
+                            <span>气候：温润宜人，园林之城</span>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-700 leading-relaxed mb-6 text-sm">
+                        <strong class="text-blue-600">古典甜妹集群。</strong>吴侬软语、古典气质+现代甜美融合，娃娃脸+温柔声音是标配。无锡甚至被叫"甜都"，女生性格温和、不爱作，脱单压力小。
+                    </p>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">甜妹出没地</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-blue-700 font-medium bg-blue-50">苏州园林</span>
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-blue-700 font-medium bg-blue-50">平江路</span>
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-blue-700 font-medium bg-blue-50">无锡太湖</span>
+                            <span class="spot-tag px-3 py-1 rounded-full text-xs text-blue-700 font-medium bg-blue-50">南京大学城</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-blue-100">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">脱单难度</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">低</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">适合想找"古典甜妹"或"邻家女孩"型，竞争比杭州低，江南女子的温婉气质。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Cities -->
+    <section class="relative z-10 px-6 pb-20 max-w-7xl mx-auto">
+        <div class="bg-white/60 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-pink-100 scroll-reveal">
+            <h3 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-6 h-6 text-yellow-500"></i>
+                其他甜妹高发地
+            </h3>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-orange-50 to-white border border-orange-100 hover:border-orange-300 transition-colors">
+                    <h4 class="font-bold text-gray-800 mb-2">长沙</h4>
+                    <p class="text-sm text-gray-600 mb-3">湘妹热情甜美，夜生活丰富，偏"活泼甜"多于"温柔甜"</p>
+                    <span class="text-xs text-orange-600 font-medium">推荐地点：五一广场、橘子洲头</span>
+                </div>
+                
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-green-50 to-white border border-green-100 hover:border-green-300 transition-colors">
+                    <h4 class="font-bold text-gray-800 mb-2">南宁/广西</h4>
+                    <p class="text-sm text-gray-600 mb-3">水果甜妹多，笑容超甜、性格乐观，具有独特的南方气质</p>
+                    <span class="text-xs text-green-600 font-medium">推荐地点：青秀山、民歌湖</span>
+                </div>
+                
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 hover:border-indigo-300 transition-colors">
+                    <h4 class="font-bold text-gray-800 mb-2">温州/宁波</h4>
+                    <p class="text-sm text-gray-600 mb-3">江浙沪包邮区整体甜妹友好，商业气息与甜美气质并存</p>
+                    <span class="text-xs text-indigo-600 font-medium">推荐地点：天一广场、南塘老街</span>
+                </div>
+                
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-red-50 to-white border border-red-100 hover:border-red-300 transition-colors">
+                    <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-1">
+                        需避开
+                        <i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i>
+                    </h4>
+                    <p class="text-sm text-gray-600 mb-3">重庆（偏辣妹火辣）、哈尔滨/大连（偏高冷大长腿混血风）</p>
+                    <span class="text-xs text-red-600 font-medium">风格不符预警</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sweet Girl Style Guide -->
+    <section id="style" class="relative z-10 px-6 pb-20 max-w-7xl mx-auto">
+        <div class="text-center mb-16 scroll-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">甜妹风格识别指南</h2>
+            <p class="text-gray-600">如何一眼识别真·甜妹？</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-6 scroll-reveal">
+                <div class="flex gap-4 items-start">
+                    <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="smile" class="w-6 h-6 text-pink-500"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-1">外貌特征</h4>
+                        <p class="text-gray-600 text-sm">大眼睛、圆脸/鹅蛋脸、胶原蛋白满满、笑容感染力强、长发清新、可能有梨涡或小酒窝</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 items-start">
+                    <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="heart-handshake" class="w-6 h-6 text-purple-500"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-1">性格特质</h4>
+                        <p class="text-gray-600 text-sm">温柔、可爱、甜美气质、娃娃脸、笑容治愈、说话轻声细语、性格温和包容</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 items-start">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="shirt" class="w-6 h-6 text-blue-500"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-1">穿搭风格</h4>
+                        <p class="text-gray-600 text-sm">浅色系为主、碎花裙、针织开衫、百褶裙、小白鞋、精致但不夸张的配饰</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative scroll-reveal" style="transition-delay: 0.2s">
+                <div class="absolute inset-0 bg-gradient-to-r from-pink-200 to-purple-200 rounded-3xl transform rotate-3 opacity-50"></div>
+                <div class="relative bg-white rounded-3xl p-8 shadow-xl border border-pink-100">
+                    <h4 class="font-bold text-gray-800 mb-6 text-center">甜妹 vs 其他类型</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-pink-50 rounded-xl border-2 border-pink-300">
+                            <span class="font-bold text-pink-700">甜妹</span>
+                            <span class="text-xs text-gray-600">温柔可爱 · 治愈系 · 娃娃脸</span>
+                            <span class="px-2 py-1 bg-pink-500 text-white text-xs rounded-full">目标</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl opacity-60">
+                            <span class="font-bold text-gray-700">辣妹</span>
+                            <span class="text-xs text-gray-600">火辣性感 · 欧美风 · 大长腿</span>
+                            <span class="px-2 py-1 bg-gray-400 text-white text-xs rounded-full">非目标</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl opacity-60">
+                            <span class="font-bold text-gray-700">御姐</span>
+                            <span class="text-xs text-gray-600">成熟干练 · 气场强 · 独立</span>
+                            <span class="px-2 py-1 bg-gray-400 text-white text-xs rounded-full">非目标</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl opacity-60">
+                            <span class="font-bold text-gray-700">女王型</span>
+                            <span class="text-xs text-gray-600">高冷强势 · 掌控欲 · 精英范</span>
+                            <span class="px-2 py-1 bg-gray-400 text-white text-xs rounded-full">非目标</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dating Guide -->
+    <section id="guide" class="relative z-10 px-6 pb-20 max-w-7xl mx-auto">
+        <div class="bg-gradient-to-br from-pink-500 to-purple-600 rounded-3xl p-8 md:p-12 text-white shadow-2xl scroll-reveal">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">甜妹脱单实战指南</h2>
+                <p class="text-pink-100">甜妹最爱温柔体贴+有安全感的男生</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-4">
+                        <i data-lucide="coffee" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3">初次约会</h4>
+                    <ul class="space-y-2 text-sm text-pink-100">
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>选择安静的咖啡馆或书店</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>西湖边散步或看展（杭州）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>茶馆喝茶体验慢生活（成都）</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>园林游览，感受江南文化（苏州）</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-4">
+                        <i data-lucide="message-circle" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3">聊天技巧</h4>
+                    <ul class="space-y-2 text-sm text-pink-100">
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>别一上来就信息轰炸</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>多倾听，展现温柔体贴</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>分享生活细节，建立安全感</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>避免过于直接或油腻的表白</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-4">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="font-bold text-xl mb-3">长期关系</h4>
+                    <ul class="space-y-2 text-sm text-pink-100">
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>展现稳定的工作/上进心</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>给予足够的安全感</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>尊重她的慢热性格</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i data-lucide="check" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                            <span>一旦喜欢会很黏人，珍惜这份依赖</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <div class="inline-flex items-center gap-2 px-6 py-3 bg-white/20 rounded-full backdrop-blur-sm border border-white/30">
+                    <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-300"></i>
+                    <span class="font-medium">核心秘诀：慢慢来，成功率翻倍</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary -->
+    <section class="relative z-10 px-6 pb-20 max-w-4xl mx-auto text-center scroll-reveal">
+        <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-pink-100">
+            <i data-lucide="crown" class="w-12 h-12 text-yellow-500 mx-auto mb-6"></i>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">一句话建议</h3>
+            <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                如果你人在洛杉矶（LA），计划回国短期找甜妹或长期定居，<br>
+                <span class="font-bold text-pink-600">优先杭州 > 成都 > 苏州</span> 这三地。
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 text-sm">
+                <span class="px-4 py-2 bg-pink-50 text-pink-700 rounded-full border border-pink-200">温柔体贴</span>
+                <span class="px-4 py-2 bg-pink-50 text-pink-700 rounded-full border border-pink-200">有安全感</span>
+                <span class="px-4 py-2 bg-pink-50 text-pink-700 rounded-full border border-pink-200">主动但不唐突</span>
+                <span class="px-4 py-2 bg-pink-50 text-pink-700 rounded-full border border-pink-200">稳定工作</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 text-center pb-8 text-gray-500 text-sm">
+        <p>基于2025-2026网络反馈、抖音/小红书/社交平台共识整理</p>
+        <p class="mt-2">祝你好运，找到属于你的甜妹 💕</p>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Scroll reveal animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+
+        // Smooth scroll function
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Add parallax effect to blobs
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelectorAll('.blob');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            blobs.forEach((blob, index) => {
+                const speed = (index + 1) * 20;
+                const xOffset = (0.5 - x) * speed;
+                const yOffset = (0.5 - y) * speed;
+                blob.style.transform = `translate(${xOffset}px, ${yOffset}px) scale(${1 + index * 0.1})`;
+            });
+        });
+
+        // Tag pop animation on load
+        window.addEventListener('load', () => {
+            const tags = document.querySelectorAll('.spot-tag');
+            tags.forEach((tag, index) => {
+                tag.classList.add('tag-pop');
+                tag.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
