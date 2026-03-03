@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交通工具分类与使用寿命百科</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .timeline-gradient {
+            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+        }
+        
+        .glow-blue { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+        .glow-purple { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+        .glow-green { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+        
+        .vehicle-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .vehicle-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .tab-active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        
+        .expandable {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        
+        .expandable.open {
+            max-height: 500px;
+        }
+        
+        .grid-bg {
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            z-index: 100;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body class="grid-bg min-h-screen">
+
+    <div class="scroll-progress" id="scrollBar"></div>
+
+    <!-- Header -->
+    <header class="relative pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-xs font-medium text-blue-300 mb-6 border border-blue-500/20">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                <span>完整分类体系 · 设计使用寿命 · 强制报废标准</span>
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-float">
+                交通工具百科
+            </h1>
+            
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-10">
+                道路与轨道交通工具完整分类指南，涵盖设计使用年限、报废标准及国际对比
+            </p>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto">
+                <div class="glass-panel rounded-xl p-3 text-center">
+                    <div class="text-2xl font-bold text-blue-400">15+</div>
+                    <div class="text-xs text-slate-500">道路分类</div>
+                </div>
+                <div class="glass-panel rounded-xl p-3 text-center">
+                    <div class="text-2xl font-bold text-purple-400">8+</div>
+                    <div class="text-xs text-slate-500">轨道类型</div>
+                </div>
+                <div class="glass-panel rounded-xl p-3 text-center">
+                    <div class="text-2xl font-bold text-green-400">100年</div>
+                    <div class="text-xs text-slate-500">最长设计寿命</div>
+                </div>
+                <div class="glass-panel rounded-xl p-3 text-center">
+                    <div class="text-2xl font-bold text-pink-400">30年</div>
+                    <div class="text-xs text-slate-500">动车组寿命</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 mb-8">
+        <div class="max-w-6xl mx-auto flex flex-wrap gap-2 justify-center">
+            <button onclick="switchTab('road')" id="tab-road" class="tab-active px-5 py-2.5 rounded-lg font-medium text-sm transition-all flex items-center gap-2">
+                <i data-lucide="car" class="w-4 h-4"></i>
+                <span>道路交通工具</span>
+            </button>
+            <button onclick="switchTab('rail')" id="tab-rail" class="px-5 py-2.5 rounded-lg font-medium text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition-all flex items-center gap-2">
+                <i data-lucide="train" class="w-4 h-4"></i>
+                <span>轨道交通工具</span>
+            </button>
+            <button onclick="switchTab('compare')" id="tab-compare" class="px-5 py-2.5 rounded-lg font-medium text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition-all flex items-center gap-2">
+                <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+                <span>对比分析</span>
+            </button>
+            <button onclick="switchTab('global')" id="tab-global" class="px-5 py-2.5 rounded-lg font-medium text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition-all flex items-center gap-2">
+                <i data-lucide="globe" class="w-4 h-4"></i>
+                <span>国际对比</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+
+        <!-- 道路交通工具 -->
+        <section id="section-road" class="space-y-6">
+            
+            <!-- 机动车 -->
+            <div class="glass-panel rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-1 h-6 bg-blue-500 rounded-full"></span>
+                    机动车设计使用年限
+                </h2>
+
+                <div class="space-y-4">
+                    <!-- 私家车 -->
+                    <div class="vehicle-card bg-slate-800/40 rounded-xl p-5 cursor-pointer" onclick="toggleExpand(this)">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm">
+                                    15+
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">私家车</h3>
+                                    <p class="text-xs text-slate-400">非营运小微型客车</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold border border-green-500/30">
+                                15-20年
+                            </span>
+                        </div>
+                        
+                        <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden mb-3">
+                            <div class="h-full timeline-gradient w-3/4"></div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-400 text-xs border border-blue-500/20">无强制报废</span>
+                            <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-400 text-xs border border-blue-500/20">60万公里引导报废</span>
+                        </div>
+
+                        <div class="expandable text-sm text-slate-400 mt-3 pt-3 border-t border-slate-700/50">
+                            <p class="mb-2"><span class="text-slate-300 font-medium">政策演变：</span>2013年起取消15年强制报废，改为60万公里引导报废。车龄超15年需每半年年检一次。</p>
+                            <p><span class="text-slate-300 font-medium">实际寿命：</span>保养良好的车辆可达20-25年，但排放标准和电子元件老化会限制使用。</p>
+                        </div>
+                        
+                        <div class="text-center mt-2 text-slate-600 text-xs expand-hint">
+                            <i data-lucide="chevron-down" class="w-4 h-4 inline"></i>
+                        </div>
+                    </div>
+
+                    <!-- 出租车 -->
+                    <div class="vehicle-card bg-slate-800/40 rounded-xl p-5 cursor-pointer" onclick="toggleExpand(this)">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center text-white font-bold text-sm">
+                                    8
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">出租车 / 网约车</h3>
+                                    <p class="text-xs text-slate-400">营运性质小微型客车</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold border border-red-500/30">
+                                8年强制报废
+                            </span>
+                        </div>
+                        
+                        <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden mb-3">
+                            <div class="h-full bg-red-500 w-1/3"></div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="px-2 py-1 rounded bg-red-500/10 text-red-400 text-xs border border-red-500/20">8年强制报废</span>
+                            <span class="px-2 py-1 rounded bg-yellow-500/10 text-yellow-400 text-xs border border-yellow-500/20">高强度使用</span>
+                            <span class="px-2 py-1 rounded bg-slate-700 text-slate-400 text-xs">年均10-15万公里</span>
+                        </div>
+
+                        <div class="expandable text-sm text-slate-400 mt-3 pt-3 border-t border-slate-700/50">
+                            <p class="mb-2"><span class="text-slate-300 font-medium">使用强度：</span>年均行驶10-15万公里，8年累计80-120万公里，远超私家车标准。</p>
+                            <p><span class="text-slate-300 font-medium">网约车规定：</span>部分城市要求转非营运后仍按8年执行，或60万公里先到为准。</p>
+                        </div>
+                        
+                        <div class="text-center mt-2 text-slate-600 text-xs expand-hint">
+                            <i data-lucide="chevron-down" class="w-4 h-4 inline"></i>
+                        </div>
+                    </div>
+
+                    <!-- 公交客运 -->
+                    <div class="vehicle-card bg-slate-800/40 rounded-xl p-5 cursor-pointer" onclick="toggleExpand(this)">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-sm">
+                                    13
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">公交客运汽车</h3>
+                                    <p class="text-xs text-slate-400">大型/中型客车</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold border border-orange-500/30">
+                                10-13年
+                            </span>
+                        </div>
+                        
+                        <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden mb-3">
+                            <div class="h-full bg-orange-500 w-1/2"></div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="px-2 py-1 rounded bg-orange-500/10 text-orange-400 text-xs border border-orange-500/20">13年强制报废</span>
+                            <span class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-xs border border-green-500/20">每日高频运行</span>
+                        </div>
+
+                        <div class="expandable text-sm text-slate-400 mt-3 pt-3 border-t border-slate-700/50">
+                            <p class="mb-2"><span class="text-slate-300 font-medium">使用特点：</span>日均运行14-18小时，年行驶6-10万公里，启停频繁、发动机负荷大。</p>
+                            <p><span class="text-slate-300 font-medium">新能源公交：</span>纯电动公交车电池寿命通常8-10年，但车辆设计寿命仍按13年执行。</p>
+                        </div>
+                        
+                        <div class="text-center mt-2 text-slate-600 text-xs expand-hint">
+                            <i data-lucide="chevron-down" class="w-4 h-4 inline"></i>
+                        </div>
+                    </div>
+
+                    <!-- 重型货车 -->
+                    <div class="vehicle-card bg-slate-800/40 rounded-xl p-5 cursor-pointer" onclick="toggleExpand(this)">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-white font-bold text-sm">
+                                    15
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">重型货车 / 牵引车</h3>
+                                    <p class="text-xs text-slate-400">总质量>12吨</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-slate-600 text-white text-xs font-bold border border-slate-500">
+                                15年强制报废
+                            </span>
+                        </div>
+                        
+                        <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden mb-3">
+                            <div class="h-full bg-slate-500 w-1/2"></div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="px-2 py-1 rounded bg-slate-700 text-slate-300 text-xs border border-slate-600">工况恶劣</span>
+                            <span class="px-2 py-1 rounded bg-slate-700 text-slate-300 text-xs border border-slate-600">载荷大</span>
+                        </div>
+
+                        <div class="expandable text-sm text-slate-400 mt-3 pt-3 border-t border-slate-700/50">
+                            <p class="mb-2"><span class="text-slate-300 font-medium">使用环境：</span>长途货运车辆年均行驶20-30万公里，15年累计300-450万公里。</p>
+                            <p><span class="text-slate-300 font-medium">挂车规定：</span>半挂车、全挂车同样执行15年强制报废标准。</p>
+                        </div>
+                        
+                        <div class="text-center mt-2 text-slate-600 text-xs expand-hint">
+                            <i data-lucide="chevron-down" class="w-4 h-4 inline"></i>
+                        </div>
+                    </div>
+
+                    <!-- 其他机动车 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="vehicle-card bg-slate-800/40 rounded-xl p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="graduation-cap" class="w-5 h-5 text-purple-400"></i>
+                                    <span class="font-medium text-sm">教练车</span>
+                                </div>
+                                <span class="text-red-400 font-bold text-sm">10年</span>
+                            </div>
+                            <p class="text-xs text-slate-500">学员操作磨损大，半联动频繁导致离合器早期磨损</p>
+                        </div>
+                        
+                        <div class="vehicle-card bg-slate-800/40 rounded-xl p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="key" class="w-5 h-5 text-indigo-400"></i>
+                                    <span class="font-medium text-sm">租赁汽车</span>
+                                </div>
+                                <span class="text-yellow-400 font-bold text-sm">10-15年</span>
+                            </div>
+                            <p class="text-xs text-slate-500">小型10年/大型15年，多人使用维护水平参差不齐</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 非机动车 -->
+            <div class="glass-panel rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-1 h-6 bg-green-500 rounded-full"></span>
+                    非机动车设计使用年限
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-800/40 rounded-xl p-5 border border-slate-700/50">
+                        <div class="flex items-center justify-between mb-3">
+                            <i data-lucide="bike" class="w-6 h-6 text-green-400"></i>
+                            <span class="text-xl font-bold text-green-400">5-10年</span>
+                        </div>
+                        <h3 class="font-semibold mb-1">自行车</h3>
+                        <p class="text-xs text-slate-400 mb-3">普通通勤车5年，运动型/高端车10年以上</p>
+                        <div class="text-xs text-slate-500 bg-slate-900/50 rounded p-2">
+                            关键部件：车架（钢/铝/碳纤）、传动系统、轴承
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-800/40 rounded-xl p-5 border border-slate-700/50">
+                        <div class="flex items-center justify-between mb-3">
+                            <i data-lucide="battery-charging" class="w-6 h-6 text-blue-400"></i>
+                            <span class="text-xl font-bold text-blue-400">5-8年</span>
+                        </div>
+                        <h3 class="font-semibold mb-1">电动自行车</h3>
+                        <p class="text-xs text-slate-400 mb-3">电池寿命通常3-5年，车架可达8年</p>
+                        <div class="text-xs text-slate-500 bg-slate-900/50 rounded p-2">
+                            锂电池循环寿命500-800次，铅酸电池300-500次
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-800/40 rounded-xl p-5 border border-slate-700/50">
+                        <div class="flex items-center justify-between mb-3">
+                            <i data-lucide="truck" class="w-6 h-6 text-orange-400"></i>
+                            <span class="text-xl font-bold text-orange-400">8-15年</span>
+                        </div>
+                        <h3 class="font-semibold mb-1">人力三轮车</h3>
+                        <p class="text-xs text-slate-400 mb-3">视材质而定：木质短，钢制/铝制长</p>
+                        <div class="text-xs text-slate-500 bg-slate-900/50 rounded p-2">
+                            货运三轮车载荷大，车架疲劳寿命是关键
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 轨道交通工具 -->
+        <section id="section-rail" class="space-y-6 hidden">
+            
+            <!-- 机车车辆 -->
+            <div class="glass-panel rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-1 h-6 bg-purple-500 rounded-full"></span>
+                    铁路机车车辆设计寿命
+                </h2>
+
+                <div class="space-y-4">
+                    <!-- 动车组 -->
+                    <div class="vehicle-card bg-gradient-to-r from-slate-800/60 to-slate-800/30 rounded-xl p-5 border border-purple-500/30">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold text-xl glow-purple">
+                                    30
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-white">动车组（高铁/动车）</h3>
+                                    <p class="text-sm text-slate-400">CRH系列、CR400系列</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-purple-400">25-30年</div>
+                                <div class="text-xs text-slate-500">设计使用年限</div>
+                            </div>
+                        </div>
+                        
+                        <div class="h-2 bg-slate-700 rounded-full overflow-hidden mb-4">
+                            <div class="h-full timeline-gradient"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                            <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                                <div class="text-purple-400 font-medium mb-1">五级修程</div>
+                                <div class="text-slate-500 text-xs">120万公里或3年五级修</div>
+                            </div>
+                            <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                                <div class="text-purple-400 font-medium mb-1">技术迭代</div>
+                                <div class="text-slate-500 text-xs">日本25年强制更新，中国30年设计</div>
+                            </div>
+                            <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                                <div class="text-purple-400 font-medium mb-1">关键部件</div>
+                                <div class="text-slate-500 text-xs">转向架、牵引电机、制动系统</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 电力机车 -->
+                    <div class="vehicle-card bg-slate-800/40 rounded-xl p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white font-bold">
+                                    30
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">电力机车 / 内燃机车</h3>
+                                    <p class="text-xs text-slate-400">HXD系列、DF系列</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xl font-bold text-blue-400">30年</div>
+                                <div class="text-xs text-slate-500">6-8年中修，12年大修</div>
+                            </div>
+                        </div>
+                        <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden mb-2">
+                            <div class="h-full bg-blue-500 w-full"></div>
+                        </div>
+                        <p class="text-xs text-slate-400">货运机车实际使用寿命可达35-40年，通过多次大修延长服役</p>
+                    </div>
+
+                    <!-- 地铁车辆 -->
+                    <div class="vehicle-card bg-slate-800/40 rounded-xl p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold">
+                                    30
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-white">地铁车辆</h3>
+                                    <p class="text-xs text-slate-400">A型车、B型车统一标准</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xl font-bold text-green-400">30年</div>
+                                <div class="text-xs text-slate-500">5年架修，10年大修</div>
+                            </div>
+                        </div>
+                        <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden mb-3">
+                            <div class="h-full bg-green-500 w-full"></div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-xs border border-green-500/20">日运行18小时</span>
+                            <span class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-xs border border-green-500/20">年走行10-15万公里</span>
+                            <span class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-xs border border-green-500/20">高可靠度设计</span>
+                        </div>
+                    </div>
+
+                    <!-- 轻轨与有轨电车 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="vehicle-card bg-slate-800/40 rounded-xl p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-semibold">轻轨车辆</h3>
+                                <span class="text-lg font-bold text-indigo-400">25-30年</span>
+                            </div>
+                            <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden mb-3">
+                                <div class="h-full bg-indigo-500 w-5/6"></div>
+                            </div>
+                            <p class="text-xs text-slate-400">现代低地板设计，维护周期类似地铁但载荷较小</p>
+                        </div>
+
+                        <div class="vehicle-card bg-slate-800/40 rounded-xl p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-semibold">有轨电车</h3>
+                                <span class="text-lg font-bold text-yellow-400">25-30年</span>
+                            </div>
+                            <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden mb-3">
+                                <div class="h-full bg-yellow-500 w-5/6"></div>
+                            </div>
+                            <p class="text-xs text-slate-400">地面运行环境复杂，车体腐蚀防护要求更高</p>
+                        </div>
+                    </div>
+
+                    <!-- 客车与货车 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="vehicle-card bg-slate-800/40 rounded-xl p-5">
+                            <div class="flex items-center gap-3 mb-3">
+                                <i data-lucide="users" class="w-5 h-5 text-cyan-400"></i>
+                                <h3 class="font-semibold">普通客车车厢</h3>
+                                <span class="ml-auto text-lg font-bold text-cyan-400">30年</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-2">25G/25K/25T型等</p>
+                            <div class="text-xs text-slate-500">5年A修，10年厂修，可多次翻新</div>
+                        </div>
+
+                        <div class="vehicle-card bg-slate-800/40 rounded-xl p-5">
+                            <div class="flex items-center gap-3 mb-3">
+                                <i data-lucide="package" class="w-5 h-5 text-orange-400"></i>
+                                <h3 class="font-semibold">货车车厢</h3>
+                                <span class="ml-auto text-lg font-bold text-orange-400">25-30年</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-2">C70、P70等通用货车</p>
+                            <div class="text-xs text-slate-500">8年厂修，工况恶劣但结构简单耐用</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 基础设施 -->
+            <div class="glass-panel rounded-2xl p-6 border border-yellow-500/20">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-1 h-6 bg-yellow-500 rounded-full"></span>
+                    轨道基础设施设计寿命
+                </h2>
+
+                <div class="relative pl-8 space-y-6">
+                    <div class="absolute left-3 top-0 bottom-0 w-0.5 bg-gradient-to-b from-yellow-500 to-slate-700"></div>
+                    
+                    <div class="relative">
+                        <div class="absolute -left-5 w-4 h-4 rounded-full bg-yellow-500 border-2 border-slate-900"></div>
+                        <div class="bg-slate-800/40 rounded-lg p-4 border border-yellow-500/20">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="font-bold text-yellow-400">桥梁与隧道结构</h3>
+                                <span class="text-2xl font-bold text-yellow-400">100年</span>
+                            </div>
+                            <p class="text-sm text-slate-400">高速铁路桥梁、地铁隧道、地下车站主体结构按100年设计，采用高性能混凝土和防腐蚀设计</p>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="absolute -left-5 w-4 h-4 rounded-full bg-orange-500 border-2 border-slate-900"></div>
+                        <div class="bg-slate-800/40 rounded-lg p-4 border border-orange-500/20">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="font-bold text-orange-400">无砟轨道结构</h3>
+                                <span class="text-2xl font-bold text-orange-400">50-100年</span>
+                            </div>
+                            <p class="text-sm text-slate-400">高速铁路无砟轨道（如CRTSⅠ/Ⅱ/Ⅲ型板）设计寿命100年，普通有砟道床30-50年</p>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="absolute -left-5 w-4 h-4 rounded-full bg-blue-500 border-2 border-slate-900"></div>
+                        <div class="bg-slate-800/40 rounded-lg p-4 border border-blue-500/20">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="font-bold text-blue-400">钢轨与道岔</h3>
+                                <span class="text-2xl font-bold text-blue-400">30年</span>
+                            </div>
+                            <p class="text-sm text-slate-400">普通钢轨更换周期：高速铁路通过总重3-5亿吨（约10-15年），重载线路更短。道岔寿命15-20年</p>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="absolute -left-5 w-4 h-4 rounded-full bg-purple-500 border-2 border-slate-900"></div>
+                        <div class="bg-slate-800/40 rounded-lg p-4 border border-purple-500/20">
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="font-bold text-purple-400">接触网与供电设备</h3>
+                                <span class="text-2xl font-bold text-purple-400">20-30年</span>
+                            </div>
+                            <p class="text-sm text-slate-400">接触导线、承力索更换周期20-30年，绝缘子、腕臂等支持设备15-20年</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 对比分析 -->
+        <section id="section-compare" class="space-y-6 hidden">
+            
+            <!-- 寿命排序 -->
+            <div class="glass-panel rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-1 h-6 bg-pink-500 rounded-full"></span>
+                    设计使用年限排序
+                </h2>
+
+                <div class="space-y-3">
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
+                        <div class="w-16 text-right font-bold text-yellow-400">100年</div>
+                        <div class="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-yellow-500 w-full"></div>
+                        </div>
+                        <div class="w-40 text-sm text-slate-300">铁路桥梁、隧道、地铁车站</div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
+                        <div class="w-16 text-right font-bold text-blue-400">30年</div>
+                        <div class="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-blue-500 w-3/10"></div>
+                        </div>
+                        <div class="w-40 text-sm text-slate-300">电力机车、动车组、地铁</div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
+                        <div class="w-16 text-right font-bold text-green-400">25年</div>
+                        <div class="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-500 w-1/4"></div>
+                        </div>
+                        <div class="w-40 text-sm text-slate-300">轻轨、有轨电车</div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
+                        <div class="w-16 text-right font-bold text-purple-400">20年</div>
+                        <div class="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-purple-500 w-1/5"></div>
+                        </div>
+                        <div class="w-40 text-sm text-slate-300">私家车（设计上限）</div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
+                        <div class="w-16 text-right font-bold text-orange-400">15年</div>
+                        <div class="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-orange-500 w-[15%]"></div>
+                        </div>
+                        <div class="w-40 text-sm text-slate-300">重型货车、大客车</div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
+                        <div class="w-16 text-right font-bold text-red-400">10年</div>
+                        <div class="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-500 w-[10%]"></div>
+                        </div>
+                        <div class="w-40 text-sm text-slate-300">公交车、教练车</div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
+                        <div class="w-16 text-right font-bold text-pink-400">8年</div>
+                        <div class="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-pink-500 w-[8%]"></div>
+                        </div>
+                        <div class="w-40 text-sm text-slate-300">出租车、网约车</div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
+                        <div class="w-16 text-right font-bold text-slate-400">5-10年</div>
+                        <div class="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-slate-500 w-[5%]"></div>
+                        </div>
+                        <div class="w-40 text-sm text-slate-300">自行车、电动自行车</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心对比 -->
+            <div class="glass-panel rounded-2xl p-6 overflow-x-auto">
+                <h2 class="text-xl font-bold mb-6">道路 vs 轨道 核心对比</h2>
+                
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700">
+                            <th class="text-left py-3 text-slate-400 font-medium">对比维度</th>
+                            <th class="text-left py-3 text-blue-400 font-semibold">道路交通工具</th>
+                            <th class="text-left py-3 text-purple-400 font-semibold">轨道交通工具</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/50">
+                        <tr>
+                            <td class="py-3 text-slate-300 font-medium">基础设施</td>
+                            <td class="py-3 text-slate-400">公路/道路（灵活，共享路权）</td>
+                            <td class="py-3 text-slate-400">专用轨道（固定线路，独占路权）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-300 font-medium">运行方式</td>
+                            <td class="py-3 text-slate-400">自由路径（除高速外可变道）</td>
+                            <td class="py-3 text-slate-400">固定轨道运行（无法偏离）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-300 font-medium">运力效率</td>
+                            <td class="py-3 text-slate-400">单个车辆较小（5-50人）</td>
+                            <td class="py-3 text-slate-400">编组列车，大运量（500-2000人）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-300 font-medium">能耗效率</td>
+                            <td class="py-3 text-slate-400">较低（橡胶轮胎摩擦大，3-5倍能耗）</td>
+                            <td class="py-3 text-slate-400">较高（钢轮滚动阻力小，再生制动）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-300 font-medium">速度上限</td>
+                            <td class="py-3 text-slate-400">受路况/法规限制（通常<120km/h）</td>
+                            <td class="py-3 text-slate-400">可达600km/h（磁悬浮），350km/h（高铁）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-300 font-medium">灵活性</td>
+                            <td class="py-3 text-green-400">高（门到门运输）</td>
+                            <td class="py-3 text-red-400">低（需换乘，末端需其他交通衔接）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-300 font-medium">成本结构</td>
+                            <td class="py-3 text-slate-400">车辆购置便宜，道路维护成本高</td>
+                            <td class="py-3 text-slate-400">轨道建设极贵（亿元/公里），运营成本低</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 影响因素 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="glass-panel rounded-2xl p-5">
+                    <h3 class="font-semibold mb-4 flex items-center gap-2">
+                        <i data-lucide="gauge" class="w-5 h-5 text-blue-400"></i>
+                        影响实际寿命的关键因素
+                    </h3>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex gap-2">
+                            <span class="text-blue-400">•</span>
+                            <span><strong class="text-slate-300">使用强度：</strong>出租车8年 vs 私家车15年+；地铁日运行18小时仍达30年</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-blue-400">•</span>
+                            <span><strong class="text-slate-300">维护保养：</strong>定期保养可延长道路车辆30-50%寿命；轨道交通预防性维修体系完善</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-blue-400">•</span>
+                            <span><strong class="text-slate-300">技术更新：</strong>排放/安全标准强制淘汰旧车；轨道交通信号系统可独立更新</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-blue-400">•</span>
+                            <span><strong class="text-slate-300">腐蚀环境：</strong>沿海/北方融雪盐加速道路车辆老化；隧道内湿度大需特殊防腐</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-5">
+                    <h3 class="font-semibold mb-4 flex items-center gap-2">
+                        <i data-lucide="trending-up" class="w-5 h-5 text-green-400"></i>
+                        寿命延长策略
+                    </h3>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex gap-2">
+                            <span class="text-green-400">•</span>
+                            <span><strong class="text-slate-300">预防性维修：</strong>轨道交通的计划性维修体系值得道路车辆借鉴</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-green-400">•</span>
+                            <span><strong class="text-slate-300">模块化设计：</strong>动车组、地铁的可更换模块设计延长整体寿命</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-green-400">•</span>
+                            <span><strong class="text-slate-300">材料升级：</strong>铝合金车身、复合材料替代钢材减重防腐</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span class="text-green-400">•</span>
+                            <span><strong class="text-slate-300">再制造技术：</strong>发动机、变速箱再制造恢复至新机性能</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 国际对比 -->
+        <section id="section-global" class="space-y-6 hidden">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- 日本 -->
+                <div class="glass-panel rounded-2xl p-5 border-t-4 border-red-500">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="text-2xl">🇯🇵</div>
+                        <div>
+                            <h3 class="font-bold text-lg">日本</h3>
+                            <p class="text-xs text-slate-400">技术迭代导向</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>新干线车辆<strong class="text-white">25年强制更新</strong>，无论状态如何</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>注重技术领先性，旧车出口至东南亚继续使用</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>私家车无强制报废，但车检制度严格（3年起每年一次）</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 德国 -->
+                <div class="glass-panel rounded-2xl p-5 border-t-4 border-yellow-500">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="text-2xl">🇩🇪</div>
+                        <div>
+                            <h3 class="font-bold text-lg">德国</h3>
+                            <p class="text-xs text-slate-400">工程耐用导向</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>ICE动车组设计寿命<strong class="text-white">30年</strong>，实际可用35年+</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>高速公路不限速设计，车辆机械素质要求高</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>TÜV车检严格，老爷车文化盛行（经典车可获豁免）</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 美国 -->
+                <div class="glass-panel rounded-2xl p-5 border-t-4 border-blue-500">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="text-2xl">🇺🇸</div>
+                        <div>
+                            <h3 class="font-bold text-lg">美国</h3>
+                            <p class="text-xs text-slate-400">实用主义导向</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>货运机车<strong class="text-white">40年+</strong>常见，重载耐用设计</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>私家车无强制报废，各州车检要求不一（部分州无车检）</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>Amtrak客运车辆老化严重，平均车龄超过30年</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 欧盟 -->
+                <div class="glass-panel rounded-2xl p-5 border-t-4 border-blue-400">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="text-2xl">🇪🇺</div>
+                        <div>
+                            <h3 class="font-bold text-lg">欧盟</h3>
+                            <p class="text-xs text-slate-400">环保标准导向</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>乘用车<strong class="text-white">无强制报废</strong>，但欧标排放间接淘汰旧车</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>多城市设立低排放区（LEZ），限制老车进入市中心</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400 mt-0.5"></i>
+                            <span>鼓励循环经济，车辆拆解回收率要求达95%</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 全球趋势 -->
+            <div class="glass-panel rounded-2xl p-6 bg-gradient-to-r from-slate-800/50 to-slate-900/50">
+                <h3 class="font-semibold mb-4 flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-400"></i>
+                    全球政策趋势观察
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                        <div class="text-green-400 font-medium mb-2">电动化转型</div>
+                        <p class="text-slate-400 text-xs">多国设定燃油车禁售时间表（2030-2035），推动车辆技术迭代加速</p>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                        <div class="text-blue-400 font-medium mb-2">寿命周期评估</div>
+                        <p class="text-slate-400 text-xs">从"使用年限"转向"全生命周期碳排放"评估，促进轻量化和再制造</p>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                        <div class="text-purple-400 font-medium mb-2">智能化维护</div>
+                        <p class="text-slate-400 text-xs">物联网预测性维护普及，轨道交通经验向道路车辆延伸</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/50 py-8 px-4 mt-12">
+        <div class="max-w-6xl mx-auto text-center text-slate-500 text-xs">
+            <p class="mb-2">数据来源：中国《道路交通安全法》、铁路技术管理规程、各国交通部门公开资料</p>
+            <p>© 2026 交通工具百科 | 设计使用寿命参考值，实际寿命受使用维护影响</p>
+        </div>
+    </footer>
+
+    <script>
+        // 初始化图标
+        lucide.createIcons();
+
+        // 滚动进度条
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollBar').style.width = scrolled + "%";
+        });
+
+        // 标签切换
+        function switchTab(tabName) {
+            // 隐藏所有section
+            ['road', 'rail', 'compare', 'global'].forEach(t => {
+                document.getElementById('section-' + t).classList.add('hidden');
+            });
+            
+            // 显示目标section
+            document.getElementById('section-' + tabName).classList.remove('hidden');
+            
+            // 更新按钮样式
+            ['road', 'rail', 'compare', 'global'].forEach(t => {
+                const btn = document.getElementById('tab-' + t);
+                if (t === tabName) {
+                    btn.classList.add('tab-active');
+                    btn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+                } else {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+                }
+            });
+        }
+
+        // 展开/收起
+        function toggleExpand(element) {
+            const expandable = element.querySelector('.expandable');
+            const hint = element.querySelector('.expand-hint');
+            
+            if (expandable.classList.contains('open')) {
+                expandable.classList.remove('open');
+                hint.innerHTML = '<i data-lucide="chevron-down" class="w-4 h-4 inline"></i>';
+            } else {
+                // 关闭其他已展开的
+                document.querySelectorAll('.expandable.open').forEach(el => {
+                    el.classList.remove('open');
+                    el.parentElement.querySelector('.expand-hint').innerHTML = '<i data-lucide="chevron-down" class="w-4 h-4 inline"></i>';
+                });
+                
+                expandable.classList.add('open');
+                hint.innerHTML = '<i data-lucide="chevron-up" class="w-4 h-4 inline"></i>';
+            }
+            
+            lucide.createIcons();
+        }
+
+        // 入场动画
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.vehicle-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 80);
+            });
+        });
+    </script>
+</body>
+</html>
