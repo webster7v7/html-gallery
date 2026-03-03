@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>视频播放解码完全小白指南</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: "Noto Sans SC", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif; }
+    .gradient-text { background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .card { transition: transform .18s ease, box-shadow .18s ease; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(15, 23, 42, .10); }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <header class="bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+      <div class="flex flex-col gap-4">
+        <h1 class="text-4xl md:text-5xl font-bold gradient-text">视频播放解码完全小白指南</h1>
+        <p class="text-lg md:text-xl text-slate-600 max-w-3xl">
+          从零搞懂 <span class="font-semibold text-indigo-600">LAV Filters</span>、
+          <span class="font-semibold text-indigo-600">解码器设置</span>、
+          <span class="font-semibold text-indigo-600">madVR</span>。
+          目标：能播、有声、不折腾。
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
+            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+            小白推荐：保持默认
+          </span>
+          <span class="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            关键判断：带星号(*) = LAV 已生效
+          </span>
+          <span class="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-100">
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            3D 解码器：普通人不需要
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 md:py-14 space-y-14">
+    <section class="grid md:grid-cols-3 gap-6">
+      <div class="card bg-white rounded-2xl p-6 border border-slate-200">
+        <div class="text-3xl">📦</div>
+        <h2 class="mt-3 text-xl font-bold text-indigo-700">LAV Filters</h2>
+        <p class="mt-2 text-slate-600">解码器套装：让播放器“看懂”视频文件。</p>
+        <div class="mt-4 bg-indigo-50 border border-indigo-100 rounded-xl p-4 text-sm text-indigo-800">
+          <div class="font-semibold">通俗比喻</div>
+          <div class="mt-1">翻译官：把文件里的音视频数据翻译成播放器可用的格式。</div>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl p-6 border border-slate-200">
+        <div class="text-3xl">⚙️</div>
+        <h2 class="mt-3 text-xl font-bold text-emerald-700">解码器设置</h2>
+        <p class="mt-2 text-slate-600">播放器里的“分工表”：每种格式用谁来解码。</p>
+        <div class="mt-4 bg-emerald-50 border border-emerald-100 rounded-xl p-4 text-sm text-emerald-800">
+          <div class="font-semibold">通俗比喻</div>
+          <div class="mt-1">调度员：决定 H.264/HEVC 等格式交给谁处理。</div>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl p-6 border border-slate-200">
+        <div class="text-3xl">🎨</div>
+        <h2 class="mt-3 text-xl font-bold text-fuchsia-700">madVR（可选）</h2>
+        <p class="mt-2 text-slate-600">渲染器：优化画面显示效果，但更吃配置。</p>
+        <div class="mt-4 bg-fuchsia-50 border border-fuchsia-100 rounded-xl p-4 text-sm text-fuchsia-800">
+          <div class="font-semibold">通俗比喻</div>
+          <div class="mt-1">美颜相机：把画面“画得更漂亮”。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="px-6 py-5 border-b border-slate-200 bg-slate-50">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold">小白推荐设置（安装 LAV Filters）</h2>
+            <p class="mt-1 text-slate-600">看到安装界面，按这条“最短路径”选就行。</p>
+          </div>
+          <button id="copyInstall" class="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 text-white text-sm hover:bg-slate-800">
+            复制推荐设置
+          </button>
+        </div>
+      </div>
+      <div class="p-6 grid lg:grid-cols-2 gap-6">
+        <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+          <div class="text-sm font-semibold text-emerald-900">你只需要记住两句话</div>
+          <div class="mt-3 space-y-2 text-emerald-900">
+            <div class="flex gap-2">
+              <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-600 text-white text-xs">1</span>
+              <div>
+                <div class="font-semibold">下拉菜单：Default（保持默认）</div>
+                <div class="text-sm opacity-90">不选 Full，不选 Custom。</div>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-600 text-white text-xs">2</span>
+              <div>
+                <div class="font-semibold">勾选：默认全勾（除了最后一个 3D 解码器）</div>
+                <div class="text-sm opacity-90">也就是别勾/不需要额外下载 MVC 3D Decoder。</div>
+              </div>
+            </div>
+          </div>
+          <pre id="installSnippet" class="mt-4 whitespace-pre-wrap text-sm bg-white/70 border border-emerald-100 rounded-xl p-4 text-slate-900">下拉菜单：Default（保持默认）
+勾选状态：保持默认全部勾选（除了最后一个 3D 解码器）</pre>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-5">
+          <h3 class="text-lg font-bold">为什么这么选？（给你安心）</h3>
+          <div class="mt-3 space-y-3 text-slate-700">
+            <div class="flex gap-3">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900 text-white text-sm">64</span>
+              <div>
+                <div class="font-semibold">保留 x86 + x64</div>
+                <div class="text-sm text-slate-600">现在多是 64 位系统，但 32 位能兼容一些老软件调用。</div>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900 text-white text-sm">🔊</span>
+              <div>
+                <div class="font-semibold">音频解码器要装</div>
+                <div class="text-sm text-slate-600">不装可能“有画面没声音”。</div>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900 text-white text-sm">3D</span>
+              <div>
+                <div class="font-semibold">3D MVC 普通人用不到</div>
+                <div class="text-sm text-slate-600">还需要额外下载体积，没必要。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="px-6 py-5 border-b border-slate-200 bg-slate-50">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold">关键发现（PotPlayer 解码器界面怎么判断）</h2>
+            <p class="mt-1 text-slate-600">重点不是“把所有格式都改成 LAV”，而是确认核心格式已经走 LAV。</p>
+          </div>
+          <button id="copyKey" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm hover:bg-indigo-700">
+            复制关键对照
+          </button>
+        </div>
+      </div>
+      <div class="p-6 grid lg:grid-cols-2 gap-6">
+        <div class="rounded-xl border border-indigo-100 bg-indigo-50 p-5">
+          <div class="text-sm font-semibold text-indigo-900">看这三行就够了</div>
+          <ul class="mt-3 space-y-3 text-indigo-900">
+            <li class="flex items-center gap-3">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-600 text-white text-sm">✓</span>
+              <div><span class="kbd font-bold">H.264</span> → <span class="font-semibold">*LAV Video Decoder</span></div>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-600 text-white text-sm">✓</span>
+              <div><span class="kbd font-bold">AVC1</span> → <span class="font-semibold">*LAV Video Decoder</span></div>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-600 text-white text-sm">✓</span>
+              <div><span class="kbd font-bold">HEVC</span> → <span class="font-semibold">*LAV Video Decoder</span></div>
+            </li>
+          </ul>
+          <pre id="keySnippet" class="mt-4 whitespace-pre-wrap text-sm bg-white/70 border border-indigo-100 rounded-xl p-4 text-slate-900">H.264 → *LAV Video Decoder
+AVC1 → *LAV Video Decoder
+HEVC → *LAV Video Decoder</pre>
+          <div class="mt-4 rounded-xl bg-slate-900 text-slate-100 p-4">
+            <div class="font-semibold">小白结论</div>
+            <div class="mt-2 text-sm text-slate-300 space-y-1">
+              <div>1) 看到星号(*) 就说明 LAV 已生效。</div>
+              <div>2) 这样已经很好，不需要再乱改。</div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-5">
+          <h3 class="text-lg font-bold">为什么其他格式显示“内置”也没问题？</h3>
+          <div class="mt-3 space-y-2 text-slate-700">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="font-semibold">老格式（MPEG1/2、XVID、DIVX）</div>
+              <div class="text-sm text-slate-600 mt-1">播放器内置解码器足够稳定。</div>
+            </div>
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="font-semibold">VP8/VP9、WMV 等</div>
+              <div class="text-sm text-slate-600 mt-1">用内置更省电、更兼容。</div>
+            </div>
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div class="font-semibold">原则</div>
+              <div class="text-sm text-slate-600 mt-1">LAV 专攻主流高清编码（H.264/HEVC），其余交给内置即可。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="px-6 py-5 border-b border-slate-200 bg-slate-50">
+        <h2 class="text-2xl font-bold">madVR 需要装吗？</h2>
+        <p class="mt-1 text-slate-600">先能正常播放，再考虑画质进阶。madVR 属于“可选项”。</p>
+      </div>
+      <div class="p-6 grid lg:grid-cols-2 gap-6">
+        <div class="rounded-xl border border-fuchsia-100 bg-fuchsia-50 p-5">
+          <div class="text-sm font-semibold text-fuchsia-900">一句话理解</div>
+          <div class="mt-2 text-fuchsia-900">
+            <span class="font-bold">LAV 是解码（翻译）</span>，<span class="font-bold">madVR 是渲染（画出来）</span>。
+          </div>
+          <div class="mt-4 grid gap-3">
+            <div class="rounded-xl bg-white/70 border border-fuchsia-100 p-4">
+              <div class="font-semibold">madVR 可能带来的提升</div>
+              <div class="mt-2 text-sm text-slate-700">缩放更清晰、颜色更准、减少色带/噪点等。</div>
+            </div>
+            <div class="rounded-xl bg-amber-50 border border-amber-200 p-4">
+              <div class="font-semibold text-amber-900">注意</div>
+              <div class="mt-2 text-sm text-amber-800">配置门槛更高，低配电脑可能卡顿掉帧。</div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-5">
+          <h3 class="text-lg font-bold">决策表</h3>
+          <div class="mt-3 overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead class="text-slate-600">
+                <tr>
+                  <th class="text-left py-2 pr-4">你的情况</th>
+                  <th class="text-left py-2 pr-4">建议</th>
+                  <th class="text-left py-2">原因</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-800">
+                <tr class="border-t border-slate-200">
+                  <td class="py-3 pr-4">普通看看视频</td>
+                  <td class="py-3 pr-4"><span class="px-2 py-1 rounded-lg bg-red-100 text-red-700 border border-red-200">不需要</span></td>
+                  <td class="py-3 text-slate-600">默认渲染器够用</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <td class="py-3 pr-4">电脑配置低（核显/老显卡）</td>
+                  <td class="py-3 pr-4"><span class="px-2 py-1 rounded-lg bg-red-100 text-red-700 border border-red-200">不要装</span></td>
+                  <td class="py-3 text-slate-600">容易卡顿掉帧</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <td class="py-3 pr-4">看 4K/蓝光原盘</td>
+                  <td class="py-3 pr-4"><span class="px-2 py-1 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-200">推荐装</span></td>
+                  <td class="py-3 text-slate-600">画质提升更明显</td>
+                </tr>
+                <tr class="border-t border-slate-200">
+                  <td class="py-3 pr-4">追求极致画质（发烧友）</td>
+                  <td class="py-3 pr-4"><span class="px-2 py-1 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-200">可以装</span></td>
+                  <td class="py-3 text-slate-600">但更复杂、更花时间</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl border border-slate-200 p-6">
+      <h2 class="text-2xl font-bold">一张表看懂三者区别</h2>
+      <div class="mt-4 overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="text-slate-600">
+            <tr>
+              <th class="text-left py-2 pr-4">对比项</th>
+              <th class="text-left py-2 pr-4 text-indigo-700">LAV Filters</th>
+              <th class="text-left py-2 pr-4 text-emerald-700">解码器设置</th>
+              <th class="text-left py-2 text-fuchsia-700">madVR</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-800">
+            <tr class="border-t border-slate-200">
+              <td class="py-3 pr-4 font-semibold">是什么</td>
+              <td class="py-3 pr-4">软件/组件</td>
+              <td class="py-3 pr-4">播放器里的配置</td>
+              <td class="py-3">渲染器/插件</td>
+            </tr>
+            <tr class="border-t border-slate-200 bg-slate-50">
+              <td class="py-3 pr-4 font-semibold">主要作用</td>
+              <td class="py-3 pr-4">解码（翻译数据）</td>
+              <td class="py-3 pr-4">选择谁来解码</td>
+              <td class="py-3">渲染（画面优化）</td>
+            </tr>
+            <tr class="border-t border-slate-200">
+              <td class="py-3 pr-4 font-semibold">小白建议</td>
+              <td class="py-3 pr-4">装好即可</td>
+              <td class="py-3 pr-4">确认 H.264/HEVC 有星号(*)</td>
+              <td class="py-3">先不装，后续按需求</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="max-w-6xl mx-auto px-6 py-10 text-sm text-slate-600">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div>
+          <div class="font-semibold text-slate-800">小白最优先的目标</div>
+          <div class="mt-1">能播、有声、稳定。不要为了“全改成 LAV”而折腾。</div>
+        </div>
+        <div class="text-slate-500">页面：videodecode.html</div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 hidden">
+    <div class="px-4 py-2 rounded-xl bg-slate-900 text-white text-sm shadow-lg">已复制</div>
+  </div>
+
+  <script>
+    const toast = document.getElementById("toast");
+    let toastTimer = null;
+
+    function showToast(text) {
+      if (!toast) return;
+      const box = toast.querySelector("div");
+      if (box) box.textContent = text;
+      toast.classList.remove("hidden");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.add("hidden"), 1400);
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("已复制到剪贴板");
+      } catch {
+        showToast("复制失败（浏览器权限限制）");
+      }
+    }
+
+    const installBtn = document.getElementById("copyInstall");
+    const keyBtn = document.getElementById("copyKey");
+    const installSnippet = document.getElementById("installSnippet");
+    const keySnippet = document.getElementById("keySnippet");
+
+    if (installBtn && installSnippet) {
+      installBtn.addEventListener("click", () => copyText(installSnippet.textContent.trim()));
+    }
+    if (keyBtn && keySnippet) {
+      keyBtn.addEventListener("click", () => copyText(keySnippet.textContent.trim()));
+    }
+  </script>
+</body>
+</html>
