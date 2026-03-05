@@ -1,6 +1,7 @@
 import { scanHTMLFiles, getCategories, sortItems, filterByCategory } from '@/lib/scan-html';
 import { CategoryFilter } from '@/components/CategoryFilter';
 import { PreviewCard } from '@/components/PreviewCard';
+import { CalendarIcon, TextIcon } from '@/components/Icons';
 
 interface HomePageProps {
   searchParams: Promise<{
@@ -40,6 +41,14 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     return `/?${params.toString()}`;
   };
 
+  const buildToggleOrderUrl = () => {
+    const params = new URLSearchParams();
+    if (activeCategory) params.set('category', activeCategory);
+    params.set('sort', sortBy);
+    params.set('order', order === 'desc' ? 'asc' : 'desc');
+    return `/?${params.toString()}`;
+  };
+
   const allCount = categories.reduce((sum, cat) => sum + cat.count, 0);
   const allUrl = `/?sort=${sortBy}&order=${order}`;
   const categoriesWithUrls = categories.map((cat) => ({
@@ -67,42 +76,42 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
             <div className="flex items-center justify-between gap-3 sm:justify-start">
               <span className="text-sm font-medium text-gray-600 whitespace-nowrap">排序</span>
-              <div className="flex w-full sm:w-auto items-center bg-white rounded-xl border border-gray-200 p-1 shadow-sm">
-                <a
-                  href={buildSortUrl('date')}
-                  className={`flex-1 sm:flex-initial justify-center flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                    sortBy === 'date'
-                      ? 'bg-blue-500 text-white shadow'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span className="flex items-center gap-1">
+
+              <div className="flex w-full sm:w-auto items-center gap-2">
+                <div className="flex items-center bg-white rounded-xl border border-gray-200 p-1 shadow-sm">
+                  <a
+                    href={buildSortUrl('date')}
+                    className={`flex-1 sm:flex-initial justify-center flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                      sortBy === 'date'
+                        ? 'bg-gray-900 text-white shadow'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                    aria-current={sortBy === 'date' ? 'page' : undefined}
+                  >
+                    <CalendarIcon className="w-4 h-4 shrink-0" />
                     <span>时间</span>
-                    <span className={`text-xs w-4 text-center ${sortBy === 'date' ? 'opacity-100' : 'opacity-0'}`}>
-                      {order === 'desc' ? '↓' : '↑'}
-                    </span>
-                  </span>
-                </a>
-                <a
-                  href={buildSortUrl('name')}
-                  className={`flex-1 sm:flex-initial justify-center flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                    sortBy === 'name'
-                      ? 'bg-blue-500 text-white shadow'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
-                  </svg>
-                  <span className="flex items-center gap-1">
+                  </a>
+                  <a
+                    href={buildSortUrl('name')}
+                    className={`flex-1 sm:flex-initial justify-center flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                      sortBy === 'name'
+                        ? 'bg-gray-900 text-white shadow'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                    aria-current={sortBy === 'name' ? 'page' : undefined}
+                  >
+                    <TextIcon className="w-4 h-4 shrink-0" />
                     <span>名称</span>
-                    <span className={`text-xs w-4 text-center ${sortBy === 'name' ? 'opacity-100' : 'opacity-0'}`}>
-                      {order === 'desc' ? '↓' : '↑'}
-                    </span>
-                  </span>
+                  </a>
+                </div>
+
+                <a
+                  href={buildToggleOrderUrl()}
+                  className="inline-flex items-center justify-center h-11 w-11 rounded-xl border border-gray-200 bg-white shadow-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                  aria-label={order === 'desc' ? '切换为升序' : '切换为降序'}
+                  title={order === 'desc' ? '降序' : '升序'}
+                >
+                  <span className="text-base font-semibold leading-none">{order === 'desc' ? '↓' : '↑'}</span>
                 </a>
               </div>
             </div>
