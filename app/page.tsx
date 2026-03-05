@@ -1,7 +1,7 @@
 import { scanHTMLFiles, getCategories, sortItems, filterByCategory } from '@/lib/scan-html';
 import { CategoryFilter } from '@/components/CategoryFilter';
 import { PreviewCard } from '@/components/PreviewCard';
-import { CalendarIcon, TextIcon } from '@/components/Icons';
+import { CalendarIcon } from '@/components/Icons';
 
 interface HomePageProps {
   searchParams: Promise<{
@@ -20,40 +20,25 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const allItems = await scanHTMLFiles();
   const categories = getCategories(allItems);
 
-  const sortBy = params.sort || 'date';
+  const sortBy: 'date' | 'name' = 'date';
   const order = params.order || 'desc';
   const activeCategory = params.category || null;
 
   const filteredItems = filterByCategory(allItems, activeCategory);
   const sortedItems = sortItems(filteredItems, sortBy, order);
 
-  const buildSortUrl = (type: 'date' | 'name') => {
-    const defaultOrder: Record<'date' | 'name', 'asc' | 'desc'> = {
-      date: 'desc',
-      name: 'asc',
-    };
-
-    const newOrder = sortBy === type ? (order === 'desc' ? 'asc' : 'desc') : defaultOrder[type];
-    const params = new URLSearchParams();
-    if (activeCategory) params.set('category', activeCategory);
-    params.set('sort', type);
-    params.set('order', newOrder);
-    return `/?${params.toString()}`;
-  };
-
   const buildToggleOrderUrl = () => {
     const params = new URLSearchParams();
     if (activeCategory) params.set('category', activeCategory);
-    params.set('sort', sortBy);
     params.set('order', order === 'desc' ? 'asc' : 'desc');
     return `/?${params.toString()}`;
   };
 
   const allCount = categories.reduce((sum, cat) => sum + cat.count, 0);
-  const allUrl = `/?sort=${sortBy}&order=${order}`;
+  const allUrl = `/?order=${order}`;
   const categoriesWithUrls = categories.map((cat) => ({
     ...cat,
-    url: `/?category=${encodeURIComponent(cat.name)}&sort=${sortBy}&order=${order}`,
+    url: `/?category=${encodeURIComponent(cat.name)}&order=${order}`,
   }));
 
   return (
@@ -78,39 +63,14 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <span className="text-sm font-medium text-gray-600 whitespace-nowrap">排序</span>
 
               <div className="flex w-full sm:w-auto items-center gap-2">
-                <div className="flex items-center bg-white rounded-xl border border-gray-200 p-1 shadow-sm">
-                  <a
-                    href={buildSortUrl('date')}
-                    className={`flex-1 sm:flex-initial justify-center flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                      sortBy === 'date'
-                        ? 'bg-gray-900 text-white shadow'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                    aria-current={sortBy === 'date' ? 'page' : undefined}
-                  >
-                    <CalendarIcon className="w-4 h-4 shrink-0" />
-                    <span>时间</span>
-                  </a>
-                  <a
-                    href={buildSortUrl('name')}
-                    className={`flex-1 sm:flex-initial justify-center flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                      sortBy === 'name'
-                        ? 'bg-gray-900 text-white shadow'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                    aria-current={sortBy === 'name' ? 'page' : undefined}
-                  >
-                    <TextIcon className="w-4 h-4 shrink-0" />
-                    <span>名称</span>
-                  </a>
-                </div>
-
                 <a
                   href={buildToggleOrderUrl()}
-                  className="inline-flex items-center justify-center h-11 w-11 rounded-xl border border-gray-200 bg-white shadow-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                  aria-label={order === 'desc' ? '切换为升序' : '切换为降序'}
-                  title={order === 'desc' ? '降序' : '升序'}
+                  className="inline-flex items-center justify-center gap-2 h-11 px-4 rounded-xl border border-gray-200 bg-white shadow-sm text-gray-700 hover:bg-gray-100 transition-colors whitespace-nowrap"
+                  aria-label={order === 'desc' ? '切换为最早' : '切换为最新'}
+                  title={order === 'desc' ? '最新' : '最早'}
                 >
+                  <CalendarIcon className="w-4 h-4 shrink-0" />
+                  <span className="text-sm font-medium">{order === 'desc' ? '最新' : '最早'}</span>
                   <span className="text-base font-semibold leading-none">{order === 'desc' ? '↓' : '↑'}</span>
                 </a>
               </div>
