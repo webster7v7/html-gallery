@@ -13,8 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HTML Gallery - HTML 作品展示画廊",
-  description: "零配置静态 HTML 画廊系统，自动扫描并展示您的 HTML 作品",
+  title: "HTML Gallery",
+  description: "精选 HTML 页面作品集，一键预览",
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({

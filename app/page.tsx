@@ -12,6 +12,8 @@ interface HomePageProps {
 
 export const revalidate = 60;
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage({ searchParams }: HomePageProps) {
   const params = await searchParams;
   const allItems = await scanHTMLFiles();
@@ -25,7 +27,12 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const sortedItems = sortItems(filteredItems, sortBy, order);
 
   const buildSortUrl = (type: 'date' | 'name') => {
-    const newOrder = sortBy === type && order === 'desc' ? 'asc' : 'desc';
+    const defaultOrder: Record<'date' | 'name', 'asc' | 'desc'> = {
+      date: 'desc',
+      name: 'asc',
+    };
+
+    const newOrder = sortBy === type ? (order === 'desc' ? 'asc' : 'desc') : defaultOrder[type];
     const params = new URLSearchParams();
     if (activeCategory) params.set('category', activeCategory);
     params.set('sort', type);
@@ -34,24 +41,27 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   };
 
   const allCount = categories.reduce((sum, cat) => sum + cat.count, 0);
+  const allUrl = `/?sort=${sortBy}&order=${order}`;
   const categoriesWithUrls = categories.map((cat) => ({
     ...cat,
     url: `/?category=${encodeURIComponent(cat.name)}&sort=${sortBy}&order=${order}`,
   }));
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">HTML Gallery</h1>
-          <p className="text-gray-600">零配置静态 HTML 画廊系统，展示您的精彩作品</p>
-        </header>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-gray-50 to-white">
+      <main>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <header className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">HTML Gallery</h1>
+            <p className="text-gray-600">精选 HTML 页面作品集，一键预览</p>
+          </header>
 
         <div className="mb-6 rounded-2xl border border-gray-200 bg-white/70 backdrop-blur-sm p-4 sm:p-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <CategoryFilter
               categories={categoriesWithUrls}
               allCount={allCount}
+              allUrl={allUrl}
               activeCategory={activeCategory}
             />
 
@@ -119,10 +129,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           </div>
         )}
 
-        <footer className="mt-12 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
-          <p>共 {allItems.length} 个文件 · {categories.length} 个分类</p>
-        </footer>
-      </div>
-    </main>
+          <footer className="mt-12 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
+            <p>共 {allItems.length} 个文件 · {categories.length} 个分类</p>
+          </footer>
+        </div>
+      </main>
+    </div>
   );
 }

@@ -113,3 +113,41 @@ export function CalendarIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function CollectionIcon({ className }: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className={className || 'w-5 h-5'}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M7.5 6.75h13.5M7.5 12h13.5M7.5 17.25h13.5M4.5 6.75h.01M4.5 12h.01M4.5 17.25h.01"
+      />
+    </svg>
+  );
+}
+
+export function FolderIcon({ className }: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className={className || 'w-5 h-5'}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M2.25 6.75A2.25 2.25 0 014.5 4.5h5.379c.597 0 1.17.237 1.591.659l1.371 1.371c.422.422.994.659 1.591.659H19.5a2.25 2.25 0 012.25 2.25v8.25A2.25 2.25 0 0119.5 21H4.5a2.25 2.25 0 01-2.25-2.25V6.75z"
+      />
+    </svg>
+  );
+}

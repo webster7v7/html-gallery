@@ -4,7 +4,7 @@ import { HTMLItem } from '@/types';
 import { cn } from '@/lib/utils';
 import { EyeIcon, ExternalLinkIcon } from './Icons';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
 interface PreviewCardProps {
   item: HTMLItem;
@@ -18,23 +18,66 @@ function IframeSkeleton() {
   );
 }
 
-function PreviewIframe({ slug }: { slug: string }) {
-  const encodedSlug = slug
-    .split('/')
-    .map((segment) => encodeURIComponent(segment))
-    .join('/');
+function PreviewIframe({ slug, enabled }: { slug: string; enabled: boolean }) {
+  const encodedSlug = useMemo(
+    () =>
+      slug
+        .split('/')
+        .map((segment) => encodeURIComponent(segment))
+        .join('/'),
+    [slug]
+  );
+
+  if (!enabled) {
+    return null;
+  }
 
   return (
     <iframe
       src={`/content/${encodedSlug}.html`}
       className="w-[400%] h-[400%] scale-25 origin-top-left pointer-events-none"
       sandbox="allow-scripts"
+      loading="lazy"
       title="preview"
     />
   );
 }
 
 export function PreviewCard({ item }: PreviewCardProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [shouldLoadPreview, setShouldLoadPreview] = useState(false);
+
+  useEffect(() => {
+    if (shouldLoadPreview) return;
+    const el = containerRef.current;
+    if (!el) return;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setShouldLoadPreview(true);
+      return;
+    }
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setShouldLoadPreview(true);
+            obs.disconnect();
+            break;
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: '250px',
+        threshold: 0.01,
+      }
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [shouldLoadPreview]);
+
   const encodedPreviewSlug = item.slug
     .split('/')
     .map((segment) => encodeURIComponent(segment))
@@ -45,6 +88,7 @@ export function PreviewCard({ item }: PreviewCardProps) {
   return (
     <Link href={`/preview/${encodedPreviewSlug}`} className="block group">
       <div
+        ref={containerRef}
         className={cn(
           'relative bg-[#161b22] rounded-2xl border border-white/10',
           'hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1',
@@ -54,7 +98,7 @@ export function PreviewCard({ item }: PreviewCardProps) {
       >
         <Suspense fallback={<IframeSkeleton />}>
           <div className="absolute inset-0 overflow-hidden">
-            <PreviewIframe slug={item.slug} />
+            {!shouldLoadPreview ? <IframeSkeleton /> : <PreviewIframe slug={item.slug} enabled={shouldLoadPreview} />}
           </div>
         </Suspense>
 

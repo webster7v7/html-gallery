@@ -4,6 +4,27 @@ import { HTMLItem, Frontmatter } from '@/types';
 
 const CONTENT_DIR = path.join(process.cwd(), 'content');
 
+const HIDDEN_TAGS = new Set(['animation', 'tools']);
+
+function normalizeTag(tag: string): string {
+  return tag.trim();
+}
+
+function shouldHideTag(tag: string): boolean {
+  const normalized = normalizeTag(tag);
+  return HIDDEN_TAGS.has(normalized.toLowerCase());
+}
+
+function sanitizeTags(tags: string[] | undefined): string[] {
+  if (!tags || tags.length === 0) return [];
+  const cleaned = tags
+    .map(normalizeTag)
+    .filter((tag) => tag.length > 0)
+    .filter((tag) => !shouldHideTag(tag));
+
+  return Array.from(new Set(cleaned));
+}
+
 function parseFrontmatter(content: string): { frontmatter: Frontmatter; body: string } {
   const frontmatterRegex = /<!--\s*\n?---\n([\s\S]*?)\n---\s*\n?-->/;
   const match = content.match(frontmatterRegex);
@@ -87,8 +108,8 @@ async function scanDirectory(dir: string, baseDir: string): Promise<HTMLItem[]> 
             title: frontmatter.title || inferred.title || entry.name,
             description: frontmatter.description || inferred.description || '',
             category,
-            tags: frontmatter.tags || [],
-            createdAt: frontmatter.date || stats.birthtime.toISOString().split('T')[0],
+            tags: sanitizeTags(frontmatter.tags),
+            createdAt: frontmatter.date || stats.mtime.toISOString().split('T')[0],
             updatedAt: stats.mtime.toISOString().split('T')[0],
             size: stats.size,
             filePath: fullPath,
@@ -136,16 +157,32 @@ export function sortItems(
   sortBy: 'date' | 'name' = 'date',
   order: 'asc' | 'desc' = 'desc'
 ): HTMLItem[] {
-  return [...items].sort((a, b) => {
-    let comparison = 0;
+  const direction = order === 'desc' ? -1 : 1;
+  const collator = new Intl.Collator('zh-u-co-pinyin', { numeric: true, sensitivity: 'base' });
 
+  const getTime = (item: HTMLItem) => {
+    const created = Date.parse(item.createdAt);
+    if (!Number.isNaN(created)) return created;
+    const updated = Date.parse(item.updatedAt);
+    if (!Number.isNaN(updated)) return updated;
+    return 0;
+  };
+
+  return [...items].sort((a, b) => {
     if (sortBy === 'date') {
-      comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-    } else {
-      comparison = a.title.localeCompare(b.title);
+      const diff = getTime(a) - getTime(b);
+      if (diff !== 0) return diff * direction;
+      const titleDiff = collator.compare(a.title, b.title);
+      if (titleDiff !== 0) return titleDiff;
+      return collator.compare(a.slug, b.slug);
     }
 
-    return order === 'desc' ? -comparison : comparison;
+    const titleDiff = collator.compare(a.title, b.title);
+    if (titleDiff !== 0) return titleDiff * direction;
+
+    const timeDiff = getTime(a) - getTime(b);
+    if (timeDiff !== 0) return timeDiff * direction;
+    return collator.compare(a.slug, b.slug);
   });
 }
 

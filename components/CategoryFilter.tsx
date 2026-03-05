@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { CollectionIcon, FolderIcon } from './Icons';
 
 interface CategoryItem {
   name: string;
@@ -12,28 +13,30 @@ interface CategoryItem {
 interface CategoryFilterProps {
   categories: CategoryItem[];
   allCount: number;
+  allUrl: string;
   activeCategory: string | null;
 }
 
-export function CategoryFilter({ categories, allCount, activeCategory }: CategoryFilterProps) {
+export function CategoryFilter({ categories, allCount, allUrl, activeCategory }: CategoryFilterProps) {
   return (
     <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
-      <div className="flex flex-nowrap gap-2 min-w-max md:flex-wrap md:min-w-0">
+      <div className="inline-flex items-center gap-2 rounded-2xl border border-gray-200 bg-white/80 p-2 shadow-sm min-w-max">
         <Link
-          href="/"
+          href={allUrl}
           className={cn(
-            'rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ease-out',
+            'inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200 ease-out',
             !activeCategory || activeCategory === 'all'
-              ? 'bg-blue-500 text-white shadow-md'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              ? 'bg-gray-900 text-white shadow'
+              : 'text-gray-700 hover:bg-gray-100'
           )}
         >
+          <CollectionIcon className="w-4 h-4" />
           全部
           <span
             className={cn(
-              'ml-1.5 px-1.5 py-0.5 rounded-full text-xs',
+              'ml-0.5 px-1.5 py-0.5 rounded-full text-xs',
               !activeCategory || activeCategory === 'all'
-                ? 'bg-white/20'
+                ? 'bg-white/15'
                 : 'bg-gray-200'
             )}
           >
@@ -46,18 +49,19 @@ export function CategoryFilter({ categories, allCount, activeCategory }: Categor
             key={category.name}
             href={category.url}
             className={cn(
-              'rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ease-out',
+              'inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200 ease-out',
               activeCategory === category.name
-                ? 'bg-blue-500 text-white shadow-md'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-gray-900 text-white shadow'
+                : 'text-gray-700 hover:bg-gray-100'
             )}
           >
+            <FolderIcon className="w-4 h-4" />
             {category.name}
             <span
               className={cn(
-                'ml-1.5 px-1.5 py-0.5 rounded-full text-xs',
+                'ml-0.5 px-1.5 py-0.5 rounded-full text-xs',
                 activeCategory === category.name
-                  ? 'bg-white/20'
+                  ? 'bg-white/15'
                   : 'bg-gray-200'
               )}
             >
