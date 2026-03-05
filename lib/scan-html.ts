@@ -36,6 +36,17 @@ function parseFrontmatter(content: string): { frontmatter: Frontmatter; body: st
   const frontmatterStr = match[1];
   const frontmatter: Frontmatter = {};
 
+  const setFrontmatterField = (key: keyof Frontmatter, value: string) => {
+    if (key === 'title') frontmatter.title = value;
+    else if (key === 'description') frontmatter.description = value;
+    else if (key === 'category') frontmatter.category = value;
+    else if (key === 'date') frontmatter.date = value;
+    else if (key === 'author') frontmatter.author = value;
+    else if (key === 'tags') {
+      // ignore here; tags are handled as array
+    }
+  };
+
   const lines = frontmatterStr.split('\n');
   for (const line of lines) {
     const colonIndex = line.indexOf(':');
@@ -50,12 +61,17 @@ function parseFrontmatter(content: string): { frontmatter: Frontmatter; body: st
 
     if (value.startsWith('[') && value.endsWith(']')) {
       try {
-        frontmatter[key] = JSON.parse(value);
+        const parsed: unknown = JSON.parse(value);
+        if (key === 'tags' && Array.isArray(parsed) && parsed.every((t) => typeof t === 'string')) {
+          frontmatter.tags = parsed;
+        } else {
+          setFrontmatterField(key, value);
+        }
       } catch {
-        frontmatter[key] = value as any;
+        setFrontmatterField(key, value);
       }
     } else {
-      frontmatter[key] = value as any;
+      setFrontmatterField(key, value);
     }
   }
 
