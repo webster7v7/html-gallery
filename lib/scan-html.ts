@@ -6,6 +6,19 @@ const CONTENT_DIR = path.join(process.cwd(), 'content');
 
 const HIDDEN_TAGS = new Set(['animation', 'tools']);
 
+const DATETIME_PREFIX_RE = /^(\d{4})-(\d{2})-(\d{2})-(\d{2})-(\d{2})-/;
+
+function stripDatetimePrefix(fileBaseName: string): string {
+  return fileBaseName.replace(DATETIME_PREFIX_RE, '');
+}
+
+function datetimeFromNamePrefix(fileBaseName: string): string | null {
+  const m = fileBaseName.match(DATETIME_PREFIX_RE);
+  if (!m) return null;
+  const [, y, mo, d, h, mi] = m;
+  return `${y}-${mo}-${d}T${h}:${mi}:00Z`;
+}
+
 function normalizeTag(tag: string): string {
   return tag.trim();
 }
@@ -79,7 +92,7 @@ function parseFrontmatter(content: string): { frontmatter: Frontmatter; body: st
 }
 
 function inferMetadata(filePath: string, content: string): Partial<HTMLItem> {
-  const fileName = path.basename(filePath, '.html');
+  const fileName = stripDatetimePrefix(path.basename(filePath, '.html'));
   const dirName = path.basename(path.dirname(filePath));
 
   const titleMatch = content.match(/<title>([^<]*)<\/title>/i);
@@ -118,12 +131,15 @@ async function scanDirectory(dir: string, baseDir: string): Promise<HTMLItem[]> 
           const slug = relativePath.replace(/\\/g, '/').replace(/\.html$/, '');
 
           const category = frontmatter.category || inferred.category || 'uncategorized';
-          const fsDate = new Date(stats.mtime).toISOString().split('T')[0];
-          const fallbackDate = fsDate;
+
+          const baseName = path.basename(fullPath, '.html');
+          const nameDate = datetimeFromNamePrefix(baseName);
+          const fsDate = new Date(stats.mtime).toISOString();
+          const fallbackDate = nameDate || fsDate;
 
           const item: HTMLItem = {
             slug,
-            title: frontmatter.title || inferred.title || entry.name,
+            title: frontmatter.title || inferred.title || stripDatetimePrefix(entry.name.replace(/\.html$/, '')),
             description: frontmatter.description || inferred.description || '',
             category,
             tags: sanitizeTags(frontmatter.tags),
