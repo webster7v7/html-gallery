@@ -4,34 +4,6 @@ import { HTMLItem, Frontmatter } from '@/types';
 
 const CONTENT_DIR = path.join(process.cwd(), 'content');
 
-const CONTENT_INDEX_PATH = path.join(process.cwd(), 'content-index.json');
-let contentIndexCache: Record<string, string> | null = null;
-
-const DATE_SOURCE: 'git' | 'fs' =
-  process.env.HTML_GALLERY_DATE_SOURCE === 'fs'
-    ? 'fs'
-    : process.env.HTML_GALLERY_DATE_SOURCE === 'git'
-      ? 'git'
-      : process.env.NODE_ENV === 'development'
-        ? 'fs'
-        : 'git';
-
-async function loadContentIndex(): Promise<Record<string, string>> {
-  if (contentIndexCache) return contentIndexCache;
-  try {
-    const raw = await fs.readFile(CONTENT_INDEX_PATH, 'utf-8');
-    const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed === 'object') {
-      contentIndexCache = parsed as Record<string, string>;
-      return contentIndexCache;
-    }
-  } catch {
-    // ignore
-  }
-  contentIndexCache = {};
-  return contentIndexCache;
-}
-
 const HIDDEN_TAGS = new Set(['animation', 'tools']);
 
 function normalizeTag(tag: string): string {
@@ -130,11 +102,8 @@ async function scanDirectory(dir: string, baseDir: string): Promise<HTMLItem[]> 
           const slug = relativePath.replace(/\\/g, '/').replace(/\.html$/, '');
 
           const category = frontmatter.category || inferred.category || 'uncategorized';
-
-          const indexDate = contentIndexCache ? contentIndexCache[slug] : undefined;
-
           const fsDate = new Date(stats.mtime).toISOString().split('T')[0];
-          const fallbackDate = DATE_SOURCE === 'fs' ? fsDate : indexDate;
+          const fallbackDate = fsDate;
 
           const item: HTMLItem = {
             slug,
@@ -168,8 +137,6 @@ export async function scanHTMLFiles(): Promise<HTMLItem[]> {
     await fs.mkdir(CONTENT_DIR, { recursive: true });
     return [];
   }
-
-  await loadContentIndex();
 
   return scanDirectory(CONTENT_DIR, CONTENT_DIR);
 }
