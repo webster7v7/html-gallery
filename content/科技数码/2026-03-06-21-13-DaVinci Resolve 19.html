@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaVinci Resolve 19 完全工作流指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .page-card {
+            background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
+            border: 1px solid #2a2a2a;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--page-color) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .page-card:hover::before {
+            opacity: 1;
+        }
+        
+        .page-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--page-color);
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5), 
+                        0 0 30px -5px var(--page-color-glow);
+        }
+        
+        .workflow-line {
+            background: linear-gradient(90deg, #333 0%, #555 50%, #333 100%);
+            height: 2px;
+            position: relative;
+        }
+        
+        .workflow-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #feca57 20%, 
+                #ff6b6b 40%, 
+                #48dbfb 60%, 
+                #1dd1a1 80%, 
+                transparent 100%);
+            background-size: 200% 100%;
+            animation: flow 3s linear infinite;
+            opacity: 0.6;
+        }
+        
+        @keyframes flow {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+        
+        .feature-tag {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        
+        .feature-tag:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.05);
+        }
+        
+        .icon-box {
+            background: linear-gradient(135deg, var(--page-color) 0%, var(--page-color-dark) 100%);
+            box-shadow: 0 10px 30px -10px var(--page-color-glow);
+        }
+        
+        .expand-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+        }
+        
+        .expand-content.active {
+            max-height: 2000px;
+            transition: max-height 0.5s ease-in-out;
+        }
+        
+        .new-badge {
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .timeline-node {
+            position: relative;
+        }
+        
+        .timeline-node::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--page-color);
+            border-radius: 50%;
+            top: 50%;
+            right: -6px;
+            transform: translateY(-50%);
+            box-shadow: 0 0 20px var(--page-color-glow);
+        }
+        
+        .glass-panel {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .comparison-table th {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .comparison-table td {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .tool-icon {
+            transition: transform 0.3s;
+        }
+        
+        .page-card:hover .tool-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #feca57, #ff6b6b, #48dbfb);
+            z-index: 50;
+            transition: width 0.1s;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="antialiased">
+
+    <!-- 滚动进度条 -->
+    <div class="scroll-indicator" id="scrollBar"></div>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-orange-900/20 via-black to-black z-0"></div>
+        
+        <!-- 动态背景网格 -->
+        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 40px 40px;"></div>
+        
+        <div class="relative z-10 text-center px-4 max-w-6xl mx-auto">
+            <div class="mb-6 inline-block">
+                <span class="px-4 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium tracking-wider">
+                    BLACKMAGIC DESIGN
+                </span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                <span class="block text-white mb-2">DaVinci Resolve 19</span>
+                <span class="gradient-text">好莱坞级后期制作工作流</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
+                从素材管理到最终交付，七大专业模块构建完整影视后期管线<br>
+                <span class="text-orange-400">AI驱动 × 节点式工作流 × 一体化协作</span>
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <div class="glass-panel px-6 py-3 rounded-lg flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-sm text-gray-300">实时协作</span>
+                </div>
+                <div class="glass-panel px-6 py-3 rounded-lg flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                    <span class="text-sm text-gray-300">AI Neural Engine</span>
+                </div>
+                <div class="glass-panel px-6 py-3 rounded-lg flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
+                    <span class="text-sm text-gray-300">8K HDR Ready</span>
+                </div>
+            </div>
+
+            <button onclick="document.getElementById('workflow').scrollIntoView({behavior: 'smooth'})" 
+                    class="group px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 rounded-full font-semibold text-white hover:shadow-2xl hover:shadow-orange-500/25 transition-all transform hover:scale-105">
+                探索工作流
+                <svg class="inline-block ml-2 w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- 装饰性元素 -->
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent"></div>
+    </header>
+
+    <!-- 工作流总览时间线 -->
+    <section id="workflow" class="py-20 px-4 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">标准工作流</h2>
+                <p class="text-gray-400">七大模块串联完整后期制作管线</p>
+            </div>
+            
+            <div class="relative">
+                <div class="workflow-line absolute top-1/2 left-0 right-0 hidden md:block"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-7 gap-4 relative">
+                    <!-- 媒体 -->
+                    <div class="timeline-node text-center group cursor-pointer" onclick="scrollToSection('media')">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center mb-3 group-hover:border-orange-500 group-hover:shadow-lg group-hover:shadow-orange-500/30 transition-all">
+                            <span class="text-2xl">📁</span>
+                        </div>
+                        <div class="text-xs font-bold text-gray-500 group-hover:text-orange-400 transition-colors">MEDIA</div>
+                        <div class="text-sm font-medium">媒体</div>
+                    </div>
+                    
+                    <!-- 快编 -->
+                    <div class="timeline-node text-center group cursor-pointer" onclick="scrollToSection('cut')">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center mb-3 group-hover:border-yellow-500 group-hover:shadow-lg group-hover:shadow-yellow-500/30 transition-all">
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                        <div class="text-xs font-bold text-gray-500 group-hover:text-yellow-400 transition-colors">CUT</div>
+                        <div class="text-sm font-medium">快编</div>
+                    </div>
+                    
+                    <!-- 剪辑 -->
+                    <div class="timeline-node text-center group cursor-pointer" onclick="scrollToSection('edit')">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center mb-3 group-hover:border-blue-500 group-hover:shadow-lg group-hover:shadow-blue-500/30 transition-all">
+                            <span class="text-2xl">✂️</span>
+                        </div>
+                        <div class="text-xs font-bold text-gray-500 group-hover:text-blue-400 transition-colors">EDIT</div>
+                        <div class="text-sm font-medium">剪辑</div>
+                    </div>
+                    
+                    <!-- Fusion -->
+                    <div class="timeline-node text-center group cursor-pointer" onclick="scrollToSection('fusion')">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center mb-3 group-hover:border-purple-500 group-hover:shadow-lg group-hover:shadow-purple-500/30 transition-all">
+                            <span class="text-2xl">🔮</span>
+                        </div>
+                        <div class="text-xs font-bold text-gray-500 group-hover:text-purple-400 transition-colors">FUSION</div>
+                        <div class="text-sm font-medium">特效</div>
+                    </div>
+                    
+                    <!-- 调色 -->
+                    <div class="timeline-node text-center group cursor-pointer" onclick="scrollToSection('color')">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center mb-3 group-hover:border-pink-500 group-hover:shadow-lg group-hover:shadow-pink-500/30 transition-all">
+                            <span class="text-2xl">🎨</span>
+                        </div>
+                        <div class="text-xs font-bold text-gray-500 group-hover:text-pink-400 transition-colors">COLOR</div>
+                        <div class="text-sm font-medium">调色</div>
+                    </div>
+                    
+                    <!-- Fairlight -->
+                    <div class="timeline-node text-center group cursor-pointer" onclick="scrollToSection('fairlight')">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center mb-3 group-hover:border-cyan-500 group-hover:shadow-lg group-hover:shadow-cyan-500/30 transition-all">
+                            <span class="text-2xl">🎧</span>
+                        </div>
+                        <div class="text-xs font-bold text-gray-500 group-hover:text-cyan-400 transition-colors">FAIRLIGHT</div>
+                        <div class="text-sm font-medium">音频</div>
+                    </div>
+                    
+                    <!-- 交付 -->
+                    <div class="timeline-node text-center group cursor-pointer" onclick="scrollToSection('deliver')">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center mb-3 group-hover:border-green-500 group-hover:shadow-lg group-hover:shadow-green-500/30 transition-all">
+                            <span class="text-2xl">📤</span>
+                        </div>
+                        <div class="text-xs font-bold text-gray-500 group-hover:text-green-400 transition-colors">DELIVER</div>
+                        <div class="text-sm font-medium">交付</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 详细页面介绍 -->
+    <section class="py-20 px-4 space-y-8 max-w-7xl mx-auto">
+
+        <!-- 1. 媒体页面 -->
+        <div id="media" class="page-card rounded-2xl p-8" style="--page-color: #f97316; --page-color-dark: #c2410c; --page-color-glow: rgba(249, 115, 22, 0.3);">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/3">
+                    <div class="icon-box w-20 h-20 rounded-2xl flex items-center justify-center text-3xl mb-4 tool-icon">
+                        📁
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-2">媒体</h3>
+                    <p class="text-orange-400 font-semibold mb-4">Media — 素材管理中心</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        项目的"素材仓库"，负责所有素材的导入、整理、筛选与元数据管理。支持代理文件生成，优化高分辨率素材剪辑流畅度。
+                    </p>
+                    <button onclick="toggleExpand('media-expand')" class="flex items-center gap-2 text-orange-400 hover:text-orange-300 transition-colors group">
+                        <span>查看详情</span>
+                        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">智能媒体管理</div>
+                        <div class="text-sm text-gray-400">Resync Bins自动同步文件夹更新</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">代理生成器</div>
+                        <div class="text-sm text-gray-400">Blackmagic Proxy Generator自动转码</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">元数据标记</div>
+                        <div class="text-sm text-gray-400">场景、镜头、拍摄日期管理</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">多格式支持</div>
+                        <div class="text-sm text-gray-400">RAW、ProRes、DNxHD、H.265等</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="media-expand" class="expand-content mt-8 pt-8 border-t border-gray-800">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-orange-400 font-bold mb-3">导入工作流</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-1">•</span>
+                                <span>从存储卡、硬盘、网络位置批量导入</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-1">•</span>
+                                <span>自动识别镜头编号和时间码</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-1">•</span>
+                                <span>支持Live Sync实时同步拍摄素材</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-orange-400 font-bold mb-3">组织管理</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-1">•</span>
+                                <span>智能媒体夹(Smart Bins)自动分类</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-1">•</span>
+                                <span>颜色标签与自定义标记系统</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-1">•</span>
+                                <span>片段评级与筛选(1-5星)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-orange-400 font-bold mb-3">Resolve 19 新特性</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>Resync Media一键刷新媒体夹</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>代理状态智能显示</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>多机位音频波形同步</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 快编页面 -->
+        <div id="cut" class="page-card rounded-2xl p-8" style="--page-color: #eab308; --page-color-dark: #a16207; --page-color-glow: rgba(234, 179, 8, 0.3);">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/3">
+                    <div class="icon-box w-20 h-20 rounded-2xl flex items-center justify-center text-3xl mb-4 tool-icon">
+                        ⚡
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-2">快编</h3>
+                    <p class="text-yellow-400 font-semibold mb-4">Cut — 快速粗剪页面</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        专为快速出片设计，双时间线+源磁带模式，适合短视频、新闻、直播、Vlog等需要快速交付的场景。
+                    </p>
+                    <button onclick="toggleExpand('cut-expand')" class="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors group">
+                        <span>查看详情</span>
+                        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-tag rounded-lg p-4 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 new-badge text-xs px-2 py-1 rounded-full text-white font-bold">NEW</div>
+                        <div class="font-semibold text-white mb-1">多源剪辑</div>
+                        <div class="text-sm text-gray-400">时间同步多机位素材查看与剪辑</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">智能重构</div>
+                        <div class="text-sm text-gray-400">自动识别主体智能裁剪画面</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">直播回放</div>
+                        <div class="text-sm text-gray-400">DaVinci Resolve Replay实时慢动作回放</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">快速修剪</div>
+                        <div class="text-sm text-gray-400">一键音频修剪、快速转场</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="cut-expand" class="expand-content mt-8 pt-8 border-t border-gray-800">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-yellow-400 font-bold mb-3">快编核心功能</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-yellow-500 mt-1">•</span>
+                                <span>双时间线视图：上方浏览下方拼接</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-yellow-500 mt-1">•</span>
+                                <span>源磁带模式：连续播放所有素材</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-yellow-500 mt-1">•</span>
+                                <span>快速插入/覆盖/替换操作</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-yellow-400 font-bold mb-3">适用场景</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-yellow-500 mt-1">▸</span>
+                                <span>短视频平台内容快速产出</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-yellow-500 mt-1">▸</span>
+                                <span>新闻现场快剪与直播</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-yellow-500 mt-1">▸</span>
+                                <span>活动快剪与婚礼现场剪辑</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-yellow-400 font-bold mb-3">Resolve 19 新特性</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>广播级回放工作流程</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>ATEM多画面实时查看</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>增强型查看器与标记显示</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 剪辑页面 -->
+        <div id="edit" class="page-card rounded-2xl p-8" style="--page-color: #3b82f6; --page-color-dark: #1d4ed8; --page-color-glow: rgba(59, 130, 246, 0.3);">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/3">
+                    <div class="icon-box w-20 h-20 rounded-2xl flex items-center justify-center text-3xl mb-4 tool-icon">
+                        ✂️
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-2">剪辑</h3>
+                    <p class="text-blue-400 font-semibold mb-4">Edit — 专业精剪页面</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        标准非线性编辑(NLE)，对标Premiere Pro。多轨道精细剪辑、精准修剪、动态图形、多机位同步，适合电影、纪录片、广告的长视频叙事。
+                    </p>
+                    <button onclick="toggleExpand('edit-expand')" class="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors group">
+                        <span>查看详情</span>
+                        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-tag rounded-lg p-4 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 new-badge text-xs px-2 py-1 rounded-full text-white font-bold">AI</div>
+                        <div class="font-semibold text-white mb-1">文本剪辑</div>
+                        <div class="text-sm text-gray-400">基于转录文本的智能剪辑</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">多机位剪辑</div>
+                        <div class="text-sm text-gray-400">支持最多16机位同步切换</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">Fusion动态链接</div>
+                        <div class="text-sm text-gray-400">时间线内直接编辑特效合成</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">高级修剪</div>
+                        <div class="text-sm text-gray-400">波纹、滚动、滑移、滑动修剪</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="edit-expand" class="expand-content mt-8 pt-8 border-t border-gray-800">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-blue-400 font-bold mb-3">剪辑工具集</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">•</span>
+                                <span>无限视频/音频轨道支持</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">•</span>
+                                <span>嵌套时间线与复合片段</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">•</span>
+                                <span>OpenFX插件与转场库</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-blue-400 font-bold mb-3">音频功能</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">♪</span>
+                                <span>内置音频波形对齐同步</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">♪</span>
+                                <span>多通道音频预览(最多36轨)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">♪</span>
+                                <span>旁白录制与ADR工具</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-blue-400 font-bold mb-3">Resolve 19 新特性</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>基于文本的智能剪辑(Text-Based Editing)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>说话人检测与分离</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>查看器内直接编辑Text+字幕</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Fusion页面 -->
+        <div id="fusion" class="page-card rounded-2xl p-8" style="--page-color: #a855f7; --page-color-dark: #7e22ce; --page-color-glow: rgba(168, 85, 247, 0.3);">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/3">
+                    <div class="icon-box w-20 h-20 rounded-2xl flex items-center justify-center text-3xl mb-4 tool-icon">
+                        🔮
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-2">Fusion</h3>
+                    <p class="text-purple-400 font-semibold mb-4">Fusion — 视觉特效与合成</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        内置专业级节点式特效合成，对标After Effects/Nuke。支持3D合成、粒子系统、摄像机跟踪、动态图形，与剪辑页无缝联动。
+                    </p>
+                    <button onclick="toggleExpand('fusion-expand')" class="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors group">
+                        <span>查看详情</span>
+                        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-tag rounded-lg p-4 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 new-badge text-xs px-2 py-1 rounded-full text-white font-bold">AI</div>
+                        <div class="font-semibold text-white mb-1">IntelliTrack</div>
+                        <div class="text-sm text-gray-400">AI驱动的智能跟踪与稳定</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">Multi Poly</div>
+                        <div class="text-sm text-gray-400">多边形遮罩列表集中管理</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">3D工作区</div>
+                        <div class="text-sm text-gray-400">USD工具与Material X支持</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">Magic Mask</div>
+                        <div class="text-sm text-gray-400">AI智能遮罩与抠像</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="fusion-expand" class="expand-content mt-8 pt-8 border-t border-gray-800">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-purple-400 font-bold mb-3">合成工具</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-500 mt-1">•</span>
+                                <span>节点式工作流程(非图层)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-500 mt-1">•</span>
+                                <span>平面跟踪与3D摄像机跟踪</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-500 mt-1">•</span>
+                                <span>键控抠像与颜色差值</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-purple-400 font-bold mb-3">3D与动态图形</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-500 mt-1">◆</span>
+                                <span>3D粒子系统与物理模拟</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-500 mt-1">◆</span>
+                                <span>矢量图形与文字动画</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-500 mt-1">◆</span>
+                                <span>立体3D合成支持</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-purple-400 font-bold mb-3">Resolve 19 新特性</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>USD场景导入与高级着色</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>Multi Poly多遮罩管理工具</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>Magic Mask性能提升3倍</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 调色页面 -->
+        <div id="color" class="page-card rounded-2xl p-8" style="--page-color: #ec4899; --page-color-dark: #be185d; --page-color-glow: rgba(236, 72, 153, 0.3);">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/3">
+                    <div class="icon-box w-20 h-20 rounded-2xl flex items-center justify-center text-3xl mb-4 tool-icon">
+                        🎨
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-2">调色</h3>
+                    <p class="text-pink-400 font-semibold mb-4">Color — 专业调色核心</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        达芬奇的灵魂所在，好莱坞级调色工具。一级校色、二级调色、节点式工作流、HDR调色、色彩管理，支持专业调色台硬件控制。
+                    </p>
+                    <button onclick="toggleExpand('color-expand')" class="flex items-center gap-2 text-pink-400 hover:text-pink-300 transition-colors group">
+                        <span>查看详情</span>
+                        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-tag rounded-lg p-4 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 new-badge text-xs px-2 py-1 rounded-full text-white font-bold">NEW</div>
+                        <div class="font-semibold text-white mb-1">ColorSlice</div>
+                        <div class="text-sm text-gray-400">六矢量调色与肤色专用通道</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 new-badge text-xs px-2 py-1 rounded-full text-white font-bold">NEW</div>
+                        <div class="font-semibold text-white mb-1">Film Look</div>
+                        <div class="text-sm text-gray-400">电影胶片模拟与光化学效果</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">UltraNR</div>
+                        <div class="text-sm text-gray-400">AI智能降噪(Studio版)</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">HDR调色</div>
+                        <div class="text-sm text-gray-400">杜比视界、HDR10+、Rec.2020</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="color-expand" class="expand-content mt-8 pt-8 border-t border-gray-800">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-pink-400 font-bold mb-3">调色工具</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-pink-500 mt-1">•</span>
+                                <span>一级校色：Lift/Gamma/Gain</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-pink-500 mt-1">•</span>
+                                <span>二级调色：限定器、Power Window</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-pink-500 mt-1">•</span>
+                                <span>节点编辑器：串行/并行/图层</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-pink-400 font-bold mb-3">专业功能</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-pink-500 mt-1">◉</span>
+                                <span>色彩管理：RCM、ACES、LUT</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-pink-500 mt-1">◉</span>
+                                <span>面部优化：AI面部识别与美化</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-pink-500 mt-1">◉</span>
+                                <span>立体3D调色与匹配</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-pink-400 font-bold mb-3">Resolve 19 新特性</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>ColorSlice六矢量调色板</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>Film Look Creator胶片模拟</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>UltraNR AI空间降噪</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>Defocus Background背景虚化</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 调色台硬件信息 -->
+                <div class="mt-6 glass-panel rounded-xl p-6 border border-pink-500/20">
+                    <h4 class="text-pink-400 font-bold mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        推荐调色台硬件
+                    </h4>
+                    <div class="grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-black/30 rounded-lg p-4">
+                            <div class="font-semibold text-white mb-1">Micro Panel</div>
+                            <div class="text-gray-400">入门级，3轨迹球+基础控制</div>
+                            <div class="text-pink-400 mt-2">¥2,500-8,000</div>
+                        </div>
+                        <div class="bg-black/30 rounded-lg p-4 border border-pink-500/30">
+                            <div class="font-semibold text-white mb-1">Mini Panel</div>
+                            <div class="text-gray-400">专业级，LCD屏幕+更多快捷键</div>
+                            <div class="text-pink-400 mt-2">¥20,000-30,000</div>
+                        </div>
+                        <div class="bg-black/30 rounded-lg p-4">
+                            <div class="font-semibold text-white mb-1">Advanced Panel</div>
+                            <div class="text-gray-400">电影级，双LCD+完整控制布局</div>
+                            <div class="text-pink-400 mt-2">¥200,000+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Fairlight页面 -->
+        <div id="fairlight" class="page-card rounded-2xl p-8" style="--page-color: #06b6d4; --page-color-dark: #0891b2; --page-color-glow: rgba(6, 182, 212, 0.3);">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/3">
+                    <div class="icon-box w-20 h-20 rounded-2xl flex items-center justify-center text-3xl mb-4 tool-icon">
+                        🎧
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-2">Fairlight</h3>
+                    <p class="text-cyan-400 font-semibold mb-4">Fairlight — 专业音频后期</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        内置完整数字音频工作站(DAW)，对标Pro Tools。支持多轨混音、ADR对白替换、降噪修复、5.1/7.1/杜比全景声制作。
+                    </p>
+                    <button onclick="toggleExpand('fairlight-expand')" class="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors group">
+                        <span>查看详情</span>
+                        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-tag rounded-lg p-4 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 new-badge text-xs px-2 py-1 rounded-full text-white font-bold">AI</div>
+                        <div class="font-semibold text-white mb-1">Dialogue Separator</div>
+                        <div class="text-sm text-gray-400">AI分离人声、背景、环境音</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4 relative overflow-hidden">
+                        <div class="absolute top-2 right-2 new-badge text-xs px-2 py-1 rounded-full text-white font-bold">NEW</div>
+                        <div class="font-semibold text-white mb-1">Ducker</div>
+                        <div class="text-sm text-gray-400">自动闪避：人声出现时降低音乐</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">IntelliTrack Pan</div>
+                        <div class="text-sm text-gray-400">AI音频随画面移动自动声像</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">环绕声混音</div>
+                        <div class="text-sm text-gray-400">5.1、7.1、杜比全景声支持</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="fairlight-expand" class="expand-content mt-8 pt-8 border-t border-gray-800">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-cyan-400 font-bold mb-3">音频编辑</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-cyan-500 mt-1">•</span>
+                                <span>无限音轨与多通道支持</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-cyan-500 mt-1">•</span>
+                                <span>弹性音频：时间拉伸不变调</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-cyan-500 mt-1">•</span>
+                                <span>自动化参数录制</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-cyan-400 font-bold mb-3">混音与效果</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-cyan-500 mt-1">♫</span>
+                                <span>专业调音台与通道条</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-cyan-500 mt-1">♫</span>
+                                <span>EQ、压缩、混响、限制器</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-cyan-500 mt-1">♫</span>
+                                <span>实时音频效果处理</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-cyan-400 font-bold mb-3">Resolve 19 新特性</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>Dialogue Separator AI分离</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>Music Remixer音乐元素分离</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>Ducker自动闪避效果</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">✓</span>
+                                <span>IntelliTrack AI声像跟踪</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. 交付页面 -->
+        <div id="deliver" class="page-card rounded-2xl p-8" style="--page-color: #22c55e; --page-color-dark: #15803d; --page-color-glow: rgba(34, 197, 94, 0.3);">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/3">
+                    <div class="icon-box w-20 h-20 rounded-2xl flex items-center justify-center text-3xl mb-4 tool-icon">
+                        📤
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-2">交付</h3>
+                    <p class="text-green-400 font-semibold mb-4">Deliver — 导出与发布</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        项目最终输出中心，支持多种格式编码、分辨率、色彩空间设置。批量导出、自定义预设、一键上传YouTube/Vimeo/抖音等平台。
+                    </p>
+                    <button onclick="toggleExpand('deliver-expand')" class="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors group">
+                        <span>查看详情</span>
+                        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">多格式输出</div>
+                        <div class="text-sm text-gray-400">H.264、ProRes、DNxHR、EXR、DCP</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">批量渲染</div>
+                        <div class="text-sm text-gray-400">同时输出多版本(4K+1080p)</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">色彩空间</div>
+                        <div class="text-sm text-gray-400">Rec.709、Rec.2020、P3、ACES</div>
+                    </div>
+                    <div class="feature-tag rounded-lg p-4">
+                        <div class="font-semibold text-white mb-1">直接上传</div>
+                        <div class="text-sm text-gray-400">YouTube、Vimeo、Frame.io集成</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="deliver-expand" class="expand-content mt-8 pt-8 border-t border-gray-800">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-green-400 font-bold mb-3">输出设置</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">•</span>
+                                <span>自定义分辨率与帧率</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">•</span>
+                                <span>码率控制(VBR/CBR)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">•</span>
+                                <span>音频格式与采样率设置</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-green-400 font-bold mb-3">专业交付</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">▸</span>
+                                <span>DCP数字影院包制作</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">▸</span>
+                                <span>IMF可互操作主文件</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">▸</span>
+                                <span>时间码与元数据嵌入</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-panel rounded-xl p-6">
+                        <h4 class="text-green-400 font-bold mb-3">网络预设</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">YouTube</span>
+                                <span>4K HDR或1080p标准</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">抖音/快手</span>
+                                <span>9:16竖屏1080×1920</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-500 mt-1">影院</span>
+                                <span>DCP 4K 24fps JPEG2000</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- 版本对比 -->
+    <section class="py-20 px-4 bg-gradient-to-b from-black to-gray-900">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">版本选择指南</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-panel rounded-2xl p-8 border border-gray-700">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-white">DaVinci Resolve</h3>
+                        <span class="px-4 py-1 bg-gray-700 rounded-full text-sm font-bold text-gray-300">免费版</span>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-400 mb-6">¥0</div>
+                    <ul class="space-y-3 text-gray-300 mb-8">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            完整剪辑、调色、Fusion、Fairlight功能
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            多用户协作(限1人)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            4K UHD输出(3840×2160)
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-500">
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            无AI降噪、面部优化、立体3D
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-500">
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            无专业调色台支持
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg bg-gray-700 text-white font-semibold hover:bg-gray-600 transition-colors">
+                        官网下载
+                    </button>
+                </div>
+                
+                <div class="glass-panel rounded-2xl p-8 border border-orange-500/50 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-gradient-to-l from-orange-600 to-transparent px-4 py-1 text-xs font-bold text-white">
+                        推荐
+                    </div>
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-white">DaVinci Resolve Studio</h3>
+                        <span class="px-4 py-1 bg-orange-600 rounded-full text-sm font-bold text-white">买断制</span>
+                    </div>
+                    <div class="text-3xl font-bold text-orange-400 mb-6">¥2,950 <span class="text-lg text-gray-500">一次性</span></div>
+                    <ul class="space-y-3 text-gray-300 mb-8">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            包含免费版所有功能
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            AI工具：降噪、面部优化、智能重构图
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            8K+分辨率、120fps、HDR调色
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            多用户协作(无限制)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            专业调色台与API支持
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg bg-gradient-to-r from-orange-600 to-red-600 text-white font-semibold hover:shadow-lg hover:shadow-orange-500/25 transition-all">
+                        购买授权
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-12 px-4 border-t border-gray-800 bg-black">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-gray-500 mb-4">基于 DaVinci Resolve 19 版本制作</p>
+            <div class="flex justify-center gap-6 text-sm text-gray-600">
+                <span>Blackmagic Design</span>
+                <span>•</span>
+                <span>Hollywood's #1 Post Solution</span>
+                <span>•</span>
+                <span>AI Powered</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动进度条
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollBar').style.width = scrolled + "%";
+        });
+
+        // 展开/收起详情
+        function toggleExpand(id) {
+            const element = document.getElementById(id);
+            const isActive = element.classList.contains('active');
+            
+            // 关闭所有其他展开的内容
+            document.querySelectorAll('.expand-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // 切换当前内容
+            if (!isActive) {
+                element.classList.add('active');
+            }
+        }
+
+        // 滚动到指定部分
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // 高亮效果
+                element.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    element.style.transform = '';
+                }, 300);
+            }
+        }
+
+        // 添加滚动动画观察器
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有卡片
+        document.querySelectorAll('.page-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
