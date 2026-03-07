@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevMemo - 开发者笔记本</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        
+        /* Glass Effect */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Note Card Hover */
+        .note-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 3px solid transparent;
+        }
+        .note-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Category Colors */
+        .cat-powershell { border-left-color: #3b82f6; }
+        .cat-system { border-left-color: #ef4444; }
+        .cat-dev { border-left-color: #10b981; }
+        .cat-tools { border-left-color: #f59e0b; }
+        .cat-other { border-left-color: #8b5cf6; }
+        
+        /* Input Focus Animation */
+        .input-glow:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Search Highlight */
+        .highlight {
+            background: rgba(234, 179, 8, 0.3);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        
+        /* Empty State Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-anim { animation: float 3s ease-in-out infinite; }
+        
+        /* Toast */
+        .toast {
+            transform: translateX(400px);
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show { transform: translateX(0); }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <i class="fas fa-book-open text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">DevMemo</h1>
+                    <p class="text-xs text-slate-400">开发者知识库</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button onclick="exportData()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm transition-colors flex items-center gap-2 border border-slate-700">
+                    <i class="fas fa-download"></i> 导出
+                </button>
+                <label class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm transition-colors flex items-center gap-2 border border-slate-700 cursor-pointer">
+                    <i class="fas fa-upload"></i> 导入
+                    <input type="file" id="importFile" accept=".json" class="hidden" onchange="importData(this)">
+                </label>
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors border border-slate-700">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 py-8 flex gap-6 flex-col lg:flex-row">
+        
+        <!-- Sidebar -->
+        <aside class="lg:w-64 space-y-6">
+            <!-- Add Button -->
+            <button onclick="openModal()" class="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-xl font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
+                <i class="fas fa-plus"></i> 新建笔记
+            </button>
+
+            <!-- Categories -->
+            <div class="glass rounded-2xl p-4 space-y-2">
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-2">分类</h3>
+                <button onclick="filterCategory('all')" class="cat-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors flex items-center justify-between group active-cat bg-slate-700/50" data-cat="all">
+                    <span class="flex items-center gap-3">
+                        <i class="fas fa-layer-group text-slate-400"></i>
+                        <span>全部笔记</span>
+                    </span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded-full text-slate-300" id="count-all">0</span>
+                </button>
+                <button onclick="filterCategory('powershell')" class="cat-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors flex items-center justify-between group" data-cat="powershell">
+                    <span class="flex items-center gap-3">
+                        <i class="fas fa-terminal text-blue-400"></i>
+                        <span>PowerShell</span>
+                    </span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded-full text-slate-300" id="count-powershell">0</span>
+                </button>
+                <button onclick="filterCategory('system')" class="cat-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors flex items-center justify-between group" data-cat="system">
+                    <span class="flex items-center gap-3">
+                        <i class="fas fa-shield-alt text-red-400"></i>
+                        <span>系统操作</span>
+                    </span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded-full text-slate-300" id="count-system">0</span>
+                </button>
+                <button onclick="filterCategory('dev')" class="cat-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors flex items-center justify-between group" data-cat="dev">
+                    <span class="flex items-center gap-3">
+                        <i class="fas fa-code text-green-400"></i>
+                        <span>开发备忘</span>
+                    </span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded-full text-slate-300" id="count-dev">0</span>
+                </button>
+                <button onclick="filterCategory('tools')" class="cat-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors flex items-center justify-between group" data-cat="tools">
+                    <span class="flex items-center gap-3">
+                        <i class="fas fa-toolbox text-yellow-400"></i>
+                        <span>工具配置</span>
+                    </span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded-full text-slate-300" id="count-tools">0</span>
+                </button>
+                <button onclick="filterCategory('other')" class="cat-btn w-full text-left px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors flex items-center justify-between group" data-cat="other">
+                    <span class="flex items-center gap-3">
+                        <i class="fas fa-ellipsis-h text-purple-400"></i>
+                        <span>其他</span>
+                    </span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded-full text-slate-300" id="count-other">0</span>
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="glass rounded-2xl p-4">
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-2">统计</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">总笔记数</span>
+                        <span class="font-mono text-white font-semibold" id="total-notes">0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">最后更新</span>
+                        <span class="font-mono text-slate-300 text-xs" id="last-update">-</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 space-y-6">
+            <!-- Search Bar -->
+            <div class="glass rounded-2xl p-4 flex items-center gap-3">
+                <i class="fas fa-search text-slate-400 ml-2"></i>
+                <input type="text" id="searchInput" placeholder="搜索笔记内容..." 
+                    class="flex-1 bg-transparent border-none outline-none text-slate-200 placeholder-slate-500"
+                    oninput="searchNotes(this.value)">
+                <button onclick="clearSearch()" class="text-slate-500 hover:text-slate-300 px-3">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Notes Grid -->
+            <div id="notesContainer" class="grid gap-4">
+                <!-- Notes will be rendered here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-20">
+                <div class="float-anim inline-block mb-4">
+                    <i class="fas fa-book-open text-6xl text-slate-700"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-400 mb-2">暂无笔记</h3>
+                <p class="text-slate-500 mb-6">点击左上角按钮创建你的第一条笔记</p>
+                <button onclick="openModal()" class="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white transition-colors">
+                    创建笔记
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="noteModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="glass bg-slate-900 rounded-2xl w-full max-w-2xl pointer-events-auto shadow-2xl border border-slate-700 transform scale-95 opacity-0 transition-all duration-300" id="modalContent">
+                <div class="p-6 border-b border-slate-700 flex items-center justify-between">
+                    <h2 class="text-xl font-bold text-white" id="modalTitle">新建笔记</h2>
+                    <button onclick="closeModal()" class="text-slate-400 hover:text-white transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <form id="noteForm" onsubmit="saveNote(event)" class="p-6 space-y-4">
+                    <input type="hidden" id="noteId">
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">标题</label>
+                        <input type="text" id="noteTitle" required
+                            class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 input-glow outline-none transition-all"
+                            placeholder="例如：PowerShell 使用规范">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">分类</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="category" value="powershell" class="peer hidden" checked>
+                                <div class="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-center peer-checked:bg-blue-500/20 peer-checked:border-blue-500 peer-checked:text-blue-400 transition-all hover:bg-slate-700">
+                                    <i class="fas fa-terminal mb-1 block"></i>
+                                    <span class="text-sm">PowerShell</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="category" value="system" class="peer hidden">
+                                <div class="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-center peer-checked:bg-red-500/20 peer-checked:border-red-500 peer-checked:text-red-400 transition-all hover:bg-slate-700">
+                                    <i class="fas fa-shield-alt mb-1 block"></i>
+                                    <span class="text-sm">系统操作</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="category" value="dev" class="peer hidden">
+                                <div class="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-center peer-checked:bg-green-500/20 peer-checked:border-green-500 peer-checked:text-green-400 transition-all hover:bg-slate-700">
+                                    <i class="fas fa-code mb-1 block"></i>
+                                    <span class="text-sm">开发备忘</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="category" value="tools" class="peer hidden">
+                                <div class="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-center peer-checked:bg-yellow-500/20 peer-checked:border-yellow-500 peer-checked:text-yellow-400 transition-all hover:bg-slate-700">
+                                    <i class="fas fa-toolbox mb-1 block"></i>
+                                    <span class="text-sm">工具配置</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="category" value="other" class="peer hidden">
+                                <div class="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-center peer-checked:bg-purple-500/20 peer-checked:border-purple-500 peer-checked:text-purple-400 transition-all hover:bg-slate-700">
+                                    <i class="fas fa-ellipsis-h mb-1 block"></i>
+                                    <span class="text-sm">其他</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">内容</label>
+                        <textarea id="noteContent" required rows="6"
+                            class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 input-glow outline-none transition-all resize-none font-mono text-sm"
+                            placeholder="输入详细内容...支持多行文本"></textarea>
+                    </div>
+
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" onclick="closeModal()" class="flex-1 px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition-colors border border-slate-700">
+                            取消
+                        </button>
+                        <button type="submit" class="flex-1 px-4 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium transition-colors shadow-lg shadow-blue-500/25">
+                            保存笔记
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast fixed bottom-6 right-6 bg-slate-800 border border-slate-700 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50">
+        <i class="fas fa-check-circle text-green-400 text-xl"></i>
+        <div>
+            <div class="font-semibold" id="toastTitle">成功</div>
+            <div class="text-sm text-slate-400" id="toastMessage">操作已完成</div>
+        </div>
+    </div>
+
+    <script>
+        // Data Management
+        let notes = JSON.parse(localStorage.getItem('devmemo_notes')) || [];
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        // Initialize with sample data if empty
+        if (notes.length === 0) {
+            notes = [
+                {
+                    id: Date.now(),
+                    title: 'PowerShell 使用规范',
+                    category: 'powershell',
+                    content: '日常命令行操作：使用 Windows PowerShell。\n编写和调试脚本：使用 Windows PowerShell ISE。\n执行系统级操作（如安装 zoxide、修改系统配置）：使用 以管理员身份运行 或 以管理员身份运行 ISE。',
+                    timestamp: new Date().toISOString()
+                }
+            ];
+            saveToStorage();
+        }
+
+        // Storage Functions
+        function saveToStorage() {
+            localStorage.setItem('devmemo_notes', JSON.stringify(notes));
+            updateStats();
+        }
+
+        function updateStats() {
+            const counts = {
+                all: notes.length,
+                powershell: notes.filter(n => n.category === 'powershell').length,
+                system: notes.filter(n => n.category === 'system').length,
+                dev: notes.filter(n => n.category === 'dev').length,
+                tools: notes.filter(n => n.category === 'tools').length,
+                other: notes.filter(n => n.category === 'other').length
+            };
+
+            Object.keys(counts).forEach(key => {
+                const el = document.getElementById(`count-${key}`);
+                if (el) el.textContent = counts[key];
+            });
+
+            document.getElementById('total-notes').textContent = notes.length;
+            
+            if (notes.length > 0) {
+                const last = notes.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+                document.getElementById('last-update').textContent = new Date(last.timestamp).toLocaleDateString('zh-CN');
+            }
+        }
+
+        // Render Functions
+        function renderNotes() {
+            const container = document.getElementById('notesContainer');
+            const emptyState = document.getElementById('emptyState');
+            
+            let filtered = notes;
+            
+            // Category filter
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(n => n.category === currentFilter);
+            }
+            
+            // Search filter
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(n => 
+                    n.title.toLowerCase().includes(q) || 
+                    n.content.toLowerCase().includes(q)
+                );
+            }
+
+            // Sort by date desc
+            filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            
+            container.innerHTML = filtered.map(note => {
+                const catColors = {
+                    powershell: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+                    system: 'text-red-400 bg-red-400/10 border-red-400/20',
+                    dev: 'text-green-400 bg-green-400/10 border-green-400/20',
+                    tools: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
+                    other: 'text-purple-400 bg-purple-400/10 border-purple-400/20'
+                };
+                
+                const catNames = {
+                    powershell: 'PowerShell',
+                    system: '系统操作',
+                    dev: '开发备忘',
+                    tools: '工具配置',
+                    other: '其他'
+                };
+
+                const catIcons = {
+                    powershell: 'fa-terminal',
+                    system: 'fa-shield-alt',
+                    dev: 'fa-code',
+                    tools: 'fa-toolbox',
+                    other: 'fa-ellipsis-h'
+                };
+
+                let content = escapeHtml(note.content);
+                if (searchQuery) {
+                    const q = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    content = content.replace(new RegExp(q, 'gi'), match => `<span class="highlight">${match}</span>`);
+                }
+
+                return `
+                    <div class="note-card glass rounded-xl p-5 cat-${note.category} group relative">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 rounded-full text-xs font-medium border ${catColors[note.category]} flex items-center gap-1.5">
+                                    <i class="fas ${catIcons[note.category]}"></i>
+                                    ${catNames[note.category]}
+                                </span>
+                                <span class="text-xs text-slate-500 font-mono">${new Date(note.timestamp).toLocaleDateString('zh-CN')}</span>
+                            </div>
+                            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onclick="editNote(${note.id})" class="w-8 h-8 rounded-lg hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-blue-400 transition-colors" title="编辑">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="copyNote(${note.id})" class="w-8 h-8 rounded-lg hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-green-400 transition-colors" title="复制内容">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button onclick="deleteNote(${note.id})" class="w-8 h-8 rounded-lg hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-red-400 transition-colors" title="删除">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-lg font-semibold text-white mb-2">${escapeHtml(note.title)}</h3>
+                        <div class="text-slate-300 text-sm whitespace-pre-wrap font-mono leading-relaxed">${content}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Actions
+        function filterCategory(cat) {
+            currentFilter = cat;
+            
+            // Update UI
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.classList.add('bg-slate-700/50');
+                } else {
+                    btn.classList.remove('bg-slate-700/50');
+                }
+            });
+            
+            renderNotes();
+        }
+
+        function searchNotes(query) {
+            searchQuery = query;
+            renderNotes();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            searchQuery = '';
+            renderNotes();
+        }
+
+        // Modal Functions
+        function openModal(id = null) {
+            const modal = document.getElementById('noteModal');
+            const content = document.getElementById('modalContent');
+            const form = document.getElementById('noteForm');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            if (id) {
+                const note = notes.find(n => n.id === id);
+                document.getElementById('modalTitle').textContent = '编辑笔记';
+                document.getElementById('noteId').value = note.id;
+                document.getElementById('noteTitle').value = note.title;
+                document.getElementById('noteContent').value = note.content;
+                document.querySelector(`input[name="category"][value="${note.category}"]`).checked = true;
+            } else {
+                document.getElementById('modalTitle').textContent = '新建笔记';
+                form.reset();
+                document.getElementById('noteId').value = '';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('noteModal');
+            const content = document.getElementById('modalContent');
+            
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function saveNote(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('noteId').value;
+            const title = document.getElementById('noteTitle').value;
+            const content = document.getElementById('noteContent').value;
+            const category = document.querySelector('input[name="category"]:checked').value;
+            
+            if (id) {
+                // Edit
+                const index = notes.findIndex(n => n.id == id);
+                notes[index] = {
+                    ...notes[index],
+                    title,
+                    content,
+                    category,
+                    timestamp: new Date().toISOString()
+                };
+                showToast('成功', '笔记已更新');
+            } else {
+                // Add
+                notes.push({
+                    id: Date.now(),
+                    title,
+                    content,
+                    category,
+                    timestamp: new Date().toISOString()
+                });
+                showToast('成功', '笔记已创建');
+            }
+            
+            saveToStorage();
+            renderNotes();
+            closeModal();
+        }
+
+        function editNote(id) {
+            openModal(id);
+        }
+
+        function deleteNote(id) {
+            if (confirm('确定要删除这条笔记吗？')) {
+                notes = notes.filter(n => n.id !== id);
+                saveToStorage();
+                renderNotes();
+                showToast('成功', '笔记已删除');
+            }
+        }
+
+        function copyNote(id) {
+            const note = notes.find(n => n.id === id);
+            navigator.clipboard.writeText(`${note.title}\n\n${note.content}`).then(() => {
+                showToast('已复制', '笔记内容已复制到剪贴板');
+            });
+        }
+
+        // Import/Export
+        function exportData() {
+            const data = JSON.stringify(notes, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `devmemo_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('成功', '数据已导出');
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data)) {
+                        notes = data;
+                        saveToStorage();
+                        renderNotes();
+                        showToast('成功', '数据已导入');
+                    } else {
+                        alert('无效的数据格式');
+                    }
+                } catch (err) {
+                    alert('文件解析失败');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        // Toast
+        function showToast(title, message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function toggleTheme() {
+            // Placeholder for theme toggle
+            showToast('提示', '深色模式已启用');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+            renderNotes();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                openModal();
+            }
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
