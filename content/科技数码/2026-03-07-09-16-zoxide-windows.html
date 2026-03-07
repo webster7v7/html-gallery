@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoxide Windows 使用指南 | 智能目录跳转工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .code-block {
+            background: #1e293b;
+            border: 1px solid #334155;
+            position: relative;
+            overflow: hidden;
+        }
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+        .command-pill {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+        .command-pill:hover {
+            background: rgba(59, 130, 246, 0.25);
+            transform: scale(1.05);
+        }
+        .progress-line {
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+        }
+        .glow {
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .copy-btn {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
+        .typing-effect::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Hero Section -->
+    <div class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900"></div>
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm mb-6">
+                <i class="fab fa-windows"></i>
+                <span>Windows 专版指南</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                <span class="gradient-text">Zoxide</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 mb-8 font-light">
+                更智能的 <span class="text-blue-400 font-mono">cd</span> 命令替代品
+                <br>
+                <span class="text-lg text-slate-500">自适应学习 · 模糊匹配 · 极速跳转</span>
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm">
+                <a href="#install" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-all hover:scale-105 flex items-center gap-2">
+                    <i class="fas fa-download"></i> 立即安装
+                </a>
+                <a href="https://github.com/ajeetdsouza/zoxide" target="_blank" class="px-6 py-3 glass-panel hover:bg-slate-800 rounded-lg font-medium transition-all flex items-center gap-2">
+                    <i class="fab fa-github"></i> GitHub 仓库
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="border-y border-slate-800 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="text-2xl font-bold text-blue-400 font-mono">0.9.4+</div>
+                <div class="text-sm text-slate-500">最新版本</div>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-purple-400 font-mono">Rust</div>
+                <div class="text-sm text-slate-500">编写语言</div>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-pink-400 font-mono">MIT</div>
+                <div class="text-sm text-slate-500">开源协议</div>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-green-400 font-mono">Cross</div>
+                <div class="text-sm text-slate-500">全平台支持</div>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-5xl mx-auto px-4 py-16 space-y-20">
+
+        <!-- Installation Methods -->
+        <section id="install" class="scroll-mt-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="step-number w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl">1</div>
+                <div>
+                    <h2 class="text-3xl font-bold text-white">安装 Zoxide</h2>
+                    <p class="text-slate-400">选择适合你的安装方式</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Winget -->
+                <div class="glass-panel rounded-2xl p-6 hover-lift relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
+                                <i class="fas fa-terminal"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Winget</h3>
+                                <span class="text-xs text-slate-500">Win10/11 自带</span>
+                            </div>
+                            <span class="ml-auto px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full border border-green-500/30">推荐</span>
+                        </div>
+                        <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300">
+                            <button onclick="copyCode(this)" class="copy-btn absolute top-4 right-4 p-2 hover:bg-slate-700 rounded transition-colors">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <span class="text-blue-400">winget</span> install ajeetdsouza.zoxide
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scoop -->
+                <div class="glass-panel rounded-2xl p-6 hover-lift relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center text-yellow-400">
+                                <i class="fas fa-bucket"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Scoop</h3>
+                                <span class="text-xs text-slate-500">Windows 包管理器</span>
+                            </div>
+                        </div>
+                        <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300">
+                            <button onclick="copyCode(this)" class="copy-btn absolute top-4 right-4 p-2 hover:bg-slate-700 rounded transition-colors">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <span class="text-yellow-400">scoop</span> install zoxide
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chocolatey -->
+                <div class="glass-panel rounded-2xl p-6 hover-lift relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400">
+                                <i class="fas fa-coffee"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Chocolatey</h3>
+                                <span class="text-xs text-slate-500">老牌的包管理器</span>
+                            </div>
+                        </div>
+                        <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300">
+                            <button onclick="copyCode(this)" class="copy-btn absolute top-4 right-4 p-2 hover:bg-slate-700 rounded transition-colors">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <span class="text-purple-400">choco</span> install zoxide
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual -->
+                <div class="glass-panel rounded-2xl p-6 hover-lift relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">手动安装</h3>
+                                <span class="text-xs text-slate-500">GitHub Releases</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-400 mb-3">下载 <code class="bg-slate-800 px-2 py-1 rounded text-pink-400">zoxide-x86_64-pc-windows-msvc.zip</code></p>
+                        <a href="https://github.com/ajeetdsouza/zoxide/releases" target="_blank" class="inline-flex items-center gap-2 text-sm text-pink-400 hover:text-pink-300 transition-colors">
+                            前往下载 <i class="fas fa-external-link-alt text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shell Configuration -->
+        <section id="config" class="scroll-mt-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="step-number w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl">2</div>
+                <div>
+                    <h2 class="text-3xl font-bold text-white">配置 Shell</h2>
+                    <p class="text-slate-400">初始化 PowerShell 配置</p>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-8">
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-mono text-sm flex-shrink-0 mt-1">1</div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-white mb-2">查看配置文件路径</h4>
+                            <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300 relative">
+                                <button onclick="copyCode(this)" class="copy-btn absolute top-4 right-4 p-2 hover:bg-slate-700 rounded transition-colors">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <span class="text-blue-400">echo</span> $PROFILE
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-mono text-sm flex-shrink-0 mt-1">2</div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-white mb-2">创建配置文件（如不存在）</h4>
+                            <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300 relative">
+                                <button onclick="copyCode(this)" class="copy-btn absolute top-4 right-4 p-2 hover:bg-slate-700 rounded transition-colors">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <span class="text-yellow-400">New-Item</span> -Path $PROFILE -Type File -Force
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-mono text-sm flex-shrink-0 mt-1">3</div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-white mb-2">编辑配置文件，添加初始化代码</h4>
+                            <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300 relative">
+                                <button onclick="copyCode(this)" class="copy-btn absolute top-4 right-4 p-2 hover:bg-slate-700 rounded transition-colors">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <span class="text-purple-400">Invoke-Expression</span> (& { (zoxide init powershell | Out-String) })
+                            </div>
+                            <p class="text-sm text-slate-500 mt-2">使用记事本或 VS Code 编辑： <code class="bg-slate-800 px-2 py-1 rounded">code $PROFILE</code></p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-mono text-sm flex-shrink-0 mt-1">4</div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-white mb-2">重新加载配置</h4>
+                            <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300 relative">
+                                <button onclick="copyCode(this)" class="copy-btn absolute top-4 right-4 p-2 hover:bg-slate-700 rounded transition-colors">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                . $PROFILE
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alternative Shells -->
+            <div class="mt-6 grid md:grid-cols-2 gap-4">
+                <div class="glass-panel rounded-xl p-5 border-l-4 border-yellow-500">
+                    <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
+                        <i class="fas fa-terminal text-yellow-500"></i> Git Bash / MSYS2
+                    </h4>
+                    <div class="code-block rounded p-3 font-mono text-xs text-slate-300">
+                        <span class="text-green-400">eval</span> <span class="text-yellow-300">"$(zoxide init bash)"</span>
+                    </div>
+                </div>
+                <div class="glass-panel rounded-xl p-5 border-l-4 border-red-500">
+                    <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
+                        <i class="fas fa-times-circle text-red-500"></i> Command Prompt
+                    </h4>
+                    <p class="text-sm text-slate-400">CMD 支持有限，建议升级到 PowerShell 获得完整功能。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Verification -->
+        <section class="scroll-mt-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="step-number w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl">3</div>
+                <div>
+                    <h2 class="text-3xl font-bold text-white">验证安装</h2>
+                    <p class="text-slate-400">确认安装成功</p>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-6 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                        <i class="fas fa-check-circle text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-white">检查版本</h3>
+                        <p class="text-sm text-slate-400">运行以下命令查看版本号</p>
+                    </div>
+                </div>
+                <div class="code-block rounded-lg px-6 py-3 font-mono text-sm text-slate-300">
+                    zoxide --version
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Commands -->
+        <section id="usage" class="scroll-mt-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="step-number w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl">4</div>
+                <div>
+                    <h2 class="text-3xl font-bold text-white">基本使用</h2>
+                    <p class="text-slate-400">常用命令速查</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="glass-panel rounded-xl p-5 hover-lift group cursor-pointer" onclick="copyText('z 文件夹名')">
+                    <div class="flex items-center justify-between mb-2">
+                        <code class="text-xl font-mono text-blue-400 font-bold">z</code>
+                        <i class="fas fa-copy text-slate-600 group-hover:text-blue-400 transition-colors"></i>
+                    </div>
+                    <p class="text-sm text-slate-400">跳转到匹配的最高频目录</p>
+                </div>
+
+                <div class="glass-panel rounded-xl p-5 hover-lift group cursor-pointer" onclick="copyText('zi')">
+                    <div class="flex items-center justify-between mb-2">
+                        <code class="text-xl font-mono text-purple-400 font-bold">zi</code>
+                        <i class="fas fa-copy text-slate-600 group-hover:text-purple-400 transition-colors"></i>
+                    </div>
+                    <p class="text-sm text-slate-400">交互式选择（需安装 fzf）</p>
+                </div>
+
+                <div class="glass-panel rounded-xl p-5 hover-lift group cursor-pointer" onclick="copyText('z -')">
+                    <div class="flex items-center justify-between mb-2">
+                        <code class="text-xl font-mono text-green-400 font-bold">z -</code>
+                        <i class="fas fa-copy text-slate-600 group-hover:text-green-400 transition-colors"></i>
+                    </div>
+                    <p class="text-sm text-slate-400">返回上一个目录</p>
+                </div>
+
+                <div class="glass-panel rounded-xl p-5 hover-lift group cursor-pointer" onclick="copyText('z ..')">
+                    <div class="flex items-center justify-between mb-2">
+                        <code class="text-xl font-mono text-yellow-400 font-bold">z ..</code>
+                        <i class="fas fa-copy text-slate-600 group-hover:text-yellow-400 transition-colors"></i>
+                    </div>
+                    <p class="text-sm text-slate-400">返回上级目录</p>
+                </div>
+
+                <div class="glass-panel rounded-xl p-5 hover-lift group cursor-pointer" onclick="copyText('z -l')">
+                    <div class="flex items-center justify-between mb-2">
+                        <code class="text-xl font-mono text-pink-400 font-bold">z -l</code>
+                        <i class="fas fa-copy text-slate-600 group-hover:text-pink-400 transition-colors"></i>
+                    </div>
+                    <p class="text-sm text-slate-400">列出匹配的历史目录</p>
+                </div>
+
+                <div class="glass-panel rounded-xl p-5 hover-lift group cursor-pointer" onclick="copyText('z 关键词')">
+                    <div class="flex items-center justify-between mb-2">
+                        <code class="text-xl font-mono text-cyan-400 font-bold">z 关键词</code>
+                        <i class="fas fa-copy text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                    </div>
+                    <p class="text-sm text-slate-400">模糊匹配历史目录</p>
+                </div>
+            </div>
+
+            <!-- Workflow Example -->
+            <div class="mt-8 glass-panel rounded-2xl p-6 border border-blue-500/30 glow">
+                <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-lightbulb text-yellow-400"></i> 使用示例 Workflow
+                </h3>
+                <div class="space-y-3 font-mono text-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="text-slate-500 w-8">1</span>
+                        <span class="text-blue-400">z</span>
+                        <span class="text-slate-300">C:\Users\webster\Projects\library-management-system</span>
+                        <span class="text-slate-500 text-xs ml-auto">首次访问需完整路径</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-slate-500 w-8">2</span>
+                        <span class="text-blue-400">z</span>
+                        <span class="text-slate-300">library</span>
+                        <span class="text-green-400 text-xs ml-auto">自动跳转到 library-management-system</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-slate-500 w-8">3</span>
+                        <span class="text-blue-400">z</span>
+                        <span class="text-slate-300">proj</span>
+                        <span class="text-green-400 text-xs ml-auto">跳转到 Projects 目录</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Optional Enhancement -->
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="step-number w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl">5</div>
+                <div>
+                    <h2 class="text-3xl font-bold text-white">（可选）安装 fzf</h2>
+                    <p class="text-slate-400">增强交互式搜索体验</p>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-6">
+                <p class="text-slate-400 mb-4">安装后可以使用 <code class="bg-slate-800 px-2 py-1 rounded text-purple-400">zi</code> 进行可视化目录选择</p>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300">
+                        <span class="text-blue-400">winget</span> install fzf
+                    </div>
+                    <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300">
+                        <span class="text-yellow-400">scoop</span> install fzf
+                    </div>
+                    <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300">
+                        <span class="text-purple-400">choco</span> install fzf
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Configuration -->
+        <section>
+            <h2 class="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                <i class="fas fa-cogs text-slate-400"></i> 高级配置
+            </h2>
+
+            <div class="space-y-6">
+                <div class="glass-panel rounded-xl p-6">
+                    <h3 class="font-semibold text-white mb-3 flex items-center gap-2">
+                        <i class="fas fa-keyboard text-blue-400"></i> 自定义别名（使用 j 代替 z）
+                    </h3>
+                    <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300">
+                        <span class="text-purple-400">Invoke-Expression</span> (& { (zoxide init powershell <span class="text-yellow-400">--cmd j</span> | Out-String) })
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-xl p-6">
+                    <h3 class="font-semibold text-white mb-3 flex items-center gap-2">
+                        <i class="fas fa-ban text-red-400"></i> 排除特定目录
+                    </h3>
+                    <div class="code-block rounded-lg p-4 font-mono text-sm text-slate-300">
+                        $env:_ZO_EXCLUDE_DIRS = <span class="text-yellow-300">"C:\Windows;C:\Program Files"</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-xl p-6">
+                    <h3 class="font-semibold text-white mb-3 flex items-center gap-2">
+                        <i class="fas fa-database text-green-400"></i> 数据库存储位置
+                    </h3>
+                    <p class="text-sm text-slate-400 mb-2">默认位于 <code class="bg-slate-800 px-2 py-1 rounded">%LOCALAPPDATA%\zoxide\db.zo</code></p>
+                    <p class="text-sm text-slate-500">可通过环境变量修改路径</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- GitHub Resources -->
+        <section class="glass-panel rounded-2xl p-8 text-center">
+            <h2 class="text-2xl font-bold text-white mb-4">GitHub 资源</h2>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://github.com/ajeetdsouza/zoxide" target="_blank" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                    <i class="fab fa-github text-xl"></i>
+                    <div class="text-left">
+                        <div class="text-sm font-semibold">官方仓库</div>
+                        <div class="text-xs text-slate-500">ajeetdsouza/zoxide</div>
+                    </div>
+                </a>
+                <a href="https://github.com/ajeetdsouza/zoxide/releases" target="_blank" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                    <i class="fas fa-rocket text-xl text-blue-400"></i>
+                    <div class="text-left">
+                        <div class="text-sm font-semibold">发布页面</div>
+                        <div class="text-xs text-slate-500">下载最新版本</div>
+                    </div>
+                </a>
+                <a href="https://zoxide.org/" target="_blank" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
+                    <i class="fas fa-book text-xl text-green-400"></i>
+                    <div class="text-left">
+                        <div class="text-sm font-semibold">官方文档</div>
+                        <div class="text-xs text-slate-500">zoxide.org</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Tips -->
+        <div class="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6 flex items-start gap-4">
+            <i class="fas fa-info-circle text-blue-400 text-2xl mt-1"></i>
+            <div>
+                <h4 class="font-semibold text-white mb-2">使用提示</h4>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                    首次使用需要积累目录访问历史，频繁使用几天后跳转会越来越精准。建议完全替代 <code class="bg-slate-800 px-2 py-1 rounded text-blue-400">cd</code> 使用以获得最佳体验。
+                    Zoxide 使用 Frecency 算法（频率 + 最近使用）对目录进行排序，越常用的目录匹配优先级越高。
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 mt-20 py-8 text-center text-slate-500 text-sm">
+        <p>Made with <i class="fas fa-heart text-red-500 mx-1"></i> for Windows Users</p>
+        <p class="mt-2">Zoxide 官方文档：<a href="https://zoxide.org/" class="text-blue-400 hover:underline" target="_blank">zoxide.org</a></p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 right-8 bg-green-500 text-white px-6 py-3 rounded-lg shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 z-50">
+        <i class="fas fa-check-circle"></i>
+        <span>已复制到剪贴板</span>
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.innerText.replace('复制', '').trim();
+            copyText(code);
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Add typing effect to hero subtitle
+        const subtitle = document.querySelector('.typing-effect');
+        if (subtitle) {
+            const text = subtitle.innerText;
+            subtitle.innerText = '';
+            let i = 0;
+            const typeWriter = () => {
+                if (i < text.length) {
+                    subtitle.innerText += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            };
+            setTimeout(typeWriter, 500);
+        }
+    </script>
+</body>
+</html>
