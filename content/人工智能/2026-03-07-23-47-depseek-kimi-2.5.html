@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek 完全指南 | AI 探索者</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                    },
+                    colors: {
+                        deepseek: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            blue: '#3b82f6',
+                            purple: '#8b5cf6',
+                            cyan: '#06b6d4',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.6s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #06b6d4);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .product-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .product-card:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+        }
+        .stat-number {
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .grid-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="font-sans antialiased overflow-x-hidden">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"></div>
+            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse-slow" style="animation-delay: 4s;"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="mb-6 inline-block">
+                <span class="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-medium tracking-wider uppercase">
+                    <i class="fas fa-robot mr-2"></i>AI Research Lab
+                </span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                <span class="gradient-text">DeepSeek</span>
+                <span class="block text-white mt-2">完全指南</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
+                探索中国最具颠覆性的开源 AI 实验室<br>
+                <span class="text-blue-400">高性能 · 低成本 · 全开源</span>
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <div class="glass-card px-6 py-3 rounded-full flex items-center gap-3">
+                    <i class="fas fa-code-branch text-blue-400"></i>
+                    <span class="text-sm">完全开源 (MIT)</span>
+                </div>
+                <div class="glass-card px-6 py-3 rounded-full flex items-center gap-3">
+                    <i class="fas fa-dollar-sign text-green-400"></i>
+                    <span class="text-sm">训练成本 $6M</span>
+                </div>
+                <div class="glass-card px-6 py-3 rounded-full flex items-center gap-3">
+                    <i class="fas fa-users text-purple-400"></i>
+                    <span class="text-sm">团队 ~200人</span>
+                </div>
+            </div>
+
+            <div class="animate-bounce">
+                <i class="fas fa-chevron-down text-2xl text-gray-500"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- V4 Preview Section -->
+    <section class="py-20 px-4 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="glass-card rounded-3xl p-8 md:p-12 border border-blue-500/30 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full filter blur-3xl"></div>
+                
+                <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="inline-block px-4 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm font-semibold mb-4 border border-blue-500/30">
+                            即将发布 · 2026年Q1
+                        </div>
+                        <h2 class="text-4xl font-bold mb-4 text-white">DeepSeek V4</h2>
+                        <p class="text-gray-400 mb-6 text-lg">下一代编程旗舰模型，预计支持百万token上下文，专注代码生成与复杂推理任务。</p>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-blue-400"></i>
+                                <span class="text-gray-300">1万亿参数 MoE 架构</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-blue-400"></i>
+                                <span class="text-gray-300">100万 token 超长上下文</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-blue-400"></i>
+                                <span class="text-gray-300">Engram 条件记忆架构</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-blue-400"></i>
+                                <span class="text-gray-300">混合推理模式（快/慢思考）</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="glass-card rounded-2xl p-6 border border-white/10">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-sm text-gray-400">发布倒计时</span>
+                                <span class="text-xs text-blue-400 px-2 py-1 rounded bg-blue-500/10">预计 2026.03</span>
+                            </div>
+                            <div class="grid grid-cols-4 gap-4 text-center">
+                                <div class="bg-slate-800/50 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-white" id="days">--</div>
+                                    <div class="text-xs text-gray-500">天</div>
+                                </div>
+                                <div class="bg-slate-800/50 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-white" id="hours">--</div>
+                                    <div class="text-xs text-gray-500">时</div>
+                                </div>
+                                <div class="bg-slate-800/50 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-white" id="minutes">--</div>
+                                    <div class="text-xs text-gray-500">分</div>
+                                </div>
+                                <div class="bg-slate-800/50 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-white" id="seconds">--</div>
+                                    <div class="text-xs text-gray-500">秒</div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-xs text-gray-500 text-center">基于预计发布时间：2026年3月中旬</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 gradient-text">发展历程</h2>
+            
+            <div class="relative">
+                <div class="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 h-full w-1 timeline-line rounded-full"></div>
+                
+                <div class="space-y-12">
+                    <!-- 2023 -->
+                    <div class="relative flex flex-col md:flex-row items-center md:justify-between group">
+                        <div class="hidden md:block w-5/12 text-right pr-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-white mb-2">公司成立</h3>
+                                <p class="text-gray-400 text-sm">梁文锋创立 DeepSeek，源自幻方量化，专注通用人工智能研究</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-900 z-10 group-hover:scale-150 transition-transform"></div>
+                        <div class="md:hidden glass-card p-6 rounded-2xl ml-12">
+                            <h3 class="text-xl font-bold text-white mb-2">公司成立</h3>
+                            <p class="text-gray-400 text-sm">梁文锋创立 DeepSeek，源自幻方量化</p>
+                        </div>
+                        <div class="hidden md:block w-5/12 pl-8">
+                            <span class="text-3xl font-bold text-gray-600">2023.07</span>
+                        </div>
+                    </div>
+
+                    <!-- 2024 V3 -->
+                    <div class="relative flex flex-col md:flex-row items-center md:justify-between group">
+                        <div class="hidden md:block w-5/12 text-right pr-8">
+                            <span class="text-3xl font-bold text-gray-600">2024.12</span>
+                        </div>
+                        <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-purple-500 rounded-full border-4 border-slate-900 z-10 group-hover:scale-150 transition-transform"></div>
+                        <div class="hidden md:block w-5/12 pl-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift border-purple-500/30">
+                                <h3 class="text-xl font-bold text-white mb-2">DeepSeek-V3 发布</h3>
+                                <p class="text-gray-400 text-sm">671B 参数 MoE 架构，训练成本仅 $600万，性能接近 GPT-4</p>
+                            </div>
+                        </div>
+                        <div class="md:hidden glass-card p-6 rounded-2xl ml-12 border-purple-500/30">
+                            <h3 class="text-xl font-bold text-white mb-2">DeepSeek-V3 发布</h3>
+                            <p class="text-gray-400 text-sm">671B 参数，训练成本仅 $600万</p>
+                        </div>
+                    </div>
+
+                    <!-- 2025 R1 -->
+                    <div class="relative flex flex-col md:flex-row items-center md:justify-between group">
+                        <div class="hidden md:block w-5/12 text-right pr-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift border-cyan-500/30">
+                                <h3 class="text-xl font-bold text-white mb-2">DeepSeek-R1 发布</h3>
+                                <p class="text-gray-400 text-sm">开源推理模型，引发全球科技股震荡（英伟达单日跌 6000 亿美元）</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-cyan-500 rounded-full border-4 border-slate-900 z-10 group-hover:scale-150 transition-transform"></div>
+                        <div class="md:hidden glass-card p-6 rounded-2xl ml-12 border-cyan-500/30">
+                            <h3 class="text-xl font-bold text-white mb-2">DeepSeek-R1 发布</h3>
+                            <p class="text-gray-400 text-sm">开源推理模型，引发全球科技股震荡</p>
+                        </div>
+                        <div class="hidden md:block w-5/12 pl-8">
+                            <span class="text-3xl font-bold text-gray-600">2025.01</span>
+                        </div>
+                    </div>
+
+                    <!-- 2025 Updates -->
+                    <div class="relative flex flex-col md:flex-row items-center md:justify-between group">
+                        <div class="hidden md:block w-5/12 text-right pr-8">
+                            <span class="text-3xl font-bold text-gray-600">2025</span>
+                        </div>
+                        <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-green-500 rounded-full border-4 border-slate-900 z-10 group-hover:scale-150 transition-transform"></div>
+                        <div class="hidden md:block w-5/12 pl-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-white mb-2">持续迭代</h3>
+                                <p class="text-gray-400 text-sm">V3-0324、V3.1、R1-0528 陆续更新，支持 128K 上下文与工具调用</p>
+                            </div>
+                        </div>
+                        <div class="md:hidden glass-card p-6 rounded-2xl ml-12">
+                            <h3 class="text-xl font-bold text-white mb-2">持续迭代</h3>
+                            <p class="text-gray-400 text-sm">V3-0324、V3.1、R1-0528 更新</p>
+                        </div>
+                    </div>
+
+                    <!-- 2026 -->
+                    <div class="relative flex flex-col md:flex-row items-center md:justify-between group">
+                        <div class="hidden md:block w-5/12 text-right pr-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift border-yellow-500/30">
+                                <h3 class="text-xl font-bold text-white mb-2">V4 即将发布</h3>
+                                <p class="text-gray-400 text-sm">Engram 记忆架构论文发布，上下文扩展至 1M tokens</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-yellow-500 rounded-full border-4 border-slate-900 z-10 group-hover:scale-150 transition-transform animate-pulse"></div>
+                        <div class="md:hidden glass-card p-6 rounded-2xl ml-12 border-yellow-500/30">
+                            <h3 class="text-xl font-bold text-white mb-2">V4 即将发布</h3>
+                            <p class="text-gray-400 text-sm">Engram 架构，1M 上下文</p>
+                        </div>
+                        <div class="hidden md:block w-5/12 pl-8">
+                            <span class="text-3xl font-bold text-yellow-500">2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Stats -->
+    <section class="py-20 px-4 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 gradient-text">团队规模</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card rounded-2xl p-8 text-center hover-lift">
+                    <div class="text-5xl font-bold stat-number mb-2">~200</div>
+                    <div class="text-gray-400 mb-4">核心团队成员</div>
+                    <div class="text-sm text-gray-500">对比 OpenAI 3500+ 人，极致精简高效</div>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-8 text-center hover-lift">
+                    <div class="text-5xl font-bold stat-number mb-2">0.8年</div>
+                    <div class="text-gray-400 mb-4">中位任期</div>
+                    <div class="text-sm text-gray-500">年轻化团队，应届毕业生为主</div>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-8 text-center hover-lift">
+                    <div class="text-5xl font-bold stat-number mb-2">154万</div>
+                    <div class="text-gray-400 mb-4">最高年薪 (RMB)</div>
+                    <div class="text-sm text-gray-500">14薪制，核心工程师待遇</div>
+                </div>
+            </div>
+
+            <div class="mt-12 glass-card rounded-2xl p-8 border border-white/10">
+                <h3 class="text-xl font-bold mb-4 text-white flex items-center gap-2">
+                    <i class="fas fa-lightbulb text-yellow-400"></i>
+                    团队文化特点
+                </h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-user-graduate text-blue-400 mt-1"></i>
+                            <div>
+                                <div class="font-semibold text-white">年轻化</div>
+                                <div class="text-sm text-gray-400">避免招聘 8 年以上经验者，<5% 成员超过 5 年经验</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-flask text-purple-400 mt-1"></i>
+                            <div>
+                                <div class="font-semibold text-white">研究导向</div>
+                                <div class="text-sm text-gray-400">专注底层创新，而非简单应用层开发</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-code text-green-400 mt-1"></i>
+                            <div>
+                                <div class="font-semibold text-white">工程卓越</div>
+                                <div class="text-sm text-gray-400">150人团队产出媲美数千人巨头</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-open-source text-orange-400 mt-1"></i>
+                            <div>
+                                <div class="font-semibold text-white">开源精神</div>
+                                <div class="text-sm text-gray-400">MIT 协议完全开源，推动技术民主化</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Matrix -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 gradient-text">产品矩阵</h2>
+            <p class="text-center text-gray-400 mb-16">全系列开源模型，覆盖通用对话到专业推理</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- V3 Series -->
+                <div class="product-card rounded-2xl p-6 hover-lift group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                            <i class="fas fa-brain text-blue-400 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs border border-blue-500/30">通用模型</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">DeepSeek-V3</h3>
+                    <p class="text-gray-400 text-sm mb-4">671B 参数 MoE 架构，多语言支持，企业级通用 AI 助手</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">版本迭代</span>
+                            <span class="text-white">V3 → V3-0324 → V3.1 → V3.2</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">上下文</span>
+                            <span class="text-white">128K tokens</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">最佳场景</span>
+                            <span class="text-white">内容创作、多轮对话</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-white/10">
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">工具调用</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">代码生成</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">多语言</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- R1 Series -->
+                <div class="product-card rounded-2xl p-6 hover-lift group border-purple-500/30">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                            <i class="fas fa-atom text-purple-400 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs border border-purple-500/30">推理专用</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">DeepSeek-R1</h3>
+                    <p class="text-gray-400 text-sm mb-4">强化学习训练，数学/逻辑/代码推理，思维链展示</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">版本迭代</span>
+                            <span class="text-white">R1 → R1-0528</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">支持语言</span>
+                            <span class="text-white">86 种编程语言</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">最佳场景</span>
+                            <span class="text-white">数学解题、科研证明</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-white/10">
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">思维链</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">逻辑推理</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">教育辅导</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coder -->
+                <div class="product-card rounded-2xl p-6 hover-lift group border-green-500/30">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+                            <i class="fas fa-code text-green-400 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs border border-green-500/30">代码专家</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">DeepSeek Coder</h3>
+                    <p class="text-gray-400 text-sm mb-4">已集成至 V3/R1，支持 338 种编程语言，完整代码库处理</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">语言支持</span>
+                            <span class="text-white">338 种 (V3)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">上下文</span>
+                            <span class="text-white">128K (完整代码库)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">最佳场景</span>
+                            <span class="text-white">编程开发、代码审查</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-white/10">
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">代码补全</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">Bug 修复</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">代码解释</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- V4 Preview -->
+                <div class="product-card rounded-2xl p-6 hover-lift group border-yellow-500/30 md:col-span-2 lg:col-span-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center animate-pulse">
+                            <i class="fas fa-rocket text-yellow-400 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-400 text-xs border border-yellow-500/30 animate-pulse">即将发布</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">DeepSeek-V4</h3>
+                    <p class="text-gray-400 text-sm mb-4">下一代编程旗舰，1万亿参数，百万token上下文</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">架构</span>
+                            <span class="text-white">Engram 条件记忆</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">上下文</span>
+                            <span class="text-white">1M tokens</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">定位</span>
+                            <span class="text-white">编程能力超越 Claude</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-white/10">
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">超长上下文</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">混合推理</span>
+                            <span class="px-2 py-1 rounded bg-slate-800 text-xs text-gray-300">本地部署</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Distilled Models -->
+                <div class="product-card rounded-2xl p-6 hover-lift group border-orange-500/30 md:col-span-2 lg:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
+                            <i class="fas fa-compress-alt text-orange-400 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-xs border border-orange-500/30">蒸馏版</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">轻量级蒸馏模型</h3>
+                    <p class="text-gray-400 text-sm mb-4">基于 R1 蒸馏的小参数模型，适合本地部署与边缘计算</p>
+                    
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="text-center p-3 rounded-lg bg-slate-800/50">
+                            <div class="text-lg font-bold text-white">1.5B</div>
+                            <div class="text-xs text-gray-500">轻量版</div>
+                        </div>
+                        <div class="text-center p-3 rounded-lg bg-slate-800/50">
+                            <div class="text-lg font-bold text-white">7B/8B</div>
+                            <div class="text-xs text-gray-500">标准版</div>
+                        </div>
+                        <div class="text-center p-3 rounded-lg bg-slate-800/50">
+                            <div class="text-lg font-bold text-white">14B/32B</div>
+                            <div class="text-xs text-gray-500">增强版</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 text-sm text-gray-400">
+                        <span><i class="fas fa-desktop mr-2"></i>双 4090 可跑 32B</span>
+                        <span><i class="fas fa-mobile-alt mr-2"></i>手机端 1.5B</span>
+                        <span><i class="fas fa-laptop mr-2"></i>笔记本 7B/8B</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage Guide -->
+    <section class="py-20 px-4 bg-slate-900/50">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 gradient-text">使用场景推荐</h2>
+            
+            <div class="glass-card rounded-2xl overflow-hidden border border-white/10">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-800/50 border-b border-white/10">
+                            <tr>
+                                <th class="px-6 py-4 text-gray-400 font-semibold">使用场景</th>
+                                <th class="px-6 py-4 text-gray-400 font-semibold">推荐模型</th>
+                                <th class="px-6 py-4 text-gray-400 font-semibold">理由</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5">
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 text-white font-medium">日常问答、内容创作</td>
+                                <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm">V3 / V3-0324</span></td>
+                                <td class="px-6 py-4 text-gray-400">响应快，通用能力强，成本低</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 text-white font-medium">数学/逻辑推理、科研</td>
+                                <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-sm">R1 / R1-0528</span></td>
+                                <td class="px-6 py-4 text-gray-400">思维链展示，推理过程透明</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 text-white font-medium">编程开发、代码审查</td>
+                                <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm">V3.1 / V4(待)</span></td>
+                                <td class="px-6 py-4 text-gray-400">338种语言支持，工具调用强</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 text-white font-medium">Agent 任务、自动化</td>
+                                <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm">V3.1</span></td>
+                                <td class="px-6 py-4 text-gray-400">工具调用能力最强，支持 Function Call</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 text-white font-medium">长文档分析（整本书）</td>
+                                <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400 text-sm">V3.2 / V4</span></td>
+                                <td class="px-6 py-4 text-gray-400">128K-1M 上下文，可处理完整代码库</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 text-white font-medium">本地部署、隐私敏感</td>
+                                <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-sm">Distilled 7B/14B</span></td>
+                                <td class="px-6 py-4 text-gray-400">可离线运行，数据不上传</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Advantages -->
+    <section class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 gradient-text">核心优势</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card rounded-2xl p-8 text-center hover-lift group">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                        <i class="fas fa-unlock text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">完全开源</h3>
+                    <p class="text-gray-400">MIT 协议开源，可自由商用、修改、分发，推动 AI 技术民主化</p>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-8 text-center hover-lift group">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                        <i class="fas fa-coins text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">极低成本</h3>
+                    <p class="text-gray-400">V3 训练成本仅 $600万，API 价格仅为 GPT-4 的 1/50</p>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-8 text-center hover-lift group">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                        <i class="fas fa-bolt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">顶尖性能</h3>
+                    <p class="text-gray-400">在多项基准测试中与 GPT-4、Claude-3 等闭源模型持平或超越</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-white/10">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="https://github.com/deepseek-ai" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="https://www.deepseek.com" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <i class="fas fa-globe text-xl"></i>
+                </a>
+                <a href="https://huggingface.co/deepseek-ai" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <i class="fas fa-robot text-xl"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm">
+                数据截至 2026年3月 · 由 AI 助手整理生成 · 仅供参考
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const targetDate = new Date('2026-03-15T00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card, .product-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(el);
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
