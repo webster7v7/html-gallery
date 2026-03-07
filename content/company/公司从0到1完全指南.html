@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公司从0到1完全指南 - 注册·经营·上市全攻略</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-text {
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+        }
+        .step-card {
+            transition: all 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #ec4899);
+        }
+        .warning-box {
+            border-left: 4px solid #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .tip-box {
+            border-left: 4px solid #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .highlight-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .industry-card {
+            transition: all 0.3s ease;
+        }
+        .industry-card:hover {
+            transform: scale(1.02);
+        }
+        .tax-table th, .tax-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="text-gray-100">
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden py-20 px-4">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+        <div class="relative max-w-6xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 glow-text bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+                公司从0到1完全指南
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 mb-8">注册 · 经营 · 税收 · 上市 · 全攻略</p>
+            <div class="flex flex-wrap justify-center gap-3 text-sm">
+                <span class="px-4 py-2 rounded-full glass-card">2024新公司法</span>
+                <span class="px-4 py-2 rounded-full glass-card">5年实缴制</span>
+                <span class="px-4 py-2 rounded-full glass-card">0基础创业</span>
+                <span class="px-4 py-2 rounded-full glass-card">上市攻略</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 pb-20 space-y-20">
+
+        <!-- 公司是什么 -->
+        <section class="glass-card rounded-3xl p-8 md:p-12">
+            <h2 class="text-3xl font-bold mb-8 text-blue-400">🏢 公司是什么？</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        <strong class="text-white">公司</strong>是依法设立、以营利为目的的企业法人。简单说，公司就是一个"法律上的人"，可以：</p>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start gap-2"><span class="text-blue-400">✓</span> 拥有自己的财产（钱、设备、知识产权）</li>
+                        <li class="flex items-start gap-2"><span class="text-blue-400">✓</span> 独立承担责任（公司欠债，一般不影响股东个人财产）</li>
+                        <li class="flex items-start gap-2"><span class="text-blue-400">✓</span> 以自己的名义签合同、打官司</li>
+                        <li class="flex items-start gap-2"><span class="text-blue-400">✓</span> 永续存在（股东换了，公司还在）</li>
+                    </ul>
+                </div>
+                <div class="glass-card rounded-xl p-6 border-l-4 border-blue-500">
+                    <h3 class="font-bold text-white mb-4">常见公司类型</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span class="text-blue-300">有限责任公司</span>
+                            <span class="text-gray-500">最常见，股东1-50人</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span class="text-purple-300">股份有限公司</span>
+                            <span class="text-gray-500">可上市，股东2-200人</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span class="text-pink-300">个人独资企业</span>
+                            <span class="text-gray-500">1人，无限责任</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span class="text-green-300">合伙企业</span>
+                            <span class="text-gray-500">2人以上，适合律所/会计师事务所</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 注册流程时间线 -->
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">📋 0基础注册公司全流程</h2>
+            <div class="relative">
+                <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 timeline-line transform md:-translate-x-1/2"></div>
+
+                <!-- Step 1 -->
+                <div class="relative flex flex-col md:flex-row items-start mb-12">
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-blue-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">1</div>
+                    <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
+                        <div class="step-card glass-card rounded-xl p-6 border-t-4 border-blue-500">
+                            <h3 class="text-xl font-bold text-blue-400 mb-2">公司核名</h3>
+                            <p class="text-gray-400 text-sm mb-3">准备3-5个备选名称，格式：行政区划+字号+行业+组织形式</p>
+                            <div class="text-xs text-gray-500 space-y-1">
+                                <p>• 登录"北京e窗通"/当地政务平台</p>
+                                <p>• 30分钟出结果</p>
+                                <p>• 避免重名、敏感词、侵权商标</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block md:w-1/2"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative flex flex-col md:flex-row items-start mb-12">
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-purple-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">2</div>
+                    <div class="hidden md:block md:w-1/2"></div>
+                    <div class="ml-16 md:ml-0 md:w-1/2 md:pl-12">
+                        <div class="step-card glass-card rounded-xl p-6 border-t-4 border-purple-500">
+                            <h3 class="text-xl font-bold text-purple-400 mb-2">准备材料</h3>
+                            <ul class="text-sm text-gray-400 space-y-2">
+                                <li>• 全体股东身份证原件及复印件</li>
+                                <li>• 公司章程（系统自动生成）</li>
+                                <li>• 注册地址证明（租赁合同/挂靠协议）</li>
+                                <li>• 董事、监事、经理任职文件</li>
+                                <li>• <strong class="text-yellow-400">注意：2024新公司法已取消监事，1人即可注册</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative flex flex-col md:flex-row items-start mb-12">
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-pink-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">3</div>
+                    <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
+                        <div class="step-card glass-card rounded-xl p-6 border-t-4 border-pink-500">
+                            <h3 class="text-xl font-bold text-pink-400 mb-2">提交申请</h3>
+                            <p class="text-gray-400 text-sm mb-3">线上办理（推荐）或线下工商局提交</p>
+                            <div class="text-xs text-gray-500 space-y-1">
+                                <p>• 填写公司地址、高管名单、经营范围</p>
+                                <p>• 线上签名提交</p>
+                                <p>• 审核时间：3-5个工作日</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block md:w-1/2"></div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative flex flex-col md:flex-row items-start mb-12">
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-green-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">4</div>
+                    <div class="hidden md:block md:w-1/2"></div>
+                    <div class="ml-16 md:ml-0 md:w-1/2 md:pl-12">
+                        <div class="step-card glass-card rounded-xl p-6 border-t-4 border-green-500">
+                            <h3 class="text-xl font-bold text-green-400 mb-2">领取执照+刻章</h3>
+                            <p class="text-gray-400 text-sm mb-3">领取营业执照正副本+4枚公章</p>
+                            <div class="text-xs text-gray-500 space-y-1">
+                                <p>• 公章、财务章、合同章、发票章</p>
+                                <p>• 法人私章需自行办理</p>
+                                <p>• 电子执照同步下发</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="relative flex flex-col md:flex-row items-start mb-12">
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-yellow-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">5</div>
+                    <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 md:text-right">
+                        <div class="step-card glass-card rounded-xl p-6 border-t-4 border-yellow-500">
+                            <h3 class="text-xl font-bold text-yellow-400 mb-2">银行开户</h3>
+                            <p class="text-gray-400 text-sm mb-3">开设基本户（必开）和一般户</p>
+                            <div class="text-xs text-gray-500 space-y-1">
+                                <p>• 费用：300-800元不等</p>
+                                <p>• 需携带执照、公章、法人身份证</p>
+                                <p>• 用于收付款、发工资、缴税</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block md:w-1/2"></div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="relative flex flex-col md:flex-row items-start">
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-red-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">6</div>
+                    <div class="hidden md:block md:w-1/2"></div>
+                    <div class="ml-16 md:ml-0 md:w-1/2 md:pl-12">
+                        <div class="step-card glass-card rounded-xl p-6 border-t-4 border-red-500">
+                            <h3 class="text-xl font-bold text-red-400 mb-2">税务登记</h3>
+                            <p class="text-gray-400 text-sm mb-3">30天内到税务局报到，核定税种</p>
+                            <div class="text-xs text-gray-500 space-y-1">
+                                <p>• 选择小规模纳税人或一般纳税人</p>
+                                <p>• 申领发票（电子/纸质）</p>
+                                <p>• 按时记账报税（可找代账公司）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 注册资本新规 -->
+        <section class="glass-card rounded-3xl p-8 md:p-12 border-2 border-red-500/30">
+            <h2 class="text-3xl font-bold mb-8 text-red-400">⚠️ 2024新公司法：注册资本5年实缴制</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <div class="warning-box rounded-lg p-4">
+                        <h3 class="font-bold text-red-400 mb-2">🔴 核心变化</h3>
+                        <p class="text-sm text-gray-300">2024年7月1日起，有限责任公司注册资本必须在<strong class="text-white">5年内实缴到位</strong>！不再是认缴不用缴。</p>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="glass-card rounded-lg p-4">
+                            <h4 class="font-bold text-blue-400 mb-2">新注册公司（2024.7.1后）</h4>
+                            <p class="text-gray-400">成立之日起5年内必须缴足注册资本</p>
+                        </div>
+                        <div class="glass-card rounded-lg p-4">
+                            <h4 class="font-bold text-yellow-400 mb-2">存量公司（2024.7.1前）</h4>
+                            <p class="text-gray-400">3年过渡期（2024.7.1-2027.6.30），调整后最长出资期限不超过<strong class="text-white">2032年6月30日</strong></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="font-bold text-white">实缴方式（不仅限于现金）</h3>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="glass-card rounded-lg p-3 text-center">
+                            <div class="text-2xl mb-1">💰</div>
+                            <div class="text-blue-300">货币出资</div>
+                            <div class="text-xs text-gray-500">最常见，备注"投资款"</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-3 text-center">
+                            <div class="text-2xl mb-1">🔧</div>
+                            <div class="text-purple-300">实物出资</div>
+                            <div class="text-xs text-gray-500">设备、车辆等</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-3 text-center">
+                            <div class="text-2xl mb-1">💡</div>
+                            <div class="text-pink-300">知识产权</div>
+                            <div class="text-xs text-gray-500">专利、商标、著作权</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-3 text-center">
+                            <div class="text-2xl mb-1">🌾</div>
+                            <div class="text-green-300">土地使用权</div>
+                            <div class="text-xs text-gray-500">需评估作价</div>
+                        </div>
+                    </div>
+                    <div class="warning-box rounded-lg p-3 text-xs">
+                        <p><strong class="text-red-400">法律责任：</strong>未按期实缴可能面临5%-15%注册资本的罚款，股东失权风险！</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 费用清单 -->
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">💰 注册公司费用清单（参考）</h2>
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="p-4 text-gray-400 font-medium">项目</th>
+                            <th class="p-4 text-gray-400 font-medium">自己办理</th>
+                            <th class="p-4 text-gray-400 font-medium">代办服务</th>
+                            <th class="p-4 text-gray-400 font-medium">备注</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-t border-gray-700">
+                            <td class="p-4">工商注册</td>
+                            <td class="p-4 text-green-400">免费</td>
+                            <td class="p-4">600元起</td>
+                            <td class="p-4 text-gray-500">代办无需本人到场</td>
+                        </tr>
+                        <tr class="border-t border-gray-700">
+                            <td class="p-4">注册地址</td>
+                            <td class="p-4 text-green-400">自有地址免费</td>
+                            <td class="p-4">1000-3000元/年</td>
+                            <td class="p-4 text-gray-500">挂靠地址费用</td>
+                        </tr>
+                        <tr class="border-t border-gray-700">
+                            <td class="p-4">刻章</td>
+                            <td class="p-4">200-500元</td>
+                            <td class="p-4">通常包含</td>
+                            <td class="p-4 text-gray-500">公章、财务章、合同章等</td>
+                        </tr>
+                        <tr class="border-t border-gray-700">
+                            <td class="p-4">银行开户</td>
+                            <td class="p-4">300-800元</td>
+                            <td class="p-4">300-800元</td>
+                            <td class="p-4 text-gray-500">不同银行收费不同</td>
+                        </tr>
+                        <tr class="border-t border-gray-700">
+                            <td class="p-4">代理记账</td>
+                            <td class="p-4">自己记账免费</td>
+                            <td class="p-4">小规模2400元/3年<br>一般纳税人4000-6000元/年</td>
+                            <td class="p-4 text-gray-500">必须按时报税</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 税收计算 -->
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">🧮 公司税收计算指南</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 小规模纳税人 -->
+                <div class="glass-card rounded-2xl p-8 border-t-4 border-blue-500">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">小规模纳税人</h3>
+                    <p class="text-gray-400 text-sm mb-6">年销售额≤500万，适合初创企业</p>
+
+                    <div class="space-y-4">
+                        <div class="bg-blue-500/10 rounded-lg p-4">
+                            <h4 class="font-bold text-blue-300 mb-2">增值税</h4>
+                            <p class="text-3xl font-bold text-white">3%</p>
+                            <p class="text-xs text-gray-400 mt-1">疫情期间优惠可能降至1%或免征（季度销售额≤30万）</p>
+                        </div>
+                        <div class="bg-blue-500/10 rounded-lg p-4">
+                            <h4 class="font-bold text-blue-300 mb-2">企业所得税</h4>
+                            <p class="text-sm text-gray-300">小微企业优惠：<strong class="text-white">减按25%计入应纳税所得额，按20%税率缴纳</strong></p>
+                            <p class="text-xs text-gray-500 mt-1">实际税负约5%（2023-2027年政策）</p>
+                        </div>
+                        <div class="text-xs text-gray-500 space-y-1">
+                            <p>• 不能抵扣进项税额</p>
+                            <p>• 简易计税方法</p>
+                            <p>• 可转为一般纳税人</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 一般纳税人 -->
+                <div class="glass-card rounded-2xl p-8 border-t-4 border-purple-500">
+                    <h3 class="text-2xl font-bold text-purple-400 mb-4">一般纳税人</h3>
+                    <p class="text-gray-400 text-sm mb-6">年销售额>500万，或主动申请</p>
+
+                    <div class="space-y-4">
+                        <div class="bg-purple-500/10 rounded-lg p-4">
+                            <h4 class="font-bold text-purple-300 mb-2">增值税</h4>
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                                <div class="bg-white/5 rounded p-2">
+                                    <div class="text-xl font-bold text-white">13%</div>
+                                    <div class="text-gray-400">货物销售</div>
+                                </div>
+                                <div class="bg-white/5 rounded p-2">
+                                    <div class="text-xl font-bold text-white">9%</div>
+                                    <div class="text-gray-400">建筑/运输</div>
+                                </div>
+                                <div class="bg-white/5 rounded p-2">
+                                    <div class="text-xl font-bold text-white">6%</div>
+                                    <div class="text-gray-400">现代服务</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-purple-500/10 rounded-lg p-4">
+                            <h4 class="font-bold text-purple-300 mb-2">企业所得税</h4>
+                            <p class="text-3xl font-bold text-white">25%</p>
+                            <p class="text-xs text-gray-400 mt-1">高新技术企业可享15%</p>
+                        </div>
+                        <div class="text-xs text-gray-500 space-y-1">
+                            <p>• 可抵扣进项税额（销项-进项）</p>
+                            <p>• 需健全的会计核算</p>
+                            <p>• 不能转回小规模（除政策允许）</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 计算示例 -->
+            <div class="mt-8 glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-white mb-4">💡 计算示例</h3>
+                <div class="grid md:grid-cols-2 gap-6 text-sm">
+                    <div class="bg-green-500/10 rounded-lg p-4">
+                        <h4 class="font-bold text-green-400 mb-2">小规模纳税人例子</h4>
+                        <p class="text-gray-300">季度销售额28万元（未超30万免征额）</p>
+                        <p class="text-gray-400 mt-2">增值税：<span class="text-green-400">0元（免征）</span></p>
+                        <p class="text-gray-400">企业所得税：利润10万×5%=<span class="text-green-400">5000元</span></p>
+                    </div>
+                    <div class="bg-blue-500/10 rounded-lg p-4">
+                        <h4 class="font-bold text-blue-400 mb-2">一般纳税人例子</h4>
+                        <p class="text-gray-300">销售额100万（销项13万），进项8万</p>
+                        <p class="text-gray-400 mt-2">增值税：13万-8万=<span class="text-blue-400">5万元</span></p>
+                        <p class="text-gray-400">企业所得税：利润20万×25%=<span class="text-blue-400">5万元</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 起名规则 -->
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">🏷️ 公司起名规则</h2>
+            <div class="glass-card rounded-2xl p-8">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center gap-2 text-2xl font-bold">
+                        <span class="px-4 py-2 bg-blue-500/20 rounded-lg text-blue-300">行政区划</span>
+                        <span class="text-gray-500">+</span>
+                        <span class="px-4 py-2 bg-purple-500/20 rounded-lg text-purple-300">字号</span>
+                        <span class="text-gray-500">+</span>
+                        <span class="px-4 py-2 bg-pink-500/20 rounded-lg text-pink-300">行业特点</span>
+                        <span class="text-gray-500">+</span>
+                        <span class="px-4 py-2 bg-green-500/20 rounded-lg text-green-300">组织形式</span>
+                    </div>
+                    <p class="text-gray-400 mt-4 text-sm">示例：<span class="text-white">北京</span>+<span class="text-white">腾讯</span>+<span class="text-white">科技</span>+<span class="text-white">有限公司</span></p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-white mb-4">✅ 命名规范</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li class="flex items-start gap-2"><span class="text-green-400">✓</span> 字号2-4个汉字，需独特有辨识度</li>
+                            <li class="flex items-start gap-2"><span class="text-green-400">✓</span> 行业用语与经营范围匹配</li>
+                            <li class="flex items-start gap-2"><span class="text-green-400">✓</span> 有限公司/股份有限公司</li>
+                            <li class="flex items-start gap-2"><span class="text-green-400">✓</span> 可提前在国家企业信用信息公示系统查重</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-white mb-4">❌ 禁止事项</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li class="flex items-start gap-2"><span class="text-red-400">✗</span> 与已注册企业重名或近似</li>
+                            <li class="flex items-start gap-2"><span class="text-red-400">✗</span> 使用"中国""中央""国际"等敏感词（需特批）</li>
+                            <li class="flex items-start gap-2"><span class="text-red-400">✗</span> 带有误导性、封建迷信、歧视性词汇</li>
+                            <li class="flex items-start gap-2"><span class="text-red-400">✗</span> 使用阿拉伯数字、外文字母（除特许）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2026风口行业 -->
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">🚀 2025-2026年赚钱风口行业</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="industry-card glass-card rounded-xl p-6 border-l-4 border-blue-500">
+                    <div class="text-3xl mb-3">🤖</div>
+                    <h3 class="font-bold text-blue-400 mb-2">AI硬件</h3>
+                    <p class="text-xs text-gray-400 mb-3">人形机器人、AI眼镜</p>
+                    <p class="text-sm text-gray-300">2026年人形机器人开始批量生产进工厂，AI眼镜语音交互、实时翻译功能爆发</p>
+                    <div class="mt-3 text-xs text-blue-300">热度：🔥🔥🔥🔥🔥</div>
+                </div>
+
+                <div class="industry-card glass-card rounded-xl p-6 border-l-4 border-purple-500">
+                    <div class="text-3xl mb-3">🎭</div>
+                    <h3 class="font-bold text-purple-400 mb-2">IP+谷子经济</h3>
+                    <p class="text-xs text-gray-400 mb-3">动漫周边、盲盒、卡牌</p>
+                    <p class="text-sm text-gray-300">2024年市场规模1689亿，预计2029年突破3000亿，年轻人悦己消费爆发</p>
+                    <div class="mt-3 text-xs text-purple-300">热度：🔥🔥🔥🔥🔥</div>
+                </div>
+
+                <div class="industry-card glass-card rounded-xl p-6 border-l-4 border-pink-500">
+                    <div class="text-3xl mb-3">🎬</div>
+                    <h3 class="font-bold text-pink-400 mb-2">AI文娱</h3>
+                    <p class="text-xs text-gray-400 mb-3">漫剧、AI真人短剧</p>
+                    <p class="text-sm text-gray-300">AI生成视频成本大幅降低，普通人也能做短剧，即梦Seedance等工具爆发</p>
+                    <div class="mt-3 text-xs text-pink-300">热度：🔥🔥🔥🔥</div>
+                </div>
+
+                <div class="industry-card glass-card rounded-xl p-6 border-l-4 border-yellow-500">
+                    <div class="text-3xl mb-3">🚀</div>
+                    <h3 class="font-bold text-yellow-400 mb-2">商业航天</h3>
+                    <p class="text-xs text-gray-400 mb-3">火箭发射、卫星服务</p>
+                    <p class="text-sm text-gray-300">2024年产值2.3万亿，2026年预计突破3万亿，上交所支持火箭公司上市</p>
+                    <div class="mt-3 text-xs text-yellow-300">热度：🔥🔥🔥🔥</div>
+                </div>
+
+                <div class="industry-card glass-card rounded-xl p-6 border-l-4 border-green-500">
+                    <div class="text-3xl mb-3">🚁</div>
+                    <h3 class="font-bold text-green-400 mb-2">低空经济</h3>
+                    <p class="text-xs text-gray-400 mb-3">无人机物流、低空文旅</p>
+                    <p class="text-sm text-gray-300">2025年预计1.5万亿，无人机送快递、载人飞行器观光即将爆发</p>
+                    <div class="mt-3 text-xs text-green-300">热度：🔥🔥🔥🔥</div>
+                </div>
+
+                <div class="industry-card glass-card rounded-xl p-6 border-l-4 border-red-500">
+                    <div class="text-3xl mb-3">🐕</div>
+                    <h3 class="font-bold text-red-400 mb-2">宠物+情绪消费</h3>
+                    <p class="text-xs text-gray-400 mb-3">宠物经济、心理咨询</p>
+                    <p class="text-sm text-gray-300">2025年宠物市场8114亿，年轻人为"治愈"花钱从不吝啬，心理咨询需求激增</p>
+                    <div class="mt-3 text-xs text-red-300">热度：🔥🔥🔥🔥</div>
+                </div>
+
+                <div class="industry-card glass-card rounded-xl p-6 border-l-4 border-indigo-500">
+                    <div class="text-3xl mb-3">👴</div>
+                    <h3 class="font-bold text-indigo-400 mb-2">银发经济</h3>
+                    <p class="text-xs text-gray-400 mb-3">老年服务、适老化产品</p>
+                    <p class="text-sm text-gray-300">2025年市场规模突破12万亿，老年大学、适老化智能产品需求大</p>
+                    <div class="mt-3 text-xs text-indigo-300">热度：🔥🔥🔥</div>
+                </div>
+
+                <div class="industry-card glass-card rounded-xl p-6 border-l-4 border-cyan-500">
+                    <div class="text-3xl mb-3">🌱</div>
+                    <h3 class="font-bold text-cyan-400 mb-2">新型绿色能源</h3>
+                    <p class="text-xs text-gray-400 mb-3">光伏、风电、储能</p>
+                    <p class="text-sm text-gray-300">2026年预计突破10万亿，跟着国家政策走，赚钱更稳当</p>
+                    <div class="mt-3 text-xs text-cyan-300">热度：🔥🔥🔥</div>
+                </div>
+
+                <div class="industry-card glass-card rounded-xl p-6 border-l-4 border-orange-500">
+                    <div class="text-3xl mb-3">🚗</div>
+                    <h3 class="font-bold text-orange-400 mb-2">自动驾驶</h3>
+                    <p class="text-xs text-gray-400 mb-3">Robotaxi、车载芯片</p>
+                    <p class="text-sm text-gray-300">2026年预计突破5000亿，一线城市将出现规模化全无人出租车队</p>
+                    <div class="mt-3 text-xs text-orange-300">热度：🔥🔥🔥</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 上市攻略 -->
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">📈 公司上市完全指南</h2>
+
+            <div class="mb-8 glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-white mb-4">什么是上市？</h3>
+                <p class="text-gray-300 leading-relaxed">
+                    <strong class="text-blue-400">上市（IPO）</strong>是指公司首次向公众发行股票，在证券交易所挂牌交易。简单说，就是公司把一部分股份卖给广大投资者，换取资金用于发展。上市后公司成为"公众公司"，需要定期披露财务信息，接受监管。
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-card rounded-xl p-6 border-t-4 border-blue-500">
+                    <h3 class="font-bold text-blue-400 mb-3">主板（沪/深）</h3>
+                    <p class="text-xs text-gray-400 mb-3">成熟大型企业</p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• 股本总额≥5000万</li>
+                        <li>• 公开发行的股份≥25%</li>
+                        <li>• 最近3年净利润累计≥1.5亿</li>
+                        <li>• 最近1年净利润≥6000万</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card rounded-xl p-6 border-t-4 border-purple-500">
+                    <h3 class="font-bold text-purple-400 mb-3">科创板</h3>
+                    <p class="text-xs text-gray-400 mb-3">科技创新企业</p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• 股本总额≥3000万</li>
+                        <li>• 持续经营3年以上</li>
+                        <li>• 预计市值≥10亿</li>
+                        <li>• 研发投入占比高</li>
+                        <li>• 拥有核心技术</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card rounded-xl p-6 border-t-4 border-pink-500">
+                    <h3 class="font-bold text-pink-400 mb-3">创业板</h3>
+                    <p class="text-xs text-gray-400 mb-3">成长型创新创业企业</p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• 股本总额≥3000万</li>
+                        <li>• 持续经营3年以上</li>
+                        <li>• 最近2年净利润累计≥5000万</li>
+                        <li>• 或预计市值≥10亿+营收≥1亿</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-white mb-4">上市流程（从0到IPO）</h3>
+                <div class="grid md:grid-cols-5 gap-4 text-center text-sm">
+                    <div class="bg-white/5 rounded-lg p-4">
+                        <div class="text-2xl mb-2">1️⃣</div>
+                        <div class="font-bold text-blue-400">股改</div>
+                        <div class="text-xs text-gray-500 mt-1">有限公司→股份公司</div>
+                    </div>
+                    <div class="bg-white/5 rounded-lg p-4">
+                        <div class="text-2xl mb-2">2️⃣</div>
+                        <div class="font-bold text-purple-400">辅导</div>
+                        <div class="text-xs text-gray-500 mt-1">券商辅导1年以上</div>
+                    </div>
+                    <div class="bg-white/5 rounded-lg p-4">
+                        <div class="text-2xl mb-2">3️⃣</div>
+                        <div class="font-bold text-pink-400">申报</div>
+                        <div class="text-xs text-gray-500 mt-1">提交IPO申请材料</div>
+                    </div>
+                    <div class="bg-white/5 rounded-lg p-4">
+                        <div class="text-2xl mb-2">4️⃣</div>
+                        <div class="font-bold text-yellow-400">审核</div>
+                        <div class="text-xs text-gray-500 mt-1">交易所审核+证监会注册</div>
+                    </div>
+                    <div class="bg-white/5 rounded-lg p-4">
+                        <div class="text-2xl mb-2">5️⃣</div>
+                        <div class="font-bold text-green-400">发行上市</div>
+                        <div class="text-xs text-gray-500 mt-1">路演、定价、挂牌</div>
+                    </div>
+                </div>
+                <p class="text-center text-gray-500 text-sm mt-4">全程约1-2年，费用约2000万-5000万（含承销费、审计费、律师费等）</p>
+            </div>
+        </section>
+
+        <!-- 避坑指南 -->
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">⚠️ 注册公司避坑指南</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="warning-box rounded-xl p-6">
+                    <h3 class="font-bold text-red-400 mb-4">🚫 常见错误</h3>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-500 font-bold">1.</span>
+                            <span><strong>注册资本写太高</strong><br/><span class="text-gray-500">认缴1000万，破产时需补足，个人房产可能被强制执行</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-500 font-bold">2.</span>
+                            <span><strong>用虚假地址注册</strong><br/><span class="text-gray-500">无备案的挂靠地址可能导致执照被吊销</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-500 font-bold">3.</span>
+                            <span><strong>经营范围乱写</strong><br/><span class="text-gray-500">写太多导致税种增加，核心业务应放第一项</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-500 font-bold">4.</span>
+                            <span><strong>股东只有夫妻2人</strong><br/><span class="text-gray-500">可能被认定为一人公司，承担无限连带责任</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-500 font-bold">5.</span>
+                            <span><strong>让无关人员当法人</strong><br/><span class="text-gray-500">公司违法法人可能限高、列入失信名单</span></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tip-box rounded-xl p-6">
+                    <h3 class="font-bold text-green-400 mb-4">✅ 正确做法</h3>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 font-bold">1.</span>
+                            <span><strong>注册资本量力而行</strong><br/><span class="text-gray-500">根据实际经营需要设定，可后期增资</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 font-bold">2.</span>
+                            <span><strong>选择备案地址</strong><br/><span class="text-gray-500">政府集中办公区或正规商务秘书公司</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 font-bold">3.</span>
+                            <span><strong>签好股东协议</strong><br/><span class="text-gray-500">明确股权分配、退出机制、竞业禁止</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 font-bold">4.</span>
+                            <span><strong>按时记账报税</strong><br/><span class="text-gray-500">即使没收入也要零申报，否则罚款</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 font-bold">5.</span>
+                            <span><strong>公户私户分开</strong><br/><span class="text-gray-500">公司钱≠个人钱，混同可能被"刺破公司面纱"</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 总结时间线 -->
+        <section class="glass-card rounded-3xl p-8 md:p-12">
+            <h2 class="text-3xl font-bold text-center mb-12 text-white">🎯 公司从0到1时间线</h2>
+            <div class="relative">
+                <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500 transform md:-translate-x-1/2"></div>
+
+                <div class="space-y-8">
+                    <div class="relative flex items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
+                            <h3 class="font-bold text-blue-400">第1个月：筹备期</h3>
+                            <p class="text-sm text-gray-400">确定业务方向→起名核名→确定股东和股权比例→找注册地址</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-purple-500 rounded-full transform -translate-x-1/2"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pl-8 md:ml-auto">
+                            <h3 class="font-bold text-purple-400">第2个月：注册期</h3>
+                            <p class="text-sm text-gray-400">提交材料→领取执照→刻章→银行开户→税务登记→开始记账</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-pink-500 rounded-full transform -translate-x-1/2"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
+                            <h3 class="font-bold text-pink-400">第3-6个月：起步期</h3>
+                            <p class="text-sm text-gray-400">搭建团队→开发产品→获取首批客户→完善内部流程</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-yellow-500 rounded-full transform -translate-x-1/2"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pl-8 md:ml-auto">
+                            <h3 class="font-bold text-yellow-400">第1-2年：成长期</h3>
+                            <p class="text-sm text-gray-400">扩大规模→完善财税合规→考虑融资→注册商标/专利</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-green-500 rounded-full transform -translate-x-1/2"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
+                            <h3 class="font-bold text-green-400">第3-5年：扩张期</h3>
+                            <p class="text-sm text-gray-400">多城市布局→引入投资机构→股改→准备上市材料（如目标上市）</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-red-500 rounded-full transform -translate-x-1/2"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pl-8 md:ml-auto">
+                            <h3 class="font-bold text-red-400">第5年+：成熟期</h3>
+                            <p class="text-sm text-gray-400">IPO上市/被收购→成为行业龙头→或转型/二次创业</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特别提醒 -->
+        <section class="warning-box rounded-2xl p-8 text-center">
+            <h2 class="text-2xl font-bold text-red-400 mb-4">⚠️ 特别提醒</h2>
+            <div class="max-w-3xl mx-auto text-gray-300 space-y-2 text-sm">
+                <p>• 2024年7月1日起，注册资本必须在5年内实缴，不要盲目写高注册资本</p>
+                <p>• 公司成立后30天内必须税务报到，即使没有收入也要零申报</p>
+                <p>• 公户和私户必须分开，公司财产独立于股东个人财产</p>
+                <p>• 找代账公司时选择正规机构，避免因税务问题被罚款</p>
+                <p>• 保留好所有合同、发票、转账凭证，至少保存10年</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-12 text-gray-600 text-sm border-t border-gray-800">
+        <p class="mb-2">© 2026 公司从0到1完全指南 | 仅供参考，具体以最新法律法规为准</p>
+        <p>建议咨询专业律师、会计师获取个性化建议</p>
+    </footer>
+
+</body>
+</html>
