@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0基础开公司·极简执行清单</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        .check-item {
+            transition: all 0.2s;
+        }
+        .check-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        .check-item input:checked + div {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+        .step-box {
+            border-left: 3px solid;
+        }
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+        }
+        .tip-box {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+        }
+        .highlight {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="max-w-3xl mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <header class="mb-10 text-center">
+        <h1 class="text-4xl md:text-5xl font-black mb-4 highlight">0基础开公司</h1>
+        <p class="text-xl text-gray-400">极简执行清单 · 直接照着做</p>
+        <div class="mt-6 flex justify-center gap-2 text-sm">
+            <span class="badge bg-blue-500/20 text-blue-400">2024新公司法</span>
+            <span class="badge bg-purple-500/20 text-purple-400">5年实缴</span>
+            <span class="badge bg-green-500/20 text-green-400">1人可注册</span>
+        </div>
+    </header>
+
+    <!-- Section 1: 先定3件事 -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-sm">1</span>
+            先定3件事（10分钟搞定）
+        </h2>
+
+        <div class="space-y-3">
+            <label class="check-item flex items-start gap-3 p-4 rounded-xl bg-white/5 cursor-pointer">
+                <input type="checkbox" class="mt-1 w-5 h-5 accent-blue-500">
+                <div>
+                    <div class="font-bold text-blue-400">公司类型：有限责任公司</div>
+                    <div class="text-sm text-gray-500 mt-1">普通人唯一推荐，股东承担有限责任</div>
+                </div>
+            </label>
+
+            <label class="check-item flex items-start gap-3 p-4 rounded-xl bg-white/5 cursor-pointer">
+                <input type="checkbox" class="mt-1 w-5 h-5 accent-blue-500">
+                <div>
+                    <div class="font-bold text-purple-400">注册资本：10万–50万</div>
+                    <div class="text-sm text-gray-500 mt-1">⚠️ 2024.7.1起需在<strong class="text-yellow-400">5年内实缴</strong>，量力而行</div>
+                </div>
+            </label>
+
+            <label class="check-item flex items-start gap-3 p-4 rounded-xl bg-white/5 cursor-pointer">
+                <input type="checkbox" class="mt-1 w-5 h-5 accent-blue-500">
+                <div>
+                    <div class="font-bold text-pink-400">人员配置：法人1名</div>
+                    <div class="text-sm text-gray-500 mt-1">✅ 2024新公司法已取消监事，1人即可注册公司</div>
+                </div>
+            </label>
+        </div>
+    </section>
+
+    <!-- Section 2: 注册流程 -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center text-sm">2</span>
+            注册流程（3–7天）
+        </h2>
+
+        <div class="space-y-4">
+            <div class="step-box border-blue-500 pl-4 py-2">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="badge bg-blue-500 text-white">第1步</span>
+                    <span class="font-bold">核名</span>
+                </div>
+                <p class="text-sm text-gray-400 mb-2">格式：<span class="text-white">地区 + 字号 + 行业 + 有限公司</span></p>
+                <p class="text-sm text-gray-500">例：北京 字节跳动 科技 有限公司</p>
+                <p class="text-sm text-yellow-500 mt-2">💡 准备3–5个名字，避免重名</p>
+            </div>
+
+            <div class="step-box border-purple-500 pl-4 py-2">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="badge bg-purple-500 text-white">第2步</span>
+                    <span class="font-bold">填信息</span>
+                </div>
+                <ul class="text-sm text-gray-400 space-y-1">
+                    <li>• 注册地址（商用/园区挂靠，必须真实可收函）</li>
+                    <li>• 经营范围（第一项写主营，抄同行）</li>
+                    <li>• 股东比例、法人信息</li>
+                </ul>
+            </div>
+
+            <div class="step-box border-pink-500 pl-4 py-2">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="badge bg-pink-500 text-white">第3步</span>
+                    <span class="font-bold">提交审核</span>
+                </div>
+                <p class="text-sm text-gray-400">在线签字 → 等待审批（3-5个工作日）</p>
+            </div>
+
+            <div class="step-box border-green-500 pl-4 py-2">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="badge bg-green-500 text-white">第4步</span>
+                    <span class="font-bold">领营业执照</span>
+                </div>
+                <p class="text-sm text-gray-400">拿到：营业执照正副本</p>
+            </div>
+
+            <div class="step-box border-yellow-500 pl-4 py-2">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="badge bg-yellow-500 text-black">第5步</span>
+                    <span class="font-bold">刻章</span>
+                </div>
+                <p class="text-sm text-gray-400">公章、财务章、法人章（部分地区免费）</p>
+            </div>
+
+            <div class="step-box border-indigo-500 pl-4 py-2">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="badge bg-indigo-500 text-white">第6步</span>
+                    <span class="font-bold">银行开户</span>
+                </div>
+                <p class="text-sm text-gray-400">带执照、章、身份证去银行，用于收款、扣税</p>
+            </div>
+
+            <div class="step-box border-red-500 pl-4 py-2">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="badge bg-red-500 text-white">第7步</span>
+                    <span class="font-bold text-red-400">税务登记（重中之重）</span>
+                </div>
+                <ul class="text-sm text-gray-400 space-y-1">
+                    <li>• 做税务报到</li>
+                    <li>• 核定税种（小规模/一般纳税人）</li>
+                    <li>• 签三方扣税协议</li>
+                    <li>• 申领发票</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: 必备材料 -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-sm">3</span>
+            注册必备材料
+        </h2>
+        <div class="bg-white/5 rounded-xl p-4 space-y-2 text-sm">
+            <label class="check-item flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4 accent-green-500">
+                <span>法人、股东 <strong class="text-white">身份证</strong></span>
+            </label>
+            <label class="check-item flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4 accent-green-500">
+                <span>注册 <strong class="text-white">地址证明</strong>（租赁合同/房产证/挂靠证明）</span>
+            </label>
+            <label class="check-item flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4 accent-green-500">
+                <span>手机号、邮箱（用于接收通知）</span>
+            </label>
+        </div>
+    </section>
+
+    <!-- Section 4: 税收极简版 -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center text-sm text-black">4</span>
+            税收极简版（新手必懂）
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-blue-500/10 rounded-xl p-4 border border-blue-500/30">
+                <h3 class="font-bold text-blue-400 mb-3">小规模纳税人</h3>
+                <p class="text-sm text-gray-400 mb-2">年营业额 ≤ 500万</p>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">增值税</span>
+                        <span class="text-white font-bold">1%</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">月销≤10万/季≤30万</span>
+                        <span class="text-green-400 font-bold">免征</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-green-500/10 rounded-xl p-4 border border-green-500/30">
+                <h3 class="font-bold text-green-400 mb-3">企业所得税</h3>
+                <p class="text-sm text-gray-400 mb-2">小微企业（年利润≤300万）</p>
+                <div class="text-3xl font-bold text-white">5%</div>
+                <p class="text-xs text-gray-500 mt-2">年利润＞300万部分按25%</p>
+            </div>
+        </div>
+
+        <div class="tip-box rounded-lg p-4 mt-4">
+            <p class="text-sm font-bold text-green-400">💡 记住一句口诀：</p>
+            <p class="text-sm text-gray-300 mt-1"><strong class="text-white">有收入交增值税，有利润交企业所得税</strong></p>
+        </div>
+    </section>
+
+    <!-- Section 5: 起名 -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 bg-pink-500 rounded-lg flex items-center justify-center text-sm">5</span>
+            公司名字怎么起（一次过）
+        </h2>
+
+        <div class="bg-white/5 rounded-xl p-4 space-y-3">
+            <div class="flex items-center gap-2 text-sm">
+                <span class="text-blue-400">格式：</span>
+                <code class="bg-black/30 px-2 py-1 rounded text-xs">地区 + 字号 + 行业 + 有限公司</code>
+            </div>
+            <ul class="text-sm text-gray-400 space-y-2">
+                <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>2–4个字，<strong class="text-white">好记、不生僻</strong></span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>不擦边大牌（不能用"腾讯""阿里"等）</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>先在 <strong class="text-blue-400">国家企业信用信息公示系统</strong> 查重名</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Section 6: 0→1落地步骤 -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-sm">6</span>
+            0→1落地步骤（按顺序做）
+        </h2>
+
+        <div class="relative">
+            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-pink-500"></div>
+
+            <div class="space-y-4">
+                <div class="flex items-start gap-4 pl-10">
+                    <div class="absolute left-2 w-4 h-4 bg-blue-500 rounded-full border-2 border-black"></div>
+                    <div>
+                        <div class="font-bold text-white">Step 1: 注册公司</div>
+                        <div class="text-sm text-gray-500">完成上面7步流程</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 pl-10">
+                    <div class="absolute left-2 w-4 h-4 bg-purple-500 rounded-full border-2 border-black"></div>
+                    <div>
+                        <div class="font-bold text-white">Step 2: 开通收款账户、发票</div>
+                        <div class="text-sm text-gray-500">银行开户 + 税务登记 + 申领发票</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 pl-10">
+                    <div class="absolute left-2 w-4 h-4 bg-pink-500 rounded-full border-2 border-black"></div>
+                    <div>
+                        <div class="font-bold text-white">Step 3: 接第一单、跑通盈利</div>
+                        <div class="text-sm text-gray-500">先活下来，验证商业模式</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 pl-10">
+                    <div class="absolute left-2 w-4 h-4 bg-yellow-500 rounded-full border-2 border-black"></div>
+                    <div>
+                        <div class="font-bold text-white">Step 4: 按时记账报税</div>
+                        <div class="text-sm text-gray-500">每月/每季度申报，零申报也要报</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 pl-10">
+                    <div class="absolute left-2 w-4 h-4 bg-green-500 rounded-full border-2 border-black"></div>
+                    <div>
+                        <div class="font-bold text-white">Step 5: 稳定后再招人、扩张</div>
+                        <div class="text-sm text-gray-500">盈利稳定后再考虑规模化</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: 避坑指南 -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-sm">7</span>
+            最容易踩坑的注意事项（保命版）
+        </h2>
+
+        <div class="warning-box rounded-xl p-4 space-y-3">
+            <div class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">1.</span>
+                <div>
+                    <div class="font-bold text-white">股权不要55分</div>
+                    <div class="text-sm text-gray-400">一定要有大股东说了算，建议67%（绝对控制）或51%（相对控制）</div>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">2.</span>
+                <div>
+                    <div class="font-bold text-white">法人不要随便当</div>
+                    <div class="text-sm text-gray-400">公司违法法人可能限高、列入失信名单，要承担法律责任</div>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">3.</span>
+                <div>
+                    <div class="font-bold text-white">地址必须真实可联系</div>
+                    <div class="text-sm text-gray-400">虚假地址会导致执照被吊销，选备案的园区地址</div>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">4.</span>
+                <div>
+                    <div class="font-bold text-white">哪怕没业务，每个月也要报税</div>
+                    <div class="text-sm text-gray-400">零申报也要报，否则罚款+异常名录</div>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">5.</span>
+                <div>
+                    <div class="font-bold text-white">不开了一定要注销</div>
+                    <div class="text-sm text-gray-400">不能扔着不管，否则进黑名单，影响征信</div>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <span class="text-red-500 font-bold">6.</span>
+                <div>
+                    <div class="font-bold text-white">不要虚开发票、不要走私账逃税</div>
+                    <div class="text-sm text-gray-400">金税四期很严，公户私户必须分开</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: 股权结构 -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-sm">8</span>
+            股权结构怎么设
+        </h2>
+
+        <div class="bg-white/5 rounded-xl p-4">
+            <p class="text-sm text-gray-400 mb-4">避免平分股权，必须找出一个话事人：</p>
+
+            <div class="grid grid-cols-3 gap-3 text-center text-sm">
+                <div class="bg-red-500/10 rounded-lg p-3 border border-red-500/30">
+                    <div class="text-2xl font-bold text-red-400">67%</div>
+                    <div class="text-gray-400 mt-1">绝对控制权</div>
+                    <div class="text-xs text-gray-600 mt-1">重大决策</div>
+                </div>
+                <div class="bg-blue-500/10 rounded-lg p-3 border border-blue-500/30">
+                    <div class="text-2xl font-bold text-blue-400">51%</div>
+                    <div class="text-gray-400 mt-1">相对控制权</div>
+                    <div class="text-xs text-gray-600 mt-1">一般事项</div>
+                </div>
+                <div class="bg-yellow-500/10 rounded-lg p-3 border border-yellow-500/30">
+                    <div class="text-2xl font-bold text-yellow-400">34%</div>
+                    <div class="text-gray-400 mt-1">一票否决权</div>
+                    <div class="text-xs text-gray-600 mt-1">重大事项否决</div>
+                </div>
+            </div>
+
+            <div class="mt-4 p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/30">
+                <p class="text-sm text-yellow-400">⚠️ 警告：不要夫妻2人各占50%，可能被认定为一人公司，承担无限连带责任！</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: 注册资本提醒 -->
+    <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <span class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-sm">!</span>
+            2024新公司法重点提醒
+        </h2>
+
+        <div class="bg-red-500/10 rounded-xl p-4 border border-red-500/30">
+            <h3 class="font-bold text-red-400 mb-3">注册资本5年实缴制</h3>
+            <div class="space-y-2 text-sm text-gray-300">
+                <p>• <strong class="text-white">新注册公司</strong>：成立之日起<strong class="text-red-400">5年内</strong>必须缴足</p>
+                <p>• <strong class="text-white">存量公司</strong>：过渡期至2027.6.30，最长不超过2032.6.30</p>
+                <p>• <strong class="text-white">法律责任</strong>：未按期实缴可能面临<strong class="text-red-400">5%-15%罚款</strong>，股东失权</p>
+            </div>
+            <div class="mt-4 p-3 bg-black/30 rounded-lg">
+                <p class="text-sm text-green-400">✅ 建议：注册资本写10-50万，根据实际能力出资，可后期增资</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 完成提示 -->
+    <section class="text-center py-10 border-t border-gray-800">
+        <h2 class="text-2xl font-bold mb-4 text-white">🎉 开公司就这么简单</h2>
+        <p class="text-gray-400 mb-6">按这个清单一步步做，7天就能拿到营业执照</p>
+        <div class="flex justify-center gap-4 text-sm">
+            <span class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg">注册免费</span>
+            <span class="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg">线上办理</span>
+            <span class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg">1人可注册</span>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-gray-600 text-xs">
+        <p>© 2026 极简开公司指南 | 仅供参考，具体以当地政策为准</p>
+        <p class="mt-1">建议咨询专业代理机构或律师获取个性化建议</p>
+    </footer>
+
+    <script>
+        // 保存勾选状态到localStorage
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((box, index) => {
+            box.addEventListener('change', () => {
+                localStorage.setItem('checkbox_' + index, box.checked);
+            });
+            // 恢复状态
+            const saved = localStorage.getItem('checkbox_' + index);
+            if (saved === 'true') box.checked = true;
+        });
+    </script>
+
+</body>
+</html>
