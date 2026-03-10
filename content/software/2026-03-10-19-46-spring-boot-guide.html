@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot 零基础入门指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6DB33F;
+            --primary-dark: #4A7A29;
+            --secondary: #2d3436;
+            --bg-light: #f8f9fa;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --border: #dfe6e9;
+            --code-bg: #2d3436;
+            --code-text: #dfe6e9;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.8;
+            color: var(--text);
+            background: #fff;
+        }
+
+        /* 头部样式 */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 15px;
+            min-width: max-content;
+        }
+
+        nav li {
+            margin: 0 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background: var(--bg-light);
+            color: var(--primary);
+        }
+
+        /* 主体容器 */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 章节样式 */
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin: 30px 0 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        /* 提示框 */
+        .tip {
+            background: #e8f5e9;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tip-title {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .warning {
+            background: #fff3e0;
+            border-left-color: #ff9800;
+        }
+
+        .warning .tip-title {
+            color: #e65100;
+        }
+
+        /* 代码块 */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        p code {
+            background: #e8e8e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--secondary);
+            font-size: 0.9em;
+        }
+
+        /* 步骤列表 */
+        .steps {
+            counter-reset: step;
+            list-style: none;
+        }
+
+        .steps li {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 25px;
+        }
+
+        .steps li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* 卡片布局 */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        tr:hover {
+            background: var(--bg-light);
+        }
+
+        /* 按钮 */
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* 目录 */
+        .toc {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .toc li:last-child {
+            border-bottom: none;
+        }
+
+        .toc a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+        }
+
+        /* 底部 */
+        footer {
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer p {
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            pre {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* 高亮 */
+        .highlight {
+            background: linear-gradient(120deg, transparent 0%, #a8e6cf 0%, #a8e6cf 100%, transparent 100%);
+            background-size: 100% 40%;
+            background-repeat: no-repeat;
+            background-position: 0 90%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌱 Spring Boot 零基础入门指南</h1>
+    <p>从零开始，手把手教你搭建第一个 Spring Boot 应用</p>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#what">什么是Spring Boot</a></li>
+        <li><a href="#prepare">环境准备</a></li>
+        <li><a href="#create">创建项目</a></li>
+        <li><a href="#hello">Hello World</a></li>
+        <li><a href="#concepts">核心概念</a></li>
+        <li><a href="#db">连接数据库</a></li>
+        <li><a href="#next">下一步</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+
+    <!-- 目录 -->
+    <div class="toc">
+        <h3>📋 目录</h3>
+        <ul>
+            <li><a href="#what">1. 什么是 Spring Boot？</a></li>
+            <li><a href="#prepare">2. 环境准备（JDK + IDEA）</a></li>
+            <li><a href="#create">3. 创建第一个 Spring Boot 项目</a></li>
+            <li><a href="#hello">4. 编写 Hello World 接口</a></li>
+            <li><a href="#concepts">5. 核心概念讲解</a></li>
+            <li><a href="#db">6. 连接 MySQL 数据库</a></li>
+            <li><a href="#next">7. 下一步学习建议</a></li>
+        </ul>
+    </div>
+
+    <!-- 第一章 -->
+    <section id="what">
+        <h2>1. 什么是 Spring Boot？</h2>
+        
+        <div class="tip">
+            <div class="tip-title">💡 一句话理解</div>
+            <p>Spring Boot 是一个让你<strong>快速、简单地</strong>搭建 Java Web 项目的框架。它帮你做好了各种配置，你只需要专注写业务代码！</p>
+        </div>
+
+        <h3>为什么要学 Spring Boot？</h3>
+        <div class="cards">
+            <div class="card">
+                <h4>⚡ 开箱即用</h4>
+                <p>不用写一堆配置文件，几分钟就能跑起来一个项目</p>
+            </div>
+            <div class="card">
+                <h4>🔧 自动配置</h4>
+                <p>根据你添加的依赖，自动完成相关配置</p>
+            </div>
+            <div class="card">
+                <h4>🏢 企业主流</h4>
+                <p>国内 90% 以上的 Java 公司都在使用 Spring Boot</p>
+            </div>
+            <div class="card">
+                <h4>📦 内嵌服务器</h4>
+                <p>内置 Tomcat，直接运行，不用额外部署</p>
+            </div>
+        </div>
+
+        <h3>Spring Boot vs 传统 Spring</h3>
+        <table>
+            <tr>
+                <th>对比项</th>
+                <th>传统 Spring</th>
+                <th>Spring Boot</th>
+            </tr>
+            <tr>
+                <td>配置方式</td>
+                <td>大量 XML 配置</td>
+                <td>注解 + 少量配置</td>
+            </tr>
+            <tr>
+                <td>项目搭建</td>
+                <td>步骤繁琐</td>
+                <td>一键生成</td>
+            </tr>
+            <tr>
+                <td>依赖管理</td>
+                <td>容易版本冲突</td>
+                <td>自动版本管理</td>
+            </tr>
+            <tr>
+                <td>部署方式</td>
+                <td>打 war 包放 Tomcat</td>
+                <td>直接运行 jar 包</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- 第二章 -->
+    <section id="prepare">
+        <h2>2. 环境准备</h2>
+        
+        <p>搭建 Spring Boot 开发环境，只需要安装两样东西：</p>
+
+        <h3>2.1 安装 JDK</h3>
+        <div class="tip">
+            <div class="tip-title">📝 版本建议</div>
+            <p>推荐安装 <strong>JDK 17</strong> 或 <strong>JDK 21</strong>（长期支持版本），Spring Boot 3.x 要求最低 JDK 17</p>
+        </div>
+
+        <ul class="steps">
+            <li>
+                <strong>下载 JDK</strong>
+                <p>访问 <a href="https://adoptium.net/" target="_blank">adoptium.net</a> 下载开源版本，或 Oracle 官网下载</p>
+            </li>
+            <li>
+                <strong>安装</strong>
+                <p>双击安装包，一路点击"下一步"即可</p>
+            </li>
+            <li>
+                <strong>验证安装</strong>
+                <p>打开命令提示符（Win+R 输入 cmd），执行：</p>
+                <pre>java -version</pre>
+                <p>如果显示版本号，说明安装成功！</p>
+            </li>
+        </ul>
+
+        <h3>2.2 安装 IntelliJ IDEA</h3>
+        <p>IDEA 是目前最流行的 Java 开发工具，有免费的社区版（Community）。</p>
+        
+        <ul class="steps">
+            <li>
+                <strong>下载 IDEA</strong>
+                <p>访问 <a href="https://www.jetbrains.com/idea/download/" target="_blank">jetbrains.com</a> 下载 Community 版（免费）</p>
+            </li>
+            <li>
+                <strong>安装</strong>
+                <p>双击安装，建议勾选"Add to PATH"</p>
+            </li>
+            <li>
+                <strong>安装插件（可选）</strong>
+                <p>打开 IDEA → File → Settings → Plugins，搜索安装：</p>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Chinese (Simplified) Language Pack（中文语言包）</li>
+                    <li>Spring Boot Helper</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <!-- 第三章 -->
+    <section id="create">
+        <h2>3. 创建第一个 Spring Boot 项目</h2>
+        
+        <h3>方法一：使用 Spring Initializr 官网（推荐新手）</h3>
+        
+        <ul class="steps">
+            <li>
+                <strong>访问官网</strong>
+                <p>打开 <a href="https://start.spring.io/" target="_blank">start.spring.io</a></p>
+            </li>
+            <li>
+                <strong>配置项目信息</strong>
+                <table>
+                    <tr>
+                        <td><strong>Project</strong></td>
+                        <td>Maven</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Language</strong></td>
+                        <td>Java</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spring Boot</strong></td>
+                        <td>3.2.x（最新稳定版）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Group</strong></td>
+                        <td>com.example（通常填公司域名倒写）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Artifact</strong></td>
+                        <td>demo（项目名称）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Java</strong></td>
+                        <td>17 或 21</td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <strong>添加依赖</strong>
+                <p>点击 "Add Dependencies"，选择：</p>
+                <ul style="margin: 10px 0 10px 20px;">
+                    <li><strong>Spring Web</strong> - 用于构建 Web 应用</li>
+                    <li><strong>Spring Boot DevTools</strong> - 热部署工具（开发时自动重启）</li>
+                </ul>
+            </li>
+            <li>
+                <strong>生成项目</strong>
+                <p>点击 "Generate" 下载压缩包，解压后用 IDEA 打开</p>
+            </li>
+        </ul>
+
+        <h3>方法二：使用 IDEA 直接创建</h3>
+        <pre>File → New → Project → Spring Initializr
+→ 选择 Server URL: https://start.spring.io
+→ 填写项目信息 → 选择依赖 → 完成</pre>
+
+        <div class="tip warning">
+            <div class="tip-title">⚠️ 注意</div>
+            <p>第一次打开项目时，IDEA 会自动下载依赖，可能需要几分钟时间，请耐心等待！</p>
+        </div>
+    </section>
+
+    <!-- 第四章 -->
+    <section id="hello">
+        <h2>4. 编写 Hello World 接口</h2>
+        
+        <h3>项目结构说明</h3>
+        <pre>demo/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/example/demo/
+│   │   │       ├── DemoApplication.java    ← 启动类（程序入口）
+│   │   │       └── controller/             ← 控制器文件夹
+│   │   └── resources/
+│   │       ├── static/                     ← 静态资源
+│   │       ├── templates/                  ← 模板文件
+│   │       └── application.properties      ← 配置文件
+│   └── test/                               ← 测试代码
+└── pom.xml                                 ← Maven 配置</pre>
+
+        <h3>第一步：创建 Controller</h3>
+        <p>在 <code>com.example.demo</code> 包下新建 <code>controller</code> 文件夹，然后创建 <code>HelloController.java</code>：</p>
+
+        <pre>package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello, Spring Boot! 🌱";
+    }
+}</pre>
+
+        <div class="tip">
+            <div class="tip-title">📝 代码解释</div>
+            <ul style="margin-left: 20px;">
+                <li><code>@RestController</code> - 标记这是一个 REST 接口控制器</li>
+                <li><code>@GetMapping("/hello")</code> - 当访问 /hello 路径时，执行下面的方法</li>
+                <li>方法返回的字符串会作为响应内容返回给浏览器</li>
+            </ul>
+        </div>
+
+        <h3>第二步：运行项目</h3>
+        <p>找到 <code>DemoApplication.java</code>（带 main 方法的类），点击左侧绿色小箭头 → Run</p>
+        
+        <p>或在终端执行：</p>
+        <pre>./mvnw spring-boot:run</pre>
+
+        <h3>第三步：测试接口</h3>
+        <p>打开浏览器，访问：</p>
+        <pre>http://localhost:8080/hello</pre>
+        <p>看到 <code>Hello, Spring Boot! 🌱</code> 就说明成功了！🎉</p>
+
+        <h3>小练习：带参数的接口</h3>
+        <p>试试添加一个新接口，接收名字参数：</p>
+        <pre>@GetMapping("/hello/name")
+public String helloName(@RequestParam String name) {
+    return "你好，" + name + "！欢迎学习 Spring Boot！";
+}</pre>
+        <p>访问：<code>http://localhost:8080/hello/name?name=张三</code></p>
+    </section>
+
+    <!-- 第五章 -->
+    <section id="concepts">
+        <h2>5. 核心概念讲解</h2>
+
+        <h3>5.1 常用注解一览</h3>
+        <table>
+            <tr>
+                <th>注解</th>
+                <th>作用</th>
+                <th>使用位置</th>
+            </tr>
+            <tr>
+                <td><code>@SpringBootApplication</code></td>
+                <td>标记为 Spring Boot 启动类</td>
+                <td>主类</td>
+            </tr>
+            <tr>
+                <td><code>@RestController</code></td>
+                <td>声明 REST 控制器</td>
+                <td>类</td>
+            </tr>
+            <tr>
+                <td><code>@RequestMapping</code></td>
+                <td>映射请求路径</td>
+                <td>类/方法</td>
+            </tr>
+            <tr>
+                <td><code>@GetMapping</code></td>
+                <td>处理 GET 请求</td>
+                <td>方法</td>
+            </tr>
+            <tr>
+                <td><code>@PostMapping</code></td>
+                <td>处理 POST 请求</td>
+                <td>方法</td>
+            </tr>
+            <tr>
+                <td><code>@RequestParam</code></td>
+                <td>获取 URL 参数</td>
+                <td>参数</td>
+            </tr>
+            <tr>
+                <td><code>@PathVariable</code></td>
+                <td>获取路径变量</td>
+                <td>参数</td>
+            </tr>
+            <tr>
+                <td><code>@RequestBody</code></td>
+                <td>获取请求体 JSON</td>
+                <td>参数</td>
+            </tr>
+            <tr>
+                <td><code>@Autowired</code></td>
+                <td>自动注入依赖</td>
+                <td>字段/构造器</td>
+            </tr>
+            <tr>
+                <td><code>@Service</code></td>
+                <td>声明业务层组件</td>
+                <td>类</td>
+            </tr>
+            <tr>
+                <td><code>@Repository</code></td>
+                <td>声明数据访问层</td>
+                <td>类</td>
+            </tr>
+            <tr>
+                <td><code>@Component</code></td>
+                <td>通用组件标记</td>
+                <td>类</td>
+            </tr>
+        </table>
+
+        <h3>5.2 三层架构</h3>
+        <p>Spring Boot 项目通常按以下分层：</p>
+
+        <div class="cards">
+            <div class="card">
+                <h4>🎮 Controller 层</h4>
+                <p>接收请求、返回响应，处理参数校验。相当于"前台接待"</p>
+            </div>
+            <div class="card">
+                <h4>⚙️ Service 层</h4>
+                <p>业务逻辑处理，如计算、判断、调用多个 DAO。相当于"业务经理"</p>
+            </div>
+            <div class="card">
+                <h4>💾 Mapper/DAO 层</h4>
+                <p>数据库操作，增删改查。相当于"仓库管理员"</p>
+            </div>
+        </div>
+
+        <h3>5.3 完整示例：用户查询</h3>
+        <pre>// 1. 实体类
+public class User {
+    private Long id;
+    private String name;
+    private Integer age;
+    // getter 和 setter 省略...
+}
+
+// 2. Controller 层
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    
+    @Autowired
+    private UserService userService;
+    
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable Long id) {
+        return userService.getById(id);
+    }
+    
+    @GetMapping
+    public List&lt;User&gt; listUsers() {
+        return userService.list();
+    }
+    
+    @PostMapping
+    public String addUser(@RequestBody User user) {
+        userService.save(user);
+        return "添加成功";
+    }
+}
+
+// 3. Service 层
+@Service
+public class UserService {
+    
+    @Autowired
+    private UserMapper userMapper;
+    
+    public User getById(Long id) {
+        return userMapper.selectById(id);
+    }
+    
+    public List&lt;User&gt; list() {
+        return userMapper.selectList();
+    }
+    
+    public void save(User user) {
+        userMapper.insert(user);
+    }
+}</pre>
+    </section>
+
+    <!-- 第六章 -->
+    <section id="db">
+        <h2>6. 连接 MySQL 数据库</h2>
+
+        <h3>6.1 添加依赖</h3>
+        <p>在 <code>pom.xml</code> 中添加：</p>
+        <pre>&lt;dependencies&gt;
+    &lt;!-- MySQL 驱动 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+    
+    &lt;!-- MyBatis-Plus（简化数据库操作） --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.baomidou&lt;/groupId&gt;
+        &lt;artifactId&gt;mybatis-plus-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;3.5.5&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</pre>
+
+        <h3>6.2 配置数据库</h3>
+        <p>修改 <code>src/main/resources/application.properties</code>：</p>
+        <pre># 数据库配置
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=utf-8
+spring.datasource.username=root
+spring.datasource.password=你的密码
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# MyBatis-Plus 配置
+mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
+mybatis-plus.global-config.db-config.logic-delete-field=deleted
+mybatis-plus.global-config.db-config.logic-delete-value=1
+mybatis-plus.global-config.db-config.logic-not-delete-value=0</pre>
+
+        <h3>6.3 创建实体类</h3>
+        <pre>@Data  // 需要添加 lombok 依赖
+@TableName("user")
+public class User {
+    @TableId(type = IdType.AUTO)
+    private Long id;
+    private String name;
+    private Integer age;
+    private String email;
+}</pre>
+
+        <h3>6.4 创建 Mapper</h3>
+        <pre>@Mapper
+public interface UserMapper extends BaseMapper&lt;User&gt; {
+    // 基础 CRUD 方法 BaseMapper 已提供
+}</pre>
+
+        <h3>6.5 使用 Service</h3>
+        <pre>@Service
+public class UserService extends ServiceImpl&lt;UserMapper, User&gt; {
+    // 继承 ServiceImpl 获得大量现成方法
+}</pre>
+
+        <div class="tip">
+            <div class="tip-title">💡 MyBatis-Plus 是什么？</div>
+            <p>它是 MyBatis 的增强工具，提供了通用的 CRUD 方法，让你不用写 SQL 就能完成大部分数据库操作，大大提高开发效率！</p>
+        </div>
+    </section>
+
+    <!-- 第七章 -->
+    <section id="next">
+        <h2>7. 下一步学习建议</h2>
+
+        <h3>📚 推荐学习路线</h3>
+        <div class="cards">
+            <div class="card">
+                <h4>阶段一：基础巩固</h4>
+                <p>• Java 基础语法<br>• Maven 构建工具<br>• HTTP 协议基础</p>
+            </div>
+            <div class="card">
+                <h4>阶段二：核心深入</h4>
+                <p>• Spring IoC / AOP<br>• 事务管理<br>• 拦截器、过滤器</p>
+            </div>
+            <div class="card">
+                <h4>阶段三：进阶技术</h4>
+                <p>• Redis 缓存<br>• RabbitMQ 消息队列<br>• Spring Security</p>
+            </div>
+            <div class="card">
+                <h4>阶段四：微服务</h4>
+                <p>• Spring Cloud<br>• Docker 容器化<br>• Kubernetes</p>
+            </div>
+        </div>
+
+        <h3>📖 推荐资源</h3>
+        <table>
+            <tr>
+                <th>类型</th>
+                <th>推荐</th>
+            </tr>
+            <tr>
+                <td>官方文档</td>
+                <td><a href="https://spring.io/projects/spring-boot" target="_blank">spring.io/projects/spring-boot</a></td>
+            </tr>
+            <tr>
+                <td>中文社区</td>
+                <td><a href="https://springboot.io/" target="_blank">springboot.io</a></td>
+            </tr>
+            <tr>
+                <td>视频教程</td>
+                <td>B站搜索"Spring Boot 尚硅谷"、"狂神说Java"</td>
+            </tr>
+            <tr>
+                <td>练习项目</td>
+                <td>个人博客、图书管理系统、电商后台</td>
+            </tr>
+        </table>
+
+        <div class="tip">
+            <div class="tip-title">🎯 给新手的建议</div>
+            <ol style="margin-left: 20px;">
+                <li><strong>多动手</strong> - 光看不动手永远学不会，每学一个知识点就写代码验证</li>
+                <li><strong>别纠结源码</strong> - 初期先学会用，等熟练了再深入研究原理</li>
+                <li><strong>学会看报错</strong> - 异常信息是解决问题的重要线索</li>
+                <li><strong>善用搜索引擎</strong> - 遇到问题先 Google/百度，90%的问题别人都遇到过</li>
+                <li><strong>坚持写博客</strong> - 把学到的知识整理成文章，加深理解</li>
+            </ol>
+        </div>
+
+        <h3>🚀 开始你的第一个项目</h3>
+        <p>现在你已经掌握了 Spring Boot 的基础知识，试着完成以下练习：</p>
+        <ul style="margin-left: 20px; line-height: 2;">
+            <li>实现用户的增删改查接口</li>
+            <li>添加参数校验（用户名不能为空、年龄必须大于0等）</li>
+            <li>实现全局异常处理</li>
+            <li>添加 Swagger 接口文档</li>
+            <li>实现文件上传功能</li>
+        </ul>
+    </section>
+
+    <div style="text-align: center; margin-top: 60px; padding: 40px; background: var(--bg-light); border-radius: 10px;">
+        <h3 style="color: var(--primary);">🎉 恭喜完成入门指南！</h3>
+        <p style="margin-top: 15px;">你已经迈出了 Spring Boot 学习的第一步，继续加油！</p>
+        <a href="#what" class="btn">返回顶部</a>
+    </div>
+
+</div>
+
+<footer>
+    <p>Made with ❤️ for Spring Boot Beginners</p>
+    <p style="margin-top: 10px; font-size: 0.9rem;">祝学习顺利，编码愉快！</p>
+</footer>
+
+</body>
+</html>

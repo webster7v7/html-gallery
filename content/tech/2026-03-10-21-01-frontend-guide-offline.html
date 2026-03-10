@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>零基础小白前端入门指南 - Vue3 + Vite + TS + Tailwind + Axios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+        
+        /* 布局 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: calc(100vh - 40px);
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+        
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        /* 导航 */
+        .nav-link {
+            display: block;
+            padding: 10px 16px;
+            color: #64748b;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            color: white;
+        }
+        
+        /* 标题 */
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: #1e293b;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            color: #334155;
+            margin: 30px 0 15px;
+        }
+        
+        /* 卡片 */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* 代码块 */
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 16px 0;
+        }
+        
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        
+        code.inline {
+            background: #f1f5f9;
+            color: #db2777;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #475569;
+        }
+        
+        tr:hover {
+            background: #f8fafc;
+        }
+        
+        /* 提示框 */
+        .tip {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .info {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        /* 列表 */
+        ul, ol {
+            margin: 12px 0 12px 24px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        /* 技术标签 */
+        .tech-tags {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .tech-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* 步骤 */
+        .step {
+            display: flex;
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .step-num {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .flex {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                padding-right: 0;
+                margin-bottom: 20px;
+            }
+            .nav-link {
+                display: inline-block;
+                margin-right: 8px;
+            }
+        }
+        
+        /* 锚点偏移 */
+        section {
+            scroll-margin-top: 20px;
+        }
+        
+        /* 返回顶部 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            transition: transform 0.2s;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container flex">
+        <!-- 左侧导航 -->
+        <nav class="sidebar">
+            <h3 style="margin-bottom: 20px; color: #1e293b;">📚 目录</h3>
+            <a href="#start" class="nav-link active">🚀 开始学习</a>
+            <a href="#intro" class="nav-link">📖 技术栈简介</a>
+            <a href="#env" class="nav-link">💻 环境准备</a>
+            <a href="#vue" class="nav-link">💚 Vue 3 教程</a>
+            <a href="#typescript" class="nav-link">📘 TypeScript</a>
+            <a href="#tailwind" class="nav-link">🎨 Tailwind CSS</a>
+            <a href="#axios" class="nav-link">🌐 Axios</a>
+            <a href="#vite" class="nav-link">⚡ Vite</a>
+            <a href="#structure" class="nav-link">📁 项目结构</a>
+            <a href="#roadmap" class="nav-link">🗺️ 学习路线</a>
+            <a href="#faq" class="nav-link">❓ 常见问题</a>
+            <a href="#resources" class="nav-link">📖 推荐资源</a>
+        </nav>
+
+        <!-- 主内容 -->
+        <main class="main">
+            <!-- 开始学习 -->
+            <section id="start">
+                <div style="text-align: center; padding: 60px 20px;">
+                    <div style="display: inline-block; padding: 8px 16px; background: #dbeafe; color: #1d4ed8; border-radius: 20px; font-size: 14px; margin-bottom: 24px;">
+                        零基础友好 · 2024最新版
+                    </div>
+                    <h1>前端技术栈入门指南</h1>
+                    <p style="font-size: 1.2rem; color: #64748b; margin-bottom: 32px;">
+                        从零开始学习 <strong>Vue 3</strong> + <strong>Vite</strong> + <strong>TypeScript</strong> + <strong>Tailwind CSS</strong> + <strong>Axios</strong>
+                    </p>
+                    <div class="tech-tags" style="justify-content: center;">
+                        <span class="tech-tag">💚 Vue 3</span>
+                        <span class="tech-tag">⚡ Vite</span>
+                        <span class="tech-tag">📘 TypeScript</span>
+                        <span class="tech-tag">🎨 Tailwind</span>
+                        <span class="tech-tag">🌐 Axios</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 技术栈简介 -->
+            <section id="intro">
+                <h2>📖 技术栈简介</h2>
+                
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>技术</th>
+                                <th>作用</th>
+                                <th>通俗解释</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Vue 3</strong></td>
+                                <td>前端框架</td>
+                                <td>帮你组织和构建网页的"脚手架"，让网页能响应数据变化</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Vite</strong></td>
+                                <td>构建工具</td>
+                                <td>快速的开发服务器，帮你打包代码、自动刷新浏览器</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TypeScript</strong></td>
+                                <td>JS 的超集</td>
+                                <td>给 JS 加上"类型检查"，减少 Bug</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tailwind CSS</strong></td>
+                                <td>CSS 框架</td>
+                                <td>提供现成的样式类，不用写 CSS 也能做出好看的界面</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Axios</strong></td>
+                                <td>HTTP 请求库</td>
+                                <td>帮你从服务器获取数据、提交数据</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card" style="background: #1e293b; color: white;">
+                    <h3 style="color: white; text-align: center; margin-bottom: 20px;">🎯 它们如何配合工作</h3>
+                    <pre style="background: transparent; margin: 0;">┌─────────────────────────────────────────────────────────────┐
+│                      浏览器中的页面                          │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────────┐  │
+│  │  Vue 组件   │ ←→ │  TypeScript │ ←→ │  Tailwind CSS   │  │
+│  │  (.vue)     │    │  (.ts)      │    │  (样式类名)      │  │
+│  └──────┬──────┘    └─────────────┘    └─────────────────┘  │
+│         ↑                                                   │
+│  ┌─────────────┐    ┌─────────────┐                         │
+│  │   Axios     │ →  │   后端 API  │                         │
+│  │  (请求数据)  │    │  (服务器)   │                         │
+│  └─────────────┘    └─────────────┘                         │
+└─────────────────────────────────────────────────────────────┘
+                           ↑
+                    ┌─────────────┐
+                    │    Vite     │
+                    │ (开发+打包)  │
+                    └─────────────┘</pre>
+                </div>
+            </section>
+
+            <!-- 环境准备 -->
+            <section id="env">
+                <h2>💻 环境准备</h2>
+
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h3>安装 Node.js</h3>
+                        <p>Node.js 是运行 JavaScript 的环境，就像浏览器外的"小浏览器"。</p>
+                        <pre><code># 检查是否已安装
+node -v
+
+# 建议版本：18.x 或更高
+# 下载地址：https://nodejs.org/</code></pre>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h3>安装包管理器</h3>
+                        <p>包管理器用来下载和管理项目依赖的代码库。</p>
+                        <pre><code># 使用 npm 安装 pnpm（更快的包管理器）
+npm install -g pnpm
+
+# 检查版本
+pnpm -v</code></pre>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h3>安装 VS Code</h3>
+                        <p>推荐编辑器，配合插件开发效率更高。</p>
+                        <div class="info">
+                            <strong>推荐安装的插件：</strong>
+                            <ul style="margin: 10px 0;">
+                                <li><strong>Vue - Official</strong> - Vue 官方插件</li>
+                                <li><strong>Tailwind CSS IntelliSense</strong> - Tailwind 自动补全</li>
+                                <li><strong>TypeScript Importer</strong> - 自动导入类型</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vue 3 教程 -->
+            <section id="vue">
+                <h2>💚 Vue 3 核心概念</h2>
+
+                <div class="card">
+                    <h3>📦 ref - 响应式数据</h3>
+                    <p><code class="inline">ref</code> 是 Vue 3 的核心，用来定义响应式数据。当数据变化时，页面会自动更新！</p>
+                    
+                    <pre><code>&lt;script setup lang="ts"&gt;
+import { ref } from 'vue'
+
+// ========== 定义响应式数据 ==========
+const count = ref(0)           // 数字
+const name = ref('张三')        // 字符串
+const list = ref([1, 2, 3])    // 数组
+const user = ref({ age: 20 })  // 对象
+
+// 读取/修改 ref 数据要用 .value
+console.log(count.value)       // 0
+count.value = 10               // 修改后页面自动更新
+
+const increment = () => {
+  count.value++
+}
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;!-- 模板中直接使用，不需要 .value --&gt;
+  &lt;p&gt;计数: {{ count }}&lt;/p&gt;
+  &lt;button @click="increment"&gt;+1&lt;/button&gt;
+&lt;/template&gt;</code></pre>
+
+                    <div class="tip">
+                        <strong>💡 关键概念：</strong>为什么用 ref 而不是普通变量？Vue 需要知道数据何时变化来更新页面，ref 包装后的数据变化时，Vue 会自动刷新相关页面部分。
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🔄 组件通信</h3>
+                    
+                    <p><strong>父传子 (Props)：</strong></p>
+                    <pre><code>&lt;!-- 子组件 --&gt;
+&lt;script setup lang="ts"&gt;
+interface Props {
+  title: string
+  count?: number  // ? 表示可选
+}
+const props = defineProps&lt;Props&gt;()
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div&gt;{{ title }} - {{ count }}&lt;/div&gt;
+&lt;/template&gt;</code></pre>
+
+                    <p><strong>子传父 (Emits)：</strong></p>
+                    <pre><code>&lt;!-- 子组件 --&gt;
+&lt;script setup lang="ts"&gt;
+const emit = defineEmits&lt;{
+  (e: 'update', value: number): void
+  (e: 'delete', id: number): void
+}&gt;()
+
+const handleClick = () => {
+  emit('update', 100)
+}
+&lt;/script&gt;</code></pre>
+                </div>
+
+                <div class="card">
+                    <h3>📝 表单双向绑定</h3>
+                    <pre><code>&lt;script setup lang="ts"&gt;
+import { ref } from 'vue'
+
+const username = ref('')
+const isChecked = ref(false)
+const selected = ref('a')
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;!-- 文本输入 --&gt;
+  &lt;input v-model="username" placeholder="用户名" /&gt;
+  
+  &lt;!-- 复选框 --&gt;
+  &lt;input type="checkbox" v-model="isChecked" /&gt;
+  
+  &lt;!-- 单选下拉 --&gt;
+  &lt;select v-model="selected"&gt;
+    &lt;option value="a"&gt;选项 A&lt;/option&gt;
+    &lt;option value="b"&gt;选项 B&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/template&gt;</code></pre>
+                </div>
+            </section>
+
+            <!-- TypeScript -->
+            <section id="typescript">
+                <h2>📘 TypeScript 入门</h2>
+
+                <div class="card">
+                    <h3>🔤 基础类型</h3>
+                    <pre><code>// 基本类型
+let name: string = '张三'
+let age: number = 25
+let isStudent: boolean = false
+
+// 数组
+let numbers: number[] = [1, 2, 3]
+let names: Array&lt;string&gt; = ['a', 'b']
+
+// 对象
+interface Person {
+  name: string
+  age: number
+  email?: string  // 可选属性
+}
+
+let person: Person = {
+  name: '李四',
+  age: 30
+}
+
+// 联合类型
+let id: string | number
+id = 'abc'
+id = 123
+
+// 函数
+function add(a: number, b: number): number {
+  return a + b
+}
+
+// 箭头函数
+const multiply = (x: number, y: number): number => x * y</code></pre>
+                </div>
+
+                <div class="card">
+                    <h3>🔷 泛型 (Generic)</h3>
+                    <p>泛型让代码更灵活，可以处理多种类型。</p>
+                    <pre><code>// 泛型接口
+interface ApiResponse&lt;T&gt; {
+  data: T
+  code: number
+  message: string
+}
+
+// 使用
+interface User {
+  id: number
+  name: string
+}
+
+const response: ApiResponse&lt;User&gt; = {
+  data: { id: 1, name: '张三' },
+  code: 200,
+  message: 'success'
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Tailwind CSS -->
+            <section id="tailwind">
+                <h2>🎨 Tailwind CSS 速查</h2>
+
+                <div class="card">
+                    <h3>💡 核心概念</h3>
+                    <p>Tailwind 是<strong>工具类优先</strong>的 CSS 框架，通过组合类名来构建样式。</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                        <div style="background: #f8fafc; padding: 16px; border-radius: 8px;">
+                            <h4>传统 CSS</h4>
+                            <pre style="font-size: 12px;"><code>&lt;div class="card"&gt;
+  &lt;h2 class="title"&gt;标题&lt;/h2&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+.card {
+  padding: 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+&lt;/style&gt;</code></pre>
+                        </div>
+                        <div style="background: #ecfeff; padding: 16px; border-radius: 8px;">
+                            <h4>Tailwind CSS</h4>
+                            <pre style="font-size: 12px;"><code>&lt;div class="p-4 bg-white 
+            rounded-lg shadow"&gt;
+  &lt;h2 class="text-xl 
+             font-bold"&gt;
+    标题
+  &lt;/h2&gt;
+&lt;/div&gt;
+
+&lt;!-- 无需写 CSS！ --&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📋 常用类名速查表</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>类别</th>
+                                <th>示例</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>布局</td><td><code class="inline">flex, grid, block</code></td><td>显示方式</td></tr>
+                            <tr><td>Flexbox</td><td><code class="inline">justify-center, items-center</code></td><td>对齐方式</td></tr>
+                            <tr><td>间距</td><td><code class="inline">p-4, px-2, m-2, gap-4</code></td><td>内外边距</td></tr>
+                            <tr><td>尺寸</td><td><code class="inline">w-full, h-screen, w-64</code></td><td>宽高设置</td></tr>
+                            <tr><td>颜色</td><td><code class="inline">bg-blue-500, text-white</code></td><td>背景色/文字色</td></tr>
+                            <tr><td>文字</td><td><code class="inline">text-lg, font-bold</code></td><td>字号/字重</td></tr>
+                            <tr><td>效果</td><td><code class="inline">rounded-lg, shadow-md</code></td><td>圆角/阴影</td></tr>
+                            <tr><td>交互</td><td><code class="inline">hover:bg-blue-600</code></td><td>悬停效果</td></tr>
+                            <tr><td>过渡</td><td><code class="inline">transition, duration-200</code></td><td>过渡动画</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>📱 响应式设计</h3>
+                    <pre><code>&lt;!-- 移动优先：默认小屏，md: 中屏(768px+)，lg: 大屏(1024px+) --&gt;
+&lt;div class="w-full md:w-1/2 lg:w-1/3"&gt;
+  在小屏占满，中屏一半，大屏三分之一
+&lt;/div&gt;
+
+&lt;!-- 隐藏/显示 --&gt;
+&lt;div class="hidden md:block"&gt;
+  小屏隐藏，中屏及以上显示
+&lt;/div&gt;</code></pre>
+                </div>
+            </section>
+
+            <!-- Axios -->
+            <section id="axios">
+                <h2>🌐 Axios 使用指南</h2>
+
+                <div class="card">
+                    <h3>🔵 基础用法</h3>
+                    <pre><code>import axios from 'axios'
+
+// GET 请求
+const getUsers = async () => {
+  const response = await axios.get('https://api.example.com/users')
+  return response.data
+}
+
+// POST 请求
+const createUser = async (userData: any) => {
+  const response = await axios.post('https://api.example.com/users', userData)
+  return response.data
+}
+
+// 带参数
+const searchUsers = async (keyword: string) => {
+  const response = await axios.get('/users', {
+    params: { keyword, page: 1 }
+  })
+  return response.data
+}</code></pre>
+                </div>
+
+                <div class="card">
+                    <h3>🔧 封装请求（最佳实践）</h3>
+                    <pre><code>// utils/request.ts
+import axios from 'axios'
+
+const request = axios.create({
+  baseURL: 'https://api.example.com',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+
+// 请求拦截器
+request.interceptors.request.use(
+  (config) => {
+    // 添加 token
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => Promise.reject(error)
+)
+
+// 响应拦截器
+request.interceptors.response.use(
+  (response) => response.data,
+  (error) => {
+    // 统一错误处理
+    if (error.response?.status === 401) {
+      // 未授权，跳转登录
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default request</code></pre>
+                </div>
+            </section>
+
+            <!-- Vite -->
+            <section id="vite">
+                <h2>⚡ Vite 简介</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
+                    <div class="card" style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 8px;">🚀</div>
+                        <h4>极速启动</h4>
+                        <p style="font-size: 14px; color: #64748b;">使用原生 ES 模块，开发服务器启动极快</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 8px;">🔄</div>
+                        <h4>热更新</h4>
+                        <p style="font-size: 14px; color: #64748b;">修改代码后页面自动刷新</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 8px;">📦</div>
+                        <h4>开箱即用</h4>
+                        <p style="font-size: 14px; color: #64748b;">内置对 Vue、TS、CSS 的支持</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>常用命令</h3>
+                    <pre><code>pnpm dev      # 启动开发服务器
+pnpm build    # 打包生产环境
+pnpm preview  # 预览生产包</code></pre>
+                </div>
+            </section>
+
+            <!-- 项目结构 -->
+            <section id="structure">
+                <h2>📁 项目结构</h2>
+                
+                <div class="card" style="background: #1e293b; color: #e2e8f0;">
+                    <pre style="background: transparent; margin: 0;">my-project/
+├── 📄 package.json          # 项目配置和依赖
+├── 📄 vite.config.ts        # Vite 配置
+├── 📄 tsconfig.json         # TypeScript 配置
+├── 📄 tailwind.config.js    # Tailwind CSS 配置
+├── 📄 postcss.config.js     # PostCSS 配置
+├── 📄 index.html            # 页面入口
+├── 📁 src/                  # 源代码目录
+│   ├── 📄 main.ts           # 应用入口
+│   ├── 📄 App.vue           # 根组件
+│   ├── 📄 style.css         # 全局样式
+│   ├── 📁 components/       # 组件目录
+│   ├── 📁 types/            # 类型定义
+│   ├── 📁 utils/            # 工具函数
+│   └── 📄 vite-env.d.ts     # 类型声明
+└── 📁 public/               # 静态资源</pre>
+                </div>
+            </section>
+
+            <!-- 学习路线 -->
+            <section id="roadmap">
+                <h2>🗺️ 学习路线图</h2>
+
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h3>第 1 周：基础入门</h3>
+                        <ul>
+                            <li>了解 HTML/CSS/JavaScript 基础</li>
+                            <li>学习 Vue 3 基础（ref、computed、事件）</li>
+                            <li>跟着本项目代码走一遍</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h3>第 2 周：TypeScript</h3>
+                        <ul>
+                            <li>学习 TS 基础类型</li>
+                            <li>理解接口 (interface) 和类型别名 (type)</li>
+                            <li>练习给 Vue 组件添加类型</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h3>第 3 周：样式和交互</h3>
+                        <ul>
+                            <li>熟悉 Tailwind 常用类名</li>
+                            <li>练习响应式布局</li>
+                            <li>学习 Vue 动画和过渡</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h3>第 4 周：数据交互</h3>
+                        <ul>
+                            <li>学习 Axios 各种请求方法</li>
+                            <li>理解 Promise 和 async/await</li>
+                            <li>练习错误处理和加载状态</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 常见问题 -->
+            <section id="faq">
+                <h2>❓ 常见问题</h2>
+
+                <div class="card">
+                    <h4>Q: 为什么用 ref 而不是普通变量？</h4>
+                    <p>A: Vue 需要知道数据何时变化来更新页面，ref 包装后的数据变化时，Vue 会自动刷新相关页面部分。</p>
+                </div>
+
+                <div class="card">
+                    <h4>Q: .value 是什么？</h4>
+                    <p>A: ref 包装的数据需要通过 .value 来读取和修改。但在模板中不需要写 .value。</p>
+                </div>
+
+                <div class="card">
+                    <h4>Q: Tailwind 类名太多记不住怎么办？</h4>
+                    <p>A: 安装 VS Code 的 Tailwind 插件，输入时会自动提示。或者查阅官方文档的搜索功能。</p>
+                </div>
+
+                <div class="card">
+                    <h4>Q: TypeScript 报错怎么办？</h4>
+                    <p>A: 新手可以先写普通 JS，等运行正常后再添加类型。也可以将 tsconfig.json 中的 "strict": true 改为 false 降低严格度。</p>
+                </div>
+            </section>
+
+            <!-- 推荐资源 -->
+            <section id="resources">
+                <h2>📖 推荐资源</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                    <a href="https://cn.vuejs.org/" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+                        <h4>💚 Vue 官方文档</h4>
+                        <p style="color: #64748b; font-size: 14px;">最权威的 Vue 学习资料</p>
+                    </a>
+                    <a href="https://tailwindcss.com/docs" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+                        <h4>🎨 Tailwind 文档</h4>
+                        <p style="color: #64748b; font-size: 14px;">详细的类名参考</p>
+                    </a>
+                    <a href="https://www.typescriptlang.org/zh/" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+                        <h4>📘 TypeScript 文档</h4>
+                        <p style="color: #64748b; font-size: 14px;">类型系统的完整指南</p>
+                    </a>
+                    <a href="https://axios-http.com/zh/" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+                        <h4>🌐 Axios 文档</h4>
+                        <p style="color: #64748b; font-size: 14px;">HTTP 请求库使用说明</p>
+                    </a>
+                    <a href="https://cn.vitejs.dev/" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+                        <h4>⚡ Vite 文档</h4>
+                        <p style="color: #64748b; font-size: 14px;">下一代前端构建工具</p>
+                    </a>
+                    <a href="https://developer.mozilla.org/zh-CN/" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+                        <h4>📚 MDN Web 文档</h4>
+                        <p style="color: #64748b; font-size: 14px;">Web 技术的百科全书</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 页脚 -->
+            <footer style="text-align: center; padding: 60px 20px; border-top: 2px solid #e2e8f0; margin-top: 60px;">
+                <div style="font-size: 3rem; margin-bottom: 16px;">🎉</div>
+                <h2 style="margin-bottom: 16px;">恭喜完成学习！</h2>
+                <p style="color: #64748b; margin-bottom: 24px;">坚持下去，你很快就能独立开发完整的 Web 应用了</p>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+                        style="padding: 12px 24px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                    回到顶部
+                </button>
+                <p style="color: #94a3b8; margin-top: 32px; font-size: 14px;">Happy Coding! 💻✨</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="回到顶部">↑</button>
+
+    <script>
+        // 导航高亮
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 返回顶部按钮显示/隐藏
+        const backToTopBtn = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        });
+        backToTopBtn.style.display = 'none';
+    </script>
+</body>
+</html>

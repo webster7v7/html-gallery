@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 主流编程语言全景图 | 应用场景与选型指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        body { background: #0a0a0f; color: #e2e8f0; }
+        .bg-grid {
+            background-image: linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -2;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(16px);
+            border: 1px solid rgba(99, 102, 241, 0.15); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover { border-color: rgba(99, 102, 241, 0.3); transform: translateY(-2px); }
+        .text-gradient {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #22d3ee);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-item { transition: all 0.2s; border-left: 2px solid transparent; }
+        .nav-item:hover, .nav-item.active { background: rgba(99, 102, 241, 0.1); border-left-color: #6366f1; }
+        .rank-badge { background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(99, 102, 241, 0.3); }
+        .animate-fade-in { animation: fadeInUp 0.6s ease forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+<base target="_blank">
+</head>
+<body class="antialiased">
+    <div class="bg-grid"></div>
+
+    <header class="py-20 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm text-indigo-400 mb-6">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                TIOBE Index 2024-2025
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                <span class="text-gradient">主流编程语言</span>
+                <span class="block text-3xl md:text-4xl mt-4 text-slate-400 font-light">全景分类与应用场景</span>
+            </h1>
+            <p class="text-lg text-slate-400 max-w-3xl mx-auto">
+                基于 TIOBE 2024 年度榜单与行业需求数据，深度解析主流语言的核心优势与最佳应用场景
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 pb-20">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <aside class="lg:w-64 flex-shrink-0">
+                <div class="sticky top-4 space-y-1">
+                    <a href="#overview" class="nav-item active block px-4 py-3 rounded-lg text-sm text-slate-300">语言概览</a>
+                    <a href="#ai" class="nav-item block px-4 py-3 rounded-lg text-sm text-slate-300">AI与数据科学</a>
+                    <a href="#system" class="nav-item block px-4 py-3 rounded-lg text-sm text-slate-300">系统级编程</a>
+                    <a href="#web" class="nav-item block px-4 py-3 rounded-lg text-sm text-slate-300">Web开发</a>
+                    <a href="#mobile" class="nav-item block px-4 py-3 rounded-lg text-sm text-slate-300">移动开发</a>
+                    <a href="#enterprise" class="nav-item block px-4 py-3 rounded-lg text-sm text-slate-300">企业级应用</a>
+                    <a href="#game" class="nav-item block px-4 py-3 rounded-lg text-sm text-slate-300">游戏开发</a>
+                </div>
+            </aside>
+
+            <div class="flex-1 space-y-16">
+
+                <section id="overview" class="animate-fade-in">
+                    <h2 class="text-3xl font-bold text-white mb-8">TIOBE 2024-2025 语言排行概览</h2>
+
+                    <div class="glass-card rounded-2xl overflow-hidden mb-8">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-slate-800/50">
+                                    <th class="px-6 py-4 text-left text-indigo-400 font-semibold">排名</th>
+                                    <th class="px-6 py-4 text-left text-indigo-400 font-semibold">语言</th>
+                                    <th class="px-6 py-4 text-left text-indigo-400 font-semibold">占比</th>
+                                    <th class="px-6 py-4 text-left text-indigo-400 font-semibold">主要应用领域</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300">
+                                <tr class="bg-indigo-500/5 border-b border-slate-700/50">
+                                    <td class="px-6 py-4"><span class="rank-badge px-3 py-1 rounded-full text-xs font-bold">1</span></td>
+                                    <td class="px-6 py-4 font-bold text-white">Python</td>
+                                    <td class="px-6 py-4 mono text-green-400">25.35%</td>
+                                    <td class="px-6 py-4">AI/ML、数据科学、自动化、后端</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="px-6 py-4"><span class="rank-badge px-3 py-1 rounded-full text-xs font-bold">2</span></td>
+                                    <td class="px-6 py-4 font-bold text-white">C++</td>
+                                    <td class="px-6 py-4 mono">10.82%</td>
+                                    <td class="px-6 py-4">游戏引擎、高频交易、系统编程</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="px-6 py-4"><span class="rank-badge px-3 py-1 rounded-full text-xs font-bold">3</span></td>
+                                    <td class="px-6 py-4 font-bold text-white">Java</td>
+                                    <td class="px-6 py-4 mono">9.72%</td>
+                                    <td class="px-6 py-4">企业级后端、Android、大数据</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="px-6 py-4"><span class="rank-badge px-3 py-1 rounded-full text-xs font-bold">4</span></td>
+                                    <td class="px-6 py-4 font-bold text-white">C</td>
+                                    <td class="px-6 py-4 mono">9.31%</td>
+                                    <td class="px-6 py-4">嵌入式、操作系统、物联网</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="px-6 py-4"><span class="rank-badge px-3 py-1 rounded-full text-xs font-bold">5</span></td>
+                                    <td class="px-6 py-4 font-bold text-white">C#</td>
+                                    <td class="px-6 py-4 mono">6.98%</td>
+                                    <td class="px-6 py-4">游戏开发(Unity)、企业应用</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="px-6 py-4"><span class="rank-badge px-3 py-1 rounded-full text-xs font-bold">6</span></td>
+                                    <td class="px-6 py-4 font-bold text-white">JavaScript</td>
+                                    <td class="px-6 py-4 mono">6.89%</td>
+                                    <td class="px-6 py-4">Web前端、Node.js后端、全栈</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="px-6 py-4"><span class="rank-badge px-3 py-1 rounded-full text-xs font-bold">7</span></td>
+                                    <td class="px-6 py-4 font-bold text-white">Go</td>
+                                    <td class="px-6 py-4 mono">2.70%</td>
+                                    <td class="px-6 py-4">云原生、微服务、DevOps</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="px-6 py-4"><span class="rank-badge px-3 py-1 rounded-full text-xs font-bold">8</span></td>
+                                    <td class="px-6 py-4 font-bold text-white">Rust</td>
+                                    <td class="px-6 py-4 mono">1.45%</td>
+                                    <td class="px-6 py-4">系统安全、WebAssembly、区块链</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4"><span class="rank-badge px-3 py-1 rounded-full text-xs font-bold">9</span></td>
+                                    <td class="px-6 py-4 font-bold text-white">Swift</td>
+                                    <td class="px-6 py-4 mono">0.98%</td>
+                                    <td class="px-6 py-4">iOS/macOS开发、Apple生态</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="ai" class="animate-fade-in">
+                    <h2 class="text-3xl font-bold text-white mb-8">AI 与数据科学领域</h2>
+
+                    <div class="glass-card rounded-2xl p-8 mb-6 border-l-4 border-yellow-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">Python</h3>
+                            <span class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-semibold">统治地位 75%市场份额</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            AI时代的"胶水语言"，2024年以 <strong class="text-yellow-400">9.3%的年度增长</strong> 创下TIOBE历史纪录，
+                            2025年5月达到 <strong class="text-yellow-400">25.35%</strong> 的历史最高占比。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">核心框架</h4>
+                                <p class="text-sm text-slate-400">TensorFlow、PyTorch、Scikit-learn、Pandas、NumPy</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">最佳应用场景</h4>
+                                <p class="text-sm text-slate-400">机器学习、深度学习、数据分析、科学计算、自动化脚本</p>
+                            </div>
+                        </div>
+                        <div class="text-sm text-slate-500">
+                            <strong>典型案例：</strong>OpenAI文本生成后端采用Python+Rust混合编程，GPU利用率提升至95%
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 mb-6 border-l-4 border-blue-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">SQL</h3>
+                            <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs">数据世界通用语</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            尽管TIOBE排名跌出前十（第12位），SQL仍是开发者必备技能，PostgreSQL连续两年成为最受欢迎数据库（48.7%使用率）。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">数据库系统</h4>
+                                <p class="text-sm text-slate-400">PostgreSQL、MySQL、Snowflake、BigQuery</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">应用场景</h4>
+                                <p class="text-sm text-slate-400">数据查询、数据分析、BI报表、实时数仓</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 border-l-4 border-orange-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">MATLAB / R</h3>
+                            <span class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs">科学计算</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            在科研领域，Python（51%使用率）逐步取代MATLAB，但MATLAB的Simulink在控制系统设计中仍占比超90%。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">MATLAB优势</h4>
+                                <p class="text-sm text-slate-400">工程仿真、信号处理、控制系统、数值分析</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">R语言优势</h4>
+                                <p class="text-sm text-slate-400">统计分析、数据可视化、生物信息学、学术研究</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="system" class="animate-fade-in">
+                    <h2 class="text-3xl font-bold text-white mb-8">系统级编程领域</h2>
+
+                    <div class="glass-card rounded-2xl p-8 mb-6 border-l-4 border-purple-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">C++</h3>
+                            <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-semibold">高性能之王</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            2025年迎来复兴，年度增长0.41%。在TOP500超级计算机中，<strong class="text-purple-400">78%的高性能计算应用</strong>使用C++编写。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">游戏开发</h4>
+                                <p class="text-sm text-slate-400">Unreal Engine、AAA级游戏、游戏引擎</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">高频交易</h4>
+                                <p class="text-sm text-slate-400">纳秒级延迟、金融系统、量化交易</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">系统软件</h4>
+                                <p class="text-sm text-slate-400">操作系统、数据库、浏览器内核</p>
+                            </div>
+                        </div>
+                        <div class="text-sm text-slate-500">
+                            <strong>技术突破：</strong>NVIDIA CUDA 12.4对C++20并行算法的支持，使GPU计算效率提升22%
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 mb-6 border-l-4 border-cyan-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">Go</h3>
+                            <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-semibold">云原生首选</span>
+                            <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs">首次进入Top 10</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            年度增长1.10%，成为后端开发"新宠"。Goroutine调度模型支持<strong class="text-cyan-400">百万级并发</strong>，单个goroutine初始栈仅2KB。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">云原生</h4>
+                                <p class="text-sm text-slate-400">Kubernetes、Docker、微服务架构</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">网络服务</h4>
+                                <p class="text-sm text-slate-400">高并发API、实时通信、流媒体服务</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">DevOps工具</h4>
+                                <p class="text-sm text-slate-400">CLI工具、自动化脚本、基础设施</p>
+                            </div>
+                        </div>
+                        <div class="text-sm text-slate-500">
+                            <strong>生态案例：</strong>Kubernetes 1.30用Go 1.21重构调度器，资源利用率提升18%
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 border-l-4 border-red-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">Rust</h3>
+                            <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-semibold">安全系统编程</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            强调安全性与速度，进入TIOBE Top 13。Linux内核采用率提升至5%，WebAssembly安全标准推动前端渗透。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">系统安全</h4>
+                                <p class="text-sm text-slate-400">操作系统、浏览器引擎、内存安全</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">WebAssembly</h4>
+                                <p class="text-sm text-slate-400">前端高性能模块、跨平台应用</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">区块链</h4>
+                                <p class="text-sm text-slate-400">Solana生态、智能合约、DeFi协议</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="web" class="animate-fade-in">
+                    <h2 class="text-3xl font-bold text-white mb-8">Web 开发领域</h2>
+
+                    <div class="glass-card rounded-2xl p-8 mb-6 border-l-4 border-yellow-400">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">JavaScript / TypeScript</h3>
+                            <span class="px-3 py-1 rounded-full bg-yellow-400/20 text-yellow-400 text-xs font-semibold">Web之王</span>
+                            <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs">62.3%开发者使用</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            唯一原生支持所有主流浏览器的脚本语言，TypeScript渗透率已达<strong class="text-yellow-400">65%</strong>，成为大型前端项目的事实标准。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">前端生态</h4>
+                                <p class="text-sm text-slate-400">React(39.5%)、Vue(28.4%)、Svelte、Angular</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">后端生态</h4>
+                                <p class="text-sm text-slate-400">Node.js、Express、Fastify(性能提升3倍)</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">跨平台</h4>
+                                <p class="text-sm text-slate-400">Electron(月活10亿+)、React Native(58%市场份额)</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">最佳场景</h4>
+                                <p class="text-sm text-slate-400">全栈Web应用、实时应用、SPA、PWA</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 mb-6 border-l-4 border-indigo-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">PHP</h3>
+                            <span class="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-400 text-xs">Web后端基石</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            2024年占开发者职位需求的<strong class="text-indigo-400">10%</strong>，每10个开发岗位就有1个需要PHP。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">主流框架</h4>
+                                <p class="text-sm text-slate-400">Laravel、Symfony、WordPress(全球40%网站)</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">最佳场景</h4>
+                                <p class="text-sm text-slate-400">内容管理系统、电商网站、快速原型开发</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 border-l-4 border-green-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">Java</h3>
+                            <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs">企业级Web</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            Spring Cloud Alibaba微服务套件在金融领域市占率超<strong class="text-green-400">70%</strong>，JDK 21虚拟线程使并发吞吐量提升10倍。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">主流框架</h4>
+                                <p class="text-sm text-slate-400">Spring Boot、Spring Cloud、Jakarta EE</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">最佳场景</h4>
+                                <p class="text-sm text-slate-400">大型企业应用、金融系统、高并发电商</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="mobile" class="animate-fade-in">
+                    <h2 class="text-3xl font-bold text-white mb-8">移动开发领域</h2>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="glass-card rounded-2xl p-8 border-l-4 border-blue-500">
+                            <div class="flex items-center gap-3 mb-4">
+                                <h3 class="text-2xl font-bold text-white">Swift</h3>
+                                <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-semibold">iOS首选</span>
+                            </div>
+                            <p class="text-slate-300 mb-4">
+                                Apple生态系统开发的主要语言，性能接近原生，语法比Objective-C更现代。
+                            </p>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                                    <span>iOS、macOS、watchOS、tvOS原生开发</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                                    <span>服务器端Swift（Vapor、Kitura）</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                                    <span>类型安全、可选类型减少运行时错误</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-8 border-l-4 border-green-500">
+                            <div class="flex items-center gap-3 mb-4">
+                                <h3 class="text-2xl font-bold text-white">Kotlin</h3>
+                                <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold">Android首选</span>
+                            </div>
+                            <p class="text-slate-300 mb-4">
+                                Google官方推荐的Android开发语言，与Java完全互操作，语法更简洁现代。
+                            </p>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                                    <span>Android原生应用开发</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                                    <span>跨平台Kotlin Multiplatform</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                                    <span>空安全、协程、DSL支持</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-8 border-l-4 border-cyan-500">
+                            <div class="flex items-center gap-3 mb-4">
+                                <h3 class="text-2xl font-bold text-white">Dart + Flutter</h3>
+                                <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-semibold">跨平台</span>
+                            </div>
+                            <p class="text-slate-300 mb-4">
+                                一套代码构建iOS、Android、Web、桌面应用，热重载提升开发效率。
+                            </p>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                                    <span>跨平台移动应用（iOS/Android）</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                                    <span>Web应用、桌面应用（Windows/macOS/Linux）</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                                    <span>自绘引擎，UI一致性高</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-2xl p-8 border-l-4 border-purple-500">
+                            <div class="flex items-center gap-3 mb-4">
+                                <h3 class="text-2xl font-bold text-white">React Native</h3>
+                                <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs">JavaScript跨平台</span>
+                            </div>
+                            <p class="text-slate-300 mb-4">
+                                基于JavaScript的跨平台框架，占据移动跨平台开发<strong class="text-purple-400">58%</strong>市场份额。
+                            </p>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                                    <span>iOS/Android原生级性能</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                                    <span>热更新、代码复用率高</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-slate-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                                    <span>Facebook、Instagram等应用使用</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="enterprise" class="animate-fade-in">
+                    <h2 class="text-3xl font-bold text-white mb-8">企业级应用领域</h2>
+
+                    <div class="glass-card rounded-2xl p-8 mb-6 border-l-4 border-green-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">Java</h3>
+                            <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold">企业级基石</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            以9.31%的TIOBE指数稳居第四，Spring生态在金融领域市占率超70%。蚂蚁集团核心交易系统支撑双11峰值<strong class="text-green-400">58.3万笔/秒</strong>支付处理。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">金融领域</h4>
+                                <p class="text-sm text-slate-400">银行核心系统、支付平台、风控系统</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">电商领域</h4>
+                                <p class="text-sm text-slate-400">高并发交易、库存管理、订单系统</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">大数据</h4>
+                                <p class="text-sm text-slate-400">Hadoop生态、Spark、Flink实时计算</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 border-l-4 border-purple-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-white">C# / .NET</h3>
+                            <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-semibold">微软生态</span>
+                            <span class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400 text-xs">2023年度语言</span>
+                        </div>
+                        <p class="text-slate-300 mb-4">
+                            2023年TIOBE年度语言，年度增长1.43%，在企业软件和游戏中占据重要地位。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">企业应用</h4>
+                                <p class="text-sm text-slate-400">ASP.NET Core、WPF、WinForms、Azure云服务</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-slate-800/50">
+                                <h4 class="text-white font-semibold mb-2">游戏开发</h4>
+                                <p class="text-sm text-slate-400">Unity引擎、独立游戏、VR/AR应用</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="game" class="animate-fade-in">
+                    <h2 class="text-3xl font-bold text-white mb-8">游戏开发领域</h2>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="glass-card rounded-2xl p-6 border-l-4 border-purple-500">
+                            <h3 class="text-xl font-bold text-white mb-3">C++</h3>
+                            <p class="text-sm text-slate-400 mb-4">AAA级游戏引擎首选</p>
+                            <ul class="space-y-2 text-sm text-slate-300">
+                                <li>• Unreal Engine 5</li>
+                                <li>• 自定义游戏引擎</li>
+                                <li>• 高性能图形渲染</li>
+                                <li>• 物理引擎开发</li>
+                            </ul>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 border-l-4 border-indigo-500">
+                            <h3 class="text-xl font-bold text-white mb-3">C#</h3>
+                            <p class="text-sm text-slate-400 mb-4">Unity引擎脚本语言</p>
+                            <ul class="space-y-2 text-sm text-slate-300">
+                                <li>• Unity游戏开发</li>
+                                <li>• 独立游戏</li>
+                                <li>• 手游开发</li>
+                                <li>• VR/AR内容</li>
+                            </ul>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 border-l-4 border-yellow-500">
+                            <h3 class="text-xl font-bold text-white mb-3">Python</h3>
+                            <p class="text-sm text-slate-400 mb-4">游戏工具与原型</p>
+                            <ul class="space-y-2 text-sm text-slate-300">
+                                <li>• 游戏脚本与MOD</li>
+                                <li>• 快速原型开发</li>
+                                <li>• 游戏AI行为树</li>
+                                <li>• 自动化工具链</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 py-12 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm mono">Programming Languages Landscape 2025 · Based on TIOBE Index & Industry Analysis</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        const sections = document.querySelectorAll('section[id]');
+        const navItems = document.querySelectorAll('.nav-item');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (scrollY >= section.offsetTop - 100) current = section.getAttribute('id');
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
