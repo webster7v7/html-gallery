@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termux vs Termius 完全指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e2e8f0;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gradient-border:hover::before {
+            opacity: 1;
+        }
+        .glow {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.15);
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .termux-accent {
+            color: #10b981;
+        }
+        .termius-accent {
+            color: #3b82f6;
+        }
+        .grid-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.15) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .code-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+        }
+        .comparison-row:nth-child(even) {
+            background: rgba(30, 41, 59, 0.4);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        .tab-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            z-index: 50;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Scroll Progress -->
+    <div class="scroll-indicator" id="scrollBar"></div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center grid-pattern overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0f]"></div>
+        
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-8 backdrop-blur-sm">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span class="text-sm text-slate-400 font-medium">终端工具完全指南</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                <span class="block text-white mb-2">Termux</span>
+                <span class="text-3xl md:text-4xl text-slate-500 font-light">vs</span>
+                <span class="block text-white mt-2">Termius</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed">
+                两款名字相似但用途截然不同的工具<br>
+                <span class="gradient-text font-semibold">一个让你在手机上运行 Linux，一个让你优雅地管理远程服务器</span>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#comparison" class="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-indigo-500/25 transition-all transform hover:scale-105">
+                    查看详细对比
+                </a>
+                <a href="#usecases" class="px-8 py-4 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 font-semibold hover:bg-slate-700 transition-all">
+                    适用场景分析
+                </a>
+            </div>
+
+            <!-- Floating Cards Preview -->
+            <div class="mt-20 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="gradient-border rounded-2xl p-6 card-hover float-animation" style="animation-delay: 0s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="text-lg font-bold text-emerald-400">Termux</h3>
+                            <p class="text-sm text-slate-500">Android 终端模拟器</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-left text-sm">在手机上搭建完整的 Linux 环境，安装 Python、Node.js、MySQL，甚至运行 Nginx 服务器。</p>
+                </div>
+
+                <div class="gradient-border rounded-2xl p-6 card-hover float-animation" style="animation-delay: 1s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 01-2 2v4a2 2 0 012 2h14a2 2 0 012-2v-4a2 2 0 01-2-2m-2-4h.01M17 16h.01"></path></svg>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="text-lg font-bold text-blue-400">Termius</h3>
+                            <p class="text-sm text-slate-500">跨平台 SSH 客户端</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-left text-sm">优雅的图形界面管理数百台服务器，支持 SFTP、多标签、命令片段，全平台配置同步。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Definition Cards -->
+    <section class="py-20 bg-slate-900/30">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Termux Card -->
+                <div class="group relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                    <div class="relative bg-slate-900 rounded-2xl p-8 border border-slate-800 h-full">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-3xl font-bold text-emerald-400">Termux</h2>
+                            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/20">Android Only</span>
+                        </div>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <div>
+                                    <p class="font-semibold text-slate-200">Android 上的 Linux 环境</p>
+                                    <p class="text-sm text-slate-500">无需 Root，提供完整的 Debian 兼容环境</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                <div>
+                                    <p class="font-semibold text-slate-200">包管理系统</p>
+                                    <p class="text-sm text-slate-500">使用 <code class="bg-slate-800 px-1 rounded text-emerald-400">pkg/apt</code> 安装 1000+ 软件包</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                                <div>
+                                    <p class="font-semibold text-slate-200">开发环境</p>
+                                    <p class="text-sm text-slate-500">Python、Node.js、C/C++、Git、Vim 等</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="code-block p-4 font-mono text-sm text-slate-300 overflow-x-auto">
+                            <div class="flex items-center gap-2 mb-2 text-xs text-slate-500 border-b border-slate-700 pb-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                <span class="ml-2">bash</span>
+                            </div>
+                            <span class="text-emerald-400">$</span> pkg install python nodejs nginx<br>
+                            <span class="text-emerald-400">$</span> python3 server.py<br>
+                            <span class="text-emerald-400">$</span> ssh user@server <span class="text-slate-500"># 作为客户端</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Termius Card -->
+                <div class="group relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                    <div class="relative bg-slate-900 rounded-2xl p-8 border border-slate-800 h-full">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-3xl font-bold text-blue-400">Termius</h2>
+                            <span class="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold border border-blue-500/20">全平台</span>
+                        </div>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <div>
+                                    <p class="font-semibold text-slate-200">专业 SSH 客户端</p>
+                                    <p class="text-sm text-slate-500">支持 SSH、Mosh、Telnet 协议</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 01-2 2v4a2 2 0 012 2h14a2 2 0 012-2v-4a2 2 0 01-2-2m-2-4h.01M17 16h.01"></path></svg>
+                                <div>
+                                    <p class="font-semibold text-slate-200">跨设备同步</p>
+                                    <p class="text-sm text-slate-500">端到端加密同步主机配置、密钥、命令片段</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                <div>
+                                    <p class="font-semibold text-slate-200">SFTP 文件传输</p>
+                                    <p class="text-sm text-slate-500">内置图形化 SFTP 客户端，拖拽上传下载</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
+                            <p class="text-sm text-blue-300 font-semibold mb-2">支持平台</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-slate-800 rounded text-xs text-slate-400">Windows</span>
+                                <span class="px-2 py-1 bg-slate-800 rounded text-xs text-slate-400">macOS</span>
+                                <span class="px-2 py-1 bg-slate-800 rounded text-xs text-slate-400">Linux</span>
+                                <span class="px-2 py-1 bg-slate-800 rounded text-xs text-slate-400">iOS</span>
+                                <span class="px-2 py-1 bg-slate-800 rounded text-xs text-slate-400">Android</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Comparison Table -->
+    <section id="comparison" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">详细功能对比</h2>
+                <p class="text-slate-400">从多个维度深入比较两款工具的差异</p>
+            </div>
+
+            <div class="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-800/50 border-b border-slate-700">
+                            <th class="p-6 font-semibold text-slate-300">对比维度</th>
+                            <th class="p-6 font-semibold text-emerald-400">Termux</th>
+                            <th class="p-6 font-semibold text-blue-400">Termius</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">本质定位</td>
+                            <td class="p-6 text-slate-400">Android 本地 Linux 环境</td>
+                            <td class="p-6 text-slate-400">跨平台远程连接客户端</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">运行平台</td>
+                            <td class="p-6 text-slate-400">仅 Android (7.0+)</td>
+                            <td class="p-6 text-slate-400">Win/Mac/Linux/iOS/Android</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">核心功能</td>
+                            <td class="p-6 text-slate-400">本地执行 Linux 命令、编程、运行服务</td>
+                            <td class="p-6 text-slate-400">SSH 远程连接、服务器管理、文件传输</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">界面类型</td>
+                            <td class="p-6 text-slate-400">纯命令行终端</td>
+                            <td class="p-6 text-slate-400">图形化 GUI + 内置终端</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">包管理</td>
+                            <td class="p-6 text-slate-400"><code class="text-emerald-400">pkg/apt</code> 安装软件</td>
+                            <td class="p-6 text-slate-400">不涉及（纯客户端）</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">编程支持</td>
+                            <td class="p-6 text-slate-400">Python/Node/C++/Go/Perl 等</td>
+                            <td class="p-6 text-slate-400">仅通过 SSH 在远程服务器执行</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">文件传输</td>
+                            <td class="p-6 text-slate-400"><code class="text-emerald-400">scp/rsync</code> 命令行</td>
+                            <td class="p-6 text-slate-400">图形化 SFTP 拖拽传输 (Pro)</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">配置同步</td>
+                            <td class="p-6 text-slate-400">手动备份/恢复</td>
+                            <td class="p-6 text-slate-400">云端自动同步 (Pro)</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">价格</td>
+                            <td class="p-6 text-slate-400">完全免费开源</td>
+                            <td class="p-6 text-slate-400">免费版基础功能，Pro $9.99/月</td>
+                        </tr>
+                        <tr class="comparison-row hover:bg-slate-800/30 transition-colors">
+                            <td class="p-6 font-medium text-slate-300">适用人群</td>
+                            <td class="p-6 text-slate-400">极客、开发者、运维学习</td>
+                            <td class="p-6 text-slate-400">运维工程师、后端开发、管理员</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section id="usecases" class="py-20 bg-slate-900/30">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">适用场景分析</h2>
+                <p class="text-slate-400">根据你的需求选择正确的工具</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Termux Use Cases -->
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-sm">T</span>
+                        选择 Termux 如果你需要...
+                    </h3>
+                    
+                    <div class="gradient-border rounded-xl p-5 card-hover bg-slate-900/50">
+                        <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                            在手机上学习 Linux
+                        </h4>
+                        <p class="text-sm text-slate-400">无需电脑，在通勤路上练习 Shell 命令、Vim 操作、文件权限管理等 Linux 基础。</p>
+                    </div>
+
+                    <div class="gradient-border rounded-xl p-5 card-hover bg-slate-900/50">
+                        <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            移动编程环境
+                        </h4>
+                        <p class="text-sm text-slate-400">安装 Python 写爬虫、Node.js 写脚本、Clang 编译 C 程序，手机变身开发机。</p>
+                    </div>
+
+                    <div class="gradient-border rounded-xl p-5 card-hover bg-slate-900/50">
+                        <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 01-2 2v4a2 2 0 012 2h14a2 2 0 012-2v-4a2 2 0 01-2-2m-2-4h.01M17 16h.01"></path></svg>
+                            搭建本地服务器
+                        </h4>
+                        <p class="text-sm text-slate-400">在旧手机上运行 Nginx、MySQL、Redis，作为测试服务器或局域网文件共享。</p>
+                    </div>
+
+                    <div class="gradient-border rounded-xl p-5 card-hover bg-slate-900/50">
+                        <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            作为 SSH 客户端连接远程
+                        </h4>
+                        <p class="text-sm text-slate-400">通过 <code class="bg-slate-800 px-1 rounded text-emerald-400">openssh</code> 包，Termux 也能作为客户端连接 VPS 服务器。</p>
+                    </div>
+                </div>
+
+                <!-- Termius Use Cases -->
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-6 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-sm">T</span>
+                        选择 Termius 如果你需要...
+                    </h3>
+                    
+                    <div class="gradient-border rounded-xl p-5 card-hover bg-slate-900/50">
+                        <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            管理多台远程服务器
+                        </h4>
+                        <p class="text-sm text-slate-400">保存数十台服务器配置，分组管理（生产/测试/开发），一键连接，无需记忆 IP 和密码。</p>
+                    </div>
+
+                    <div class="gradient-border rounded-xl p-5 card-hover bg-slate-900/50">
+                        <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                            跨设备工作流
+                        </h4>
+                        <p class="text-sm text-slate-400">电脑上添加的服务器配置，自动同步到手机和平板，随时随地处理紧急问题。</p>
+                    </div>
+
+                    <div class="gradient-border rounded-xl p-5 card-hover bg-slate-900/50">
+                        <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                            图形化文件传输
+                        </h4>
+                        <p class="text-sm text-slate-400">通过 SFTP 可视化浏览远程文件系统，拖拽上传下载，比命令行 <code class="bg-slate-800 px-1 rounded text-blue-400">scp</code> 更直观。</p>
+                    </div>
+
+                    <div class="gradient-border rounded-xl p-5 card-hover bg-slate-900/50">
+                        <h4 class="font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            保存常用命令片段
+                        </h4>
+                        <p class="text-sm text-slate-400">将频繁执行的部署命令、Docker 操作保存为 Snippets，一键发送到终端，避免重复输入。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Can they work together? -->
+    <section class="py-20">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="gradient-border rounded-3xl p-8 md:p-12 bg-gradient-to-b from-slate-900 to-slate-950 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-600/20 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl -ml-32 -mb-32"></div>
+                
+                <div class="relative z-10 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">协同工作：1 + 1 > 2</h2>
+                    <p class="text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
+                        Termux 和 Termius 并非互斥，而是可以完美互补。你可以用 Termux 在手机上搭建本地开发环境，同时用 Termius 连接远程生产服务器。
+                    </p>
+                    
+                    <div class="grid md:grid-cols-3 gap-6 text-left">
+                        <div class="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
+                            <div class="text-2xl mb-2">📱</div>
+                            <h4 class="font-semibold text-slate-200 mb-1">Termux</h4>
+                            <p class="text-sm text-slate-500">本地编写和测试代码</p>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <svg class="w-8 h-8 text-slate-600 rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
+                            <div class="text-2xl mb-2">🖥️</div>
+                            <h4 class="font-semibold text-slate-200 mb-1">Termius</h4>
+                            <p class="text-sm text-slate-500">部署到远程服务器</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-4 bg-slate-800/30 rounded-lg border border-slate-700/50">
+                        <p class="text-sm text-slate-400">
+                            <span class="text-indigo-400 font-semibold">实际案例：</span> 
+                            在 Termux 中用 Python 写好自动化脚本 → 通过 Termius 的 SFTP 上传到 VPS → 在 Termius 终端中执行部署
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary -->
+    <section class="py-20 bg-slate-900/30 border-t border-slate-800">
+        <div class="container mx-auto px-6 text-center max-w-3xl">
+            <h2 class="text-3xl font-bold mb-8">一句话总结</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                    <p class="text-emerald-400 font-mono text-lg mb-2">Termux</p>
+                    <p class="text-slate-300">"把 Linux 装在口袋里"<br><span class="text-sm text-slate-500">—— 手机即服务器</span></p>
+                </div>
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                    <p class="text-blue-400 font-mono text-lg mb-2">Termius</p>
+                    <p class="text-slate-300">"优雅地管理所有服务器"<br><span class="text-sm text-slate-500">—— 专业的远程连接中枢</span></p>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-slate-500 text-sm">
+                <p>数据来源：Termux GitHub 仓库、Termius 官方文档及 CSDN/掘金技术社区 [^1^][^4^][^5^]</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollBar').style.width = scrolled + '%';
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Add hover effect to comparison rows
+        document.querySelectorAll('.comparison-row').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.backgroundColor = 'rgba(51, 65, 85, 0.5)';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.backgroundColor = '';
+            });
+        });
+    </script>
+</body>
+</html>
