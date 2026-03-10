@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作系统全览 | Operating Systems Universe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        body {
+            background: #0a0a0f;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* 动态背景网格 */
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -2;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* 光晕效果 */
+        .glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .glow-1 { background: radial-gradient(circle, #3b82f6, transparent 70%); top: -200px; left: -200px; }
+        .glow-2 { background: radial-gradient(circle, #8b5cf6, transparent 70%); bottom: -200px; right: -200px; }
+        .glow-3 { background: radial-gradient(circle, #06b6d4, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        /* 卡片玻璃效果 */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(56, 189, 248, 0.1);
+        }
+
+        /* 分类标签 */
+        .category-badge {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* 时间线 */
+        .timeline-line {
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #06b6d4);
+        }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* 文字渐变 */
+        .text-gradient {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 数据高亮 */
+        .stat-number {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        /* 表格样式 */
+        .os-table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .os-table th {
+            background: rgba(30, 41, 59, 0.8);
+            border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+        }
+        .os-table td {
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .os-table tr:hover td {
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        /* 折叠面板 */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .accordion-content.active {
+            max-height: 1000px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .glow { display: none; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="antialiased">
+    <div class="bg-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+
+    <!-- Header -->
+    <header class="relative overflow-hidden py-20 px-4">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="inline-block mb-4 px-4 py-1 rounded-full glass-card text-sm text-cyan-400 mono">
+                System Knowledge Base
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                <span class="text-gradient">操作系统</span>
+                <span class="block text-3xl md:text-4xl mt-2 text-slate-400 font-light">全宇宙概览</span>
+            </h1>
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                从1969年UNIX诞生至今，操作系统已演变为支撑数字文明的基石。<br>
+                探索六大类别、数百种发行版、上千种历史系统的完整图谱。
+            </p>
+
+            <!-- 关键数据 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto">
+                <div class="glass-card rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold stat-number mono">50+</div>
+                    <div class="text-sm text-slate-400 mt-1">主流活跃系统</div>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold stat-number mono">600+</div>
+                    <div class="text-sm text-slate-400 mt-1">Linux发行版</div>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold stat-number mono">1000+</div>
+                    <div class="text-sm text-slate-400 mt-1">历史系统总计</div>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold stat-number mono">56年</div>
+                    <div class="text-sm text-slate-400 mt-1">发展历程</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 六大分类 -->
+    <section class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">
+                <span class="text-gradient">六大应用领域</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 桌面OS -->
+                <div class="glass-card rounded-2xl p-6 group cursor-pointer" onclick="toggleAccordion('desktop')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-2xl">
+                            🖥️
+                        </div>
+                        <span class="text-cyan-400 mono text-sm">01</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">桌面操作系统</h3>
+                    <p class="text-slate-400 text-sm mb-4">面向个人电脑，注重图形界面和用户体验</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-cyan-300">Windows</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-cyan-300">macOS</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-cyan-300">Linux</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-cyan-300">Chrome OS</span>
+                    </div>
+                    <div id="desktop" class="accordion-content mt-4 pt-4 border-t border-slate-700">
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>Windows 11/10 - 全球市场份额最高</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>macOS - 苹果生态核心</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>Ubuntu - 最流行的Linux发行版</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>Chrome OS - 轻量级云端系统</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 移动OS -->
+                <div class="glass-card rounded-2xl p-6 group cursor-pointer" onclick="toggleAccordion('mobile')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl">
+                            📱
+                        </div>
+                        <span class="text-purple-400 mono text-sm">02</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">移动操作系统</h3>
+                    <p class="text-slate-400 text-sm mb-4">面向智能手机和平板，触屏交互为主</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-purple-300">Android</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-purple-300">iOS</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-purple-300">HarmonyOS</span>
+                    </div>
+                    <div id="mobile" class="accordion-content mt-4 pt-4 border-t border-slate-700">
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>Android - 开源，全球市场份额70%+</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>iOS - 苹果封闭生态，高安全性</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>HarmonyOS - 华为分布式系统</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 服务器OS -->
+                <div class="glass-card rounded-2xl p-6 group cursor-pointer" onclick="toggleAccordion('server')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-2xl">
+                            🖧
+                        </div>
+                        <span class="text-emerald-400 mono text-sm">03</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">服务器操作系统</h3>
+                    <p class="text-slate-400 text-sm mb-4">高稳定性、高并发处理能力的企业级系统</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-emerald-300">Windows Server</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-emerald-300">RHEL</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-emerald-300">Unix</span>
+                    </div>
+                    <div id="server" class="accordion-content mt-4 pt-4 border-t border-slate-700">
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>Windows Server - 企业级微软服务</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>RHEL/CentOS - 企业Linux标准</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>Unix - AIX/HP-UX/Solaris</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 嵌入式OS -->
+                <div class="glass-card rounded-2xl p-6 group cursor-pointer" onclick="toggleAccordion('embedded')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-2xl">
+                            🔧
+                        </div>
+                        <span class="text-orange-400 mono text-sm">04</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">嵌入式操作系统</h3>
+                    <p class="text-slate-400 text-sm mb-4">用于工控、医疗设备、智能家居等专用设备</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-orange-300">VxWorks</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-orange-300">FreeRTOS</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-orange-300">Embedded Linux</span>
+                    </div>
+                    <div id="embedded" class="accordion-content mt-4 pt-4 border-t border-slate-700">
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span>VxWorks - 航空航天级可靠性</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span>FreeRTOS - 轻量级开源RTOS</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span>嵌入式Linux - 定制化程度高</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 实时OS -->
+                <div class="glass-card rounded-2xl p-6 group cursor-pointer" onclick="toggleAccordion('rtos')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center text-2xl">
+                            ⏱️
+                        </div>
+                        <span class="text-red-400 mono text-sm">05</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">实时操作系统 (RTOS)</h3>
+                    <p class="text-slate-400 text-sm mb-4">强调严格时间响应，用于关键任务场景</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-red-300">RT-Linux</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-red-300">QNX</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-red-300">μC/OS</span>
+                    </div>
+                    <div id="rtos" class="accordion-content mt-4 pt-4 border-t border-slate-700">
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-red-400 rounded-full"></span>RT-Linux - 硬实时Linux扩展</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-red-400 rounded-full"></span>QNX - 黑莓旗下，汽车电子首选</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-red-400 rounded-full"></span>μC/OS - 微控制器专用</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 云/IoT OS -->
+                <div class="glass-card rounded-2xl p-6 group cursor-pointer" onclick="toggleAccordion('cloud')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-2xl">
+                            ☁️
+                        </div>
+                        <span class="text-cyan-400 mono text-sm">06</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">云/物联网操作系统</h3>
+                    <p class="text-slate-400 text-sm mb-4">面向万物互联场景的下一代系统</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-cyan-300">Fuchsia</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-cyan-300">HarmonyOS</span>
+                        <span class="category-badge px-3 py-1 rounded-full text-xs text-cyan-300">LiteOS</span>
+                    </div>
+                    <div id="cloud" class="accordion-content mt-4 pt-4 border-t border-slate-700">
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>Fuchsia - Google微内核实验系统</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>HarmonyOS - 全场景分布式架构</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>LiteOS - 华为轻量级IoT系统</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术架构分类 -->
+    <section class="py-16 px-4 bg-slate-900/30">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">
+                <span class="text-gradient">技术架构谱系</span>
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- UNIX系 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-blue-500">
+                    <h3 class="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded bg-blue-500/20 flex items-center justify-center text-sm">UNIX</span>
+                        UNIX系家族
+                    </h3>
+                    <p class="text-slate-400 text-sm mb-4">1969年贝尔实验室诞生，现代操作系统的鼻祖</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">macOS / iOS</span>
+                            <span class="text-xs text-slate-500">Darwin内核</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">Android</span>
+                            <span class="text-xs text-slate-500">Linux内核</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">Linux发行版</span>
+                            <span class="text-xs text-slate-500">600+种</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">AIX / HP-UX / Solaris</span>
+                            <span class="text-xs text-slate-500">商业Unix</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Windows系 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-purple-500">
+                    <h3 class="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded bg-purple-500/20 flex items-center justify-center text-sm">WIN</span>
+                        Windows系家族
+                    </h3>
+                    <p class="text-slate-400 text-sm mb-4">1985年微软发布，桌面市场的霸主</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">Windows 11/10</span>
+                            <span class="text-xs text-slate-500">NT内核</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">Windows Server</span>
+                            <span class="text-xs text-slate-500">企业级</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">Windows CE</span>
+                            <span class="text-xs text-slate-500">嵌入式</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">MS-DOS</span>
+                            <span class="text-xs text-slate-500">历史遗产</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 独立架构 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-cyan-500">
+                    <h3 class="text-xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded bg-cyan-500/20 flex items-center justify-center text-sm">OTH</span>
+                        独立/其他架构
+                    </h3>
+                    <p class="text-slate-400 text-sm mb-4">非Unix/Windows血统的独特设计</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">BeOS / Haiku</span>
+                            <span class="text-xs text-slate-500">多媒体优化</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">Zephyr</span>
+                            <span class="text-xs text-slate-500">IoT实时</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">Fuchsia</span>
+                            <span class="text-xs text-slate-500">微内核实验</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-700/50">
+                            <span class="text-slate-300">各类RTOS</span>
+                            <span class="text-xs text-slate-500">专用领域</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Linux发行版详情 -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4">
+                <span class="text-gradient">Linux发行版生态</span>
+            </h2>
+            <p class="text-center text-slate-400 mb-12">开源世界的百花齐放，600+种发行版满足不同需求</p>
+
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="os-table w-full text-left">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-4 text-cyan-400 font-semibold">发行版</th>
+                                <th class="px-6 py-4 text-cyan-400 font-semibold">定位</th>
+                                <th class="px-6 py-4 text-cyan-400 font-semibold">特点</th>
+                                <th class="px-6 py-4 text-cyan-400 font-semibold">适用场景</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-white">Ubuntu</td>
+                                <td class="px-6 py-4 text-slate-300">新手友好</td>
+                                <td class="px-6 py-4 text-slate-400">社区庞大，文档丰富，LTS支持5年</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-blue-500/10 text-blue-400 text-xs">桌面/服务器</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-white">Debian</td>
+                                <td class="px-6 py-4 text-slate-300">稳定之王</td>
+                                <td class="px-6 py-4 text-slate-400">严格的自由软件政策，稳定性极高</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-purple-500/10 text-purple-400 text-xs">服务器</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-white">Fedora</td>
+                                <td class="px-6 py-4 text-slate-300">创新前沿</td>
+                                <td class="px-6 py-4 text-slate-400">Red Hat试验田，新技术首发</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-orange-500/10 text-orange-400 text-xs">开发者</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-white">Arch Linux</td>
+                                <td class="px-6 py-4 text-slate-300">极客首选</td>
+                                <td class="px-6 py-4 text-slate-400">滚动更新，高度可定制，AUR软件丰富</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-cyan-500/10 text-cyan-400 text-xs">高级用户</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-white">CentOS/RHEL</td>
+                                <td class="px-6 py-4 text-slate-300">企业标准</td>
+                                <td class="px-6 py-4 text-slate-400">企业级支持，长期维护，兼容性好</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs">企业服务器</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-white">openSUSE</td>
+                                <td class="px-6 py-4 text-slate-300">全能系统</td>
+                                <td class="px-6 py-4 text-slate-400">YaST配置工具，Leap/Tumbleweed双版本</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-pink-500/10 text-pink-400 text-xs">通用</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-white">麒麟/Deepin</td>
+                                <td class="px-6 py-4 text-slate-300">国产代表</td>
+                                <td class="px-6 py-4 text-slate-400">中文优化，美观易用，本土化支持</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-red-500/10 text-red-400 text-xs">国内用户</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 历史时间线 -->
+    <section class="py-16 px-4 bg-slate-900/30">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">
+                <span class="text-gradient">操作系统演进史</span>
+            </h2>
+
+            <div class="relative">
+                <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 timeline-line transform md:-translate-x-1/2"></div>
+
+                <div class="space-y-12">
+                    <!-- 1969 -->
+                    <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 z-10"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
+                            <div class="glass-card rounded-xl p-4 inline-block text-left">
+                                <div class="text-blue-400 font-bold mono">1969</div>
+                                <h4 class="text-white font-semibold">UNIX诞生</h4>
+                                <p class="text-slate-400 text-sm mt-1">贝尔实验室的Ken Thompson和Dennis Ritchie开发，奠定现代OS基础</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1981 -->
+                    <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-purple-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 z-10"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pl-8 md:ml-auto">
+                            <div class="glass-card rounded-xl p-4 inline-block">
+                                <div class="text-purple-400 font-bold mono">1981</div>
+                                <h4 class="text-white font-semibold">MS-DOS发布</h4>
+                                <p class="text-slate-400 text-sm mt-1">微软为IBM PC开发，开启个人电脑时代</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1984 -->
+                    <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-cyan-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 z-10"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
+                            <div class="glass-card rounded-xl p-4 inline-block text-left">
+                                <div class="text-cyan-400 font-bold mono">1984</div>
+                                <h4 class="text-white font-semibold">Mac OS</h4>
+                                <p class="text-slate-400 text-sm mt-1">苹果推出图形界面操作系统，开创GUI先河</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1991 -->
+                    <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-emerald-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 z-10"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pl-8 md:ml-auto">
+                            <div class="glass-card rounded-xl p-4 inline-block">
+                                <div class="text-emerald-400 font-bold mono">1991</div>
+                                <h4 class="text-white font-semibold">Linux内核发布</h4>
+                                <p class="text-slate-400 text-sm mt-1">Linus Torvalds发布开源内核，开源运动里程碑</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2007 -->
+                    <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-orange-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 z-10"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
+                            <div class="glass-card rounded-xl p-4 inline-block text-left">
+                                <div class="text-orange-400 font-bold mono">2007</div>
+                                <h4 class="text-white font-semibold">iPhone / Android</h4>
+                                <p class="text-slate-400 text-sm mt-1">移动操作系统时代开启，触屏交互成为主流</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2019 -->
+                    <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-pink-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 z-10"></div>
+                        <div class="ml-12 md:ml-0 md:w-1/2 md:pl-8 md:ml-auto">
+                            <div class="glass-card rounded-xl p-4 inline-block">
+                                <div class="text-pink-400 font-bold mono">2019</div>
+                                <h4 class="text-white font-semibold">HarmonyOS</h4>
+                                <p class="text-slate-400 text-sm mt-1">华为发布分布式OS，万物互联时代来临</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 总结趋势 -->
+    <section class="py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-8">
+                <span class="text-gradient">未来趋势</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">🌐</div>
+                        <h3 class="text-lg font-semibold text-white">统一平台化</h3>
+                    </div>
+                    <p class="text-slate-400 text-sm">HarmonyOS、Fuchsia等系统试图打通手机、PC、IoT设备边界，实现无缝协同。</p>
+                </div>
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400">🎯</div>
+                        <h3 class="text-lg font-semibold text-white">垂直专业化</h3>
+                    </div>
+                    <p class="text-slate-400 text-sm">工业机器人、自动驾驶、医疗设备等领域出现高度定制的专用操作系统。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto text-center text-slate-500 text-sm">
+            <p class="mono">Operating Systems Universe · 数据截至2025年</p>
+            <p class="mt-2 text-xs">从UNIX到万物互联 · 56年技术演进</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleAccordion(id) {
+            const element = document.getElementById(id);
+            const isActive = element.classList.contains('active');
+
+            // 关闭所有
+            document.querySelectorAll('.accordion-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // 切换当前
+            if (!isActive) {
+                element.classList.add('active');
+            }
+        }
+
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
