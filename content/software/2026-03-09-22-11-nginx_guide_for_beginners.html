@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0基础小白Nginx入门指南 - 轻松搭建Web服务器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00a86b;
+            --primary-dark: #008f5b;
+            --secondary: #2c5aa0;
+            --accent: #ff6b6b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --code-bg: #1e293b;
+            --nginx: #00a86b;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--nginx), #006b44);
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, var(--nginx), #006b44);
+            color: white;
+            margin-bottom: 40px;
+            border-radius: 12px;
+        }
+
+        .header .logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 40px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .toc {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .toc-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--nginx);
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin: 8px 0;
+        }
+
+        .toc-link {
+            color: var(--text-light);
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .toc-link:hover,
+        .toc-link.active {
+            background: var(--nginx);
+            color: white;
+        }
+
+        .content {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--nginx);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--border);
+        }
+
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin: 30px 0 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .tip-box {
+            background: #d1fae5;
+            border-left: 4px solid var(--nginx);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .tip-box.warning {
+            background: #fef3c7;
+            border-left-color: var(--warning);
+        }
+
+        .tip-box.info {
+            background: #dbeafe;
+            border-left-color: var(--secondary);
+        }
+
+        .tip-box.error {
+            background: #fee2e2;
+            border-left-color: var(--error);
+        }
+
+        .tip-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .code-header {
+            background: #334155;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .code-lang {
+            color: #94a3b8;
+        }
+
+        .copy-btn {
+            background: var(--nginx);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        pre {
+            padding: 20px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        .inline-code {
+            background: #f1f5f9;
+            color: var(--nginx);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .steps {
+            counter-reset: step;
+        }
+
+        .step-card {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+            padding-left: 80px;
+        }
+
+        .step-card::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            background: var(--nginx);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--nginx);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: var(--nginx);
+            color: white;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .exercise {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px solid var(--success);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .exercise-title {
+            color: var(--success);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--nginx);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 168, 107, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #fef08a 0%, #fef08a 100%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .file-tree {
+            background: #1e1e1e;
+            color: #4ade80;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+
+        .folder { color: #fbbf24; }
+        .file { color: #60a5fa; }
+
+        .command-output {
+            background: #1e1e1e;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 15px 0;
+        }
+
+        .command-line {
+            color: #4ade80;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--nginx), #00d68f);
+            z-index: 1001;
+            transition: width 0.3s;
+        }
+
+        .os-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .os-tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-light);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .os-tab:hover,
+        .os-tab.active {
+            color: var(--nginx);
+            border-bottom-color: var(--nginx);
+        }
+
+        .os-content {
+            display: none;
+        }
+
+        .os-content.active {
+            display: block;
+        }
+
+        @media (max-width: 968px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M503.51 61.53a16.98 16.98 0 0 1 16.98 0l379.05 217.86a17.15 17.15 0 0 1 8.58 14.8v435.63a17.07 17.07 0 0 1-8.58 14.76l-379.05 217.9a16.98 16.98 0 0 1-16.98 0l-379.05-217.9a17.07 17.07 0 0 1-8.58-14.76V294.19c0-6.1 3.29-11.73 8.58-14.81l379.05-217.85zM382.98 434.35l235.99 282.67s27.73 24.36 67.29 21.93c47.79-2.99 52.57-43.05 52.57-43.05l0.04-370.94-0.04-0.34a53.63 53.63 0 0 0-105-0.21l-0.13 0.55 0.21 260.57-242.26-285.35s-19.37-21.85-64.68-16.9c-44.54 4.91-49.32 43.05-49.32 43.05l0.43 368 0.08 0.55a53.08 53.08 0 0 0 104.92-0.55z" fill="#43A047"/></svg>
+        </div>
+        <h1>Nginx 零基础入门指南</h1>
+        <p>高性能 Web 服务器与反向代理，轻松搭建你的网站服务</p>
+    </header>
+
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo"><svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="width:30px;height:30px;vertical-align:middle;margin-right:8px;"><path d="M503.51 61.53a16.98 16.98 0 0 1 16.98 0l379.05 217.86a17.15 17.15 0 0 1 8.58 14.8v435.63a17.07 17.07 0 0 1-8.58 14.76l-379.05 217.9a16.98 16.98 0 0 1-16.98 0l-379.05-217.9a17.07 17.07 0 0 1-8.58-14.76V294.19c0-6.1 3.29-11.73 8.58-14.81l379.05-217.85zM382.98 434.35l235.99 282.67s27.73 24.36 67.29 21.93c47.79-2.99 52.57-43.05 52.57-43.05l0.04-370.94-0.04-0.34a53.63 53.63 0 0 0-105-0.21l-0.13 0.55 0.21 260.57-242.26-285.35s-19.37-21.85-64.68-16.9c-44.54 4.91-49.32 43.05-49.32 43.05l0.43 368 0.08 0.55a53.08 53.08 0 0 0 104.92-0.55z" fill="#43A047"/></svg> Nginx</div>
+            <ul class="nav-links">
+                <li><a href="#intro">什么是Nginx</a></li>
+                <li><a href="#install">安装</a></li>
+                <li><a href="#config">配置</a></li>
+                <li><a href="#deploy">部署</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="toc">
+                <div class="toc-title">📚 学习目录</div>
+                <ul class="toc-list">
+                    <li class="toc-item"><a href="#intro" class="toc-link">1. Nginx是什么？</a></li>
+                    <li class="toc-item"><a href="#install" class="toc-link">2. 安装Nginx</a></li>
+                    <li class="toc-item"><a href="#commands" class="toc-link">3. 常用命令</a></li>
+                    <li class="toc-item"><a href="#config" class="toc-link">4. 配置文件详解</a></li>
+                    <li class="toc-item"><a href="#static" class="toc-link">5. 部署静态网站</a></li>
+                    <li class="toc-item"><a href="#proxy" class="toc-link">6. 反向代理</a></li>
+                    <li class="toc-item"><a href="#domain" class="toc-link">7. 配置多域名</a></li>
+                    <li class="toc-item"><a href="#https" class="toc-link">8. HTTPS配置</a></li>
+                    <li class="toc-item"><a href="#optimization" class="toc-link">9. 性能优化</a></li>
+                    <li class="toc-item"><a href="#troubleshoot" class="toc-link">10. 常见问题</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="content">
+            <!-- 第1章：介绍 -->
+            <section class="section" id="intro">
+                <h1 class="section-title">👋 Nginx是什么？</h1>
+                
+                <div class="tip-box">
+                    <div class="tip-title">🎯 一句话理解</div>
+                    <p>Nginx 是一个高性能的 <span class="highlight">Web服务器</span> 和 <span class="highlight">反向代理服务器</span>。简单来说，它是网站的"门卫"和"交通指挥员"。</p>
+                </div>
+
+                <h2 class="section-subtitle">生活化比喻</h2>
+                <p>想象一个大型商场：</p>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li>🏢 <strong>Nginx</strong> = 商场的总服务台 + 安保系统</li>
+                    <li>👥 <strong>用户</strong> = 来商场的顾客</li>
+                    <li>🏪 <strong>后端服务器</strong> = 商场里的各个店铺</li>
+                </ul>
+
+                <p>Nginx 的工作：</p>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li>📍 <strong>指路</strong>：告诉顾客（用户）去哪里找店铺（网站）</li>
+                    <li>🛡️ <strong>安保</strong>：拦截可疑人员（恶意请求）</li>
+                    <li>⚡ <strong>分流</strong>：高峰期引导顾客去人少的店铺（负载均衡）</li>
+                    <li>💾 <strong>缓存</strong>：记住常问的问题，直接回答（缓存静态资源）</li>
+                </ul>
+
+                <h2 class="section-subtitle">Nginx能做什么？</h2>
+                <table class="data-table">
+                    <tr>
+                        <th>功能</th>
+                        <th>说明</th>
+                        <th>使用场景</th>
+                    </tr>
+                    <tr>
+                        <td>🌐 静态资源服务</td>
+                        <td>直接提供HTML、CSS、JS、图片等文件</td>
+                        <td>部署个人博客、企业官网</td>
+                    </tr>
+                    <tr>
+                        <td>🔄 反向代理</td>
+                        <td>接收用户请求，转发给后端服务器</td>
+                        <td>保护后端服务，统一入口</td>
+                    </tr>
+                    <tr>
+                        <td>⚖️ 负载均衡</td>
+                        <td>将请求分配到多台服务器</td>
+                        <td>高并发网站，如电商、社交平台</td>
+                    </tr>
+                    <tr>
+                        <td>🔒 HTTPS</td>
+                        <td>SSL证书配置，加密传输</td>
+                        <td>任何需要安全传输的网站</td>
+                    </tr>
+                    <tr>
+                        <td>📦 缓存</td>
+                        <td>缓存静态内容，加速访问</td>
+                        <td>减轻后端压力，提升速度</td>
+                    </tr>
+                </table>
+
+                <div class="tip-box info">
+                    <div class="tip-title">💡 为什么选择Nginx？</div>
+                    <p>1. <strong>速度快</strong>：能同时处理数万个连接（并发能力强）<br>
+                       2. <strong>省资源</strong>：占用内存少，一台普通电脑就能跑<br>
+                       3. <strong>稳定</strong>：很多大公司（百度、淘宝、腾讯）都在用<br>
+                       4. <strong>免费</strong>：开源软件，完全免费</p>
+                </div>
+            </section>
+
+            <!-- 第2章：安装 -->
+            <section class="section" id="install">
+                <h1 class="section-title">🛠️ 安装Nginx</h1>
+                
+                <p>根据你的操作系统选择对应的安装方法：</p>
+
+                <div class="os-tabs">
+                    <button class="os-tab active" onclick="switchOS('windows')">Windows</button>
+                    <button class="os-tab" onclick="switchOS('linux')">Linux (Ubuntu/CentOS)</button>
+                    <button class="os-tab" onclick="switchOS('mac')">Mac</button>
+                </div>
+
+                <!-- Windows -->
+                <div id="windows" class="os-content active">
+                    <h2 class="section-subtitle">Windows安装步骤</h2>
+                    
+                    <div class="steps">
+                        <div class="step-card">
+                            <div class="step-title">下载Nginx</div>
+                            <p>访问官网下载页面：<a href="http://nginx.org/en/download.html" target="_blank">nginx.org</a></p>
+                            <p>下载 Stable version（稳定版）的 Windows 版本，如 <span class="inline-code">nginx-1.24.0.zip</span></p>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-title">解压文件</div>
+                            <p>将下载的zip文件解压到任意目录，建议放在 <span class="inline-code">C:\nginx</span></p>
+                            <p>⚠️ <strong>注意</strong>：路径不要有中文或空格！</p>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-title">启动Nginx</div>
+                            <p>打开命令提示符（CMD），进入nginx目录：</p>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-lang">CMD</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                                </div>
+                                <pre><code>cd C:\nginx
+start nginx</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-title">验证安装</div>
+                            <p>打开浏览器，访问 <span class="inline-code">http://localhost</span></p>
+                            <p>如果看到 "Welcome to nginx!" 页面，说明安装成功！🎉</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box warning">
+                        <div class="tip-title">⚠️ Windows常见问题</div>
+                        <p>如果启动失败，可能是端口80被占用。检查方法：</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">CMD</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code>netstat -ano | findstr :80</code></pre>
+                        </div>
+                        <p>如果被占用，需要修改配置文件（后面会讲）。</p>
+                    </div>
+                </div>
+
+                <!-- Linux -->
+                <div id="linux" class="os-content">
+                    <h2 class="section-subtitle">Linux安装（Ubuntu/Debian）</h2>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">Terminal</span>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
+                        <pre><code># 更新软件包列表
+sudo apt update
+
+# 安装Nginx
+sudo apt install nginx
+
+# 启动Nginx
+sudo systemctl start nginx
+
+# 设置开机自启
+sudo systemctl enable nginx
+
+# 检查状态
+sudo systemctl status nginx</code></pre>
+                    </div>
+
+                    <h2 class="section-subtitle">CentOS/RHEL安装</h2>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">Terminal</span>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
+                        <pre><code># 安装EPEL源
+sudo yum install epel-release
+
+# 安装Nginx
+sudo yum install nginx
+
+# 启动Nginx
+sudo systemctl start nginx
+
+# 设置开机自启
+sudo systemctl enable nginx</code></pre>
+                    </div>
+
+                    <div class="tip-box success">
+                        <div class="tip-title">✅ 验证安装</div>
+                        <p>浏览器访问服务器IP地址，如 <span class="inline-code">http://192.168.1.100</span></p>
+                        <p>看到 "Welcome to nginx!" 即表示成功。</p>
+                    </div>
+                </div>
+
+                <!-- Mac -->
+                <div id="mac" class="os-content">
+                    <h2 class="section-subtitle">Mac安装（使用Homebrew）</h2>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">Terminal</span>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
+                        <pre><code># 安装Homebrew（如果还没有）
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 安装Nginx
+brew install nginx
+
+# 启动Nginx
+brew services start nginx
+
+# 或者手动启动
+nginx</code></pre>
+                    </div>
+
+                    <div class="tip-box info">
+                        <div class="tip-title">📁 Mac文件位置</div>
+                        <p>配置文件：<span class="inline-code">/opt/homebrew/etc/nginx/nginx.conf</span> (Apple Silicon)</p>
+                        <p>或 <span class="inline-code">/usr/local/etc/nginx/nginx.conf</span> (Intel)</p>
+                        <p>网站文件：<span class="inline-code">/opt/homebrew/var/www</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第3章：常用命令 -->
+            <section class="section" id="commands">
+                <h1 class="section-title">⌨️ Nginx常用命令</h1>
+                
+                <h2 class="section-subtitle">Windows命令</h2>
+                <table class="data-table">
+                    <tr>
+                        <th>命令</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">start nginx</span></td>
+                        <td>启动Nginx</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">nginx -s stop</span></td>
+                        <td>快速停止（强制）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">nginx -s quit</span></td>
+                        <td>优雅停止（处理完当前请求）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">nginx -s reload</span></td>
+                        <td>重新加载配置（常用！）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">nginx -t</span></td>
+                        <td>测试配置文件是否正确</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">nginx -v</span></td>
+                        <td>查看版本</td>
+                    </tr>
+                </table>
+
+                <h2 class="section-subtitle">Linux/Mac命令</h2>
+                <table class="data-table">
+                    <tr>
+                        <th>命令</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">sudo systemctl start nginx</span></td>
+                        <td>启动Nginx</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">sudo systemctl stop nginx</span></td>
+                        <td>停止Nginx</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">sudo systemctl restart nginx</span></td>
+                        <td>重启Nginx</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">sudo systemctl reload nginx</span></td>
+                        <td>重新加载配置</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">sudo nginx -t</span></td>
+                        <td>测试配置</td>
+                    </tr>
+                </table>
+
+                <div class="tip-box warning">
+                    <div class="tip-title">⚠️ 重要提醒</div>
+                    <p>修改配置文件后，一定要执行 <span class="inline-code">nginx -t</span> 测试配置是否正确，然后再 reload！</p>
+                    <p>错误的配置会导致Nginx无法启动。</p>
+                </div>
+            </section>
+
+            <!-- 第4章：配置文件 -->
+            <section class="section" id="config">
+                <h1 class="section-title">⚙️ 配置文件详解</h1>
+                
+                <h2 class="section-subtitle">配置文件位置</h2>
+                <table class="data-table">
+                    <tr>
+                        <th>系统</th>
+                        <th>主配置文件路径</th>
+                        <th>默认网站目录</th>
+                    </tr>
+                    <tr>
+                        <td>Windows</td>
+                        <td><span class="inline-code">C:\nginx\conf\nginx.conf</span></td>
+                        <td><span class="inline-code">C:\nginx\html</span></td>
+                    </tr>
+                    <tr>
+                        <td>Linux</td>
+                        <td><span class="inline-code">/etc/nginx/nginx.conf</span></td>
+                        <td><span class="inline-code">/var/www/html</span></td>
+                    </tr>
+                    <tr>
+                        <td>Mac</td>
+                        <td><span class="inline-code">/opt/homebrew/etc/nginx/nginx.conf</span></td>
+                        <td><span class="inline-code">/opt/homebrew/var/www</span></td>
+                    </tr>
+                </table>
+
+                <h2 class="section-subtitle">最小可用配置</h2>
+                <p>下面是一个最简化的Nginx配置，小白可以直接复制使用：</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">nginx.conf</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code># 工作进程数，通常等于CPU核心数
+worker_processes 1;
+
+# 错误日志位置
+error_log logs/error.log;
+
+# 主进程PID文件
+pid logs/nginx.pid;
+
+events {
+    # 每个工作进程的最大连接数
+    worker_connections 1024;
+}
+
+http {
+    # 包含mime类型文件
+    include mime.types;
+    
+    # 默认类型
+    default_type application/octet-stream;
+    
+    # 日志格式
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+    
+    # 访问日志
+    access_log logs/access.log main;
+    
+    # 开启高效传输模式
+    sendfile on;
+    
+    # 长连接超时时间
+    keepalive_timeout 65;
+    
+    # 服务器配置
+    server {
+        # 监听80端口
+        listen 80;
+        
+        # 服务器名称（域名）
+        server_name localhost;
+        
+        # 网站根目录
+        root html;
+        
+        # 默认首页文件
+        index index.html index.htm;
+        
+        #  location块：处理所有请求
+        location / {
+            # 尝试按顺序查找文件，找不到返回index.html
+            try_files $uri $uri/ /index.html;
+        }
+        
+        # 错误页面
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+            root html;
+        }
+    }
+}</code></pre>
+                </div>
+
+                <h2 class="section-subtitle">配置指令解释</h2>
+                <table class="data-table">
+                    <tr>
+                        <th>指令</th>
+                        <th>说明</th>
+                        <th>示例</th>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">listen</span></td>
+                        <td>监听的端口</td>
+                        <td>listen 80; listen 8080;</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">server_name</span></td>
+                        <td>服务器域名</td>
+                        <td>server_name example.com;</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">root</span></td>
+                        <td>网站文件根目录</td>
+                        <td>root /var/www/html;</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">index</span></td>
+                        <td>默认首页</td>
+                        <td>index index.html index.php;</td>
+                    </tr>
+                    <tr>
+                        <td><span class="inline-code">location</span></td>
+                        <td>匹配URL路径</td>
+                        <td>location /images/ { ... }</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- 第5章：部署静态网站 -->
+            <section class="section" id="static">
+                <h1 class="section-title">🌐 部署静态网站</h1>
+                
+                <p>静态网站是指由HTML、CSS、JavaScript、图片等固定文件组成的网站，不需要后端程序处理。</p>
+
+                <h2 class="section-subtitle">实战：部署个人主页</h2>
+                
+                <div class="steps">
+                    <div class="step-card">
+                        <div class="step-title">准备网站文件</div>
+                        <p>创建一个简单的HTML文件作为示例：</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">index.html</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;我的个人主页&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        h1 { text-align: center; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;欢迎来到我的网站！&lt;/h1&gt;
+    &lt;p&gt;这是由Nginx提供服务的静态网站。&lt;/p&gt;
+    &lt;p&gt;部署时间：&lt;span id="time"&gt;&lt;/span&gt;&lt;/p&gt;
+    &lt;script&gt;
+        document.getElementById('time').innerText = new Date().toLocaleString();
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">放置文件</div>
+                        <p>将 <span class="inline-code">index.html</span> 放到Nginx的html目录：</p>
+                        <ul style="margin: 10px 0 10px 30px;">
+                            <li>Windows: <span class="inline-code">C:\nginx\html\index.html</span></li>
+                            <li>Linux: <span class="inline-code">/var/www/html/index.html</span></li>
+                            <li>Mac: <span class="inline-code">/opt/homebrew/var/www/index.html</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">访问网站</div>
+                        <p>浏览器访问 <span class="inline-code">http://localhost</span> 或服务器的IP地址</p>
+                        <p>你应该能看到刚才创建的彩色页面！</p>
+                    </div>
+                </div>
+
+                <h2 class="section-subtitle">修改网站目录</h2>
+                <p>如果你想把网站放在其他位置（比如D盘的website文件夹），需要修改配置：</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">nginx.conf</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>server {
+    listen 80;
+    server_name localhost;
+    
+    # Windows示例
+    root D:/website;
+    
+    # Linux/Mac示例
+    # root /home/user/website;
+    
+    index index.html;
+    
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}</code></pre>
+                </div>
+
+                <div class="tip-box warning">
+                    <div class="tip-title">⚠️ Windows路径注意</div>
+                    <p>Windows路径既可以用斜杠 <span class="inline-code">D:/website</span> 也可以用反斜杠 <span class="inline-code">D:\\website</span></p>
+                    <p>但用斜杠更符合Nginx的习惯，也更不容易出错。</p>
+                </div>
+            </section>
+
+            <!-- 第6章：反向代理 -->
+            <section class="section" id="proxy">
+                <h1 class="section-title">🔄 反向代理配置</h1>
+                
+                <div class="tip-box info">
+                    <div class="tip-title">💡 什么是反向代理？</div>
+                    <p>反向代理就是：用户只访问Nginx，Nginx再把请求转发给真正的后端服务器（如Node.js、Python、Java程序）。</p>
+                    <p>好处：隐藏后端服务器、统一入口、负载均衡、SSL加密。</p>
+                </div>
+
+                <h2 class="section-subtitle">场景1：代理到本地后端服务</h2>
+                <p>假设你有一个Node.js服务运行在 <span class="inline-code">http://localhost:3000</span></p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">nginx.conf</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>server {
+    listen 80;
+    server_name localhost;
+    
+    # 所有请求都代理到后端
+    location / {
+        proxy_pass http://localhost:3000;
+        
+        # 设置请求头（让后端知道真实IP和协议）
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # 超时设置
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+}</code></pre>
+                </div>
+
+                <h2 class="section-subtitle">场景2：API和静态资源分离</h2>
+                <p>静态文件由Nginx直接提供，API请求转发给后端：</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">nginx.conf</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>server {
+    listen 80;
+    server_name localhost;
+    
+    # 静态文件（前端）
+    location / {
+        root /var/www/frontend;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+    
+    # API请求（转发给后端）
+    location /api/ {
+        proxy_pass http://localhost:8080/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    
+    # 图片等静态资源（Nginx直接处理，更快）
+    location /images/ {
+        root /var/www/static;
+        expires 30d;  # 缓存30天
+    }
+}</code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">💡 location匹配规则</div>
+                    <p><span class="inline-code">=</span> 精确匹配，如 <span class="inline-code">location = /exact</span></p>
+                    <p><span class="inline-code">^~</span> 前缀匹配，不匹配正则</p>
+                    <p><span class="inline-code">~</span> 正则匹配（区分大小写）</p>
+                    <p><span class="inline-code">~*</span> 正则匹配（不区分大小写）</p>
+                </div>
+            </section>
+
+            <!-- 第7章：多域名配置 -->
+            <section class="section" id="domain">
+                <h1 class="section-title">🌐 配置多域名（虚拟主机）</h1>
+                
+                <p>一台服务器可以托管多个网站，每个网站使用不同的域名。</p>
+
+                <h2 class="section-subtitle">配置多个server块</h2>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">nginx.conf</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>http {
+    # 第一个网站：个人博客
+    server {
+        listen 80;
+        server_name blog.example.com;
+        
+        root /var/www/blog;
+        index index.html;
+        
+        location / {
+            try_files $uri $uri/ =404;
+        }
+    }
+    
+    # 第二个网站：公司官网
+    server {
+        listen 80;
+        server_name www.example.com;
+        
+        root /var/www/company;
+        index index.html index.htm;
+        
+        location / {
+            try_files $uri $uri/ =404;
+        }
+    }
+    
+    # 第三个网站：API服务
+    server {
+        listen 80;
+        server_name api.example.com;
+        
+        location / {
+            proxy_pass http://localhost:3000;
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="tip-box info">
+                    <div class="tip-title">📁 更好的组织方式</div>
+                    <p>把每个网站的配置放在单独的文件里，更易于管理：</p>
+                    <div class="file-tree">
+<span class="folder">/etc/nginx/</span>
+├── nginx.conf          <span class="file"># 主配置</span>
+├── <span class="folder">conf.d/</span>               <span class="file"># 存放各个网站的配置</span>
+│   ├── blog.conf       <span class="file"># 博客配置</span>
+│   ├── company.conf    <span class="file"># 公司官网配置</span>
+│   └── api.conf        <span class="file"># API配置</span>
+└── <span class="folder">sites-enabled/</span>        <span class="file"># 启用的网站（软链接）</span>
+                    </div>
+                    <p>在 nginx.conf 的 http 块中加入：</p>
+                    <p><span class="inline-code">include /etc/nginx/conf.d/*.conf;</span></p>
+                </div>
+            </section>
+
+            <!-- 第8章：HTTPS -->
+            <section class="section" id="https">
+                <h1 class="section-title">🔒 HTTPS配置（SSL证书）</h1>
+                
+                <p>HTTPS能让网站数据传输加密，防止被窃听。现在主流浏览器都会标记HTTP网站为"不安全"。</p>
+
+                <h2 class="section-subtitle">使用Let's Encrypt免费证书</h2>
+                
+                <div class="steps">
+                    <div class="step-card">
+                        <div class="step-title">安装Certbot</div>
+                        <p>Certbot是Let's Encrypt的官方客户端，可以自动申请和续期证书。</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">Ubuntu/Debian</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code># 安装Certbot和Nginx插件
+sudo apt install certbot python3-certbot-nginx</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">申请证书</div>
+                        <p>执行以下命令，按照提示操作：</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">Terminal</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code># 自动配置Nginx并申请证书
+sudo certbot --nginx -d example.com -d www.example.com
+
+# 按照提示输入邮箱、同意协议</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">自动续期</div>
+                        <p>Let's Encrypt证书有效期90天，但Certbot会自动续期。</p>
+                        <p>测试自动续期是否正常：</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">Terminal</span>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                            <pre><code>sudo certbot renew --dry-run</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="section-subtitle">手动配置SSL（已有证书）</h2>
+                <p>如果你已经从其他渠道获得了证书文件（.crt和.key），手动配置如下：</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">nginx.conf</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>server {
+    listen 443 ssl http2;
+    server_name example.com;
+    
+    # SSL证书配置
+    ssl_certificate /path/to/your/certificate.crt;
+    ssl_certificate_key /path/to/your/private.key;
+    
+    # SSL优化配置
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+    
+    # HSTS（强制HTTPS）
+    add_header Strict-Transport-Security "max-age=63072000" always;
+    
+    root /var/www/html;
+    index index.html;
+}
+
+# HTTP重定向到HTTPS
+server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$server_name$request_uri;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- 第9章：性能优化 -->
+            <section class="section" id="optimization">
+                <h1 class="section-title">🚀 性能优化</h1>
+                
+                <h2 class="section-subtitle">开启Gzip压缩</h2>
+                <p>压缩传输内容，减少网络流量，加快页面加载：</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">nginx.conf</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>http {
+    # 开启gzip
+    gzip on;
+    
+    # 压缩级别（1-9，数字越大压缩率越高，但越耗CPU）
+    gzip_comp_level 6;
+    
+    # 最小压缩文件大小
+    gzip_min_length 1k;
+    
+    # 压缩类型
+    gzip_types text/plain text/css text/javascript application/javascript 
+               application/json application/xml image/svg+xml;
+    
+    # 对代理的内容也压缩
+    gzip_proxied any;
+    
+    # 在响应头添加Vary: Accept-Encoding
+    gzip_vary on;
+}</code></pre>
+                </div>
+
+                <h2 class="section-subtitle">浏览器缓存</h2>
+                <p>让浏览器缓存静态资源，减少重复请求：</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">nginx.conf</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>server {
+    # 图片缓存30天
+    location ~* \\.(jpg|jpeg|png|gif|ico|css|js|svg)$ {
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+    }
+    
+    # HTML不缓存（总是获取最新）
+    location ~* \\.html$ {
+        expires -1;
+        add_header Cache-Control "no-cache";
+    }
+}</code></pre>
+                </div>
+
+                <h2 class="section-subtitle">连接优化</h2>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">nginx.conf</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>events {
+    # 使用epoll（Linux高性能网络模型）
+    use epoll;
+    
+    # 每个工作进程的最大连接数
+    worker_connections 4096;
+    
+    # 允许一个工作进程同时接受多个新连接
+    multi_accept on;
+}
+
+http {
+    # 开启文件高效传输
+    sendfile on;
+    
+    # 优化磁盘IO
+    tcp_nopush on;
+    tcp_nodelay on;
+    
+    # 长连接保持时间
+    keepalive_timeout 30;
+    keepalive_requests 1000;
+    
+    # 重置超时连接
+    reset_timedout_connection on;
+    
+    # 客户端请求体大小限制
+    client_body_buffer_size 128k;
+    client_max_body_size 50m;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- 第10章：常见问题 -->
+            <section class="section" id="troubleshoot">
+                <h1 class="section-title">🐛 常见问题排查</h1>
+                
+                <h2 class="section-subtitle">问题1：端口被占用</h2>
+                <div class="command-output">
+                    <div class="command-line">错误：bind() to 0.0.0.0:80 failed (10048: Only one usage of each socket address...)</div>
+                </div>
+                <p><strong>解决：</strong></p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">查找占用端口的进程</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code># Windows
+netstat -ano | findstr :80
+taskkill /PID 1234 /F  # 1234是占用端口的进程ID
+
+# Linux/Mac
+sudo lsof -i :80
+sudo kill -9 1234</code></pre>
+                </div>
+                <p>或者修改Nginx监听其他端口，如 <span class="inline-code">listen 8080;</span></p>
+
+                <h2 class="section-subtitle">问题2：403 Forbidden（禁止访问）</h2>
+                <p><strong>原因：</strong></p>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li>网站目录权限不足</li>
+                    <li>index文件不存在</li>
+                    <li>SELinux限制（Linux）</li>
+                </ul>
+                <p><strong>解决：</strong></p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Linux权限修复</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code># 修改目录权限
+sudo chown -R www-data:www-data /var/www/html
+sudo chmod -R 755 /var/www/html
+
+# 如果是SELinux问题
+sudo setenforce 0  # 临时关闭
+sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config</code></pre>
+                </div>
+
+                <h2 class="section-subtitle">问题3：配置文件错误</h2>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">测试配置</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code># 测试配置文件语法
+nginx -t
+
+# 查看详细错误信息
+nginx -t -c /path/to/nginx.conf</code></pre>
+                </div>
+
+                <h2 class="section-subtitle">问题4：无法访问（防火墙）</h2>
+                <p>检查防火墙是否放行了80/443端口：</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">防火墙设置</span>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code># Ubuntu/Debian (UFW)
+sudo ufw allow 'Nginx Full'
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# CentOS (Firewalld)
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload
+
+# Windows防火墙
+netsh advfirewall firewall add rule name="Nginx HTTP" dir=in action=allow protocol=TCP localport=80</code></pre>
+                </div>
+
+                <h2 class="section-subtitle">调试技巧</h2>
+                <div class="tip-box">
+                    <div class="tip-title">🔍 查看错误日志</div>
+                    <p>遇到问题首先查看错误日志：</p>
+                    <ul style="margin: 10px 0 10px 30px;">
+                        <li>Windows: <span class="inline-code">C:\nginx\logs\error.log</span></li>
+                        <li>Linux: <span class="inline-code">/var/log/nginx/error.log</span></li>
+                        <li>Mac: <span class="inline-code">/opt/homebrew/var/log/nginx/error.log</span></li>
+                    </ul>
+                </div>
+
+                <div class="tip-box info">
+                    <div class="tip-title">📝 常用排查命令</div>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">命令合集</span>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
+                        <pre><code># 检查Nginx进程是否在运行
+ps aux | grep nginx
+
+# 查看Nginx监听端口
+netstat -tlnp | grep nginx
+
+# 实时查看访问日志（查看请求是否到达）
+tail -f /var/log/nginx/access.log
+
+# 实时查看错误日志
+tail -f /var/log/nginx/error.log
+
+# 检查配置文件语法并显示所有配置
+nginx -T</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 总结 -->
+            <section class="section" id="summary">
+                <h1 class="section-title">🎓 学习总结</h1>
+                
+                <p>恭喜你完成了Nginx入门学习！现在你已经掌握了：</p>
+                
+                <ul style="margin: 20px 0 20px 30px; line-height: 2;">
+                    <li>✅ Nginx的安装和基本操作</li>
+                    <li>✅ 配置文件的结构和常用指令</li>
+                    <li>✅ 部署静态网站</li>
+                    <li>✅ 反向代理配置</li>
+                    <li>✅ 多域名虚拟主机</li>
+                    <li>✅ HTTPS/SSL证书配置</li>
+                    <li>✅ 性能优化技巧</li>
+                    <li>✅ 常见问题排查</li>
+                </ul>
+
+                <div class="tip-box success">
+                    <div class="tip-title">🚀 下一步学习建议</div>
+                    <p>1. <strong>深入学习location匹配规则</strong> - 理解正则匹配和优先级</p>
+                    <p>2. <strong>负载均衡配置</strong> - upstream模块，健康检查</p>
+                    <p>3. <strong>Lua脚本（OpenResty）</strong> - 在Nginx中编写业务逻辑</p>
+                    <p>4. <strong>安全加固</strong> - WAF规则，限流，防DDOS</p>
+                    <p>5. <strong>Nginx源码编译</strong> - 添加第三方模块</p>
+                </div>
+
+                <div class="tip-box info">
+                    <div class="tip-title">📚 推荐资源</div>
+                    <ul style="margin: 10px 0 10px 30px;">
+                        <li>官方文档：<a href="http://nginx.org/en/docs/" target="_blank">nginx.org/en/docs/</a></li>
+                        <li>中文文档：<a href="https://www.nginx.cn/doc/" target="_blank">nginx.cn/doc/</a></li>
+                        <li>Nginx配置生成器：<a href="https://www.digitalocean.com/community/tools/nginx" target="_blank">DigitalOcean NginxConfig</a></li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 50px; padding: 40px; background: linear-gradient(135deg, #d1fae5, #dbeafe); border-radius: 16px;">
+                    <h2 style="color: var(--nginx); margin-bottom: 20px;">🎉 恭喜完成Nginx入门！</h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 25px;">现在你可以部署自己的网站了，继续加油！</p>
+                    <a href="#intro" class="btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">返回顶部复习</a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // 复制代码功能
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block').querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = '已复制！';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+
+        // 操作系统切换
+        function switchOS(os) {
+            // 切换标签样式
+            document.querySelectorAll('.os-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 切换内容
+            document.querySelectorAll('.os-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(os).classList.add('active');
+        }
+
+        // 滚动进度条
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // 目录高亮
+        const sections = document.querySelectorAll('.section');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

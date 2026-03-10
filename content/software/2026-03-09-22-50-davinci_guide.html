@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>达芬奇 DaVinci Resolve 零基础入门指南 - 从安装到出片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部 */
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        .header .logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header .logo svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header .badges {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 导航 */
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        
+        .nav-menu h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+        }
+        
+        .nav-item {
+            background: #f8f9fa;
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* 内容卡片 */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 1.7em;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title .icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3em;
+        }
+        
+        .section h3 {
+            color: #667eea;
+            margin: 25px 0 15px;
+            font-size: 1.25em;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        /* 概念卡片 */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .concept-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea30;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .concept-card h4 {
+            color: #5a67d8;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .concept-card p {
+            color: #4a5568;
+            font-size: 0.95em;
+            margin: 0;
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .tip-box h4 {
+            color: #276749;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tip-box ul {
+            margin-left: 20px;
+            color: #2f855a;
+        }
+        
+        .tip-box li {
+            margin-bottom: 6px;
+        }
+        
+        /* 警告框 */
+        .warning-box {
+            background: #fff5f5;
+            border-left: 4px solid #ff6b6b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .warning-box h4 {
+            color: #c53030;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .warning-box ul {
+            margin-left: 20px;
+            color: #744210;
+        }
+        
+        /* 步骤列表 */
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+        }
+        
+        .step-list li {
+            position: relative;
+            padding-left: 55px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        
+        .step-list li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .step-list li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1em;
+        }
+        
+        .step-list li h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        /* 页面卡片 */
+        .page-card {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            color: #fff;
+        }
+        
+        .page-card h4 {
+            color: #ffa657;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .page-card p {
+            color: #ccc;
+            font-size: 0.95em;
+            margin: 0;
+        }
+        
+        /* 功能表格 */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .info-table th,
+        .info-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .info-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .info-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* 快捷键表格 */
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .shortcut-table th,
+        .shortcut-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .shortcut-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .key {
+            background: #1e1e1e;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+        
+        /* 工作流程图 */
+        .workflow {
+            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .workflow-steps {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .workflow-step {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #5a67d8;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .workflow-arrow {
+            color: #667eea;
+            font-size: 1.5em;
+        }
+        
+        /* 参数推荐卡片 */
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .preset-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 18px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .preset-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .preset-card ul {
+            margin-left: 18px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .preset-card li {
+            margin-bottom: 4px;
+        }
+        
+        /* 页脚 */
+        .footer-section {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+        
+        .footer-section h2 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+        
+        /* 返回顶部 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            display: none;
+        }
+        
+        .back-to-top:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+        }
+        
+        .back-to-top.show {
+            display: block;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .nav-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .section {
+                padding: 25px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.3em;
+            }
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo"><svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 106.666667a405.333333 405.333333 0 1 0 0 810.666666 405.333333 405.333333 0 1 0 0-810.666666z" fill="#37474F" p-id="14165"></path><path d="M534.698667 536.896l51.392 135.061333c11.648 15.808 25.493333 29.632 42.005333 38.997334 51.605333 29.290667 117.333333 12.394667 146.794667-37.738667-0.021333 0-234.304-131.818667-240.192-136.32z" fill="#FF7043" p-id="14166"></path><path d="M534.698667 536.896c6.890667 2.752 240.192 136.298667 240.192 136.298667 29.44-50.154667 11.477333-114.538667-40.149334-143.829334-16.512-9.365333-35.605333-14.229333-55.36-16.256l-144.682666 23.786667z" fill="#F16461" p-id="14167"></path><path d="M714.496 566.293333a160.746667 160.746667 0 0 0-19.818667-9.28c2.218667 21.184-1.813333 43.178667-13.482666 63.04s-29.013333 34.282667-48.789334 42.986667c5.888 4.501333 11.882667 8.704 18.090667 12.224 64.661333 36.693333 106.688 28.032 124.373333-2.048 17.685333-30.101333 4.288-70.229333-60.373333-106.922667z" fill="#FF5252" p-id="14168"></path><path d="M590.165333 621.525333c12.565333 15.146667 26.794667 29.696 42.261334 41.493334a105.088 105.088 0 0 0 48.789333-42.986667 102.528 102.528 0 0 0 13.482667-63.04c-18.133333-7.253333-38.08-12.096-57.685334-15.210667a82.496 82.496 0 0 1-11.2 46.805334 84.373333 84.373333 0 0 1-35.648 32.938666z" fill="#FF855F" p-id="14169"></path><path d="M632.426667 663.04c-15.466667-11.797333-29.696-26.368-42.261334-41.493333a86.464 86.464 0 0 1-28.650666 8.192c6.762667 14.570667 14.890667 29.077333 24.597333 42.24 15.978667 0.362667 31.786667-2.56 46.314667-8.938667z" fill="#FF8A65" p-id="14170"></path><path d="M636.992 541.802667c19.626667 3.136 39.573333 7.957333 57.685333 15.210666a103.552 103.552 0 0 0-15.296-43.904 255.701333 255.701333 0 0 0-49.493333 0.192c3.989333 9.045333 6.528 18.645333 7.104 28.501334z" fill="#FF8A80" p-id="14171"></path><path d="M625.792 588.586667c8.661333-14.741333 12.16-30.976 11.2-46.805334-52.736-8.405333-102.293333-4.885333-102.293333-4.885333s21.674667 43.946667 55.466666 84.629333a84.202667 84.202667 0 0 0 35.626667-32.938666z" fill="#FFCCBC" p-id="14172"></path><path d="M590.165333 621.525333c-33.792-40.682667-55.466667-84.629333-55.466666-84.629333a10.069333 10.069333 0 0 0-1.152 7.210667c3.264 15.829333 11.733333 50.752 27.946666 85.632a86.613333 86.613333 0 0 0 28.672-8.213334z" fill="#FFAB91" p-id="14173"></path><path d="M629.888 513.301333c-38.848 3.626667-73.834667 13.888-89.408 19.029334a10.325333 10.325333 0 0 0-5.76 4.586666s49.557333-3.52 102.293333 4.885334a83.157333 83.157333 0 0 0-7.125333-28.501334z" fill="#FFCDD2" p-id="14174"></path><path d="M489.002667 536.896c-5.888 4.501333-240.170667 136.298667-240.170667 136.298667 29.461333 50.133333 95.168 67.029333 146.794667 37.738666 16.512-9.365333 30.357333-23.189333 42.005333-38.997333l51.370667-135.04z" fill="#C6CF47" p-id="14175"></path><path d="M489.002667 536.896l-144.682667-23.786667c-19.754667 2.005333-38.869333 6.890667-55.36 16.256-51.605333 29.290667-69.589333 93.674667-40.149333 143.829334 0.021333 0 233.301333-133.525333 240.192-136.298667z" fill="#E1EB8A" p-id="14176"></path><path d="M373.205333 675.264a163.2 163.2 0 0 0 18.090667-12.224 105.088 105.088 0 0 1-48.789333-42.986667 102.528 102.528 0 0 1-13.482667-63.04c-6.890667 2.752-13.610667 5.76-19.818667 9.28-64.661333 36.693333-78.037333 76.8-60.373333 106.901334 17.685333 30.101333 59.712 38.762667 124.373333 2.069333z" fill="#DCE775" p-id="14177"></path><path d="M386.709333 541.802667c-19.626667 3.136-39.573333 7.957333-57.685333 15.210666a102.528 102.528 0 0 0 13.482667 63.04 105.194667 105.194667 0 0 0 48.789333 42.986667c15.466667-11.797333 29.696-26.368 42.261333-41.493333a84.330667 84.330667 0 0 1-35.626666-32.938667 82.389333 82.389333 0 0 1-11.221334-46.805333z" fill="#FFF59D" p-id="14178"></path><path d="M329.024 557.013333c18.133333-7.253333 38.08-12.096 57.685333-15.210666 0.597333-9.856 3.114667-19.456 7.104-28.501334-16.213333-1.514667-33.066667-1.856-49.493333-0.192a103.658667 103.658667 0 0 0-15.296 43.904z" fill="#E6EE9C" p-id="14179"></path><path d="M433.557333 621.525333c-12.565333 15.146667-26.794667 29.696-42.261333 41.493334 14.528 6.4 30.336 9.322667 46.336 8.938666 9.706667-13.162667 17.813333-27.669333 24.597333-42.24a85.930667 85.930667 0 0 1-28.672-8.192z" fill="#FFD740" p-id="14180"></path><path d="M397.930667 588.586667a84.330667 84.330667 0 0 0 35.626666 32.938666c33.792-40.682667 55.466667-84.629333 55.466667-84.629333s-49.557333-3.52-102.293333 4.885333a82.112 82.112 0 0 0 11.2 46.805334z" fill="#FFF9C4" p-id="14181"></path><path d="M386.709333 541.802667c52.736-8.405333 102.293333-4.885333 102.293334-4.885334a10.389333 10.389333 0 0 0-5.76-4.586666c-15.594667-5.141333-50.581333-15.381333-89.408-19.029334a82.666667 82.666667 0 0 0-7.125334 28.501334z" fill="#F0F4C3" p-id="14182"></path><path d="M462.208 629.717333c16.213333-34.88 24.682667-69.781333 27.946667-85.632a10.069333 10.069333 0 0 0-1.152-7.210666s-21.674667 43.946667-55.466667 84.629333a85.76 85.76 0 0 0 28.672 8.213333z" fill="#FFE082" p-id="14183"></path><path d="M882.56 611.285333a381.162667 381.162667 0 0 1-38.272 92.565334l36.928 21.312a423.125333 423.125333 0 0 0 42.517333-102.848l-41.173333-11.029334z" fill="#F44336" p-id="14184"></path><path d="M240.469333 783.530667l-30.165333 30.165333a428.373333 428.373333 0 0 0 88.533333 67.52l21.312-36.928a385.493333 385.493333 0 0 1-79.68-60.757333z" fill="#FFD740" p-id="14185"></path><path d="M128 512H85.333333c0 38.229333 5.504 75.072 14.933334 110.336l41.173333-11.029333A383.36 383.36 0 0 1 128 512z" fill="#AED581" p-id="14186"></path><path d="M179.712 703.850667l-36.928 21.312a428.928 428.928 0 0 0 67.52 88.533333l30.165333-30.165333a385.493333 385.493333 0 0 1-60.757333-79.68z" fill="#FFF176" p-id="14187"></path><path d="M141.44 611.285333l-41.173333 11.050667a424.32 424.32 0 0 0 42.517333 102.848l36.928-21.312a381.312 381.312 0 0 1-38.272-92.586667z" fill="#DCE775" p-id="14188"></path><path d="M320.149333 844.288l-21.312 36.928a423.957333 423.957333 0 0 0 102.848 42.517333l11.029334-41.173333a380.8 380.8 0 0 1-92.565334-38.272z" fill="#FFCA28" p-id="14189"></path><path d="M703.850667 844.288l21.312 36.928a428.373333 428.373333 0 0 0 88.533333-67.52l-30.165333-30.165333a385.493333 385.493333 0 0 1-79.68 60.757333z" fill="#FF7043" p-id="14190"></path><path d="M611.285333 882.56l11.029334 41.173333a424.32 424.32 0 0 0 102.848-42.517333l-21.312-36.928a380.8 380.8 0 0 1-92.565334 38.272z" fill="#FB8C00" p-id="14191"></path><path d="M783.530667 783.530667l30.165333 30.165333a428.373333 428.373333 0 0 0 67.52-88.533333l-36.928-21.312a385.493333 385.493333 0 0 1-60.757333 79.68z" fill="#FF5252" p-id="14192"></path><path d="M412.714667 882.56l-11.029334 41.173333c35.242667 9.429333 72.085333 14.933333 110.314667 14.933334v-42.666667c-34.389333 0-67.562667-4.949333-99.285333-13.44z" fill="#FFB74D" p-id="14193"></path><path d="M512 896v42.666667c38.229333 0 75.072-5.504 110.336-14.933334l-11.029333-41.173333A383.36 383.36 0 0 1 512 896z" fill="#FFA726" p-id="14194"></path><path d="M412.714667 141.44l-11.050667-41.173333a424.32 424.32 0 0 0-102.848 42.517333l21.312 36.928a381.312 381.312 0 0 1 92.586667-38.272z" fill="#64B5F6" p-id="14195"></path><path d="M882.56 412.714667l41.173333-11.029334a424.32 424.32 0 0 0-42.517333-102.848l-36.928 21.312a380.8 380.8 0 0 1 38.272 92.565334z" fill="#9575CD" p-id="14196"></path><path d="M844.288 320.149333l36.928-21.312a428.373333 428.373333 0 0 0-67.52-88.533333l-30.165333 30.165333a385.493333 385.493333 0 0 1 60.757333 79.68z" fill="#7986CB" p-id="14197"></path><path d="M783.530667 240.469333l30.165333-30.165333a428.373333 428.373333 0 0 0-88.533333-67.52l-21.312 36.928a385.493333 385.493333 0 0 1 79.68 60.757333z" fill="#8C9EFF" p-id="14198"></path><path d="M703.850667 179.712l21.312-36.928a422.122667 422.122667 0 0 0-102.826667-42.517333l-11.029333 41.173333a381.013333 381.013333 0 0 1 92.544 38.272z" fill="#82B1FF" p-id="14199"></path><path d="M896 512h42.666667c0-38.229333-5.504-75.072-14.933334-110.336l-41.173333 11.029333A383.36 383.36 0 0 1 896 512z" fill="#F06292" p-id="14200"></path><path d="M141.44 412.714667l-41.173333-11.050667C90.837333 436.928 85.333333 473.770667 85.333333 512h42.666667c0-34.389333 4.949333-67.562667 13.44-99.285333z" fill="#9CCC65" p-id="14201"></path><path d="M882.56 611.285333l41.173333 11.029334c9.429333-35.242667 14.933333-72.085333 14.933334-110.314667h-42.666667c0 34.389333-4.949333 67.562667-13.44 99.285333z" fill="#EF5350" p-id="14202"></path><path d="M611.285333 141.44l11.029334-41.173333A425.664 425.664 0 0 0 512 85.333333v42.666667c34.389333 0 67.562667 4.949333 99.285333 13.44z" fill="#64B5F6" p-id="14203"></path><path d="M240.469333 240.469333L210.304 210.304a428.373333 428.373333 0 0 0-67.52 88.533333l36.928 21.312a385.493333 385.493333 0 0 1 60.757333-79.68z" fill="#68C1B8" p-id="14204"></path><path d="M179.712 320.149333l-36.928-21.312a422.122667 422.122667 0 0 0-42.517333 102.826667l41.173333 11.029333a381.013333 381.013333 0 0 1 38.272-92.544z" fill="#81C784" p-id="14205"></path><path d="M320.149333 179.712l-21.312-36.928a428.373333 428.373333 0 0 0-88.533333 67.52l30.165333 30.165333a385.493333 385.493333 0 0 1 79.68-60.757333z" fill="#4DB6AC" p-id="14206"></path><path d="M512 128V85.333333c-38.229333 0-75.072 5.504-110.336 14.933334l11.029333 41.173333A383.36 383.36 0 0 1 512 128z" fill="#4BA9F5" p-id="14207"></path><path d="M512.021333 234.666667L512 512c2.453333 0 4.906667-0.896 6.912-2.666667C542.570667 488.448 618.666667 415.509333 618.666667 342.592c0-59.605333-47.744-107.904-106.645334-107.925333z" fill="#7986CB" p-id="14208"></path><path d="M512 234.666667c-0.021333 0-0.021333 0 0 0-58.901333 0-106.666667 48.32-106.666667 107.925333 0 72.917333 76.096 145.856 99.754667 166.741333A10.432 10.432 0 0 0 512 512V234.666667z" fill="#26A69A" p-id="14209"></path><path d="M512 234.666667c-35.370667 0-64 32-64 106.666666 0 76.586667 64 170.666667 64 170.666667s64-94.08 64-170.666667c0-74.666667-28.650667-106.666667-64-106.666666z" fill="#82B1FF" p-id="14210"></path><path d="M512 234.666667c11.584 0 20.074667 1.962667 21.269333 2.24C570.090667 245.290667 597.333333 274.602667 597.333333 309.333333c0 19.413333-8.746667 37.12-22.613333 50.346667 0.213333-1.493333-56.725333-124.373333-62.72-125.013333z" fill="#4DB6AC" p-id="14211"></path><path d="M550.826667 440.746667C532.906667 481.28 512 512 512 512s-20.906667-30.72-38.826667-71.253333a107.306667 107.306667 0 0 0 77.653334 0z" fill="#90CAF9" p-id="14212"></path><path d="M449.28 359.68C435.2 346.666667 426.666667 328.746667 426.666667 309.333333c0-36.053333 29.226667-66.133333 68.053333-73.173333 3.413333-0.64 13.674667-1.493333 17.28-1.493333-32.213333 3.84-63.573333 118.826667-62.72 125.013333z" fill="#8DD0CA" p-id="14213"></path><path d="M576 341.333333c0 2.986667 0 6.186667-0.426667 9.173334 0 2.986667-0.426667 6.186667-0.853333 9.173333-15.573333 14.933333-37.973333 24.32-62.72 24.32s-47.146667-9.386667-62.72-24.32c-0.853333-6.186667-1.28-12.373333-1.28-18.346667 0-69.973333 25.173333-102.4 57.386667-106.24 2.133333-0.426667 4.48-0.426667 6.613333-0.426666s4.48 0 6.613333 0.426666c5.973333 0.64 11.946667 2.346667 17.28 5.333334 1.706667 0.853333 3.413333 1.92 5.12 2.986666s3.413333 2.346667 5.12 4.053334c1.493333 1.28 2.986667 2.56 4.266667 4.053333 4.906667 5.12 9.386667 11.52 12.8 19.413333 1.066667 2.346667 2.133333 4.693333 2.986667 7.04 1.066667 2.56 1.92 5.12 2.773333 7.893334 0.853333 2.346667 1.493333 4.906667 1.92 7.466666 0.853333 3.413333 1.706667 6.826667 2.133333 10.453334 0.853333 4.053333 1.493333 8.533333 1.92 13.013333 0.64 7.466667 1.066667 15.786667 1.066667 24.533333z" fill="#80CBC4" p-id="14214"></path><path d="M618.24 350.933333c-5.333333 70.186667-76.586667 138.453333-99.413333 158.506667-1.92 1.706667-4.266667 2.56-6.826667 2.56 0 0 20.906667-30.72 38.826667-71.253333a107.605333 107.605333 0 0 0 67.413333-89.813334z" fill="#9FA8DA" p-id="14215"></path><path d="M512 512c-2.56 0-4.906667-0.853333-6.826667-2.56-22.826667-20.053333-94.08-88.32-99.413333-158.506667a107.605333 107.605333 0 0 0 67.413333 89.813334C491.093333 481.28 512 512 512 512z" fill="#81C784" p-id="14216"></path></svg></div>
+            <h1>达芬奇调色 零基础入门指南</h1>
+            <p>好莱坞级别的免费剪辑调色软件，从安装到出片，手把手教你制作专业视频</p>
+            <div class="badges">
+                <span class="badge">🎯 零基础友好</span>
+                <span class="badge">🎨 调色神器</span>
+                <span class="badge">💰 完全免费</span>
+            </div>
+        </header>
+        
+        <!-- 导航 -->
+        <nav class="nav-menu">
+            <h3>📋 快速导航</h3>
+            <div class="nav-grid">
+                <a href="#intro" class="nav-item">软件介绍</a>
+                <a href="#install" class="nav-item">下载安装</a>
+                <a href="#interface" class="nav-item">界面认识</a>
+                <a href="#workflow" class="nav-item">工作流程</a>
+                <a href="#edit" class="nav-item">剪辑技巧</a>
+                <a href="#color" class="nav-item">调色基础</a>
+                <a href="#export" class="nav-item">导出设置</a>
+                <a href="#shortcut" class="nav-item">快捷键</a>
+            </div>
+        </nav>
+        
+        <!-- 软件介绍 -->
+        <section class="section" id="intro">
+            <h2 class="section-title">
+                <span class="icon">🎬</span>
+                达芬奇是什么？
+            </h2>
+            
+            <p>DaVinci Resolve（达芬奇）是 Blackmagic Design 公司开发的一款<strong>专业级视频后期制作软件</strong>，集剪辑、调色、特效、音频后期于一体。它是好莱坞电影后期制作的标准工具之一，而<strong>免费版</strong>就已经足够大多数用户使用！</p>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>✂️ 剪辑（Edit）</h4>
+                    <p>专业的非线性剪辑功能，支持多轨道剪辑、智能剪辑工具、多机位编辑</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🎨 调色（Color）</h4>
+                    <p>业界最强大的调色系统，一级调色、二级调色、LUT、HDR 支持一应俱全</p>
+                </div>
+                <div class="concept-card">
+                    <h4>✨ 特效（Fusion）</h4>
+                    <p>节点式合成工具，制作视觉特效、动态图形、字幕动画</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🎵 音频（Fairlight）</h4>
+                    <p>专业音频后期页面，混音、降噪、音频修复功能强大</p>
+                </div>
+                <div class="concept-card">
+                    <h4>📤 交付（Deliver）</h4>
+                    <p>多种格式导出，支持 YouTube、B站、抖音等平台预设</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🆓 完全免费</h4>
+                    <p>免费版功能已经非常强大，付费版（Studio）主要是多用户协作和部分高级功能</p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 免费版 vs 付费版</h4>
+                <ul>
+                    <li><strong>免费版：</strong>适合个人用户，4K 以下分辨率，无水印，功能已经足够强大</li>
+                    <li><strong>Studio 版（¥2550）：</strong>支持 8K+、降噪、HDR 调色、多用户协作、AI 功能等</li>
+                    <li>新手建议先用免费版，觉得不够用了再考虑升级</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 下载安装 -->
+        <section class="section" id="install">
+            <h2 class="section-title">
+                <span class="icon">⬇️</span>
+                下载与安装
+            </h2>
+            
+            <h3>系统要求</h3>
+            <table class="info-table">
+                <tr>
+                    <th>项目</th>
+                    <th>最低配置</th>
+                    <th>推荐配置</th>
+                </tr>
+                <tr>
+                    <td>系统</td>
+                    <td>Windows 10 / macOS 10.15 / CentOS 7.3</td>
+                    <td>Windows 11 / macOS 13 / Linux</td>
+                </tr>
+                <tr>
+                    <td>CPU</td>
+                    <td>Intel Core i7 / AMD Ryzen 7</td>
+                    <td>Intel Core i9 / AMD Ryzen 9（更多核心更好）</td>
+                </tr>
+                <tr>
+                    <td>内存</td>
+                    <td>16 GB</td>
+                    <td>32 GB 或更多</td>
+                </tr>
+                <tr>
+                    <td>显卡</td>
+                    <td>2 GB VRAM，支持 OpenCL 1.2 或 CUDA 11</td>
+                    <td>NVIDIA RTX 3060+ / AMD RX 6600+（8GB+ VRAM）</td>
+                </tr>
+                <tr>
+                    <td>硬盘</td>
+                    <td>SSD，剩余空间 10GB+</td>
+                    <td>NVMe SSD，视频素材单独硬盘</td>
+                </tr>
+            </table>
+            
+            <div class="warning-box">
+                <h4>⚠️ 重要提醒</h4>
+                <ul>
+                    <li>达芬奇非常吃显卡，建议用 NVIDIA 显卡（CUDA 加速更好）</li>
+                    <li>内存越大越好，处理 4K 素材建议 32GB 以上</li>
+                    <li>素材和缓存建议放在 SSD 上，机械硬盘会很卡</li>
+                </ul>
+            </div>
+            
+            <h3>下载步骤</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>访问官网</h4>
+                    <p>打开 <a href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank">blackmagicdesign.com/products/davinciresolve</a></p>
+                </li>
+                <li>
+                    <h4>点击免费下载</h4>
+                    <p>找到 "DaVinci Resolve"（免费版）或 "DaVinci Resolve Studio"（付费版），点击下载</p>
+                </li>
+                <li>
+                    <h4>填写信息</h4>
+                    <p>需要填写姓名、邮箱等信息，然后点击 "Register & Download"</p>
+                </li>
+                <li>
+                    <h4>选择版本</h4>
+                    <p>根据你的系统选择 Windows、Mac 或 Linux 版本下载</p>
+                </li>
+                <li>
+                    <h4>安装软件</h4>
+                    <p>下载完成后运行安装程序，按提示安装即可（Windows 建议不要改安装路径）</p>
+                </li>
+            </ul>
+        </section>
+        
+        <!-- 界面认识 -->
+        <section class="section" id="interface">
+            <h2 class="section-title">
+                <span class="icon">🖥️</span>
+                界面认识
+            </h2>
+            
+            <p>达芬奇有 7 个主要页面，通过底部导航栏切换：</p>
+            
+            <div class="page-card">
+                <h4>🏠 Media（媒体页面）</h4>
+                <p>导入素材、预览素材、管理媒体文件。可以在这里浏览硬盘，选择要导入的素材。</p>
+            </div>
+            
+            <div class="page-card">
+                <h4>✂️ Cut（快编页面）</h4>
+                <p>快速剪辑页面，适合粗剪和快速筛选素材。界面简洁，适合快速拼接镜头。</p>
+            </div>
+            
+            <div class="page-card">
+                <h4>🎬 Edit（剪辑页面）</h4>
+                <p>主要剪辑工作区，功能最全面。多轨道时间线、转场、字幕、特效都在这。</p>
+            </div>
+            
+            <div class="page-card">
+                <h4>🎨 Fusion（特效页面）</h4>
+                <p>节点式合成工具，制作视觉特效、动态图形、复杂的合成效果。</p>
+            </div>
+            
+            <div class="page-card">
+                <h4>🌈 Color（调色页面）</h4>
+                <p>达芬奇的看家本领，业界最强大的调色工具。一级调色、二级调色、LUT、HDR。</p>
+            </div>
+            
+            <div class="page-card">
+                <h4>🎵 Fairlight（音频页面）</h4>
+                <p>专业音频后期页面，混音台、均衡器、降噪、音频修复工具。</p>
+            </div>
+            
+            <div class="page-card">
+                <h4>📤 Deliver（交付页面）</h4>
+                <p>导出渲染页面，设置输出格式、分辨率、编码，渲染最终视频。</p>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 新手建议</h4>
+                <ul>
+                    <li>刚开始主要使用 <strong>Edit（剪辑）</strong>、<strong>Color（调色）</strong>、<strong>Deliver（导出）</strong> 三个页面</li>
+                    <li>Cut 页面适合快速粗剪，Edit 页面适合精剪</li>
+                    <li>按 <span class="key">Shift + 2~8</span> 可以快速切换页面</li>
+                </ul>
+            </div>
+            
+            <h3>Edit 页面布局</h3>
+            <table class="info-table">
+                <tr>
+                    <th>区域</th>
+                    <th>位置</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td>媒体池</td>
+                    <td>左上</td>
+                    <td>显示所有导入的素材，可以分类管理</td>
+                </tr>
+                <tr>
+                    <td>预览窗口</td>
+                    <td>中上</td>
+                    <td>预览选中的素材或时间线画面</td>
+                </tr>
+                <tr>
+                    <td>时间线</td>
+                    <td>中下</td>
+                    <td>剪辑的主工作区，排列视频、音频轨道</td>
+                </tr>
+                <tr>
+                    <td>检查器</td>
+                    <td>右上</td>
+                    <td>调整选中片段的参数（位置、缩放、不透明度等）</td>
+                </tr>
+                <tr>
+                    <td>工具栏</td>
+                    <td>时间线上方</td>
+                    <td>选择工具、刀片工具、缩放工具等</td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- 工作流程 -->
+        <section class="section" id="workflow">
+            <h2 class="section-title">
+                <span class="icon">🔄</span>
+                标准工作流程
+            </h2>
+            
+            <div class="workflow">
+                <div class="workflow-steps">
+                    <span class="workflow-step">1. 新建项目</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">2. 导入素材</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">3. 粗剪</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">4. 精剪</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">5. 调色</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">6. 音频</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">7. 导出</span>
+                </div>
+            </div>
+            
+            <h3>详细步骤</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>新建项目</h4>
+                    <p>打开达芬奇 → 点击 "New Project" → 输入项目名称 → 点击 "Create"</p>
+                </li>
+                <li>
+                    <h4>导入素材</h4>
+                    <p>切换到 Media 页面 → 在 Media Storage 中找到素材文件夹 → 选中素材右键 "Add to Media Pool"，或直接拖入 Media Pool</p>
+                </li>
+                <li>
+                    <h4>创建时间线</h4>
+                    <p>切换到 Edit 页面 → Media Pool 中选中素材 → 右键 "Create New Timeline Using Selected Clips"，或手动拖入时间线</p>
+                </li>
+                <li>
+                    <h4>粗剪（Cut 页面）</h4>
+                    <p>切换到 Cut 页面 → 快速筛选素材，保留需要的片段，删除废片，确定大致顺序</p>
+                </li>
+                <li>
+                    <h4>精剪（Edit 页面）</h4>
+                    <p>回到 Edit 页面 → 精细调整剪辑点 → 添加转场 → 添加字幕 → 调整音频电平</p>
+                </li>
+                <li>
+                    <h4>调色（Color 页面）</h4>
+                    <p>切换到 Color 页面 → 一级调色（白平衡、曝光、对比度）→ 二级调色（HSL 选区、跟踪）→ 添加风格化 LUT</p>
+                </li>
+                <li>
+                    <h4>音频处理（Fairlight 页面）</h4>
+                    <p>切换到 Fairlight 页面 → 降噪 → 均衡器调整 → 混音 → 添加背景音乐</p>
+                </li>
+                <li>
+                    <h4>导出（Deliver 页面）</h4>
+                    <p>切换到 Deliver 页面 → 选择预设或自定义设置 → 添加到渲染队列 → 开始渲染</p>
+                </li>
+            </ul>
+        </section>
+        
+        <!-- 剪辑技巧 -->
+        <section class="section" id="edit">
+            <h2 class="section-title">
+                <span class="icon">✂️</span>
+                剪辑技巧
+            </h2>
+            
+            <h3>基础操作</h3>
+            <table class="info-table">
+                <tr>
+                    <th>操作</th>
+                    <th>方法</th>
+                    <th>快捷键</th>
+                </tr>
+                <tr>
+                    <td>选择工具</td>
+                    <td>点击工具栏箭头图标</td>
+                    <td><span class="key">A</span></td>
+                </tr>
+                <tr>
+                    <td>刀片/切割</td>
+                    <td>点击工具栏刀片图标，在片段上点击切割</td>
+                    <td><span class="key">B</span></td>
+                </tr>
+                <tr>
+                    <td>波纹剪辑</td>
+                    <td>鼠标移到片段边缘，出现双向箭头时拖动</td>
+                    <td><span class="key">W</span> / <span class="key">E</span></td>
+                </tr>
+                <tr>
+                    <td>选择片段</td>
+                    <td>点击片段选中，按住 Shift 多选</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>删除片段</td>
+                    <td>选中按 Delete（留空隙）或 Backspace（删除并闭合空隙）</td>
+                    <td><span class="key">Delete</span> / <span class="key">Backspace</span></td>
+                </tr>
+                <tr>
+                    <td>移动片段</td>
+                    <td>拖动片段到新位置</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>复制片段</td>
+                    <td>按住 Alt 拖动片段</td>
+                    <td><span class="key">Alt</span> + 拖动</td>
+                </tr>
+                <tr>
+                    <td>撤销</td>
+                    <td>撤销上一步操作</td>
+                    <td><span class="key">Ctrl</span> + <span class="key">Z</span></td>
+                </tr>
+            </table>
+            
+            <h3>时间线缩放与导航</h3>
+            <div class="tip-box">
+                <h4>💡 高效操作技巧</h4>
+                <ul>
+                    <li>按住 <span class="key">Ctrl</span> + 滚轮：缩放时间线</li>
+                    <li>按住 <span class="key">Shift</span> + 滚轮：横向滚动时间线</li>
+                    <li>按 <span class="key">\</span>（反斜杠）：自动缩放适应整个时间线</li>
+                    <li>按 <span class="key">D</span>：启用/禁用片段（不删除但暂时不显示）</li>
+                    <li>按 <span class="key">L</span> 多次：倍速播放（正向），<span class="key">J</span>：倒放</li>
+                </ul>
+            </div>
+            
+            <h3>添加转场</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>打开特效库</h4>
+                    <p>点击左上角 "Effects Library" 按钮，或按 <span class="key">Shift+2</span></p>
+                </li>
+                <li>
+                    <h4>选择转场</h4>
+                    <p>展开 "Toolbox" → "Video Transitions"，选择喜欢的转场（推荐 Cross Dissolve 叠化）</p>
+                </li>
+                <li>
+                    <h4>应用转场</h4>
+                    <p>将转场拖放到两个片段的交界处</p>
+                </li>
+                <li>
+                    <h4>调整时长</h4>
+                    <p>选中转场，在检查器中调整 Duration（时长），建议 0.5-1 秒</p>
+                </li>
+            </ul>
+            
+            <h3>添加字幕</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>打开字幕工具</h4>
+                    <p>Effects Library → "Titles" → 选择 "Text" 或 "Text+"</p>
+                </li>
+                <li>
+                    <h4>放置字幕</h4>
+                    <p>拖到时间线上，放在单独的轨道（建议 V2 或更高）</p>
+                </li>
+                <li>
+                    <h4>编辑文字</h4>
+                    <p>选中字幕 → 检查器中修改文字内容、字体、大小、颜色</p>
+                </li>
+                <li>
+                    <h4>调整位置时长</h4>
+                    <p>拖动字幕边缘调整时长，预览窗口拖动调整位置</p>
+                </li>
+            </ul>
+            
+            <div class="warning-box">
+                <h4>⚠️ 剪辑注意事项</h4>
+                <ul>
+                    <li>定期保存项目：虽然达芬奇有自动保存，但重要节点建议手动 <span class="key">Ctrl+S</span></li>
+                    <li>建立素材管理习惯：按类型分 Bin（文件夹）管理素材</li>
+                    <li>剪辑前先代理：4K 素材卡顿时，生成代理文件再剪辑</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 调色基础 -->
+        <section class="section" id="color">
+            <h2 class="section-title">
+                <span class="icon">🎨</span>
+                调色基础
+            </h2>
+            
+            <p>调色是达芬奇的强项，即使是免费版也有业界顶尖的调色工具。</p>
+            
+            <h3>调色页面布局</h3>
+            <table class="info-table">
+                <tr>
+                    <th>区域</th>
+                    <th>位置</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td>画廊</td>
+                    <td>左上</td>
+                    <td>保存和调用调色预设、静帧</td>
+                </tr>
+                <tr>
+                    <td>节点编辑器</td>
+                    <td>右上</td>
+                    <td>显示当前节点的处理流程</td>
+                </tr>
+                <tr>
+                    <td>检视器</td>
+                    <td>中间</td>
+                    <td>预览画面，可对比调色前后</td>
+                </tr>
+                <tr>
+                    <td>时间线</td>
+                    <td>中下</td>
+                    <td>选择要调色的片段</td>
+                </tr>
+                <tr>
+                    <td>调色面板</td>
+                    <td>左下</td>
+                    <td>色轮、曲线、色条等调色工具</td>
+                </tr>
+                <tr>
+                    <td>关键帧</td>
+                    <td>右下</td>
+                    <td>设置动态调色关键帧</td>
+                </tr>
+            </table>
+            
+            <h3>一级调色（整体调整）</h3>
+            <p>先进行一级调色，校正画面的基本影调：</p>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>⚪ 白平衡</h4>
+                    <p>用吸管工具点击画面中应该是白色的地方，自动校正色温</p>
+                </div>
+                <div class="concept-card">
+                    <h4>☀️ 曝光</h4>
+                    <p>调整 Lift（暗部）、Gamma（中间调）、Gain（高光），让画面亮度适中</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🌓 对比度</h4>
+                    <p>调整 Contrast，或分别调整 Lift 和 Gain 来增强画面对比</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🎨 饱和度</h4>
+                    <p>调整 Saturation，让画面色彩更加鲜艳或柔和</p>
+                </div>
+            </div>
+            
+            <h3>二级调色（局部调整）</h3>
+            <p>用限定器（Qualifier）选择特定颜色进行调整：</p>
+            <ul class="step-list">
+                <li>
+                    <h4>打开限定器</h4>
+                    <p>在调色面板点击 "Qualifier"（吸管图标）</p>
+                </li>
+                <li>
+                    <h4>选择颜色</h4>
+                    <p>用吸管在画面上点击要调整的颜色（如天空的蓝色）</p>
+                </li>
+                <li>
+                    <h4>调整选区</h4>
+                    <p>调整 3D/HSL 参数，让选区更精确（可以开启高亮显示查看选区范围）</p>
+                </li>
+                <li>
+                    <h4>调整颜色</h4>
+                    <p>用色轮或色条调整选中区域的颜色、饱和度、亮度</p>
+                </li>
+            </ul>
+            
+            <h3>使用 LUT</h3>
+            <p>LUT（查找表）是快速调色的好方法：</p>
+            <ul class="step-list">
+                <li>
+                    <h4>应用 LUT</h4>
+                    <p>右键点击节点 → "LUTs" → 选择预设的 LUT，或加载外部 .cube 文件</p>
+                </li>
+                <li>
+                    <h4>调整强度</h4>
+                    <p>在 Key 面板调整 "Key Output Gain" 来控制 LUT 强度（0-1）</p>
+                </li>
+                <li>
+                    <h4>推荐 LUT 网站</h4>
+                    <p>Ground Control Color、Phantom LUTs、Moment Cine LUTs</p>
+                </li>
+            </ul>
+            
+            <div class="tip-box">
+                <h4>💡 调色小技巧</h4>
+                <ul>
+                    <li>开启 "Highlight"（高亮）查看曝光是否过曝</li>
+                    <li>用 "Before/After" 对比调色前后效果</li>
+                    <li>调色前先统一所有镜头的白平衡和曝光</li>
+                    <li>复制调色：选中已调色的片段 → 右键 "Grab Still" → 应用到其他片段</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 导出设置 -->
+        <section class="section" id="export">
+            <h2 class="section-title">
+                <span class="icon">📤</span>
+                导出设置
+            </h2>
+            
+            <h3>导出步骤</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>切换到 Deliver 页面</h4>
+                    <p>点击底部导航栏 "Deliver" 或按 <span class="key">Shift+8</span></p>
+                </li>
+                <li>
+                    <h4>选择渲染范围</h4>
+                    <p>选择 "Entire Timeline"（整个时间线）或 "In/Out Range"（入点出点之间的范围）</p>
+                </li>
+                <li>
+                    <h4>选择预设或自定义</h4>
+                    <p>右侧选择预设（YouTube、Vimeo 等），或自定义设置</p>
+                </li>
+                <li>
+                    <h4>设置输出路径</h4>
+                    <p>点击 "Location" 选择保存位置，命名文件</p>
+                </li>
+                <li>
+                    <h4>添加到渲染队列</h4>
+                    <p>点击 "Add to Render Queue"，右侧队列会显示任务</p>
+                </li>
+                <li>
+                    <h4>开始渲染</h4>
+                    <p>点击 "Render All" 开始导出</p>
+                </li>
+            </ul>
+            
+            <h3>推荐导出设置</h3>
+            <div class="preset-grid">
+                <div class="preset-card">
+                    <h4>📺 YouTube/B站（推荐）</h4>
+                    <ul>
+                        <li>格式：MP4</li>
+                        <li>编解码器：H.264 或 H.265（HEVC）</li>
+                        <li>分辨率：1920×1080 或 3840×2160</li>
+                        <li>帧率：与素材一致</li>
+                        <li>码率：20-50 Mbps（1080p）</li>
+                    </ul>
+                </div>
+                <div class="preset-card">
+                    <h4>📱 抖音/快手（竖屏）</h4>
+                    <ul>
+                        <li>格式：MP4</li>
+                        <li>编解码器：H.264</li>
+                        <li>分辨率：1080×1920</li>
+                        <li>帧率：30fps 或 60fps</li>
+                        <li>码率：8-15 Mbps</li>
+                    </ul>
+                </div>
+                <div class="preset-card">
+                    <h4>🎬 高质量存档</h4>
+                    <ul>
+                        <li>格式：QuickTime</li>
+                        <li>编解码器：ProRes 422 HQ 或 DNxHR</li>
+                        <li>分辨率：原始分辨率</li>
+                        <li>帧率：原始帧率</li>
+                        <li>注意：文件会很大</li>
+                    </ul>
+                </div>
+                <div class="preset-card">
+                    <h4>💻 网络预览</h4>
+                    <ul>
+                        <li>格式：MP4</li>
+                        <li>编解码器：H.264</li>
+                        <li>分辨率：1280×720</li>
+                        <li>帧率：24/25/30fps</li>
+                        <li>码率：5-8 Mbps</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ 导出注意事项</h4>
+                <ul>
+                    <li>导出前务必检查时间线，确认没有片段离线（显示红色）</li>
+                    <li>分辨率建议保持原始素材分辨率，不要放大</li>
+                    <li>H.265（HEVC）比 H.264 体积小一半，但兼容性稍差</li>
+                    <li>导出时可以做其他事，但不要关闭达芬奇或休眠电脑</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 快捷键 -->
+        <section class="section" id="shortcut">
+            <h2 class="section-title">
+                <span class="icon">⌨️</span>
+                常用快捷键
+            </h2>
+            
+            <h3>全局操作</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl</span> + <span class="key">S</span></td>
+                    <td>保存项目</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl</span> + <span class="key">Z</span></td>
+                    <td>撤销</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">Z</span></td>
+                    <td>重做</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Shift</span> + <span class="key">1~8</span></td>
+                    <td>切换页面（1=Media, 2=Cut... 8=Deliver）</td>
+                </tr>
+            </table>
+            
+            <h3>剪辑页面</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td><span class="key">A</span></td>
+                    <td>选择工具</td>
+                </tr>
+                <tr>
+                    <td><span class="key">B</span></td>
+                    <td>刀片/切割工具</td>
+                </tr>
+                <tr>
+                    <td><span class="key">T</span></td>
+                    <td>修剪工具</td>
+                </tr>
+                <tr>
+                    <td><span class="key">W</span></td>
+                    <td>动态修剪 - 开始点</td>
+                </tr>
+                <tr>
+                    <td><span class="key">E</span></td>
+                    <td>动态修剪 - 结束点</td>
+                </tr>
+                <tr>
+                    <td><span class="key">I</span></td>
+                    <td>设置入点</td>
+                </tr>
+                <tr>
+                    <td><span class="key">O</span></td>
+                    <td>设置出点</td>
+                </tr>
+                <tr>
+                    <td><span class="key">L</span></td>
+                    <td>播放（连按多次倍速）</td>
+                </tr>
+                <tr>
+                    <td><span class="key">J</span></td>
+                    <td>倒放</td>
+                </tr>
+                <tr>
+                    <td><span class="key">K</span></td>
+                    <td>暂停</td>
+                </tr>
+                <tr>
+                    <td><span class="key">D</span></td>
+                    <td>启用/禁用片段</td>
+                </tr>
+                <tr>
+                    <td><span class="key">\</span></td>
+                    <td>适配时间线</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl</span> + <span class="key">D</span></td>
+                    <td>添加转场</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Delete</span></td>
+                    <td>删除（留空隙）</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Backspace</span> / <span class="key">Shift</span> + <span class="key">Delete</span></td>
+                    <td>波纹删除（删除并闭合）</td>
+                </tr>
+            </table>
+            
+            <h3>调色页面</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td><span class="key">Alt</span> + <span class="key">S</span></td>
+                    <td>抓取静帧</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Alt</span> + <span class="key">A</span></td>
+                    <td>应用静帧</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl</span> + <span class="key">/</span></td>
+                    <td>节点开关</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Shift</span> + <span class="key">H</span></td>
+                    <td>显示/隐藏选区高亮</td>
+                </tr>
+                <tr>
+                    <td><span class="key">/</span> / <span class="key">Option</span> + <span class="key">/</span></td>
+                    <td>原始画面/调色后对比</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Cmd</span>/<span class="key">Ctrl</span> + <span class="key">C</span></td>
+                    <td>复制调色</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Cmd</span>/<span class="key">Ctrl</span> + <span class="key">V</span></td>
+                    <td>粘贴调色</td>
+                </tr>
+            </table>
+            
+            <div class="tip-box">
+                <h4>💡 效率提升建议</h4>
+                <ul>
+                    <li>优先掌握 <span class="key">B</span>（刀片）、<span class="key">A</span>（选择）、<span class="key">W</span>/<span class="key">E</span>（动态修剪）</li>
+                    <li>使用 <span class="key">L</span> 键倍速播放快速浏览素材</li>
+                    <li>调色时用 <span class="key">/</span> 快速对比调色前后效果</li>
+                    <li>多使用 <span class="key">Ctrl</span> + <span class="key">S</span> 保存，养成好习惯</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 结语 -->
+        <section class="footer-section">
+            <h2>🎉 开始你的创作之旅！</h2>
+            <p>达芬奇功能强大但学习曲线较陡，建议从简单的剪辑开始，逐步探索调色和特效功能。</p>
+            <p style="margin-top: 15px;">记住：最好的学习方式是动手实践，找一个简单的项目开始剪吧！🎬</p>
+        </section>
+    </div>
+    
+    <!-- 返回顶部 -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+    
+    <script>
+        // 返回顶部按钮
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

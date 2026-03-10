@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恒大集团全景档案 | Evergrande Group Archives</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Inter', 'Noto Serif SC', sans-serif;
+                background: #0a0a0a;
+                color: #e5e5e5;
+            }
+            h1, h2, h3 {
+                font-family: 'Noto Serif SC', serif;
+            }
+        }
+        @layer components {
+            .gradient-text {
+                background: linear-gradient(135deg, #ef4444 0%, #f97316 50%, #eab308 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .glass-panel {
+                background: rgba(20, 20, 20, 0.8);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .timeline-line {
+                background: linear-gradient(to bottom, #dc2626, #7c2d12);
+            }
+            .debt-highlight {
+                text-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+            }
+            .hover-lift {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .hover-lift:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+            .red-glow {
+                box-shadow: 0 0 30px rgba(220, 38, 38, 0.3);
+            }
+            .stat-card {
+                background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.9));
+                border-left: 4px solid #dc2626;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen">
+    <!-- Hero Section -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-red-900/20 via-black to-black"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.15) 0%, transparent 70%);"></div>
+
+        <div class="relative z-10 text-center px-4 max-w-6xl mx-auto">
+            <div class="mb-6 inline-block">
+                <span class="px-4 py-2 rounded-full bg-red-600/20 border border-red-500/30 text-red-400 text-sm tracking-wider">
+                    <i class="fas fa-building mr-2"></i>中国最大房企崩塌全纪录
+                </span>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold mb-6 gradient-text tracking-tight">
+                恒大集团
+            </h1>
+            <p class="text-2xl md:text-3xl text-gray-400 mb-8 font-light">
+                从地产帝国到2.4万亿债务黑洞
+            </p>
+            <div class="flex flex-wrap justify-center gap-6 text-sm md:text-base">
+                <div class="glass-panel px-6 py-3 rounded-lg">
+                    <span class="text-gray-400">成立时间</span>
+                    <span class="block text-xl font-bold text-white">1996年</span>
+                </div>
+                <div class="glass-panel px-6 py-3 rounded-lg red-glow">
+                    <span class="text-gray-400">总负债</span>
+                    <span class="block text-2xl font-bold text-red-500 debt-highlight">2.4万亿</span>
+                </div>
+                <div class="glass-panel px-6 py-3 rounded-lg">
+                    <span class="text-gray-400">退市时间</span>
+                    <span class="block text-xl font-bold text-white">2025年8月</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-2xl text-gray-500"></i>
+        </div>
+    </header>
+
+    <!-- Quick Stats Dashboard -->
+    <section class="py-16 px-4 bg-gradient-to-b from-black to-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">
+                <span class="border-b-4 border-red-600 pb-2">核心数据一览</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="stat-card p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-chart-line text-3xl text-red-500"></i>
+                        <span class="text-xs text-gray-500">巅峰时期</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1">5072亿</div>
+                    <div class="text-sm text-gray-400">2020年营收（人民币）</div>
+                </div>
+
+                <div class="stat-card p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-users text-3xl text-orange-500"></i>
+                        <span class="text-xs text-gray-500">涉案人员</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1">42人</div>
+                    <div class="text-sm text-gray-400">被审查起诉高管</div>
+                </div>
+
+                <div class="stat-card p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-gavel text-3xl text-yellow-500"></i>
+                        <span class="text-xs text-gray-500">实控人状态</span>
+                    </div>
+                    <div class="text-3xl font-bold text-red-400 mb-1">羁押中</div>
+                    <div class="text-sm text-gray-400">超860天（截至2026.02）</div>
+                </div>
+
+                <div class="stat-card p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-percentage text-3xl text-green-500"></i>
+                        <span class="text-xs text-gray-500">GDP占比</span>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1">1.7%</div>
+                    <div class="text-sm text-gray-400">占2025年中国GDP</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2.4 Trillion Visualization -->
+    <section class="py-20 px-4 bg-black relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 20% 50%, #dc2626 0%, transparent 50%), radial-gradient(circle at 80% 50%, #ea580c 0%, transparent 50%);"></div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-4">
+                <span class="text-red-500">2.4万亿</span> 是什么概念？
+            </h2>
+            <p class="text-center text-gray-400 mb-16 text-lg">恒大债务规模的直观展示</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1: Per Capita -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift">
+                    <div class="w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-user-friends text-2xl text-red-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">人均分摊</h3>
+                    <div class="text-4xl font-bold text-red-400 mb-2">¥1,714</div>
+                    <p class="text-gray-400 text-sm">14亿中国人每人承担约1700元，相当于全国每人发1.7个月最低工资</p>
+                </div>
+
+                <!-- Card 2: iPhones -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift">
+                    <div class="w-16 h-16 bg-orange-600/20 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-2xl text-orange-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">可购买手机</h3>
+                    <div class="text-4xl font-bold text-orange-400 mb-2">1.2亿部</div>
+                    <p class="text-gray-400 text-sm">可购买1.2亿部iPhone 15（按6000元/部计算），足够全国人民每10人一部</p>
+                </div>
+
+                <!-- Card 3: Three Gorges -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift">
+                    <div class="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-dam text-2xl text-blue-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">三峡大坝</h3>
+                    <div class="text-4xl font-bold text-blue-400 mb-2">4.5个</div>
+                    <p class="text-gray-400 text-sm">可建造约4.5个三峡大坝（总投资约5000亿元）</p>
+                </div>
+
+                <!-- Card 4: Aircraft Carriers -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift">
+                    <div class="w-16 h-16 bg-gray-600/20 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-ship text-2xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">航空母舰</h3>
+                    <div class="text-4xl font-bold text-gray-300 mb-2">48艘</div>
+                    <p class="text-gray-400 text-sm">可建造约48艘国产航母（山东舰级别，约500亿元/艘）</p>
+                </div>
+
+                <!-- Card 5: Medical Insurance -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift">
+                    <div class="w-16 h-16 bg-green-600/20 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-heartbeat text-2xl text-green-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">医保支出</h3>
+                    <div class="text-4xl font-bold text-green-400 mb-2">3年</div>
+                    <p class="text-gray-400 text-sm">可覆盖全国3年医保总支出，相当于全民医疗保障基金</p>
+                </div>
+
+                <!-- Card 6: Time -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift">
+                    <div class="w-16 h-16 bg-purple-600/20 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-clock text-2xl text-purple-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">时间维度</h3>
+                    <div class="text-4xl font-bold text-purple-400 mb-2">1300年</div>
+                    <p class="text-gray-400 text-sm">每天中500万彩票，需要连续中奖1300多年（从唐朝到现在）</p>
+                </div>
+            </div>
+
+            <!-- Physical Visualization -->
+            <div class="mt-16 glass-panel p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold mb-6 text-center">物理尺寸展示（百元钞票）</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div>
+                        <div class="text-5xl font-bold text-red-500 mb-2">2.7万吨</div>
+                        <p class="text-gray-400">总重量，需要460节火车才能拉完</p>
+                    </div>
+                    <div>
+                        <div class="text-5xl font-bold text-orange-500 mb-2">270座</div>
+                        <p class="text-gray-400">叠起来高度相当于270座珠穆朗玛峰</p>
+                    </div>
+                    <div>
+                        <div class="text-5xl font-bold text-yellow-500 mb-2">9.2圈</div>
+                        <p class="text-gray-400">连起来长度可绕地球赤道9.2圈</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="py-20 px-4 bg-gradient-to-b from-gray-900 to-black">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16">
+                <span class="border-b-4 border-red-600 pb-2">发展历程与崩塌时间线</span>
+            </h2>
+
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-1 h-full timeline-line rounded-full"></div>
+
+                <!-- Timeline Items -->
+                <div class="space-y-12">
+                    <!-- 1996 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-red-600 rounded-full border-4 border-black z-10"></div>
+                        <div class="md:w-1/2 md:pr-12 md:text-right pl-20 md:pl-0">
+                            <div class="glass-panel p-6 rounded-xl hover-lift">
+                                <span class="text-red-500 font-bold text-lg">1996年</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2">创立起步</h3>
+                                <p class="text-gray-400 text-sm">许家印在广州创立恒大，首个楼盘金碧花园2小时售罄，销售额8000万</p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                    </div>
+
+                    <!-- 2009 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-orange-500 rounded-full border-4 border-black z-10"></div>
+                        <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                        <div class="md:w-1/2 md:pl-12 pl-20">
+                            <div class="glass-panel p-6 rounded-xl hover-lift">
+                                <span class="text-orange-500 font-bold text-lg">2009年</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2">香港上市</h3>
+                                <p class="text-gray-400 text-sm">募资132亿港元，成为当年全球最大房地产IPO</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2016 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-yellow-500 rounded-full border-4 border-black z-10"></div>
+                        <div class="md:w-1/2 md:pr-12 md:text-right pl-20 md:pl-0">
+                            <div class="glass-panel p-6 rounded-xl hover-lift">
+                                <span class="text-yellow-500 font-bold text-lg">2016年</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2">世界500强</h3>
+                                <p class="text-gray-400 text-sm">跻身世界500强，成为全球销售额第一的房企，销售额突破3700亿</p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                    </div>
+
+                    <!-- 2020 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-green-500 rounded-full border-4 border-black z-10"></div>
+                        <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                        <div class="md:w-1/2 md:pl-12 pl-20">
+                            <div class="glass-panel p-6 rounded-xl hover-lift border-green-500/30">
+                                <span class="text-green-500 font-bold text-lg">2020年</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2">巅峰时刻</h3>
+                                <p class="text-gray-400 text-sm">营收5072亿元，净利润314亿，世界500强第152位。但财务造假已严重（虚增收入2140亿）</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2021 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-red-600 rounded-full border-4 border-black z-10 animate-pulse"></div>
+                        <div class="md:w-1/2 md:pr-12 md:text-right pl-20 md:pl-0">
+                            <div class="glass-panel p-6 rounded-xl hover-lift border-red-600/50">
+                                <span class="text-red-600 font-bold text-lg">2021年</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2 text-red-400">危机爆发</h3>
+                                <p class="text-gray-400 text-sm">"三道红线"全踩，商票逾期，恒大财富爆雷，营收腰斩至2526亿，亏损6862亿元</p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                    </div>
+
+                    <!-- 2023 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-red-700 rounded-full border-4 border-black z-10"></div>
+                        <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                        <div class="md:w-1/2 md:pl-12 pl-20">
+                            <div class="glass-panel p-6 rounded-xl hover-lift border-red-700/50">
+                                <span class="text-red-700 font-bold text-lg">2023年9月</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2 text-red-500">许家印被捕</h3>
+                                <p class="text-gray-400 text-sm">实控人被采取强制措施，核心高管集体沦陷，42人被审查起诉</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2024 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-gray-600 rounded-full border-4 border-black z-10"></div>
+                        <div class="md:w-1/2 md:pr-12 md:text-right pl-20 md:pl-0">
+                            <div class="glass-panel p-6 rounded-xl hover-lift border-gray-600/50">
+                                <span class="text-gray-500 font-bold text-lg">2024年1月</span>
+                                <h3 class="text-xl font-bold mt-2 mb-2 text-gray-400">清盘令颁布</h3>
+                                <p class="text-gray-400 text-sm">香港高等法院颁布清盘令，31家子公司进入破产清算程序</p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                    </div>
+
+                    <!-- 2025 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-6 h-6 bg-black border-4 border-red-600 rounded-full z-10 animate-pulse"></div>
+                        <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                        <div class="md:w-1/2 md:pl-12 pl-20">
+                            <div class="glass-panel p-6 rounded-xl hover-lift border-red-600 bg-red-950/20">
+                                <span class="text-red-500 font-bold text-lg">2025年8月</span>
+                                <h3 class="text-2xl font-bold mt-2 mb-2 text-red-500">正式退市</h3>
+                                <p class="text-gray-400 text-sm">中国恒大从港交所正式摘牌，结束15年上市历程，标志着一个时代的终结</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Revenue Chart -->
+    <section class="py-20 px-4 bg-black">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">年收入变化趋势（2018-2023）</h2>
+            <div class="glass-panel p-8 rounded-2xl">
+                <canvas id="revenueChart" height="100"></canvas>
+            </div>
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-sm">
+                <div class="glass-panel p-4 rounded-lg">
+                    <div class="text-red-400 font-bold">2018</div>
+                    <div class="text-gray-400">4662亿</div>
+                </div>
+                <div class="glass-panel p-4 rounded-lg">
+                    <div class="text-red-400 font-bold">2019</div>
+                    <div class="text-gray-400">4776亿（虚增）</div>
+                </div>
+                <div class="glass-panel p-4 rounded-lg border-red-600/50">
+                    <div class="text-red-400 font-bold">2020</div>
+                    <div class="text-gray-400">5072亿（顶峰）</div>
+                </div>
+                <div class="glass-panel p-4 rounded-lg">
+                    <div class="text-red-400 font-bold">2021</div>
+                    <div class="text-gray-400">2526亿（腰斩）</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Evergrande Song & Dance Group -->
+    <section class="py-20 px-4 bg-gradient-to-b from-black via-gray-900 to-black">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-pink-500 text-sm tracking-widest">EVERGRANDE SONG & DANCE GROUP</span>
+                <h2 class="text-4xl font-bold mt-2">恒大歌舞团</h2>
+                <p class="text-gray-400 mt-4">神秘的42层艺术团</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass-panel p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-info-circle text-pink-500 mr-3"></i>基本情况
+                    </h3>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-calendar text-pink-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-semibold">成立时间：</span>2010年10月，2011年1月注册为广州恒大民族歌舞团有限公司
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-building text-pink-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-semibold">性质：</span>恒大集团全资子公司，大型专业艺术团体
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-star text-pink-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-semibold">成就：</span>四次登上央视春晚，《星光大道》特别优秀奖，国际舞蹈比赛金奖
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-pink-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-semibold">位置：</span>恒大总部42层，对外封闭，仅高管可刷卡进入
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-users text-pink-500 mr-3"></i>成员要求与现状
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-800/50 p-4 rounded-lg">
+                            <h4 class="font-bold text-pink-400 mb-2">选拔标准</h4>
+                            <p class="text-sm text-gray-400">985高校毕业生，身高168-175cm，体重45-53kg，长相甜美，需接受严格训练和医美检查</p>
+                        </div>
+                        <div class="bg-gray-800/50 p-4 rounded-lg">
+                            <h4 class="font-bold text-pink-400 mb-2">团长白珊珊</h4>
+                            <p class="text-sm text-gray-400">网传年薪上千万、深圳湾一号豪宅，现已低调嫁人</p>
+                        </div>
+                        <div class="bg-red-950/30 border border-red-600/30 p-4 rounded-lg">
+                            <h4 class="font-bold text-red-400 mb-2">现状（2026年）</h4>
+                            <p class="text-sm text-gray-400">恒大危机后，歌舞团基本停摆、解散，无公开演出与运营信息</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 glass-panel p-6 rounded-xl border-l-4 border-pink-500">
+                <p class="text-gray-300 italic">
+                    <i class="fas fa-quote-left text-pink-500 mr-2"></i>
+                    网传在42层谈判的项目"没有谈不成的"，歌舞团通过演出为恒大增加知名度和美誉度，如《恒大冰泉大型歌舞晚会》全国巡演观众过亿。
+                    <i class="fas fa-quote-right text-pink-500 ml-2"></i>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executives Section -->
+    <section class="py-20 px-4 bg-black">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-4">老板与高管现状</h2>
+            <p class="text-center text-gray-400 mb-12">42人被审查起诉，核心团队几乎全军覆没</p>
+
+            <!-- Xu Jiayin Profile -->
+            <div class="glass-panel p-8 rounded-2xl mb-8 border-red-600/50">
+                <div class="flex flex-col md:flex-row items-start gap-8">
+                    <div class="w-full md:w-1/3">
+                        <div class="bg-gradient-to-br from-red-900/40 to-black p-6 rounded-xl text-center">
+                            <div class="w-24 h-24 bg-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-user-tie text-4xl text-red-500"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">许家印</h3>
+                            <p class="text-red-400">创始人、董事局主席</p>
+                            <div class="mt-4 inline-block px-4 py-2 bg-red-600/20 rounded-full text-red-400 text-sm">
+                                <i class="fas fa-lock mr-2"></i>羁押中（860天+）
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-900/50 p-4 rounded-lg">
+                                <span class="text-gray-500 text-sm">强制措施</span>
+                                <p class="text-white font-semibold">2023年9月28日被采取强制措施</p>
+                            </div>
+                            <div class="bg-gray-900/50 p-4 rounded-lg">
+                                <span class="text-gray-500 text-sm">关押地点</span>
+                                <p class="text-white font-semibold">深圳特殊拘留所/看守所</p>
+                            </div>
+                            <div class="bg-gray-900/50 p-4 rounded-lg">
+                                <span class="text-gray-500 text-sm">行政处罚</span>
+                                <p class="text-white font-semibold">证监会罚款4700万，终身市场禁入</p>
+                            </div>
+                            <div class="bg-gray-900/50 p-4 rounded-lg">
+                                <span class="text-gray-500 text-sm">资产追缴</span>
+                                <p class="text-white font-semibold">全球约550亿资产被冻结</p>
+                            </div>
+                        </div>
+                        <div class="bg-red-950/20 border border-red-600/30 p-4 rounded-lg">
+                            <h4 class="font-bold text-red-400 mb-2">面临指控</h4>
+                            <p class="text-gray-300 text-sm">非法集资（超4000亿）、财务造假（虚增收入5641亿）、行贿（超2亿）、欺诈发行证券、挪用资金等</p>
+                        </div>
+                        <div class="bg-orange-950/20 border border-orange-600/30 p-4 rounded-lg">
+                            <h4 class="font-bold text-orange-400 mb-2">刑期预测</h4>
+                            <p class="text-gray-300 text-sm">案件已进入审查起诉阶段，数罪并罚<strong class="text-orange-400">大概率判无期徒刑</strong>，死刑概率不足5%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Executives -->
+            <h3 class="text-2xl font-bold mb-6">其他核心高管</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-panel p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-bold text-lg">夏海钧</h4>
+                        <span class="px-3 py-1 bg-red-600/20 text-red-400 text-xs rounded-full">前CEO</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">终身市场禁入，刑期预测10-15年</p>
+                    <p class="text-xs text-gray-500">据传已转移资产至境外</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-bold text-lg">潘大荣</h4>
+                        <span class="px-3 py-1 bg-red-600/20 text-red-400 text-xs rounded-full">前CFO</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">被罚900万，十年市场禁入，刑期预测8-12年</p>
+                    <p class="text-xs text-gray-500">2023年9月被调查</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-bold text-lg">柯鹏</h4>
+                        <span class="px-3 py-1 bg-red-600/20 text-red-400 text-xs rounded-full">前地产总裁</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">涉资金挪用、利益输送，刑期预测5-8年</p>
+                    <p class="text-xs text-gray-500">已被刑拘</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-bold text-lg">刘永灼</h4>
+                        <span class="px-3 py-1 bg-red-600/20 text-red-400 text-xs rounded-full">前汽车总裁</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">刑期预测5-10年</p>
+                    <p class="text-xs text-gray-500">被采取刑事强制措施</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-bold text-lg">杜亮</h4>
+                        <span class="px-3 py-1 bg-red-600/20 text-red-400 text-xs rounded-full">恒大财富法人</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">刑期预测5-8年</p>
+                    <p class="text-xs text-gray-500">爆雷前提前赎回理财，已被刑拘</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl hover-lift">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-bold text-lg">甄立涛</h4>
+                        <span class="px-3 py-1 bg-red-600/20 text-red-400 text-xs rounded-full">前物业董事长</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">刑期预测3-7年</p>
+                    <p class="text-xs text-gray-500">涉134亿存款违规质押，被调查</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Root Causes -->
+    <section class="py-20 px-4 bg-gradient-to-b from-gray-900 to-black">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-4">灭亡的根本原因</h2>
+            <p class="text-center text-gray-400 mb-12 max-w-3xl mx-auto">
+                高杠杆+盲目多元化+治理失效+政策与周期共振，导致现金流彻底断裂、资不抵债、信用崩塌
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Cause 1 -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift border-l-4 border-red-600">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-red-600/20 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-2xl font-bold text-red-500">01</span>
+                        </div>
+                        <h3 class="text-xl font-bold">高杠杆+短贷长投</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-red-500 mt-1 mr-2 text-xs"></i>负债从5000亿飙升至<strong class="text-white">2.4万亿</strong></li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-red-500 mt-1 mr-2 text-xs"></i>负债率超<strong class="text-white">85%</strong>（远超行业60%安全线）</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-red-500 mt-1 mr-2 text-xs"></i>短期融资占比62%，却投3年以上项目</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-red-500 mt-1 mr-2 text-xs"></i>三四线囤地过多（38%在人口流出区）</li>
+                    </ul>
+                </div>
+
+                <!-- Cause 2 -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift border-l-4 border-orange-600">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-600/20 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-2xl font-bold text-orange-500">02</span>
+                        </div>
+                        <h3 class="text-xl font-bold">盲目多元化</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-orange-500 mt-1 mr-2 text-xs"></i>跨界造车烧掉<strong class="text-white">2000亿</strong></li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-orange-500 mt-1 mr-2 text-xs"></i>恒大冰泉、足球、歌舞团等非主业巨亏</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-orange-500 mt-1 mr-2 text-xs"></i>副业严重依赖地产输血，缺乏盈利能力</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-orange-500 mt-1 mr-2 text-xs"></i>追求"世界第一"，疯狂囤地冲规模</li>
+                    </ul>
+                </div>
+
+                <!-- Cause 3 -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift border-l-4 border-yellow-600">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-yellow-600/20 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-2xl font-bold text-yellow-500">03</span>
+                        </div>
+                        <h3 class="text-xl font-bold">治理失效+财务造假</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-yellow-500 mt-1 mr-2 text-xs"></i>许家印独裁，无制衡、决策拍脑袋</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-yellow-500 mt-1 mr-2 text-xs"></i>2019-2020年虚增收入<strong class="text-white">5641亿</strong>（占同期营收35%）</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-yellow-500 mt-1 mr-2 text-xs"></i>欺诈发债、欺骗市场</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-yellow-500 mt-1 mr-2 text-xs"></i>家族分红+转移资产超<strong class="text-white">500亿</strong></li>
+                    </ul>
+                </div>
+
+                <!-- Cause 4 -->
+                <div class="glass-panel p-8 rounded-2xl hover-lift border-l-4 border-blue-600">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-600/20 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-2xl font-bold text-blue-500">04</span>
+                        </div>
+                        <h3 class="text-xl font-bold">政策收紧+周期下行</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-blue-500 mt-1 mr-2 text-xs"></i>2020年"三道红线"卡死融资</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-blue-500 mt-1 mr-2 text-xs"></i>预售资金监管趋严</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-blue-500 mt-1 mr-2 text-xs"></i>房地产下行、销售腰斩</li>
+                        <li class="flex items-start"><i class="fas fa-chevron-right text-blue-500 mt-1 mr-2 text-xs"></i>回款枯竭，<strong class="text-white">流动性瞬间死亡</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Status Summary -->
+    <section class="py-20 px-4 bg-black">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">如今恒大还存在吗？</h2>
+            <div class="glass-panel p-8 rounded-2xl border-red-600/50 bg-red-950/10">
+                <div class="text-6xl mb-4">⚠️</div>
+                <h3 class="text-3xl font-bold text-red-500 mb-4">中国恒大集团已实质消亡</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 text-left">
+                    <div class="bg-black/30 p-4 rounded-lg">
+                        <i class="fas fa-times-circle text-red-500 text-2xl mb-2"></i>
+                        <h4 class="font-bold mb-2">2025年8月25日</h4>
+                        <p class="text-sm text-gray-400">正式从港交所摘牌退市，结束15年上市历程</p>
+                    </div>
+                    <div class="bg-black/30 p-4 rounded-lg">
+                        <i class="fas fa-gavel text-red-500 text-2xl mb-2"></i>
+                        <h4 class="font-bold mb-2">清盘状态</h4>
+                        <p class="text-sm text-gray-400">2024年1月香港法院已颁布清盘令，清盘人接管</p>
+                    </div>
+                    <div class="bg-black/30 p-4 rounded-lg">
+                        <i class="fas fa-building text-red-500 text-2xl mb-2"></i>
+                        <h4 class="font-bold mb-2">子公司破产</h4>
+                        <p class="text-sm text-gray-400">31家子公司进入破产清算，覆盖地产、汽车、文旅、物业等</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-gray-400">
+                    <strong class="text-white">结论：</strong>法律主体未注销，但商业上已"死亡"。境内项目多由政府"保交楼"专班接管；境外由清盘人主导资产变现。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- China GDP 2025 -->
+    <section class="py-20 px-4 bg-gradient-to-b from-black to-gray-900">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">2025年中国GDP对比</h2>
+            <div class="glass-panel p-8 rounded-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <div class="mb-6">
+                            <span class="text-gray-400 text-sm">2025年中国GDP总量</span>
+                            <div class="text-5xl font-bold text-green-400 mt-2">140.19万亿元</div>
+                            <div class="text-gray-400 mt-1">同比增长5.0%</div>
+                        </div>
+                        <div class="mb-6">
+                            <span class="text-gray-400 text-sm">恒大负债</span>
+                            <div class="text-5xl font-bold text-red-500 mt-2">2.4万亿元</div>
+                        </div>
+                        <div class="bg-gray-800/50 p-4 rounded-lg">
+                            <span class="text-gray-400 text-sm">占比</span>
+                            <div class="text-3xl font-bold text-orange-400 mt-1">1.7%</div>
+                            <p class="text-xs text-gray-500 mt-2">相当于1个广西+1个山西全年GDP总和</p>
+                        </div>
+                    </div>
+                    <div>
+                        <canvas id="gdpChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 bg-black border-t border-gray-800">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-gray-500 text-sm">
+                数据来源：中国证监会、香港高等法院、国家统计局、公开新闻报道<br>
+                最后更新：2026年3月
+            </p>
+            <p class="text-gray-600 text-xs mt-4">
+                本页面仅供信息展示，不构成任何投资建议
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['2018', '2019', '2020', '2021', '2022', '2023'],
+                datasets: [{
+                    label: '营业收入（亿元）',
+                    data: [4662, 4776, 5072, 2526, 2301, 1290],
+                    borderColor: '#dc2626',
+                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#dc2626',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    }
+                }
+            }
+        });
+
+        // GDP Chart
+        const gdpCtx = document.getElementById('gdpChart').getContext('2d');
+        new Chart(gdpCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['恒大负债 2.4万亿', '其他 137.79万亿'],
+                datasets: [{
+                    data: [2.4, 137.79],
+                    backgroundColor: ['#dc2626', '#10b981'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#9ca3af',
+                            padding: 20
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

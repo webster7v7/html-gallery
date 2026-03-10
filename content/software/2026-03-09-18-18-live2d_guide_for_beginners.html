@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live2D 零基础入门指南 - 让你的角色动起来</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #FF6B9D 0%, #FF8E53 50%, #FF6B6B 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部 */
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        .header .logo {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header .badges {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 导航 */
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        
+        .nav-menu h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #FF6B9D;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+        }
+        
+        .nav-item {
+            background: #f8f9fa;
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: #FF6B9D;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* 章节 */
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #FF6B9D;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #FFE4EC;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section h3 {
+            color: #E91E63;
+            font-size: 1.3em;
+            margin: 30px 0 15px;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .section ul, .section ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .section li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        /* 代码块 */
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .code-block .comment {
+            color: #75715e;
+        }
+        
+        .code-block .keyword {
+            color: #66d9ef;
+        }
+        
+        .code-block .string {
+            color: #a6e22e;
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .tip-box.warning {
+            background: #FFF3E0;
+            border-left-color: #FF9800;
+        }
+        
+        .tip-box.success {
+            background: #E8F5E9;
+            border-left-color: #4CAF50;
+        }
+        
+        .tip-box.error {
+            background: #FFEBEE;
+            border-left-color: #F44336;
+        }
+        
+        .tip-box.pink {
+            background: #FFE4EC;
+            border-left-color: #FF6B9D;
+        }
+        
+        .tip-box h4 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+        
+        .tip-box.warning h4 {
+            color: #E65100;
+        }
+        
+        .tip-box.success h4 {
+            color: #2E7D32;
+        }
+        
+        .tip-box.error h4 {
+            color: #C62828;
+        }
+        
+        .tip-box.pink h4 {
+            color: #C2185B;
+        }
+        
+        /* 步骤 */
+        .steps {
+            counter-reset: step;
+        }
+        
+        .step {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 25px;
+        }
+        
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FF6B9D, #FF8E53);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .step h4 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        /* 工具卡片 */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .tool-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tool-card:hover {
+            border-color: #FF6B9D;
+            transform: translateY(-3px);
+        }
+        
+        .tool-card h4 {
+            color: #FF6B9D;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .tool-card p {
+            font-size: 0.95em;
+            margin-bottom: 0;
+        }
+        
+        /* 快捷键表格 */
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .shortcut-table th,
+        .shortcut-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .shortcut-table th {
+            background: #FFE4EC;
+            color: #C2185B;
+            font-weight: 600;
+        }
+        
+        .shortcut-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .shortcut-table kbd {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-family: monospace;
+            box-shadow: 0 2px 0 #ddd;
+        }
+        
+        /* 概念卡片 */
+        .concept-box {
+            background: linear-gradient(135deg, #FFE4EC 0%, #FFF0F5 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .concept-box h4 {
+            color: #C2185B;
+            margin-bottom: 15px;
+        }
+        
+        /* 对比图说明 */
+        .compare-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .compare-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .compare-item h5 {
+            color: #FF6B9D;
+            margin-bottom: 10px;
+        }
+        
+        /* 流程图 */
+        .flow-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 25px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .flow-item {
+            background: linear-gradient(135deg, #FF6B9D, #FF8E53);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+        }
+        
+        .flow-arrow {
+            color: #FF6B9D;
+            font-size: 1.5em;
+        }
+        
+        /* 返回顶部 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #FF6B9D;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5em;
+            box-shadow: 0 4px 15px rgba(255,107,157,0.4);
+            transition: all 0.3s;
+            z-index: 99;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255,107,157,0.5);
+        }
+        
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+        
+        .footer p {
+            opacity: 0.9;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .compare-box {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">🎭</div>
+            <h1>Live2D 零基础入门指南</h1>
+            <p>无需3D建模，让静态2D角色拥有生动的表情和动作，开启你的虚拟偶像之旅</p>
+            <div class="badges">
+                <span class="badge">🎨 零基础友好</span>
+                <span class="badge">🎬 动画制作</span>
+                <span class="badge">👾 虚拟主播</span>
+                <span class="badge">🎮 游戏应用</span>
+            </div>
+        </header>
+        
+        <!-- 导航 -->
+        <nav class="nav-menu">
+            <h3>📚 学习导航</h3>
+            <div class="nav-grid">
+                <a href="#intro" class="nav-item">什么是Live2D</a>
+                <a href="#software" class="nav-item">软件下载</a>
+                <a href="#prepare" class="nav-item">前期准备</a>
+                <a href="#basic" class="nav-item">基础操作</a>
+                <a href="#deform" class="nav-item">变形器</a>
+                <a href="#param" class="nav-item">参数系统</a>
+                <a href="#animate" class="nav-item">动画制作</a>
+                <a href="#export" class="nav-item">导出应用</a>
+                <a href="#tips" class="nav-item">实用技巧</a>
+                <a href="#resources" class="nav-item">学习资源</a>
+            </div>
+        </nav>
+        
+        <!-- 什么是Live2D -->
+        <section class="section" id="intro">
+            <h2><span>🎯</span> 什么是 Live2D？</h2>
+            
+            <p>Live2D 是一种革命性的<strong>2D角色动画技术</strong>，它能够让静态的2D图像产生类似3D的立体动态效果，无需进行复杂的3D建模。</p>
+            
+            <div class="concept-box">
+                <h4>💡 核心原理</h4>
+                <p>Live2D 通过对角色的2D原画进行<strong>分层切片</strong>，然后为每个部件添加<strong>变形控制点</strong>，最后通过<strong>参数驱动</strong>这些控制点来实现各种表情和动作。</p>
+            </div>
+            
+            <div class="compare-box">
+                <div class="compare-item">
+                    <h5>🎨 传统逐帧动画</h5>
+                    <p>每一帧都需要单独绘制</p>
+                    <p>工作量大、耗时久</p>
+                    <p>修改成本高</p>
+                </div>
+                <div class="compare-item">
+                    <h5>🎭 Live2D</h5>
+                    <p>一张原图即可驱动</p>
+                    <p>实时交互、参数控制</p>
+                    <p>易于修改和复用</p>
+                </div>
+            </div>
+            
+            <h3>🌟 Live2D 的应用场景</h3>
+            <ul>
+                <li><strong>虚拟主播 (VTuber)</strong> - 通过面捕技术实时驱动角色表情</li>
+                <li><strong>游戏角色</strong> - 视觉小说、恋爱游戏、RPG中的动态立绘</li>
+                <li><strong>App/网站看板娘</strong> - 可交互的网页角色</li>
+                <li><strong>数字标牌/展示</strong> - 商场、展会中的互动展示</li>
+                <li><strong>视频制作</strong> - 省时省力的2D动画视频</li>
+            </ul>
+            
+            <div class="tip-box pink">
+                <h4>🎀 学习 Live2D 需要什么基础？</h4>
+                <p>好消息是：<strong>几乎零门槛！</strong> 你不需要会画画，也不需要懂编程。只要有耐心学习软件操作，就能做出不错的作品。当然，如果有绘画基础会让你在角色设计方面更有优势。</p>
+            </div>
+        </section>
+        
+        <!-- 软件下载 -->
+        <section class="section" id="software">
+            <h2><span>💿</span> 软件下载与安装</h2>
+            
+            <h3>Live2D Cubism 版本选择</h3>
+            <p>Live2D Cubism 是官方制作软件，分为三个版本：</p>
+            
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h4>🆓 Cubism FREE</h4>
+                    <p>免费版，适合学习和小规模商业使用。功能完整但输出规格有限制。</p>
+                </div>
+                <div class="tool-card">
+                    <h4>💼 Cubism PRO</h4>
+                    <p>专业版，无输出限制，适合商业项目。提供试用版可供体验。</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🏢 Cubism Enterprise</h4>
+                    <p>企业版，包含SDK源码和技术支持，适合大型游戏开发团队。</p>
+                </div>
+            </div>
+            
+            <div class="tip-box success">
+                <h4>✅ 推荐：从 FREE 版开始学习</h4>
+                <p>初学者完全够用！官网注册账号后即可免费下载，后续可以根据需求考虑升级。</p>
+            </div>
+            
+            <h3>📥 下载步骤</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>访问官网</h4>
+                    <p>打开 Live2D 官方网站：<a href="https://www.live2d.com" target="_blank">www.live2d.com</a></p>
+                </div>
+                <div class="step">
+                    <h4>注册账号</h4>
+                    <p>点击右上角注册 Live2D ID，填写邮箱和密码完成注册。</p>
+                </div>
+                <div class="step">
+                    <h4>下载软件</h4>
+                    <p>进入 Download 页面，选择 Cubism Editor FREE 版本，下载对应系统的安装包（Windows/Mac）。</p>
+                </div>
+                <div class="step">
+                    <h4>安装运行</h4>
+                    <p>运行安装程序，按提示完成安装。首次启动需要登录 Live2D ID。</p>
+                </div>
+            </div>
+            
+            <h3>🔧 系统要求</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>项目</th>
+                    <th>最低配置</th>
+                    <th>推荐配置</th>
+                </tr>
+                <tr>
+                    <td>操作系统</td>
+                    <td>Windows 10 / macOS 10.13</td>
+                    <td>Windows 11 / macOS 12+</td>
+                </tr>
+                <tr>
+                    <td>处理器</td>
+                    <td>支持64位的多核CPU</td>
+                    <td>Intel i5 / Apple M1 及以上</td>
+                </tr>
+                <tr>
+                    <td>内存</td>
+                    <td>4 GB</td>
+                    <td>8 GB 及以上</td>
+                </tr>
+                <tr>
+                    <td>显卡</td>
+                    <td>支持 OpenGL 3.3</td>
+                    <td>独立显卡更佳</td>
+                </tr>
+                <tr>
+                    <td>硬盘空间</td>
+                    <td>10 GB</td>
+                    <td>SSD，20GB+</td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- 前期准备 -->
+        <section class="section" id="prepare">
+            <h2><span>🎨</span> 前期准备：原画素材</h2>
+            
+            <h3>📐 原画要求</h3>
+            <p>Live2D 需要一张<strong>分层的 PSD 文件</strong>作为素材源。如果你不会画画，可以：</p>
+            <ul>
+                <li>使用官方提供的示例模型练习</li>
+                <li>委托画师绘制（约稿）</li>
+                <li>使用免费/付费的Live2D用立绘素材</li>
+            </ul>
+            
+            <div class="tip-box warning">
+                <h4>⚠️ 重要：图层分组规范</h4>
+                <p>原画的图层分组直接影响建模效率。建议在建模前就和画师沟通好图层结构，或者自己整理图层。</p>
+            </div>
+            
+            <h3>📋 标准图层结构</h3>
+            <div class="code-block">
+📁 角色名称/
+├── 📁 头部/
+│   ├── 📁 前发/          （刘海，最外层）
+│   ├── 📁 脸部/
+│   │   ├── 脸轮廓
+│   │   ├── 眉毛_左
+│   │   ├── 眉毛_右
+│   │   ├── 眼睛_左/
+│   │   │   ├── 眼白
+│   │   │   ├── 眼珠
+│   │   │   └── 高光
+│   │   ├── 眼睛_右/
+│   │   ├── 鼻子
+│   │   └── 嘴巴/
+│   │       ├── 口腔
+│   │       ├── 牙齿
+│   │       └── 舌头
+│   ├── 📁 后发/          （后脑勺头发）
+│   └── 📁 配件/         （发饰、眼镜等）
+└── 📁 身体/
+    ├── 脖子
+    ├── 身体
+    ├── 📁 手臂_左/
+    └── 📁 手臂_右/
+            </div>
+            
+            <h3>✅ 原画绘制要点</h3>
+            <div class="tip-box pink">
+                <h4>🎀 头部绘制规范</h4>
+                <ul>
+                    <li><strong>五官位置：</strong>眼睛在头部中线偏下，鼻子在眼睛和下巴中间</li>
+                    <li><strong>图层遮挡：</strong>头发要画全，包括被脸挡住的部分（用于转头时显示）</li>
+                    <li><strong>闭眼状态：</strong>建议额外绘制闭眼图层，或闭眼时眼睛不会变形的结构</li>
+                    <li><strong>嘴巴内部：</strong>画闭嘴时也要画出口腔内部，方便做张嘴动画</li>
+                </ul>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 身体绘制规范</h4>
+                <ul>
+                    <li><strong>关节处：</strong>手臂、腿的关节处要画得圆润，方便变形</li>
+                    <li><strong>身体遮挡：</strong>被头发遮挡的身体部分也要画完整</li>
+                    <li><strong>对称部件：</strong>左右对称的部件可以先画一边，另一边复制翻转</li>
+                </ul>
+            </div>
+            
+            <h3>🎯 画布尺寸建议</h3>
+            <ul>
+                <li><strong>一般用途：</strong>2000×2000 像素以上</li>
+                <li><strong>VTuber使用：</strong>建议 3000×3000 像素以上，确保高清</li>
+                <li><strong>分辨率：</strong>72~150 DPI 即可，屏幕显示不需要印刷级DPI</li>
+            </ul>
+        </section>
+        
+        <!-- 基础操作 -->
+        <section class="section" id="basic">
+            <h2><span>🛠️</span> 基础操作入门</h2>
+            
+            <h3>🚀 快速上手流程</h3>
+            <div class="flow-box">
+                <span class="flow-item">导入PSD</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">建立变形器</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">设置参数</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">测试动画</span>
+            </div>
+            
+            <h3>1️⃣ 导入原画</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>打开编辑器</h4>
+                    <p>启动 Live2D Cubism Editor，选择「创建新项目」。</p>
+                </div>
+                <div class="step">
+                    <h4>导入PSD</h4>
+                    <p>菜单栏选择「文件」→「导入」→「PSD文件」，选择你的角色PSD。</p>
+                </div>
+                <div class="step">
+                    <h4>检查图层</h4>
+                    <p>在左侧面板查看所有图层是否正确导入，可以右键重命名图层方便管理。</p>
+                </div>
+            </div>
+            
+            <h3>2️⃣ 界面介绍</h3>
+            <p>Live2D 编辑器界面主要分为几个区域：</p>
+            
+            <table class="shortcut-table">
+                <tr>
+                    <th>区域</th>
+                    <th>位置</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td>视图区域</td>
+                    <td>中央</td>
+                    <td>显示和编辑角色，预览效果</td>
+                </tr>
+                <tr>
+                    <td>部件面板</td>
+                    <td>左上</td>
+                    <td>管理所有图层/部件，调整顺序</td>
+                </tr>
+                <tr>
+                    <td>检查器面板</td>
+                    <td>右上</td>
+                    <td>调整选中部件的属性、混合模式</td>
+                </tr>
+                <tr>
+                    <td>参数面板</td>
+                    <td>左下</td>
+                    <td>创建和管理动画参数</td>
+                </tr>
+                <tr>
+                    <td>时间轴面板</td>
+                    <td>底部</td>
+                    <td>制作动画时使用的关键帧编辑</td>
+                </tr>
+            </table>
+            
+            <h3>3️⃣ 常用工具</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>工具</th>
+                    <th>快捷键</th>
+                    <th>功能说明</th>
+                </tr>
+                <tr>
+                    <td>选择工具</td>
+                    <td><kbd>V</kbd></td>
+                    <td>选择和移动部件</td>
+                </tr>
+                <tr>
+                    <td>套索工具</td>
+                    <td><kbd>L</kbd></td>
+                    <td>框选多个控制点</td>
+                </tr>
+                <tr>
+                    <td>画笔工具</td>
+                    <td><kbd>B</kbd></td>
+                    <td>绘制变形网格</td>
+                </tr>
+                <tr>
+                    <td>橡皮工具</td>
+                    <td><kbd>E</kbd></td>
+                    <td>删除网格或控制点</td>
+                </tr>
+                <tr>
+                    <td>变形笔刷</td>
+                    <td><kbd>R</kbd></td>
+                    <td>柔化变形效果</td>
+                </tr>
+                <tr>
+                    <td>手型工具</td>
+                    <td><kbd>Space</kbd>+拖拽</td>
+                    <td>平移画布</td>
+                </tr>
+                <tr>
+                    <td>缩放工具</td>
+                    <td><kbd>Ctrl</kbd>+滚轮</td>
+                    <td>放大缩小视图</td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- 变形器 -->
+        <section class="section" id="deform">
+            <h2><span>🎭</span> 变形器 (Deformer) 详解</h2>
+            
+            <p>变形器是 Live2D 的核心概念，它负责控制部件的变形。主要有两种类型：</p>
+            
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h4>🔷 曲面变形器 (Warp Deformer)</h4>
+                    <p>使用网格控制变形，适合做曲线变形（如头发飘动、身体弯曲）。是最常用的变形器类型。</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🔲 旋转变形器 (Rotation Deformer)</h4>
+                    <p>以某一点为中心进行旋转，适合做关节运动（如手臂摆动、头部转动）。</p>
+                </div>
+            </div>
+            
+            <h3>📐 曲面变形器创建步骤</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>选中部件</h4>
+                    <p>在部件面板中选中要添加变形器的图层（如刘海）。</p>
+                </div>
+                <div class="step">
+                    <h4>创建变形器</h4>
+                    <p>点击菜单「编辑」→「创建曲面变形器」，或按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>。</p>
+                </div>
+                <div class="step">
+                    <h4>设置网格</h4>
+                    <p>在弹窗中设置网格数量。新手建议 3×3 或 4×4，后期可调整。</p>
+                </div>
+                <div class="step">
+                    <h4>调整控制点</h4>
+                    <p>拖动控制点调整部件形状，观察变形效果。</p>
+                </div>
+            </div>
+            
+            <h3>🔄 旋转变形器创建步骤</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>选中部件</h4>
+                    <p>选择需要做旋转运动的部件（如头部、手臂）。</p>
+                </div>
+                <div class="step">
+                    <h4>创建变形器</h4>
+                    <p>点击菜单「编辑」→「创建旋转变形器」，或按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>。</p>
+                </div>
+                <div class="step">
+                    <h4>设置旋转中心</h4>
+                    <p>点击确定旋转中心点（如头部的脖子位置）。</p>
+                </div>
+                <div class="step">
+                    <h4>测试旋转</h4>
+                    <p>拖动控制点测试旋转效果，调整范围和限制。</p>
+                </div>
+            </div>
+            
+            <div class="tip-box pink">
+                <h4>🎀 变形器层级技巧</h4>
+                <p>变形器可以嵌套！例如：</p>
+                <ul>
+                    <li>头部整体 → 旋转变形器（控制转头）</li>
+                    <li>　└ 头发 → 曲面变形器（控制头发飘动）</li>
+                    <li>　　　└ 发梢 → 另一个曲面变形器（更细腻的摆动）</li>
+                </ul>
+                <p>合理的层级结构能让动画更自然！</p>
+            </div>
+            
+            <h3>✏️ 编辑变形器的技巧</h3>
+            <ul>
+                <li><strong>添加控制点：</strong>选中变形器，按 <kbd>Ctrl</kbd> 点击边缘可添加控制点</li>
+                <li><strong>删除控制点：</strong>选中点后按 <kbd>Delete</kbd></li>
+                <li><strong>调整网格密度：</strong>右键变形器 →「编辑变形器」→ 修改分割数</li>
+                <li><strong>多个点同时移动：</strong>用套索工具框选多个点后统一拖动</li>
+            </ul>
+        </section>
+        
+        <!-- 参数系统 -->
+        <section class="section" id="param">
+            <h2><span>🎚️</span> 参数系统 (Parameter)</h2>
+            
+            <p>参数是控制 Live2D 动画的"开关"和"滑块"。每个参数对应一种动作或表情，通过改变参数值来驱动变形器。</p>
+            
+            <div class="concept-box">
+                <h4>💡 参数的理解方式</h4>
+                <p>想象参数就是一个从 -1 到 1（或 0 到 1）的滑块：</p>
+                <ul>
+                    <li><strong>角度 X：</strong>-1（左转）←→ 0（正面）←→ 1（右转）</li>
+                    <li><strong>眼睛开闭：</strong>0（闭眼）←→ 1（睁眼）</li>
+                    <li><strong>嘴巴开合：</strong>0（闭嘴）←→ 1（张嘴）</li>
+                </ul>
+            </div>
+            
+            <h3>📋 标准参数列表（VTuber常用）</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>参数名</th>
+                    <th>范围</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>Angle X / 角度 X</td>
+                    <td>-30 ~ 30</td>
+                    <td>头部左右转动</td>
+                </tr>
+                <tr>
+                    <td>Angle Y / 角度 Y</td>
+                    <td>-30 ~ 30</td>
+                    <td>头部上下点头</td>
+                </tr>
+                <tr>
+                    <td>Angle Z / 角度 Z</td>
+                    <td>-30 ~ 30</td>
+                    <td>头部左右倾斜</td>
+                </tr>
+                <tr>
+                    <td>Eye L Open</td>
+                    <td>0 ~ 1</td>
+                    <td>左眼开闭</td>
+                </tr>
+                <tr>
+                    <td>Eye R Open</td>
+                    <td>0 ~ 1</td>
+                    <td>右眼开闭</td>
+                </tr>
+                <tr>
+                    <td>Eye L Smile</td>
+                    <td>0 ~ 1</td>
+                    <td>左眼笑眼程度</td>
+                </tr>
+                <tr>
+                    <td>Eye R Smile</td>
+                    <td>0 ~ 1</td>
+                    <td>右眼笑眼程度</td>
+                </tr>
+                <tr>
+                    <td>Mouth Open</td>
+                    <td>0 ~ 1</td>
+                    <td>嘴巴开合</td>
+                </tr>
+                <tr>
+                    <td>Mouth Form</td>
+                    <td>-1 ~ 1</td>
+                    <td>嘴型变化（-1笑 ~ 1生气）</td>
+                </tr>
+                <tr>
+                    <td>Brow L Y / R Y</td>
+                    <td>-1 ~ 1</td>
+                    <td>眉毛上下</td>
+                </tr>
+                <tr>
+                    <td>Brow L X / R X</td>
+                    <td>-1 ~ 1</td>
+                    <td>眉毛左右移动</td>
+                </tr>
+                <tr>
+                    <td>Brow L Angle / R Angle</td>
+                    <td>-1 ~ 1</td>
+                    <td>眉毛角度</td>
+                </tr>
+                <tr>
+                    <td>Body X / Y</td>
+                    <td>-10 ~ 10</td>
+                    <td>身体随头部移动</td>
+                </tr>
+                <tr>
+                    <td>Breath</td>
+                    <td>0 ~ 1</td>
+                    <td>呼吸动画</td>
+                </tr>
+            </table>
+            
+            <h3>📝 创建参数的三种方式</h3>
+            
+            <h4>方式一：使用标准参数（推荐新手）</h4>
+            <ol>
+                <li>打开「参数」面板</li>
+                <li>点击右上角菜单 →「追加标准参数」</li>
+                <li>勾选需要的参数类型（如脸部、身体等）</li>
+                <li>自动创建一整套标准参数</li>
+            </ol>
+            
+            <h4>方式二：从模板导入</h4>
+            <ol>
+                <li>菜单「文件」→「打开」</li>
+                <li>选择官方示例模型或模板</li>
+                <li>复制需要的参数到自己的项目</li>
+            </ol>
+            
+            <h4>方式三：手动创建</h4>
+            <ol>
+                <li>参数面板点击「+」按钮</li>
+                <li>输入参数名称（如"Hair Wave"）</li>
+                <li>设置最小值、最大值、默认值</li>
+                <li>绑定到对应的变形器关键帧</li>
+            </ol>
+            
+            <h3>🔗 将参数绑定到变形器</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>进入编辑模式</h4>
+                    <p>选中要绑定的变形器，确保参数面板可见。</p>
+                </div>
+                <div class="step">
+                    <h4>设置关键点</h4>
+                    <p>点击参数左侧的「●」圆点，使其变成「◉」（选中状态）。</p>
+                </div>
+                <div class="step">
+                    <h4>调整变形</h4>
+                    <p>拖动变形器的控制点，调整到该参数值对应的状态。</p>
+                </div>
+                <div class="step">
+                    <h4>设置另一端</h4>
+                    <p>将参数滑块拖到另一端（如从-1到1），调整对应的变形状态。</p>
+                </div>
+            </div>
+            
+            <div class="tip-box success">
+                <h4>✅ 绑定检查</h4>
+                <p>绑定完成后，来回拖动参数滑块，检查变形是否流畅自然。如果变形不理想，可以随时调整控制点位置。</p>
+            </div>
+        </section>
+        
+        <!-- 动画制作 -->
+        <section class="section" id="animate">
+            <h2><span>🎬</span> 动画制作</h2>
+            
+            <h3>🎞️ 时间轴基础</h3>
+            <p>Live2D 使用关键帧动画系统。你在不同时间点设置参数值（关键帧），软件会自动计算中间的过渡。</p>
+            
+            <h3>📝 制作眨眼动画（入门练习）</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>打开动画工作区</h4>
+                    <p>点击顶部「动画」标签切换到动画模式。</p>
+                </div>
+                <div class="step">
+                    <h4>新建动画文件</h4>
+                    <p>「文件」→「新建」→「动画」，设置帧率（通常30fps）。</p>
+                </div>
+                <div class="step">
+                    <h4>放置模型</4>
+                    <p>从部件面板拖拽模型到时间轴上。</p>
+                </div>
+                <div class="step">
+                    <h4>设置睁眼关键帧</h4>
+                    <p>在第1帧，确保「Eye Open」参数为1，点击参数右侧的「●」记录关键帧。</p>
+                </div>
+                <div class="step">
+                    <h4>设置闭眼关键帧</h4>
+                    <p>在第15帧，将「Eye Open」改为0，再次记录关键帧。</p>
+                </div>
+                <div class="step">
+                    <h4>设置恢复关键帧</h4>
+                    <p>在第30帧，将「Eye Open」改回1，完成一次眨眼循环。</p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 循环播放</h4>
+                <p>在时间轴上设置循环范围（拖动时间轴上方的标记），点击播放按钮预览循环动画。</p>
+            </div>
+            
+            <h3>🎭 物理效果（自动动画）</h3>
+            <p>Live2D 内置物理引擎，可以让头发、耳朵、尾巴等部件自动跟随运动，无需手动设置每一帧！</p>
+            
+            <h4>设置步骤：</h4>
+            <ol>
+                <li>打开「物理/场景混合设定」面板（菜单「窗口」→「物理/场景混合设定」）</li>
+                <li>点击「追加」创建新的物理设定</li>
+                <li>输入端：选择驱动源（如「Angle X」头部转动）</li>
+                <li>摆锤设定：设置摆锤数量、长度、重量等参数</li>
+                <li>输出端：选择要驱动的变形器（如头发的曲面变形器）</li>
+                <li>预览并调整参数直到满意</li>
+            </ol>
+            
+            <div class="tip-box pink">
+                <h4>🎀 物理参数调整建议</h4>
+                <ul>
+                    <li><strong>输入影响度：</strong>头部转动对头发的影响程度</li>
+                    <li><strong>摆锤长度：</strong>越长摆动幅度越大</li>
+                    <li><strong>重力方向：</strong>通常设置为向下（Y轴负方向）</li>
+                    <li><strong>影响力：</strong>控制物理效果的强度</li>
+                </ul>
+            </div>
+            
+            <h3>🎤 面部表情系统（Expression）</h3>
+            <p>Live2D 支持将常用表情保存为「表情预设」，方便在动画中快速调用。</p>
+            
+            <h4>创建表情预设：</h4>
+            <ol>
+                <li>切换到「建模」模式</li>
+                <li>调整参数到你想要的表情（如微笑：嘴角上扬、眼睛微眯）</li>
+                <li>在「表情」面板点击「+」</li>
+                <li>输入表情名称（如「微笑」「惊讶」「生气」）</li>
+                <li>点击「设定」保存当前参数状态</li>
+            </ol>
+        </section>
+        
+        <!-- 导出应用 -->
+        <section class="section" id="export">
+            <h2><span>📤</span> 导出与应用</h2>
+            
+            <h3>💾 导出格式选择</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>格式</th>
+                    <th>用途</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>.cmo3</td>
+                    <td>工程文件</td>
+                    <td>可再次编辑的源文件，保存所有图层和参数</td>
+                </tr>
+                <tr>
+                    <td>.moc3</td>
+                    <td>运行时模型</td>
+                    <td>最终使用的模型文件，体积小、加载快</td>
+                </tr>
+                <tr>
+                    <td>.model3.json</td>
+                    <td>配置文件</td>
+                    <td>包含模型的贴图、动画、表情等配置信息</td>
+                </tr>
+                <tr>
+                    <td>.exp3.json</td>
+                    <td>表情文件</td>
+                    <td>导出的表情预设</td>
+                </tr>
+                <tr>
+                    <td>.motion3.json</td>
+                    <td>动画文件</td>
+                    <td>导出的动画数据</td>
+                </tr>
+                <tr>
+                    <td>PNG 序列帧</td>
+                    <td>视频制作</td>
+                    <td>导出为图片序列，用于后期合成</td>
+                </tr>
+                <tr>
+                    <td>视频 (MP4/GIF)</td>
+                    <td>直接分享</td>
+                    <td>导出为可直接播放的视频文件</td>
+                </tr>
+            </table>
+            
+            <h3>🎯 导出 .moc3 模型（用于直播/应用）</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>检查模型</h4>
+                    <p>确保所有参数绑定正确，物理效果设置完成。</p>
+                </div>
+                <div class="step">
+                    <h4>执行导出</h4>
+                    <p>菜单「文件」→「导出运行档」→「导出 moc3 文件」。</p>
+                </div>
+                <div class="step">
+                    <h4>选择文件夹</h4>
+                    <p>选择一个空文件夹，所有相关文件会一起导出。</p>
+                </div>
+                <div class="step">
+                    <h4>检查导出内容</h4>
+                    <p>确认文件夹中包含：.moc3、.model3.json、贴图文件(.png)等。</p>
+                </div>
+            </div>
+            
+            <h3>📹 导出视频（用于视频制作）</h3>
+            <ol>
+                <li>在动画模式下，完成你的动画制作</li>
+                <li>「文件」→「导出视频」→ 选择格式（MP4/GIF/序列帧）</li>
+                <li>设置分辨率、帧率（建议1920×1080，30fps）</li>
+                <li>选择导出范围（全部/指定范围）</li>
+                <li>点击导出等待渲染完成</li>
+            </ol>
+            
+            <h3>🎮 主流应用平台</h3>
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h4>🎥 VTuber Studio</h4>
+                    <p>iOS/Android/PC 上面捕直播软件，支持 iPhone 面部捕捉，主播必备。</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🎬 PrprLive</h4>
+                    <p>Windows 平台免费直播软件，功能强大，支持多种面捕设备。</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🎮 VSeeFace</h4>
+                    <p>免费开源的 VTuber 应用，支持网络摄像头面部捕捉。</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🌐 Web 应用</h4>
+                    <p>使用 Cubism SDK 将模型嵌入网页，制作互动看板娘。</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🕹️ Unity 游戏</h4>
+                    <p>使用 Cubism SDK for Unity 将模型导入游戏项目。</p>
+                </div>
+                <div class="tool-card">
+                    <h4>📱 手机 App</h4>
+                    <p>使用 Cubism SDK for Native 开发 iOS/Android 应用。</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 实用技巧 -->
+        <section class="section" id="tips">
+            <h2><span>💡</span> 实用技巧与避坑指南</h2>
+            
+            <h3>🚀 提升效率的技巧</h3>
+            <div class="tip-box">
+                <h4>⚡ 快捷键汇总</h4>
+                <ul>
+                    <li><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> - 撤销/重做</li>
+                    <li><kbd>1</kbd> / <kbd>2</kbd> / <kbd>3</kbd> - 切换编辑模式（建模/动画/纹理）</li>
+                    <li><kbd>F</kbd> - 选中部件居中显示</li>
+                    <li><kbd>Tab</kbd> - 显示/隐藏面板</li>
+                    <li><kbd>Space</kbd>+拖拽 - 平移画布</li>
+                    <li><kbd>Ctrl</kbd>+<kbd>+</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd> - 缩放画布</li>
+                    <li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd> - 创建曲面变形器</li>
+                    <li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> - 创建旋转变形器</li>
+                </ul>
+            </div>
+            
+            <div class="tip-box success">
+                <h4>✅ 建模最佳实践</h4>
+                <ul>
+                    <li><strong>从大到小：</strong>先做整体（头、身体），再做细节（五官、手指）</li>
+                    <li><strong>对称操作：</strong>先完成左边，复制翻转做右边，保持一致性</li>
+                    <li><strong>经常预览：</strong>多拖动参数测试，及时发现问题</li>
+                    <li><strong>分步保存：</strong>重要节点另存版本，防止误操作</li>
+                    <li><strong>参考模板：</strong>学习官方示例的分层和参数设置</li>
+                </ul>
+            </div>
+            
+            <h3>⚠️ 常见问题与解决方案</h3>
+            
+            <div class="tip-box warning">
+                <h4>问题：部件边缘出现缝隙</h4>
+                <p><strong>原因：</strong>原画图层之间有空隙</p>
+                <p><strong>解决：</strong>在绘图软件中确保相邻图层有重叠区域，或者使用「蒙版」功能</p>
+            </div>
+            
+            <div class="tip-box warning">
+                <h4>问题：变形后出现锯齿/扭曲</h4>
+                <p><strong>原因：</strong>网格密度不够或控制点分布不合理</p>
+                <p><strong>解决：</strong>增加曲面变形器的网格分割数，或者重新布置控制点</p>
+            </div>
+            
+            <div class="tip-box warning">
+                <h4>问题：参数绑定后没有反应</h4>
+                <p><strong>原因：</strong>关键帧没有正确设置</p>
+                <p><strong>解决：</strong>检查是否点击了参数左侧的「●」进入编辑模式，确保两端都有设置关键点</p>
+            </div>
+            
+            <div class="tip-box warning">
+                <h4>问题：导出后模型显示异常</h4>
+                <p><strong>原因：</strong>贴图路径错误或文件缺失</p>
+                <p><strong>解决：</strong>确保导出的文件夹包含所有资源，检查 .model3.json 中的路径配置</p>
+            </div>
+            
+            <h3>🎯 进阶学习方向</h3>
+            <ol>
+                <li><strong>九轴系统：</strong>学习专业的头部九轴转动（含透视变形）</li>
+                <li><strong>口型同步：</strong>制作多个嘴型用于语音同步</li>
+                <li><strong>手部动作：</strong>添加手势控制器（手势追踪）</li>
+                <li><strong>物理进阶：</strong>多级摆锤、风力影响等复杂物理</li>
+                <li><strong>遮挡处理：</strong>学习部件显示/隐藏的动态控制</li>
+                <li><strong>融合变形：</strong>使用融合变形实现更自然的表情过渡</li>
+            </ol>
+        </section>
+        
+        <!-- 学习资源 -->
+        <section class="section" id="resources">
+            <h2><span>📚</span> 学习资源推荐</h2>
+            
+            <h3>🏫 官方资源</h3>
+            <ul>
+                <li><strong>官方教程：</strong><a href="https://docs.live2d.com/" target="_blank">docs.live2d.com</a> - 最权威的学习文档</li>
+                <li><strong>官方YouTube：</strong>Live2D 官方频道有大量视频教程</li>
+                <li><strong>示例模型：</strong>官网提供多个免费可商用的示例模型</li>
+                <li><strong>官方论坛：</strong>可以提问和交流经验</li>
+            </ul>
+            
+            <h3>📺 B站UP主推荐（中文）</h3>
+            <ul>
+                <li><strong>Live2D官方账号：</strong>官方中文化教程</li>
+                <li><strong>各种Live2D教程：</strong>搜索「Live2D教程」有大量入门视频</li>
+                <li><strong>角色速建系列：</strong>观看完整建模过程学习思路</li>
+            </ul>
+            
+            <h3>📖 推荐学习路径</h3>
+            <div class="flow-box">
+                <span class="flow-item">1. 基础操作</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">2. 头部九轴</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">3. 五官细节</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">4. 身体/头发物理</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-item">5. 完整作品</span>
+            </div>
+            
+            <h3>🎨 素材资源</h3>
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h4>🆓 免费素材</h4>
+                    <p>Live2D官网示例模型、BOOTH平台的免费模型</p>
+                </div>
+                <div class="tool-card">
+                    <h4>💰 付费素材</h4>
+                    <p>BOOTH、DLsite等平台有大量Live2D用立绘出售</p>
+                </div>
+                <div class="tool-card">
+                    <h4>🤝 约稿平台</h4>
+                    <p>米画师、B站工房、推特等寻找接Live2D的画师</p>
+                </div>
+            </div>
+            
+            <div class="tip-box success">
+                <h4>🌟 学习建议</h4>
+                <p>学习 Live2D 最重要的是<strong>多练习</strong>！建议：</p>
+                <ol>
+                    <li>先用官方示例模型熟悉软件操作</li>
+                    <li>完成一个简单的头像模型（只做头部）</li>
+                    <li>逐步添加身体、手臂等部件</li>
+                    <li>参与社区活动或比赛，与他人交流学习</li>
+                </ol>
+                <p>祝你早日做出心仪的 Live2D 角色！🎉</p>
+            </div>
+        </section>
+        
+        <!-- 底部 -->
+        <footer class="footer">
+            <p>🎭 Live2D 零基础入门指南 | 让你的角色活起来</p>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">本指南仅供学习交流，Live2D 是 Live2D Inc. 的注册商标</p>
+        </footer>
+    </div>
+    
+    <!-- 返回顶部 -->
+    <a href="#" class="back-to-top">↑</a>
+</body>
+</html>

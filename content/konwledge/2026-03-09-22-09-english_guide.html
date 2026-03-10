@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语学习 零基础入门指南 - 从零开始掌握英语</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部 */
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        .header .logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header .logo svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header .badges {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 导航 */
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        
+        .nav-menu h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+        
+        .nav-item {
+            background: #f8f9fa;
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* 内容卡片 */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 1.7em;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title .icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3em;
+        }
+        
+        .section h3 {
+            color: #667eea;
+            margin: 25px 0 15px;
+            font-size: 1.25em;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        /* 比喻框 */
+        .analogy-box {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            border-left: 4px solid #f4a261;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .analogy-box h4 {
+            color: #d67d00;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .analogy-box p {
+            color: #744210;
+            margin: 0;
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .tip-box h4 {
+            color: #276749;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tip-box p {
+            color: #2f855a;
+            margin: 0;
+        }
+        
+        /* 警告框 */
+        .warning-box {
+            background: #fff5f5;
+            border-left: 4px solid #f56565;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .warning-box h4 {
+            color: #c53030;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .warning-box p {
+            color: #742a2a;
+            margin: 0;
+        }
+        
+        /* 信息卡片 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .info-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .info-card h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .info-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 0;
+        }
+        
+        /* 技能卡片 */
+        .skill-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .skill-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .skill-card ul {
+            margin-left: 20px;
+            color: #555;
+        }
+        
+        .skill-card li {
+            margin: 8px 0;
+        }
+        
+        /* 进度条 */
+        .progress-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .progress-item {
+            margin: 15px 0;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5px;
+            transition: width 1s ease;
+        }
+        
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 25px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 5px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+        }
+        
+        .timeline-phase {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        
+        .timeline-content {
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        /* 资源表格 */
+        .resource-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .resource-table th,
+        .resource-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .resource-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .resource-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+        
+        .footer p {
+            opacity: 0.9;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .nav-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">
+                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><rect x="128" y="128" width="768" height="768" rx="128" fill="#1E88E5"/><text x="512" y="650" font-size="480" font-weight="bold" text-anchor="middle" fill="white" font-family="Arial">EN</text></svg>
+            </div>
+            <h1>英语学习 零基础入门指南</h1>
+            <p>从零开始，用科学的方法掌握英语，让英语成为你的超能力</p>
+            <div class="badges">
+                <span class="badge">🎯 零基础友好</span>
+                <span class="badge">📚 系统全面</span>
+                <span class="badge">⏰ 高效方法</span>
+            </div>
+        </header>
+        
+        <!-- 导航 -->
+        <nav class="nav-menu">
+            <h3>📋 目录导航</h3>
+            <div class="nav-grid">
+                <a href="#why" class="nav-item">为什么要学</a>
+                <a href="#mindset" class="nav-item">学习心态</a>
+                <a href="#phonetic" class="nav-item">音标发音</a>
+                <a href="#vocabulary" class="nav-item">词汇积累</a>
+                <a href="#grammar" class="nav-item">语法基础</a>
+                <a href="#skills" class="nav-item">四项技能</a>
+                <a href="#resources" class="nav-item">学习资源</a>
+                <a href="#plan" class="nav-item">学习计划</a>
+            </div>
+        </nav>
+        
+        <!-- 第1章：为什么要学英语 -->
+        <section class="section" id="why">
+            <h2 class="section-title">
+                <span class="icon">1</span>
+                为什么要学英语？
+            </h2>
+            
+            <p>英语是全球使用最广泛的语言，也是互联网、科技、学术、商业的通用语言。掌握英语，等于打开了一扇通向更大世界的大门。</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="icon">💼</div>
+                    <h4>职业发展</h4>
+                    <p>外企、外贸、IT等行业必备技能，薪资普遍更高</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">🎓</div>
+                    <h4>学术深造</h4>
+                    <p>阅读英文论文、出国留学、参加国际会议</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">🌍</div>
+                    <h4>环球旅行</h4>
+                    <p>全球190多个国家的通用交流语言</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">📱</div>
+                    <h4>信息获取</h4>
+                    <p>55%的网页内容、80%的科技资讯都是英文</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">🎬</div>
+                    <h4>娱乐文化</h4>
+                    <p>看原版电影、追美剧、读英文小说</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">🧠</div>
+                    <h4>思维训练</h4>
+                    <p>学习新语言能延缓大脑衰老，提升认知能力</p>
+                </div>
+            </div>
+            
+            <div class="analogy-box">
+                <h4>💡 关键认知</h4>
+                <p>学英语不是为了考试，而是为了<strong>获得信息差</strong>。同样的信息，英文源往往比中文翻译早几天甚至几个月。在信息时代，这就是竞争力。</p>
+            </div>
+        </section>
+        
+        <!-- 第2章：学习心态 -->
+        <section class="section" id="mindset">
+            <h2 class="section-title">
+                <span class="icon">2</span>
+                正确的学习心态
+            </h2>
+            
+            <p>很多人学英语失败，不是因为方法不对，而是心态出了问题。</p>
+            
+            <div class="warning-box">
+                <h4>⚠️ 常见错误心态</h4>
+                <p>❌ "我英语底子差，肯定学不好" —— 语言学习与智商无关，人人都可以学会<br>
+                ❌ "我要把语法搞懂再开口" —— 完美主义是口语的大敌<br>
+                ❌ "背单词太枯燥，坚持不下去" —— 孤立背单词效率极低<br>
+                ❌ "看美剧学英语很轻松" —— 没有方法的娱乐等于浪费时间</p>
+            </div>
+            
+            <div class="tip-box">
+                <h4>✅ 正确的学习心态</h4>
+                <p>✓ <strong>允许犯错：</strong>说错是正常的，小孩学母语也要说错无数次<br>
+                ✓ <strong>注重频率：</strong>每天30分钟比周末突击3小时有效得多<br>
+                ✓ <strong>可理解输入：</strong>材料要i+1（比你水平稍高一点），太难或太易都不好<br>
+                ✓ <strong>用进废退：</strong>英语是用会的，不是背会的<br>
+                ✓ <strong>长期主义：</strong>语言学习是马拉松，不是百米冲刺</p>
+            </div>
+            
+            <div class="analogy-box">
+                <h4>💡 学英语像健身</h4>
+                <p>你不会指望去一次健身房就练出肌肉，也不会因为今天没变化就放弃。学英语也一样，需要持续投入，效果会滞后显现，但一旦积累到一定程度，就会突飞猛进（这就是语言学家说的"涌现效应"）。</p>
+            </div>
+        </section>
+        
+        <!-- 第3章：音标发音 -->
+        <section class="section" id="phonetic">
+            <h2 class="section-title">
+                <span class="icon">3</span>
+                音标与发音基础
+            </h2>
+            
+            <p>学音标就像学拼音，是英语发音的基石。掌握音标，你就能：</p>
+            <ul style="margin-left: 20px; color: #555; line-height: 2;">
+                <li>看到单词就会读（即使不知道意思）</li>
+                <li>通过查词典掌握正确发音</li>
+                <li>避免"中式英语"口音</li>
+            </ul>
+            
+            <h3>3.1 英式 vs 美式音标</h3>
+            <p>初学者建议先选一种口音专精，不要混着学：</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="icon">🇬🇧</div>
+                    <h4>英式音标（IPA）</h4>
+                    <p>/ɑː/ /ɒ/ /əʊ/ 等<br>听起来更优雅正式</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">🇺🇸</div>
+                    <h4>美式音标（KK）</h4>
+                    <p>/ɑ/ /ɔ/ /o/ 等<br>听起来更随意自然</p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 建议</h4>
+                <p>国内学校通常教英式音标，但美式发音材料（美剧、电影）更多。建议：<strong>学英式音标，接触美式发音</strong>，两者差异不大，能互相理解。</p>
+            </div>
+            
+            <h3>3.2 重点攻克"难发音"</h3>
+            <p>中文母语者最容易发错的音：</p>
+            
+            <div class="skill-card">
+                <h4>/θ/ 和 /ð/（咬舌音）</h4>
+                <ul>
+                    <li>think /θɪŋk/ 不是 /sɪŋk/</li>
+                    <li>this /ðɪs/ 不是 /zɪs/</li>
+                    <li><strong>技巧：</strong>轻轻咬住舌尖，让气流从舌头上方流出</li>
+                </ul>
+            </div>
+            
+            <div class="skill-card">
+                <h4>/v/ 和 /w/</h4>
+                <ul>
+                    <li>very /ˈveri/，上齿轻咬下唇</li>
+                    <li>west /west/，嘴唇呈圆形</li>
+                    <li><strong>技巧：</strong>/v/有摩擦，/w/像亲嘴</li>
+                </ul>
+            </div>
+            
+            <div class="skill-card">
+                <h4>/r/ 卷舌音</h4>
+                <ul>
+                    <li>red /red/，舌尖不接触任何地方，向后卷</li>
+                    <li>不要发成"日"</li>
+                </ul>
+            </div>
+            
+            <h3>3.3 语音现象（连读、弱读、失去爆破）</h3>
+            <p> native speaker说话快，是因为有大量语音变化：</p>
+            
+            <div class="skill-card">
+                <h4>连读（Linking）</h4>
+                <ul>
+                    <li>not at all → no-ta-tall</li>
+                    <li>pick up → pi-kup</li>
+                    <li>前词尾音与后词首音连读</li>
+                </ul>
+            </div>
+            
+            <div class="skill-card">
+                <h4>弱读（Reduction）</h4>
+                <ul>
+                    <li>can /kæn/ → /kən/</li>
+                    <li>for /fɔːr/ → /fər/</li>
+                    <li>to /tuː/ → /tə/</li>
+                    <li>介词、助动词在句中通常弱读</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 第4章：词汇积累 -->
+        <section class="section" id="vocabulary">
+            <h2 class="section-title">
+                <span class="icon">4</span>
+                词汇积累策略
+            </h2>
+            
+            <p>词汇量是英语能力的基石。但背单词不是靠"毅力"，而是靠<strong>科学方法</strong>。</p>
+            
+            <h3>4.1 词频分级：先学最常用的</h3>
+            <p>不要按字母顺序背词典！不同词汇的使用频率差异巨大：</p>
+            
+            <div class="progress-container">
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>最高频1000词</span>
+                        <span>覆盖75%日常用语</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>最高频3000词</span>
+                        <span>覆盖85%日常用语</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>最高频5000词</span>
+                        <span>覆盖90%日常用语</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>大学六级6500词</span>
+                        <span>覆盖95%日常用语</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 95%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 策略</h4>
+                <p>先集中精力掌握最高频的2000词（高考词汇量），再逐步扩展。<strong>与其背10遍GRE单词，不如把2000基础词用熟。</strong></p>
+            </div>
+            
+            <h3>4.2 科学背单词方法</h3>
+            
+            <div class="skill-card">
+                <h4>🔄 间隔重复（Spaced Repetition）</h4>
+                <p>根据遗忘曲线，在快要忘记时复习，效率最高。</p>
+                <ul>
+                    <li>第1次复习：1天后</li>
+                    <li>第2次复习：3天后</li>
+                    <li>第3次复习：7天后</li>
+                    <li>第4次复习：15天后</li>
+                </ul>
+                <p>推荐工具：Anki、墨墨背单词</p>
+            </div>
+            
+            <div class="skill-card">
+                <h4>🖼️ 图像记忆</h4>
+                <p>大脑对图像的记忆远强于文字。背单词时，在脑海中形成画面。</p>
+                <p>例如：apple → 想象一个红彤彤的苹果，甚至能闻到香味</p>
+            </div>
+            
+            <div class="skill-card">
+                <h4>📖 语境记忆</h4>
+                <p>在句子和文章中记单词，而不是孤立地背。</p>
+                <p>❌ 差：run = 跑<br>
+                ✅ 好：I run 5 kilometers every morning.（例句记忆）</p>
+            </div>
+            
+            <div class="skill-card">
+                <h4>🔤 词根词缀法</h4>
+                <p>掌握常见词根词缀，一个词推出十个词。</p>
+                <ul>
+                    <li>un-（不）：happy → unhappy</li>
+                    <li>-tion（名词）：educate → education</li>
+                    <li>-ly（副词）：quick → quickly</li>
+                </ul>
+            </div>
+            
+            <h3>4.3 推荐词汇书</h3>
+            <table class="resource-table">
+                <thead>
+                    <tr>
+                        <th>书名</th>
+                        <th>适合人群</th>
+                        <th>特点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>《新概念英语》1-4册</td>
+                        <td>零基础到高级</td>
+                        <td>经典教材，词汇在课文中自然习得</td>
+                    </tr>
+                    <tr>
+                        <td>《 vocabulary in use》系列</td>
+                        <td>初中级</td>
+                        <td>剑桥出品，按主题分类，例句丰富</td>
+                    </tr>
+                    <tr>
+                        <td>《Word Power Made Easy》</td>
+                        <td>中高级</td>
+                        <td>词根词缀法经典，趣味性强</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- 第5章：语法基础 -->
+        <section class="section" id="grammar">
+            <h2 class="section-title">
+                <span class="icon">5</span>
+                语法核心框架
+            </h2>
+            
+            <p>语法是语言的骨架，但<strong>不要过度纠结</strong>。对于初学者，掌握以下核心语法就够了：</p>
+            
+            <h3>5.1 句子成分（SVO结构）</h3>
+            <p>英语句子万变不离其宗：主语(S) + 谓语(V) + 宾语(O)</p>
+            
+            <div class="skill-card">
+                <h4>基本句型</h4>
+                <ul>
+                    <li>SV：I sleep.（主谓）</li>
+                    <li>SVO：I love you.（主谓宾）</li>
+                    <li>SVC：I am happy.（主系表）</li>
+                    <li>SVOO：I give you a book.（主谓双宾）</li>
+                    <li>SVOC：I make you happy.（主谓宾补）</li>
+                </ul>
+            </div>
+            
+            <h3>5.2 时态（重点掌握6种）</h3>
+            <p>英语有16种时态，但日常90%只用这6种：</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="icon">📅</div>
+                    <h4>一般现在时</h4>
+                    <p>I eat.<br>表示习惯、事实</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">⏰</div>
+                    <h4>现在进行时</h4>
+                    <p>I am eating.<br>表示正在进行</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">📆</div>
+                    <h4>一般过去时</h4>
+                    <p>I ate.<br>表示过去发生的事</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">🔮</div>
+                    <h4>一般将来时</h4>
+                    <p>I will eat.<br>表示将要发生的事</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">✅</div>
+                    <h4>现在完成时</h4>
+                    <p>I have eaten.<br>表示过去对现在的影响</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">⏳</div>
+                    <h4>过去进行时</h4>
+                    <p>I was eating.<br>表示过去某时正在进行</p>
+                </div>
+            </div>
+            
+            <h3>5.3 从句（让句子变长）</h3>
+            <div class="skill-card">
+                <h4>三大从句</h4>
+                <ul>
+                    <li><strong>定语从句：</strong>The book <em>that I bought</em> is good.（修饰名词）</li>
+                    <li><strong>状语从句：</strong><em>If it rains</em>, I will stay home.（修饰整个句子）</li>
+                    <li><strong>名词性从句：</strong>I know <em>that he is right</em>.（充当名词成分）</li>
+                </ul>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ 语法学习建议</h4>
+                <p>不要在语法上纠缠太久！语法应该<strong>在用中学</strong>——通过大量阅读和听力，自然习得语感，再回头补语法漏洞。</p>
+            </div>
+        </section>
+        
+        <!-- 第6章：四项技能 -->
+        <section class="section" id="skills">
+            <h2 class="section-title">
+                <span class="icon">6</span>
+                听说读写训练法
+            </h2>
+            
+            <p>语言学习的四项技能，训练方法各有不同。关键是<strong>输入（听、读）先于输出（说、写）</strong>。</p>
+            
+            <h3>6.1 听力 👂</h3>
+            <div class="skill-card">
+                <h4>精听（Intensive Listening）</h4>
+                <ul>
+                    <li>选一段1-2分钟的材料，听懂每个词</li>
+                    <li>听写（Dictation）是最好的精听方法</li>
+                    <li>适合：短新闻、对话、演讲片段</li>
+                </ul>
+            </div>
+            
+            <div class="skill-card">
+                <h4>泛听（Extensive Listening）</h4>
+                <ul>
+                    <li>大量听，不求每个词都懂，抓大意</li>
+                    <li>材料要有趣，难度适中（能听懂70%）</li>
+                    <li>适合：播客、有声书、美剧</li>
+                </ul>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 听力提升秘诀</h4>
+                <p>听力的天花板是<strong>辨音能力</strong>。如果听不清，就是音标和连读没过关。建议：同一材料先盲听→看文本→跟读→再盲听。</p>
+            </div>
+            
+            <h3>6.2 口语 🗣️</h3>
+            <div class="skill-card">
+                <h4>影子跟读法（Shadowing）</h4>
+                <ul>
+                    <li>播放音频，几乎同步跟读</li>
+                    <li>模仿语音、语调、节奏</li>
+                    <li>每天15分钟，坚持1个月口音大变</li>
+                </ul>
+            </div>
+            
+            <div class="skill-card">
+                <h4>自言自语</h4>
+                <ul>
+                    <li>描述你正在做的事：I'm making coffee.</li>
+                    <li>复述刚看完的电影/文章</li>
+                    <li>对着镜子练习，注意口型</li>
+                </ul>
+            </div>
+            
+            <div class="skill-card">
+                <h4>语言交换/外教</h4>
+                <ul>
+                    <li>HelloTalk、Tandem：找语伴</li>
+                    <li>Cambly、italki：在线外教</li>
+                    <li>不要怕犯错，流利度比准确度更重要</li>
+                </ul>
+            </div>
+            
+            <h3>6.3 阅读 📖</h3>
+            <div class="skill-card">
+                <h4>分级阅读（Graded Readers）</h4>
+                <ul>
+                    <li>选择比你水平稍低的书，保证流畅阅读</li>
+                    <li>牛津书虫系列、剑桥分级读物</li>
+                    <li>一页查词不超过5个，否则太难</li>
+                </ul>
+            </div>
+            
+            <div class="skill-card">
+                <h4>泛读策略</h4>
+                <ul>
+                    <li>不要每个词都查，猜词是重要能力</li>
+                    <li>先看标题、首尾段，抓大意</li>
+                    <li>读你感兴趣的内容：小说、新闻、技术文档</li>
+                </ul>
+            </div>
+            
+            <h3>6.4 写作 ✍️</h3>
+            <div class="skill-card">
+                <h4>从仿写开始</h4>
+                <ul>
+                    <li>摘抄好句子，替换词汇进行仿写</li>
+                    <li>背诵经典段落，内化表达</li>
+                </ul>
+            </div>
+            
+            <div class="skill-card">
+                <h4>写日记/周记</h4>
+                <ul>
+                    <li>每天写3-5句话，记录生活</li>
+                    <li>用简单句，先求准确再求复杂</li>
+                    <li>使用Grammarly检查语法错误</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 第7章：学习资源 -->
+        <section class="section" id="resources">
+            <h2 class="section-title">
+                <span class="icon">7</span>
+                推荐学习资源
+            </h2>
+            
+            <h3>7.1 背单词APP</h3>
+            <table class="resource-table">
+                <thead>
+                    <tr>
+                        <th>APP</th>
+                        <th>特点</th>
+                        <th>适合</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>墨墨背单词</td>
+                        <td>遗忘曲线算法，例句丰富</td>
+                        <td>系统背单词</td>
+                    </tr>
+                    <tr>
+                        <td>不背单词</td>
+                        <td>影视原声例句，界面简洁</td>
+                        <td>在语境中记词</td>
+                    </tr>
+                    <tr>
+                        <td>百词斩</td>
+                        <td>图文记忆，趣味性高</td>
+                        <td>初学者培养兴趣</td>
+                    </tr>
+                    <tr>
+                        <td>Anki</td>
+                        <td>自定义卡片，间隔重复</td>
+                        <td>进阶学习者</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>7.2 听力材料</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="icon">📻</div>
+                    <h4>ESL Pod</h4>
+                    <p>慢速英语播客，讲解详细，适合初级</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">📰</div>
+                    <h4>6 Minute English</h4>
+                    <p>BBC出品，6分钟一个话题，中级</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">🎙️</div>
+                    <h4>All Ears English</h4>
+                    <p>地道美式口语，自然语速，中高级</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">🎧</div>
+                    <h4>Audible</h4>
+                    <p>英文有声书，从简写名著开始</p>
+                </div>
+            </div>
+            
+            <h3>7.3 视频/课程</h3>
+            <table class="resource-table">
+                <thead>
+                    <tr>
+                        <th>资源</th>
+                        <th>特点</th>
+                        <th>适合</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>赖世雄美语</td>
+                        <td>经典教材，讲解细致，发音标准</td>
+                        <td>零基础系统学习</td>
+                    </tr>
+                    <tr>
+                        <td>Coach Shane</td>
+                        <td>Daily Dictation系列，练听写</td>
+                        <td>听力突破</td>
+                    </tr>
+                    <tr>
+                        <td>English with Lucy</td>
+                        <td>英国美女老师，发音优雅</td>
+                        <td>英式英语爱好者</td>
+                    </tr>
+                    <tr>
+                        <td>Rachel's English</td>
+                        <td>发音教学权威，口型演示清晰</td>
+                        <td>纠正发音</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>7.4 阅读材料</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="icon">📚</div>
+                    <h4>牛津书虫系列</h4>
+                    <p>分级名著简写，从初级到高级</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">📰</div>
+                    <h4>News in Levels</h4>
+                    <p>同一新闻三个难度级别</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">📱</div>
+                    <h4>Medium</h4>
+                    <p>英文博客平台，话题广泛</p>
+                </div>
+                <div class="info-card">
+                    <div class="icon">🎭</div>
+                    <h4>哈利波特英文版</h4>
+                    <p>第1本简单，剧情熟悉，适合入门原版书</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第8章：学习计划 -->
+        <section class="section" id="plan">
+            <h2 class="section-title">
+                <span class="icon">8</span>
+                零基础学习计划
+            </h2>
+            
+            <p>以下是一个从零基础到能日常交流的学习路线图。每天投入1-2小时，约1-2年可以达到流利水平。</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-phase">第1-3个月：打基础期</div>
+                    <div class="timeline-content">
+                        <p>• 学习48个国际音标，掌握基本发音<br>
+                        • 背完最高频1000词<br>
+                        • 学完《新概念英语》第一册<br>
+                        • 目标：能进行最简单自我介绍</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-phase">第4-6个月：积累期</div>
+                    <div class="timeline-content">
+                        <p>• 词汇扩展到2000词<br>
+                        • 学完《新概念英语》第二册前48课<br>
+                        • 开始每日听力输入（30分钟）<br>
+                        • 目标：能进行简单日常对话</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-phase">第7-12个月：突破期</div>
+                    <div class="timeline-content">
+                        <p>• 词汇量达到4000<br>
+                        • 学完《新概念英语》第二册<br>
+                        • 开始看简单英文视频（带字幕）<br>
+                        • 尝试和外教/语伴对话<br>
+                        • 目标：能聊日常话题，看懂简单文章</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-phase">第13-24个月：提升期</div>
+                    <div class="timeline-content">
+                        <p>• 词汇量达到6000+<br>
+                        • 大量泛听、泛读<br>
+                        • 看美剧去掉字幕<br>
+                        • 阅读英文原版书<br>
+                        • 目标：能流畅交流，看懂大部分材料</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>📅 每日学习安排示例（1.5小时）</h4>
+                <p>• <strong>早晨30分钟：</strong>背单词（墨墨/不背单词）<br>
+                • <strong>中午20分钟：</strong>听力输入（播客/视频）<br>
+                • <strong>晚上40分钟：</strong>系统学习（新概念/语法）+ 复习</p>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ 避坑指南</h4>
+                <p>❌ 不要同时学多种材料，选定一套坚持到底<br>
+                ❌ 不要只输入不输出，要开口说、动笔写<br>
+                ❌ 不要追求"完美"，流利比准确更重要<br>
+                ❌ 不要三天打鱼两天晒网，每天学一点胜过周末突击</p>
+            </div>
+        </section>
+        
+        <!-- 第9章：总结 -->
+        <section class="section" id="summary">
+            <h2 class="section-title">
+                <span class="icon">9</span>
+                总结与鼓励
+            </h2>
+            
+            <h3>📌 核心要点</h3>
+            <div class="tip-box">
+                <h4>记住这几句话：</h4>
+                <p>1. <strong>英语是工具，不是知识</strong>——要在用中学，不要死记硬背<br>
+                2. <strong>输入先于输出</strong>——先大量听读，再开口说写<br>
+                3. <strong>频率胜过时长</strong>——每天30分钟 > 周末3小时<br>
+                4. <strong>可理解输入</strong>——材料难度要适中，不要太难或太易<br>
+                5. <strong>长期坚持</strong>——语言学习没有捷径，但一定有收获</p>
+            </div>
+            
+            <h3>💪 给初学者的话</h3>
+            <p>很多人学英语失败，不是因为能力差，而是因为：</p>
+            <ul style="margin-left: 20px; color: #555; line-height: 2;">
+                <li>期望太高，想速成</li>
+                <li>方法错误，事倍功半</li>
+                <li>缺乏反馈，不知对错</li>
+                <li>没有坚持，中途放弃</li>
+            </ul>
+            
+            <div class="analogy-box">
+                <h4>💡 学英语就像种树</h4>
+                <p>你今天浇的水，不会明天就结果。但只要你持续浇水，树一定会长大。学英语也是如此，<strong>相信时间的力量</strong>，不要急于求成。</p>
+            </div>
+            
+            <div class="tip-box">
+                <h4>🌟 现在就开始</h4>
+                <p>最好的学习时间是一年前，其次是现在。从今天开始，每天学一点，一年后你会感谢现在的自己。</p>
+                <p>记住：<strong>English is not a subject, it's a skill.</strong>（英语不是学科，是技能。）技能只能靠练习获得，从今天开始练习吧！</p>
+            </div>
+        </section>
+        
+        <!-- 底部 -->
+        <footer class="footer">
+            <p>🎉 恭喜你完成了英语学习的入门指南！</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Practice makes perfect. 坚持就是胜利！</p>
+        </footer>
+    </div>
+</body>
+</html>

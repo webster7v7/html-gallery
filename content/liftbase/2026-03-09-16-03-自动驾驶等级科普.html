@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自动驾驶等级科普 | 油车 vs 电车</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .oil-gradient {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .ev-gradient {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .level-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .level-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 4px;
+            border-radius: 2px;
+            transition: width 1s ease;
+        }
+        
+        .brand-logo {
+            filter: grayscale(100%) brightness(200%);
+            transition: all 0.3s ease;
+        }
+        
+        .brand-logo:hover {
+            filter: grayscale(0%) brightness(100%);
+            transform: scale(1.1);
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .tech-spec {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid;
+        }
+        
+        .oil-spec {
+            border-left-color: #f5576c;
+        }
+        
+        .ev-spec {
+            border-left-color: #00f2fe;
+        }
+        
+        .automation-level {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .automation-level::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .automation-level:hover::before {
+            left: 100%;
+        }
+        
+        .glow-oil {
+            box-shadow: 0 0 20px rgba(245, 87, 108, 0.3);
+        }
+        
+        .glow-ev {
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black opacity-90"></div>
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);"></div>
+        
+        <div class="relative z-10 text-center px-4 max-w-6xl mx-auto">
+            <div class="mb-6 inline-block px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm font-medium tracking-wider">
+                SAE J3016 / GB/T 40429-2021 标准
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                自动驾驶<br>
+                <span class="gradient-text">等级划分指南</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto font-light">
+                从 L0 完全人工驾驶到 L5 完全自动驾驶<br>
+                探索燃油车与电动车在智能化道路上的差异
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 text-sm">
+                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                    <span>燃油车 (ICE)</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                    <span>电动车 (BEV/NEV)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Automation Levels -->
+    <section class="py-20 px-4 max-w-7xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">六大自动驾驶等级</h2>
+        
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <!-- L0 -->
+            <div class="level-card rounded-2xl p-6 automation-level">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="text-4xl font-black text-gray-600">L0</div>
+                    <div class="px-3 py-1 rounded-full text-xs font-bold bg-gray-800 text-gray-400">人工驾驶</div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">应急辅助</h3>
+                <p class="text-gray-400 text-sm mb-4">系统仅提供报警或短暂介入辅助，如盲点监测、前碰撞预警。</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>自动化程度</span>
+                        <span>0%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1">
+                        <div class="bg-gray-600 h-1 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- L1 -->
+            <div class="level-card rounded-2xl p-6 automation-level">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="text-4xl font-black text-blue-400">L1</div>
+                    <div class="px-3 py-1 rounded-full text-xs font-bold bg-blue-900/30 text-blue-300">辅助驾驶</div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">部分辅助</h3>
+                <p class="text-gray-400 text-sm mb-4">系统可控制横向或纵向单一方向，如定速巡航或车道保持。</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>自动化程度</span>
+                        <span>20%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1">
+                        <div class="bg-blue-500 h-1 rounded-full" style="width: 20%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- L2 -->
+            <div class="level-card rounded-2xl p-6 automation-level border-blue-500/30">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="text-4xl font-black text-blue-500">L2</div>
+                    <div class="px-3 py-1 rounded-full text-xs font-bold bg-blue-900/50 text-blue-400">组合辅助</div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">部分自动化</h3>
+                <p class="text-gray-400 text-sm mb-4">同时控制横向和纵向（ACC+车道居中），驾驶员必须监控。</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>自动化程度</span>
+                        <span>40%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1">
+                        <div class="bg-blue-500 h-1 rounded-full" style="width: 40%"></div>
+                    </div>
+                </div>
+                <div class="mt-3 text-xs text-yellow-500">⚠️ 目前量产车主流水平</div>
+            </div>
+
+            <!-- L3 -->
+            <div class="level-card rounded-2xl p-6 automation-level border-purple-500/30">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="text-4xl font-black text-purple-400">L3</div>
+                    <div class="px-3 py-1 rounded-full text-xs font-bold bg-purple-900/30 text-purple-300">有条件自动</div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">有条件自动驾驶</h3>
+                <p class="text-gray-400 text-sm mb-4">特定条件下系统完全接管，驾驶员可"脱手脱眼"但需随时接管。</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>自动化程度</span>
+                        <span>60%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1">
+                        <div class="bg-purple-500 h-1 rounded-full" style="width: 60%"></div>
+                    </div>
+                </div>
+                <div class="mt-3 text-xs text-green-400">✓ 2024-2025 中国首批准入</div>
+            </div>
+
+            <!-- L4 -->
+            <div class="level-card rounded-2xl p-6 automation-level">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="text-4xl font-black text-pink-400">L4</div>
+                    <div class="px-3 py-1 rounded-full text-xs font-bold bg-pink-900/30 text-pink-300">高度自动</div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">高度自动驾驶</h3>
+                <p class="text-gray-400 text-sm mb-4">限定区域（如园区、港口）完全自动驾驶，无需人类干预。</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>自动化程度</span>
+                        <span>80%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1">
+                        <div class="bg-pink-500 h-1 rounded-full" style="width: 80%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- L5 -->
+            <div class="level-card rounded-2xl p-6 automation-level border-gradient-to-r from-purple-500 to-pink-500">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">L5</div>
+                    <div class="px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-purple-900/50 to-pink-900/50 text-white">完全自动</div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">完全自动驾驶</h3>
+                <p class="text-gray-400 text-sm mb-4">全场景、全天候无人驾驶，无需方向盘，任何条件下完全自主。</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>自动化程度</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-1 rounded-full" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="mt-3 text-xs text-gray-500">🔮 研发测试阶段</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Oil vs EV Comparison -->
+    <section class="py-20 px-4 bg-gray-900/50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">技术路线对比</h2>
+            <p class="text-center text-gray-400 mb-16">燃油车 vs 电动车在自动驾驶架构上的本质差异</p>
+            
+            <div class="comparison-grid">
+                <!-- Oil Vehicle Column -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-16 h-16 rounded-2xl oil-gradient flex items-center justify-center text-2xl">⛽</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">燃油车 (ICE)</h3>
+                            <p class="text-gray-400">Internal Combustion Engine</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-spec oil-spec p-4 rounded-r-xl">
+                        <h4 class="font-bold text-red-400 mb-2">架构限制</h4>
+                        <p class="text-sm text-gray-300">分布式ECU架构，信息传输效率低，难以支持高算力实时数据处理。传统机械结构响应延迟高。</p>
+                    </div>
+                    
+                    <div class="tech-spec oil-spec p-4 rounded-r-xl">
+                        <h4 class="font-bold text-red-400 mb-2">智驾水平</h4>
+                        <p class="text-sm text-gray-300">主流集中在 L1-L2 级，以辅助功能为主（定速巡航、车道保持）。电气架构难以支持高阶智驾。</p>
+                    </div>
+                    
+                    <div class="tech-spec oil-spec p-4 rounded-r-xl">
+                        <h4 class="font-bold text-red-400 mb-2">代表品牌</h4>
+                        <div class="grid grid-cols-3 gap-3 mt-3">
+                            <div class="bg-black/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl mb-1">🚗</div>
+                                <div class="text-xs">丰田</div>
+                                <div class="text-[10px] text-gray-500">TSS系统</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl mb-1">🚙</div>
+                                <div class="text-xs">大众</div>
+                                <div class="text-[10px] text-gray-500">IQ.Drive</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl mb-1">🚘</div>
+                                <div class="text-xs">本田</div>
+                                <div class="text-[10px] text-gray-500">Honda Sensing</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl mb-1">🏎️</div>
+                                <div class="text-xs">宝马</div>
+                                <div class="text-[10px] text-gray-500">自动驾驶辅助</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl mb-1">🚖</div>
+                                <div class="text-xs">奔驰</div>
+                                <div class="text-[10px] text-gray-500">Drive Pilot</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl mb-1">🚕</div>
+                                <div class="text-xs">福特</div>
+                                <div class="text-[10px] text-gray-500">BlueCruise</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 bg-red-900/20 border border-red-500/30 rounded-xl">
+                        <div class="flex items-center gap-2 text-red-400 font-bold mb-2">
+                            <span class="text-xl">⚠️</span>
+                            <span>技术瓶颈</span>
+                        </div>
+                        <ul class="text-sm text-gray-300 space-y-1 list-disc list-inside">
+                            <li>12V电气系统功率受限</li>
+                            <li>机械传动响应延迟（>100ms）</li>
+                            <li>OTA升级能力有限</li>
+                            <li>传感器供电不稳定</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- EV Column -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-16 h-16 rounded-2xl ev-gradient flex items-center justify-center text-2xl">🔋</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">电动车 (NEV)</h3>
+                            <p class="text-gray-400">New Energy Vehicle / BEV</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-spec ev-spec p-4 rounded-r-xl">
+                        <h4 class="font-bold text-cyan-400 mb-2">架构优势</h4>
+                        <p class="text-sm text-gray-300">域集中式电子电气架构，高算力芯片（Orin/Xavier），线控底盘响应快（<10ms），支持整车OTA。</p>
+                    </div>
+                    
+                    <div class="tech-spec ev-spec p-4 rounded-r-xl">
+                        <h4 class="font-bold text-cyan-400 mb-2">智驾水平</h4>
+                        <p class="text-sm text-gray-300">主流 L2+ 至 L3 级，部分车型具备城市NOA、高速NOA。L4级Robotaxi已商业化试运营。</p>
+                    </div>
+                    
+                    <div class="tech-spec ev-spec p-4 rounded-r-xl">
+                        <h4 class="font-bold text-cyan-400 mb-2">代表品牌</h4>
+                        <div class="grid grid-cols-3 gap-3 mt-3">
+                            <div class="bg-black/30 p-3 rounded-lg text-center glow-ev">
+                                <div class="text-2xl mb-1">⚡</div>
+                                <div class="text-xs">特斯拉</div>
+                                <div class="text-[10px] text-gray-500">FSD/Autopilot</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center glow-ev">
+                                <div class="text-2xl mb-1">🎯</div>
+                                <div class="text-xs">小鹏</div>
+                                <div class="text-[10px] text-gray-500">XNGP</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center glow-ev">
+                                <div class="text-2xl mb-1">🌟</div>
+                                <div class="text-xs">华为/问界</div>
+                                <div class="text-[10px] text-gray-500">ADS 3.0</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center glow-ev">
+                                <div class="text-2xl mb-1">🚀</div>
+                                <div class="text-xs">蔚来</div>
+                                <div class="text-[10px] text-gray-500">NOP+</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center glow-ev">
+                                <div class="text-2xl mb-1">🔹</div>
+                                <div class="text-xs">理想</div>
+                                <div class="text-[10px] text-gray-500">AD Max</div>
+                            </div>
+                            <div class="bg-black/30 p-3 rounded-lg text-center glow-ev">
+                                <div class="text-2xl mb-1">🚗</div>
+                                <div class="text-xs">小米</div>
+                                <div class="text-[10px] text-gray-500">Xiaomi Pilot</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 bg-cyan-900/20 border border-cyan-500/30 rounded-xl">
+                        <div class="flex items-center gap-2 text-cyan-400 font-bold mb-2">
+                            <span class="text-xl">✓</span>
+                            <span>技术优势</span>
+                        </div>
+                        <ul class="text-sm text-gray-300 space-y-1 list-disc list-inside">
+                            <li>400V/800V高压平台供电稳定</li>
+                            <li>线控转向/制动响应快（<10ms）</li>
+                            <li>整车OTA持续升级</li>
+                            <li>大算力芯片（500+ TOPS）</li>
+                            <li>V2X车联网支持</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Comparison Table -->
+    <section class="py-20 px-4 max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">等级能力对照表</h2>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-gray-800">
+                        <th class="py-4 px-4 text-gray-400 font-medium">等级</th>
+                        <th class="py-4 px-4 text-gray-400 font-medium">名称</th>
+                        <th class="py-4 px-4 text-gray-400 font-medium">车辆控制</th>
+                        <th class="py-4 px-4 text-gray-400 font-medium">油车代表功能</th>
+                        <th class="py-4 px-4 text-gray-400 font-medium">电车代表功能</th>
+                        <th class="py-4 px-4 text-gray-400 font-medium">责任主体</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    <tr class="border-b border-gray-800/50 hover:bg-white/5 transition-colors">
+                        <td class="py-4 px-4 font-bold text-gray-500">L0</td>
+                        <td class="py-4 px-4">应急辅助</td>
+                        <td class="py-4 px-4 text-gray-400">人类完全控制</td>
+                        <td class="py-4 px-4 text-red-300">ABS、盲点监测</td>
+                        <td class="py-4 px-4 text-cyan-300">AEB自动紧急制动</td>
+                        <td class="py-4 px-4"><span class="px-2 py-1 rounded bg-gray-800 text-xs">驾驶员</span></td>
+                    </tr>
+                    <tr class="border-b border-gray-800/50 hover:bg-white/5 transition-colors">
+                        <td class="py-4 px-4 font-bold text-blue-400">L1</td>
+                        <td class="py-4 px-4">部分辅助</td>
+                        <td class="py-4 px-4 text-gray-400">单一方向辅助</td>
+                        <td class="py-4 px-4 text-red-300">定速巡航、车道偏离预警</td>
+                        <td class="py-4 px-4 text-cyan-300">自适应巡航(ACC)</td>
+                        <td class="py-4 px-4"><span class="px-2 py-1 rounded bg-gray-800 text-xs">驾驶员</span></td>
+                    </tr>
+                    <tr class="border-b border-gray-800/50 hover:bg-white/5 transition-colors bg-blue-900/10">
+                        <td class="py-4 px-4 font-bold text-blue-500">L2</td>
+                        <td class="py-4 px-4">组合辅助</td>
+                        <td class="py-4 px-4 text-gray-400">横向+纵向控制</td>
+                        <td class="py-4 px-4 text-red-300">ACC+车道保持（基础版）</td>
+                        <td class="py-4 px-4 text-cyan-300">高速NOA、自动变道</td>
+                        <td class="py-4 px-4"><span class="px-2 py-1 rounded bg-gray-800 text-xs">驾驶员</span></td>
+                    </tr>
+                    <tr class="border-b border-gray-800/50 hover:bg-white/5 transition-colors bg-purple-900/10">
+                        <td class="py-4 px-4 font-bold text-purple-400">L3</td>
+                        <td class="py-4 px-4">有条件自动</td>
+                        <td class="py-4 px-4 text-gray-400">特定条件接管</td>
+                        <td class="py-4 px-4 text-red-300">奔驰Drive Pilot（极少数）</td>
+                        <td class="py-4 px-4 text-cyan-300">城市NOA、拥堵自动驾驶</td>
+                        <td class="py-4 px-4"><span class="px-2 py-1 rounded bg-purple-900/50 text-purple-300 text-xs">系统/驾驶员</span></td>
+                    </tr>
+                    <tr class="border-b border-gray-800/50 hover:bg-white/5 transition-colors">
+                        <td class="py-4 px-4 font-bold text-pink-400">L4</td>
+                        <td class="py-4 px-4">高度自动</td>
+                        <td class="py-4 px-4 text-gray-400">限定区域无人</td>
+                        <td class="py-4 px-4 text-red-300">无（技术架构不支持）</td>
+                        <td class="py-4 px-4 text-cyan-300">萝卜快跑、Waymo</td>
+                        <td class="py-4 px-4"><span class="px-2 py-1 rounded bg-pink-900/50 text-pink-300 text-xs">系统</span></td>
+                    </tr>
+                    <tr class="border-b border-gray-800/50 hover:bg-white/5 transition-colors">
+                        <td class="py-4 px-4 font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">L5</td>
+                        <td class="py-4 px-4">完全自动</td>
+                        <td class="py-4 px-4 text-gray-400">全场景无人</td>
+                        <td class="py-4 px-4 text-red-300">不适用</td>
+                        <td class="py-4 px-4 text-cyan-300">研发测试中</td>
+                        <td class="py-4 px-4"><span class="px-2 py-1 rounded bg-pink-900/50 text-pink-300 text-xs">系统</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Key Insights -->
+    <section class="py-20 px-4 max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-8">核心结论</h2>
+        <div class="grid md:grid-cols-2 gap-6 text-left">
+            <div class="p-6 rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800">
+                <h3 class="text-xl font-bold mb-3 text-red-400">为什么油车难做高阶智驾？</h3>
+                <p class="text-gray-400 leading-relaxed">
+                    燃油车基于12V电气系统和分布式ECU架构，算力有限（通常<10 TOPS），机械传动响应慢，且无法支持整车OTA升级。电气架构的先天限制使其难以突破L2级。
+                </p>
+            </div>
+            <div class="p-6 rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800">
+                <h3 class="text-xl font-bold mb-3 text-cyan-400">为什么电车是智驾载体？</h3>
+                <p class="text-gray-400 leading-relaxed">
+                    电动车采用域集中架构，算力可达1000+ TOPS，线控底盘响应<10ms，支持高压供电和整车OTA。电机线性控制特性与自动驾驶算法完美契合。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-gray-800 text-center text-gray-500 text-sm">
+        <p>基于 SAE J3016 与 GB/T 40429-2021 标准制作</p>
+        <p class="mt-2">© 2025 自动驾驶科普 | 数据截至2025年3月</p>
+    </footer>
+
+    <script>
+        // Animate progress bars on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bars = entry.target.querySelectorAll('.bg-blue-500, .bg-purple-500, .bg-pink-500, .bg-gray-600');
+                    bars.forEach(bar => {
+                        const width = bar.style.width;
+                        bar.style.width = '0%';
+                        setTimeout(() => {
+                            bar.style.width = width;
+                        }, 100);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.level-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

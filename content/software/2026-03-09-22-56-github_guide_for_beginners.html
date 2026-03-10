@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 GitHub 零基础入门指南 - 从小白到会用</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --github-dark: #0d1117;
+            --github-gray: #161b22;
+            --github-border: #30363d;
+            --github-text: #c9d1d9;
+            --github-green: #238636;
+            --github-blue: #58a6ff;
+            --github-purple: #8957e5;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: var(--github-dark);
+            color: var(--github-text);
+            line-height: 1.8;
+        }
+
+        /* 导航 */
+        .navbar {
+            background: var(--github-gray);
+            border-bottom: 1px solid var(--github-border);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .logo svg {
+            width: 35px;
+            height: 35px;
+            fill: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--github-text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--github-blue);
+        }
+
+        /* 头部 */
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        header .logo {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header .logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #fff, var(--github-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--github-green);
+            color: #fff;
+            padding: 15px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(46, 160, 67, 0.4);
+        }
+
+        .cta-button:hover {
+            background: #2ea043;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(46, 160, 67, 0.3);
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 章节 */
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--github-border);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+        }
+
+        /* 步骤卡片 */
+        .step-card {
+            background: var(--github-gray);
+            border: 1px solid var(--github-border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            transition: all 0.3s;
+        }
+
+        .step-card:hover {
+            border-color: var(--github-blue);
+            transform: translateX(5px);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            width: 45px;
+            height: 45px;
+            background: var(--github-blue);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            color: #fff;
+        }
+
+        .step-content {
+            margin-left: 60px;
+        }
+
+        .step-content p {
+            margin-bottom: 15px;
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: rgba(88, 166, 255, 0.1);
+            border-left: 4px solid var(--github-blue);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .tip-box.warning {
+            background: rgba(210, 153, 34, 0.1);
+            border-left-color: #d29922;
+        }
+
+        .tip-box.success {
+            background: rgba(46, 160, 67, 0.1);
+            border-left-color: var(--github-green);
+        }
+
+        .tip-box strong {
+            color: #fff;
+        }
+
+        /* 代码块 */
+        .code-block {
+            background: #0d1117;
+            border: 1px solid var(--github-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .code-header {
+            background: #161b22;
+            padding: 10px 15px;
+            font-size: 0.85rem;
+            color: #8b949e;
+            border-bottom: 1px solid var(--github-border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .code-dots span:nth-child(1) { background: #ff5f56; }
+        .code-dots span:nth-child(2) { background: #ffbd2e; }
+        .code-dots span:nth-child(3) { background: #27c93f; }
+
+        pre {
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #e6edf3;
+        }
+
+        .comment { color: #8b949e; }
+        .keyword { color: #ff7b72; }
+        .string { color: #a5d6ff; }
+        .command { color: #7ee787; }
+
+        /* 图片说明 */
+        .image-demo {
+            background: #0d1117;
+            border: 1px solid var(--github-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .image-placeholder {
+            background: linear-gradient(135deg, #21262d 0%, #30363d 100%);
+            border-radius: 8px;
+            padding: 60px 20px;
+            color: #8b949e;
+            font-size: 1.1rem;
+        }
+
+        .image-caption {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #8b949e;
+        }
+
+        /* 概念解释 */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .concept-card {
+            background: var(--github-gray);
+            border: 1px solid var(--github-border);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .concept-card:hover {
+            border-color: var(--github-purple);
+            transform: translateY(-5px);
+        }
+
+        .concept-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .concept-title {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .concept-desc {
+            font-size: 0.95rem;
+            color: #8b949e;
+        }
+
+        /* 流程图 */
+        .flow-diagram {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            padding: 30px;
+            background: var(--github-gray);
+            border-radius: 12px;
+        }
+
+        .flow-step {
+            background: #21262d;
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid var(--github-border);
+            text-align: center;
+        }
+
+        .flow-step-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: var(--github-blue);
+        }
+
+        /* 命令速查表 */
+        .cheat-sheet {
+            background: var(--github-gray);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--github-border);
+        }
+
+        .cheat-row {
+            display: flex;
+            border-bottom: 1px solid var(--github-border);
+        }
+
+        .cheat-row:last-child {
+            border-bottom: none;
+        }
+
+        .cheat-cmd {
+            flex: 1;
+            padding: 15px 20px;
+            font-family: monospace;
+            background: #0d1117;
+            color: #7ee787;
+        }
+
+        .cheat-desc {
+            flex: 2;
+            padding: 15px 20px;
+            color: #c9d1d9;
+        }
+
+        /* 进度指示器 */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--github-green), var(--github-blue));
+            z-index: 9999;
+            transition: width 0.3s;
+        }
+
+        /* 回到顶部 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--github-gray);
+            border: 1px solid var(--github-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--github-blue);
+            transform: translateY(-5px);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            border-top: 1px solid var(--github-border);
+            background: var(--github-gray);
+        }
+
+        footer p {
+            color: #8b949e;
+            margin-bottom: 10px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .step-content {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+
+            .step-header {
+                flex-wrap: wrap;
+            }
+
+            .cheat-row {
+                flex-direction: column;
+            }
+
+            .flow-diagram {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* 高亮 */
+        .highlight {
+            background: rgba(210, 153, 34, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        .code-inline {
+            background: rgba(110, 118, 129, 0.4);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- 导航 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+            <ul class="nav-links">
+                <li><a href="#register">注册</a></li>
+                <li><a href="#concepts">核心概念</a></li>
+                <li><a href="#first-repo">第一个仓库</a></li>
+                <li><a href="#git-commands">常用命令</a></li>
+                <li><a href="#collaboration">协作开发</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 头部 -->
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 42.67A464.64 464.64 0 0 0 42.67 502.19 460.37 460.37 0 0 0 363.52 938.67c23.47 4.27 32-9.81 32-22.19v-78.08c-130.56 27.73-158.29-61.44-158.29-61.44a122.03 122.03 0 0 0-52.05-67.41c-42.67-28.16 3.41-27.73 3.41-27.73a98.56 98.56 0 0 1 71.68 47.36 101.12 101.12 0 0 0 136.53 37.97 99.41 99.41 0 0 1 29.87-61.44c-104.11-11.52-213.33-50.77-213.33-226.99a177.07 177.07 0 0 1 47.36-124.16 161.28 161.28 0 0 1 4.69-121.17s39.68-12.37 128 46.93a455.68 455.68 0 0 1 234.67 0c89.6-59.31 128-46.93 128-46.93a161.28 161.28 0 0 1 4.69 121.17A177.07 177.07 0 0 1 810.67 477.87c0 176.64-110.08 215.47-213.33 226.99a106.67 106.67 0 0 1 32 85.33v125.87c0 14.93 8.53 26.88 32 22.19A460.8 460.8 0 0 0 981.33 502.19 464.64 464.64 0 0 0 512 42.67z" fill="white"/></svg>
+        </div>
+        <h1>GitHub 零基础入门指南</h1>
+        <p>不需要懂编程，手把手教你使用全球最大的代码托管平台，开启你的开源之旅</p>
+        <a href="https://github.com/signup" target="_blank" class="cta-button">👉 立即注册 GitHub</a>
+    </header>
+
+    <div class="container">
+        <!-- 什么是GitHub -->
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">🤔</span>什么是 GitHub？一句话解释</h2>
+            
+            <div class="tip-box success">
+                <strong>💡 通俗理解：</strong>GitHub 就像是一个「网盘 + 时光机 + 协作工具」
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li><strong>网盘</strong>：存储你的代码文件</li>
+                    <li><strong>时光机</strong>：可以回到文件的任何一个历史版本</li>
+                    <li><strong>协作工具</strong>：多人一起编辑，不会互相覆盖</li>
+                </ul>
+            </div>
+
+            <p>想象一下你和同学一起写一份报告：</p>
+            <ul style="margin: 15px 0 15px 30px;">
+                <li>❌ 传统方式：用微信传文件，最后不知道哪个是最新版</li>
+                <li>✅ GitHub 方式：所有人都在同一个地方编辑，自动合并修改，能看到谁改了什么</li>
+            </ul>
+        </section>
+
+        <!-- 注册 -->
+        <section class="section" id="register">
+            <h2 class="section-title"><span class="section-icon">📝</span>第一步：注册账号（5分钟）</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">访问官网</h3>
+                </div>
+                <div class="step-content">
+                    <p>打开 <a href="https://github.com" target="_blank" style="color: var(--github-blue);">github.com</a>，点击右上角的 <span class="code-inline">Sign up</span></p>
+                    <div class="image-demo">
+                        <div class="image-placeholder">🖼️ 官网首页截图位置</div>
+                        <div class="image-caption">点击 Sign up 开始注册</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">填写信息</h3>
+                </div>
+                <div class="step-content">
+                    <p>按提示填写：</p>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li><strong>邮箱</strong>：建议用常用邮箱（QQ邮箱也可以）</li>
+                        <li><strong>密码</strong>：至少8位，包含字母和数字</li>
+                        <li><strong>用户名</strong>：只能用英文、数字和短横线，会出现在你的链接里</li>
+                    </ul>
+                    <div class="tip-box warning">
+                        <strong>⚠️ 注意：</strong>用户名一旦确定很难修改，建议用 <span class="code-inline">你的名字拼音</span> 或 <span class="code-inline">英文名</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">验证邮箱</h3>
+                </div>
+                <div class="step-content">
+                    <p>注册后会收到验证邮件，点击邮件里的链接完成验证。如果没收到，检查垃圾箱。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心概念 -->
+        <section class="section" id="concepts">
+            <h2 class="section-title"><span class="section-icon">📚</span>第二步：搞懂这4个核心概念</h2>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">📁</div>
+                    <h3 class="concept-title">仓库 Repository</h3>
+                    <p class="concept-desc">简称 Repo，相当于一个项目文件夹。你的所有代码、文档、图片都放在这里。</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">💾</div>
+                    <h3 class="concept-title">提交 Commit</h3>
+                    <p class="concept-desc">保存当前文件状态，就像游戏的存档点。可以随时回退到任何一个提交。</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🌿</div>
+                    <h3 class="concept-title">分支 Branch</h3>
+                    <p class="concept-desc">从主线分出来的副本，可以在分支上随意修改，不影响主线。改完再合并回去。</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🔄</div>
+                    <h3 class="concept-title">推送 Push / 拉取 Pull</h3>
+                    <p class="concept-desc">Push：把本地文件上传到 GitHub<br>Pull：把 GitHub 上的文件下载到本地</p>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <strong>🎯 记忆口诀：</strong>
+                <p style="margin-top: 10px; font-style: italic;">
+                    "仓库是房子，提交是拍照，分支是平行宇宙，推送pull是收发快递"
+                </p>
+            </div>
+        </section>
+
+        <!-- 创建第一个仓库 -->
+        <section class="section" id="first-repo">
+            <h2 class="section-title"><span class="section-icon">🎉</span>第三步：创建你的第一个仓库</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">点击 New Repository</h3>
+                </div>
+                <div class="step-content">
+                    <p>登录后，点击右上角 <span class="code-inline">+</span> 号，选择 <span class="code-inline">New repository</span></p>
+                    <div class="image-demo">
+                        <div class="image-placeholder">🖼️ 创建仓库按钮位置</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">填写仓库信息</h3>
+                </div>
+                <div class="step-content">
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Repository name</strong>：仓库名，用英文，比如 <span class="code-inline">my-first-project</span></li>
+                        <li><strong>Description</strong>：描述（可选），比如"我的第一个项目"</li>
+                        <li><strong>Public/Private</strong>：
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li>Public（公开）：所有人都能看到，免费 ✅</li>
+                                <li>Private（私有）：只有你能看到，免费 ✅</li>
+                            </ul>
+                        </li>
+                        <li><strong>Add a README file</strong>：☑️ 勾选上，会自动创建一个说明文件</li>
+                    </ul>
+                    <div class="image-demo">
+                        <div class="image-placeholder">🖼️ 填写仓库信息表单</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">创建完成！</h3>
+                </div>
+                <div class="step-content">
+                    <p>点击 <span class="code-inline">Create repository</span>，你就拥有了自己的第一个仓库！🎊</p>
+                    <p>现在你可以：</p>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>点击 <span class="code-inline">README.md</span> 文件，然后点击 ✏️ 编辑按钮修改内容</li>
+                        <li>尝试写一些文字，比如"# 你好，GitHub！"</li>
+                        <li>滚动到页面底部，点击 <span class="code-inline">Commit changes</span> 保存</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Git 命令 -->
+        <section class="section" id="git-commands">
+            <h2 class="section-title"><span class="section-icon">💻</span>第四步：安装 Git 并连接（电脑操作）</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">下载安装 Git</h3>
+                </div>
+                <div class="step-content">
+                    <p>访问 <a href="https://git-scm.com/downloads" target="_blank" style="color: var(--github-blue);">git-scm.com/downloads</a> 下载对应系统的版本</p>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li><strong>Windows</strong>：下载 .exe 文件，一路下一步安装</li>
+                        <li><strong>Mac</strong>：下载 .dmg 文件安装，或在终端运行 <span class="code-inline">git --version</span> 自动安装</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">配置你的信息</h3>
+                </div>
+                <div class="step-content">
+                    <p>打开终端（Windows 用 Git Bash 或 CMD，Mac 用 Terminal），输入：</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span>Terminal</span>
+                        </div>
+                        <pre><code><span class="comment"># 配置用户名（替换为你的GitHub用户名）</span>
+<span class="command">git config</span> --global user.name <span class="string">"你的用户名"</span>
+
+<span class="comment"># 配置邮箱（替换为你注册GitHub的邮箱）</span>
+<span class="command">git config</span> --global user.email <span class="string">"your@email.com"</span></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">克隆仓库到本地</h3>
+                </div>
+                <div class="step-content">
+                    <p>在 GitHub 仓库页面点击 <span class="code-inline">Code</span> 按钮，复制 HTTPS 链接，然后在终端输入：</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span>Terminal</span>
+                        </div>
+                        <pre><code><span class="comment"># 进入你想存放项目的文件夹（示例）</span>
+<span class="command">cd</span> Desktop
+
+<span class="comment"># 克隆仓库（替换为你的仓库链接）</span>
+<span class="command">git clone</span> https://github.com/你的用户名/仓库名.git
+
+<span class="comment"># 进入项目文件夹</span>
+<span class="command">cd</span> 仓库名</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin: 40px 0 20px; font-size: 1.3rem;">📋 常用 Git 命令速查表</h3>
+            <div class="cheat-sheet">
+                <div class="cheat-row">
+                    <div class="cheat-cmd">git status</div>
+                    <div class="cheat-desc">查看当前状态，哪些文件被修改了</div>
+                </div>
+                <div class="cheat-row">
+                    <div class="cheat-cmd">git add 文件名</div>
+                    <div class="cheat-desc">将文件添加到暂存区（准备提交）</div>
+                </div>
+                <div class="cheat-row">
+                    <div class="cheat-cmd">git add .</div>
+                    <div class="cheat-desc">添加所有修改过的文件</div>
+                </div>
+                <div class="cheat-row">
+                    <div class="cheat-cmd">git commit -m "描述"</div>
+                    <div class="cheat-desc">提交更改，-m 后面写这次修改的说明</div>
+                </div>
+                <div class="cheat-row">
+                    <div class="cheat-cmd">git push</div>
+                    <div class="cheat-desc">将本地提交推送到 GitHub</div>
+                </div>
+                <div class="cheat-row">
+                    <div class="cheat-cmd">git pull</div>
+                    <div class="cheat-desc">从 GitHub 拉取最新代码</div>
+                </div>
+                <div class="cheat-row">
+                    <div class="cheat-cmd">git log</div>
+                    <div class="cheat-desc">查看提交历史记录</div>
+                </div>
+            </div>
+
+            <div class="tip-box success" style="margin-top: 25px;">
+                <strong>📝 标准工作流程：</strong>
+                <div class="code-block" style="margin-top: 10px; margin-bottom: 0;">
+                    <pre style="padding: 15px;"><code><span class="comment"># 1. 修改文件...</span>
+<span class="comment"># 2. 查看修改状态</span>
+<span class="command">git status</span>
+
+<span class="comment"># 3. 添加修改的文件</span>
+<span class="command">git add .</span>
+
+<span class="comment"># 4. 提交（拍照存档）</span>
+<span class="command">git commit</span> -m <span class="string">"修复了登录bug"</span>
+
+<span class="comment"># 5. 推送到 GitHub</span>
+<span class="command">git push</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- 协作开发 -->
+        <section class="section" id="collaboration">
+            <h2 class="section-title"><span class="section-icon">🤝</span>第五步：参与开源项目（进阶）</h2>
+
+            <p>GitHub 最大的魅力是开源协作。看到喜欢的项目，你可以：</p>
+
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-step-icon">🍴</div>
+                    <div>Fork</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-icon">💻</div>
+                    <div>修改代码</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-icon">📤</div>
+                    <div>Push</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-icon">🔄</div>
+                    <div>Pull Request</div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Fork 项目</h3>
+                </div>
+                <div class="step-content">
+                    <p>进入你想贡献的开源项目页面，点击右上角的 <span class="code-inline">Fork</span> 按钮。</p>
+                    <p>这会在你的账号下创建一个该项目的<strong>副本</strong>，你可以随意修改而不会影响原项目。</p>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">修改并提交</h3>
+                </div>
+                <div class="step-content">
+                    <p>Clone 你 Fork 的仓库到本地，修改代码，然后 push 到你的 GitHub。</p>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">发起 Pull Request</h3>
+                </div>
+                <div class="step-content">
+                    <p>在你的 Fork 页面点击 <span class="code-inline">Contribute</span> → <span class="code-inline">Open pull request</span></p>
+                    <p>填写修改说明，提交后原作者就能收到你的贡献请求。如果审核通过，你的代码就会合并到原项目中！🎉</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常见问题 -->
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">❓</span>常见问题 FAQ</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">Q1</div>
+                    <h3 class="step-title">Git 和 GitHub 有什么区别？</h3>
+                </div>
+                <div class="step-content">
+                    <p><strong>Git</strong> 是一个软件，安装在你电脑上，用来管理代码版本。</p>
+                    <p><strong>GitHub</strong> 是一个网站，用来存放你的代码，让其他人可以看到和协作。</p>
+                    <p>关系：Git 是工具，GitHub 是平台。</p>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">Q2</div>
+                    <h3 class="step-title">必须要会编程才能用 GitHub 吗？</h3>
+                </div>
+                <div class="step-content">
+                    <p>完全不需要！GitHub 可以存任何文件：</p>
+                    <ul style="margin-left: 20px;">
+                        <li>写文档、笔记（Markdown 格式）</li>
+                        <li>托管静态网页（GitHub Pages）</li>
+                        <li>管理图片、音乐等文件</li>
+                        <li>写小说、博客</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">Q3</div>
+                    <h3 class="step-title">GitHub 是免费的吗？</h3>
+                </div>
+                <div class="step-content">
+                    <p>是的！个人账户完全免费，包括：</p>
+                    <ul style="margin-left: 20px;">
+                        <li>✅ 无限个公开仓库</li>
+                        <li>✅ 无限个私有仓库</li>
+                        <li>✅ 无限个协作者</li>
+                        <li>❌ 付费功能主要是高级的团队管理工具</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">Q4</div>
+                    <h3 class="step-title">我误删了文件怎么办？</h3>
+                </div>
+                <div class="step-content">
+                    <p>不用慌！Git 记录了所有历史版本：</p>
+                    <div class="code-block">
+                        <pre style="padding: 15px;"><code><span class="comment"># 查看历史记录</span>
+<span class="command">git log</span>
+
+<span class="comment"># 恢复到某个版本（替换commit_id为具体的ID）</span>
+<span class="command">git checkout</span> commit_id -- 文件名</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习资源 -->
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">📖</span>推荐学习资源</h2>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">🎮</div>
+                    <h3 class="concept-title">GitHub 官方教程</h3>
+                    <p class="concept-desc"><a href="https://docs.github.com/cn" target="_blank" style="color: var(--github-blue);">docs.github.com/cn</a> - 官方中文文档，权威且详细</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🎯</div>
+                    <h3 class="concept-title">Git 可视化练习</h3>
+                    <p class="concept-desc"><a href="https://learngitbranching.js.org/?locale=zh_CN" target="_blank" style="color: var(--github-blue);">learngitbranching.js.org</a> - 游戏化学习 Git 分支</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">📺</div>
+                    <h3 class="concept-title">B站视频教程</h3>
+                    <p class="concept-desc">搜索「GitHub入门」，有很多优质的免费视频教程</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🔍</div>
+                    <h3 class="concept-title">GitHub 探索</h3>
+                    <p class="concept-desc">点击 GitHub 首页的 Explore，发现有趣的开源项目</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 总结 -->
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">🎓</span>总结：你现在已经会了！</h2>
+
+            <div class="tip-box success">
+                <strong>✅ 看完本指南，你应该掌握了：</strong>
+                <ul style="margin-top: 15px; margin-left: 25px;">
+                    <li>注册 GitHub 账号</li>
+                    <li>创建和管理仓库</li>
+                    <li>理解 Git 的核心概念（提交、分支、推送）</li>
+                    <li>使用基础 Git 命令</li>
+                    <li>参与开源项目的基本流程</li>
+                </ul>
+            </div>
+
+            <p style="text-align: center; font-size: 1.2rem; margin-top: 40px;">
+                现在就去 <a href="https://github.com" target="_blank" style="color: var(--github-blue); font-weight: bold;">GitHub</a> 创建你的第一个仓库吧！🚀
+            </p>
+        </section>
+    </div>
+
+    <!-- 回到顶部 -->
+    <div class="back-to-top" id="backToTop">⬆️</div>
+
+    <footer>
+        <p>🎉 恭喜你读完了这份指南！希望对你有帮助</p>
+        <p>如有问题，欢迎前往 GitHub 社区寻求帮助</p>
+        <p style="margin-top: 20px; opacity: 0.7;">Made with ❤️ for GitHub Beginners</p>
+    </footer>
+
+    <script>
+        // 滚动进度条
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+
+            // 回到顶部按钮
+            const backToTop = document.getElementById('backToTop');
+            if (winScroll > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // 回到顶部
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // 步骤卡片动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.step-card, .concept-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

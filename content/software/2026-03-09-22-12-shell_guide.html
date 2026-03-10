@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shell 零基础入门指南 - 命令行从入门到熟练</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部 */
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        .header .logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header .logo svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header .badges {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 导航 */
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        
+        .nav-menu h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+        }
+        
+        .nav-item {
+            background: #f8f9fa;
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* 内容卡片 */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 1.7em;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title .icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3em;
+        }
+        
+        .section h3 {
+            color: #667eea;
+            margin: 25px 0 15px;
+            font-size: 1.25em;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        /* 终端窗口 */
+        .terminal {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 0;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .terminal-header {
+            background: #323232;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+        
+        .terminal-title {
+            color: #999;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        
+        .terminal-body {
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+        
+        .terminal-body .prompt {
+            color: #7ee787;
+        }
+        
+        .terminal-body .command {
+            color: #fff;
+        }
+        
+        .terminal-body .output {
+            color: #ccc;
+        }
+        
+        .terminal-body .comment {
+            color: #6a9955;
+        }
+        
+        .terminal-body .highlight {
+            color: #4ec9b0;
+        }
+        
+        /* 命令卡片 */
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .command-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 10px;
+            padding: 18px;
+        }
+        
+        .command-card code {
+            background: #1e1e1e;
+            color: #7ee787;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.95em;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .command-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 0;
+        }
+        
+        .command-card .example {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: #495057;
+            font-family: monospace;
+        }
+        
+        /* 文件树 */
+        .file-tree {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: monospace;
+            margin: 20px 0;
+        }
+        
+        .tree-line {
+            padding: 4px 0;
+            color: #555;
+        }
+        
+        .tree-line.folder {
+            color: #f4a261;
+        }
+        
+        .tree-line.file {
+            color: #457b9d;
+        }
+        
+        .tree-indent {
+            margin-left: 20px;
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .tip-box h4 {
+            color: #276749;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tip-box ul {
+            margin-left: 20px;
+            color: #2f855a;
+        }
+        
+        .tip-box li {
+            margin-bottom: 6px;
+        }
+        
+        /* 警告框 */
+        .warning-box {
+            background: #fff5f5;
+            border-left: 4px solid #ff6b6b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .warning-box h4 {
+            color: #c53030;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .warning-box ul {
+            margin-left: 20px;
+            color: #744210;
+        }
+        
+        .warning-box li {
+            margin-bottom: 6px;
+        }
+        
+        /* 快捷键表格 */
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .shortcut-table th,
+        .shortcut-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .shortcut-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .shortcut-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .key {
+            background: #1e1e1e;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+        
+        /* 步骤列表 */
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+        }
+        
+        .step-list li {
+            position: relative;
+            padding-left: 55px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        
+        .step-list li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .step-list li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1em;
+        }
+        
+        .step-list li h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        /* 页脚 */
+        .footer-section {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+        
+        .footer-section h2 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+        
+        /* 返回顶部 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            display: none;
+        }
+        
+        .back-to-top:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+        }
+        
+        .back-to-top.show {
+            display: block;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .nav-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .section {
+                padding: 25px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.3em;
+            }
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">
+                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M848.79 248.28c16.95 10.59 30.18 24.36 39.72 41.3s14.3 34.95 14.3 54.01v336.8c0 19.06-4.77 37.07-14.3 54.01-9.53 16.95-22.77 30.71-39.72 41.31l-282.78 168.4C549.07 954.7 531.06 960 512 960s-37.07-5.3-54.01-15.89l-282.78-168.4c-16.95-10.59-30.18-24.36-39.72-41.3-9.53-16.95-14.3-34.95-14.3-54.01V343.6c0-19.06 4.77-37.07 14.3-54.01 9.53-16.95 22.77-30.71 39.72-41.31l282.78-168.4C474.93 69.3 492.94 64 512 64s37.07 5.3 54.01 15.89l282.78 168.4zM629.56 769.36c23.3-16.95 34.95-39.19 34.95-66.72 0-27.54-12.71-41.31-38.13-41.31-8.47 0-14.83-1.06-19.06-3.18s-6.36-5.3-6.36-9.53c0-14.83 5.3-24.89 15.89-30.18s21.18-6.89 31.77-4.77c2.12-2.12 3.18-4.24 3.18-6.36l6.36-19.06c2.12-4.24 1.06-6.36-3.18-6.36-8.47-2.12-16.95-1.06-25.42 3.18V559.66c0-2.12-1.06-3.18-3.18-3.18l-15.89 9.53c-2.12 2.12-3.18 4.24-3.18 6.36v25.42c-21.18 16.95-31.77 39.18-31.77 66.72 0 14.83 3.18 24.36 9.53 28.6s16.42 6.35 30.18 6.35 20.65 6.88 20.65 20.65-7.41 23.83-22.24 30.18c-8.47 4.24-18.01 5.3-28.6 3.18h-3.18c-2.12 2.12-3.18 4.24-3.18 6.36l-6.36 22.24c0 2.12 1.06 3.18 3.18 3.18 10.59 4.24 21.18 3.18 31.77-3.18v25.42c0 4.24 1.06 5.3 3.18 3.18l15.89-9.53c2.12-2.12 3.18-4.24 3.18-6.36v-25.42z m146.16-57.19l-69.9 41.3c-2.12 2.12-3.18 4.24-3.18 6.36v19.06h3.18l69.9-44.48c2.12 0 3.18-1.06 3.18-3.18l-3.18-19.06z m50.84-393.99c12.71-6.36 23.83-8.47 33.36-6.36s16.42 7.41 20.65 15.89c-4.24-27.54-18.01-48.72-41.3-63.55L556.48 95.77c-12-5.3-25.42-5.3-40.25 0L179.6 292.87c-14.83 8.47-24.89 18.53-30.18 30.18l-9.53 19.06c-6.36 14.83-4.24 27.53 6.36 38.13l282.78 168.4c10.59 6.35 23.3 8.47 38.13 6.35L848.79 367.96c12.71-6.35 20.12-15.88 22.24-28.59l3.18-9.53c2.12-12.71-1.06-24.36-9.53-34.95z" fill="#4A90E2"/></svg>
+            </div>
+            <h1>Shell 零基础入门指南</h1>
+            <p>告别鼠标点点点，用命令行高效掌控你的电脑</p>
+            <div class="badges">
+                <span class="badge">🎯 零基础友好</span>
+                <span class="badge">⌨️ 实操为主</span>
+                <span class="badge">⚡ 效率翻倍</span>
+            </div>
+        </header>
+        
+        <!-- 导航 -->
+        <nav class="nav-menu">
+            <h3>📋 快速导航</h3>
+            <div class="nav-grid">
+                <a href="#what" class="nav-item">什么是Shell</a>
+                <a href="#terminal" class="nav-item">打开终端</a>
+                <a href="#basic" class="nav-item">基础命令</a>
+                <a href="#file" class="nav-item">文件操作</a>
+                <a href="#navigate" class="nav-item">目录导航</a>
+                <a href="#text" class="nav-item">文本处理</a>
+                <a href="#pipe" class="nav-item">管道重定向</a>
+                <a href="#permission" class="nav-item">权限管理</a>
+                <a href="#shortcut" class="nav-item">快捷键</a>
+                <a href="#cheatsheet" class="nav-item">速查表</a>
+            </div>
+        </nav>
+        
+        <!-- 什么是 Shell -->
+        <section class="section" id="what">
+            <h2 class="section-title">
+                <span class="icon">❓</span>
+                什么是 Shell？
+            </h2>
+            
+            <p>Shell 是一个<strong>命令行解释器</strong>，它是你和操作系统之间的翻译官。你在终端输入的命令，由 Shell 解释后告诉电脑执行什么操作。</p>
+            
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="prompt">$</span> <span class="command">echo "Hello Shell"</span></div>
+                    <div class="output">Hello Shell</div>
+                    <div style="margin-top: 10px;"><span class="prompt">$</span> <span class="command">_</span></div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 为什么要学 Shell？</h4>
+                <ul>
+                    <li>效率提升：批量操作文件，一键完成重复任务</li>
+                    <li>远程管理：服务器只能通过命令行操作</li>
+                    <li>开发必备：Git、Docker、编译部署都需要</li>
+                    <li>显得专业：程序员的基本功</li>
+                </ul>
+            </div>
+            
+            <h3>常见 Shell 类型</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>Shell 名称</th>
+                    <th>特点</th>
+                    <th>默认系统</th>
+                </tr>
+                <tr>
+                    <td><strong>Bash</strong></td>
+                    <td>最流行，功能全面，文档丰富</td>
+                    <td>Linux、旧版 macOS</td>
+                </tr>
+                <tr>
+                    <td><strong>Zsh</strong></td>
+                    <td>功能强大，插件丰富，推荐</td>
+                    <td>新版 macOS</td>
+                </tr>
+                <tr>
+                    <td><strong>Fish</strong></td>
+                    <td>友好易用，自动补全强大</td>
+                    <td>需手动安装</td>
+                </tr>
+                <tr>
+                    <td><strong>PowerShell</strong></td>
+                    <td>微软开发，跨平台</td>
+                    <td>Windows</td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- 打开终端 -->
+        <section class="section" id="terminal">
+            <h2 class="section-title">
+                <span class="icon">🖥️</span>
+                如何打开终端
+            </h2>
+            
+            <h3>Windows</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>方法一：搜索打开</h4>
+                    <p>按 Win 键，输入 "cmd" 或 "PowerShell"，回车打开</p>
+                </li>
+                <li>
+                    <h4>方法二：快捷键（推荐）</h4>
+                    <p>Win + R，输入 "wt"（Windows Terminal）或 "cmd"，回车</p>
+                </li>
+                <li>
+                    <h4>方法三：右键菜单</h4>
+                    <p>在文件夹空白处按住 Shift + 右键，选择"在此处打开 PowerShell 窗口"</p>
+                </li>
+            </ul>
+            
+            <h3>macOS</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>方法一：Spotlight</h4>
+                    <p>Cmd + 空格，输入 "Terminal"，回车</p>
+                </li>
+                <li>
+                    <h4>方法二：Launchpad</h4>
+                    <p>在"其他"文件夹中找到"终端"</p>
+                </li>
+            </ul>
+            
+            <h3>Linux</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>快捷键</h4>
+                    <p>Ctrl + Alt + T 是大多数发行版的默认快捷键</p>
+                </li>
+            </ul>
+            
+            <div class="tip-box">
+                <h4>💡 推荐终端工具</h4>
+                <ul>
+                    <li><strong>Windows：</strong>Windows Terminal（微软商店免费下载）</li>
+                    <li><strong>macOS：</strong>iTerm2（功能强大，免费）</li>
+                    <li><strong>跨平台：</strong>Tabby、Warp（现代化界面）</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 基础命令 -->
+        <section class="section" id="basic">
+            <h2 class="section-title">
+                <span class="icon">⌨️</span>
+                基础命令
+            </h2>
+            
+            <p>学习 Shell 从这几个命令开始，它们是你使用最频繁的：</p>
+            
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>ls</code>
+                    <p>列出当前目录的文件和文件夹</p>
+                    <div class="example">ls -la  # 显示所有文件（含隐藏）</div>
+                </div>
+                <div class="command-card">
+                    <code>pwd</code>
+                    <p>显示当前所在路径（我在哪）</p>
+                    <div class="example">pwd  # /home/username/Documents</div>
+                </div>
+                <div class="command-card">
+                    <code>cd</code>
+                    <p>切换目录（去哪里）</p>
+                    <div class="example">cd Documents  # 进入 Documents 文件夹</div>
+                </div>
+                <div class="command-card">
+                    <code>clear</code>
+                    <p>清屏（快捷键 Ctrl + L）</p>
+                    <div class="example">clear  # 屏幕变干净</div>
+                </div>
+                <div class="command-card">
+                    <code>man</code>
+                    <p>查看命令手册（帮助文档）</p>
+                    <div class="example">man ls  # 查看 ls 命令的详细说明</div>
+                </div>
+                <div class="command-card">
+                    <code>history</code>
+                    <p>查看历史命令记录</p>
+                    <div class="example">history | tail -20  # 最近20条</div>
+                </div>
+            </div>
+            
+            <h3>命令格式说明</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">命令格式</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="command">命令 [选项] [参数]</span></div>
+                    <div style="margin-top: 15px;"><span class="comment"># 示例：</span></div>
+                    <div><span class="command">ls</span> <span class="highlight">-la</span> <span class="highlight">/home</span></div>
+                    <div style="margin-top: 10px; padding-left: 20px;">
+                        <div class="comment">命令：ls（列出目录内容）</div>
+                        <div class="comment">选项：-la（显示所有，长格式）</div>
+                        <div class="comment">参数：/home（要查看的目录）</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 目录导航 -->
+        <section class="section" id="navigate">
+            <h2 class="section-title">
+                <span class="icon">🧭</span>
+                目录导航
+            </h2>
+            
+            <p>理解文件系统结构，像在自己的城市认路一样：</p>
+            
+            <h3>特殊目录符号</h3>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>.</code>
+                    <p>当前目录</p>
+                    <div class="example">cd .  # 原地不动</div>
+                </div>
+                <div class="command-card">
+                    <code>..</code>
+                    <p>上级目录</p>
+                    <div class="example">cd ..  # 返回上一级</div>
+                </div>
+                <div class="command-card">
+                    <code>~</code>
+                    <p>用户主目录（家目录）</p>
+                    <div class="example">cd ~  # 回到家</div>
+                </div>
+                <div class="command-card">
+                    <code>/</code>
+                    <p>根目录（系统最顶层）</p>
+                    <div class="example">cd /  # 去根目录</div>
+                </div>
+                <div class="command-card">
+                    <code>-</code>
+                    <p>上次所在的目录</p>
+                    <div class="example">cd -  # 快速来回切换</div>
+                </div>
+            </div>
+            
+            <h3>常用导航示例</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">导航演示</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="prompt">$</span> <span class="command">pwd</span></div>
+                    <div class="output">/home/alice</div>
+                    <div style="margin-top: 10px;"><span class="prompt">$</span> <span class="command">cd Documents</span></div>
+                    <div style="margin-top: 10px;"><span class="prompt">$</span> <span class="command">pwd</span></div>
+                    <div class="output">/home/alice/Documents</div>
+                    <div style="margin-top: 10px;"><span class="prompt">$</span> <span class="command">cd ../..</span> <span class="comment"># 上两级</span></div>
+                    <div style="margin-top: 10px;"><span class="prompt">$</span> <span class="command">pwd</span></div>
+                    <div class="output">/home</div>
+                    <div style="margin-top: 10px;"><span class="prompt">$</span> <span class="command">cd ~</span> <span class="comment"># 回家</span></div>
+                    <div style="margin-top: 10px;"><span class="prompt">$</span> <span class="command">cd ~/Desktop</span> <span class="comment"># 直接去桌面</span></div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 Tab 自动补全</h4>
+                <ul>
+                    <li>按 <span class="key">Tab</span> 自动补全文件名/目录名</li>
+                    <li>按两次 <span class="key">Tab</span> 显示所有匹配项</li>
+                    <li>这是最重要的效率技巧，一定要养成习惯！</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 文件操作 -->
+        <section class="section" id="file">
+            <h2 class="section-title">
+                <span class="icon">📁</span>
+                文件与目录操作
+            </h2>
+            
+            <h3>创建与删除</h3>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>mkdir 文件夹名</code>
+                    <p>创建新目录</p>
+                    <div class="example">mkdir projects  # 创建 projects 文件夹</div>
+                </div>
+                <div class="command-card">
+                    <code>touch 文件名</code>
+                    <p>创建空文件</p>
+                    <div class="example">touch hello.txt  # 创建空文本文件</div>
+                </div>
+                <div class="command-card">
+                    <code>rm 文件名</code>
+                    <p>删除文件</p>
+                    <div class="example">rm hello.txt  # 删除文件</div>
+                </div>
+                <div class="command-card">
+                    <code>rm -r 目录名</code>
+                    <p>删除目录及其内容</p>
+                    <div class="example">rm -r projects  # 删除整个文件夹</div>
+                </div>
+            </div>
+            
+            <h3>复制与移动</h3>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>cp 源文件 目标</code>
+                    <p>复制文件</p>
+                    <div class="example">cp file.txt backup.txt</div>
+                </div>
+                <div class="command-card">
+                    <code>cp -r 源目录 目标</code>
+                    <p>复制目录</p>
+                    <div class="example">cp -r folder1 folder2</div>
+                </div>
+                <div class="command-card">
+                    <code>mv 源文件 目标</code>
+                    <p>移动或重命名</p>
+                    <div class="example">mv old.txt new.txt  # 重命名</div>
+                </div>
+            </div>
+            
+            <h3>查看文件内容</h3>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>cat 文件名</code>
+                    <p>显示全部内容（适合小文件）</p>
+                    <div class="example">cat readme.txt</div>
+                </div>
+                <div class="command-card">
+                    <code>less 文件名</code>
+                    <p>分页查看（可上下翻页）</p>
+                    <div class="example">less large.log  # 按 q 退出</div>
+                </div>
+                <div class="command-card">
+                    <code>head -n 10 文件</code>
+                    <p>查看前10行</p>
+                    <div class="example">head -n 20 data.csv</div>
+                </div>
+                <div class="command-card">
+                    <code>tail -n 10 文件</code>
+                    <p>查看后10行</p>
+                    <div class="example">tail -f app.log  # 实时追踪</div>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ 删除文件需谨慎</h4>
+                <ul>
+                    <li>Shell 删除的文件<strong>不会进回收站</strong>，直接永久删除</li>
+                    <li><code>rm -rf /</code> 会删除整个系统，永远不要执行！</li>
+                    <li>建议先用 <code>ls</code> 确认要删除的内容，再执行删除</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 文本处理 -->
+        <section class="section" id="text">
+            <h2 class="section-title">
+                <span class="icon">📝</span>
+                文本处理三剑客
+            </h2>
+            
+            <p>grep、sed、awk 是 Shell 文本处理的三大神器：</p>
+            
+            <h3>🔍 grep - 文本搜索</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">grep 示例</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="comment"># 在文件中搜索包含 "error" 的行</span></div>
+                    <div><span class="prompt">$</span> <span class="command">grep "error" log.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 忽略大小写搜索</span></div>
+                    <div><span class="prompt">$</span> <span class="command">grep -i "error" log.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 显示行号</span></div>
+                    <div><span class="prompt">$</span> <span class="command">grep -n "error" log.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 递归搜索整个目录</span></div>
+                    <div><span class="prompt">$</span> <span class="command">grep -r "TODO" src/</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 反向匹配（不含 error 的行）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">grep -v "error" log.txt</span></div>
+                </div>
+            </div>
+            
+            <h3>✏️ sed - 流编辑器</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">sed 示例</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="comment"># 替换文本（s/原内容/新内容/）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">sed 's/foo/bar/' file.txt</span> <span class="comment"># 每行第一个 foo 换成 bar</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 全局替换（所有匹配）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">sed 's/foo/bar/g' file.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 删除第5行</span></div>
+                    <div><span class="prompt">$</span> <span class="command">sed '5d' file.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 直接修改文件（-i）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">sed -i 's/foo/bar/g' file.txt</span></div>
+                </div>
+            </div>
+            
+            <h3>🔧 awk - 文本分析</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">awk 示例</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="comment"># 打印第一列（默认空格分隔）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">awk '{print $1}' data.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 打印多列</span></div>
+                    <div><span class="prompt">$</span> <span class="command">awk '{print $1, $3}' data.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 指定分隔符（如逗号）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">awk -F',' '{print $2}' data.csv</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 条件筛选</span></div>
+                    <div><span class="prompt">$</span> <span class="command">awk '$3 > 100 {print $1}' data.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 计算行数</span></div>
+                    <div><span class="prompt">$</span> <span class="command">awk 'END {print NR}' file.txt</span></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 管道和重定向 -->
+        <section class="section" id="pipe">
+            <h2 class="section-title">
+                <span class="icon">🔗</span>
+                管道与重定向
+            </h2>
+            
+            <p>管道和重定向是 Shell 最强大的特性，让命令之间可以协同工作：</p>
+            
+            <h3>管道 | （把左边输出传给右边）</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">管道示例</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="comment"># 查看进程，筛选出 chrome</span></div>
+                    <div><span class="prompt">$</span> <span class="command">ps aux | grep chrome</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 查看文件，统计行数</span></div>
+                    <div><span class="prompt">$</span> <span class="command">cat file.txt | wc -l</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 多级管道</span></div>
+                    <div><span class="prompt">$</span> <span class="command">cat log.txt | grep error | wc -l</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 查看最近使用的命令，去重排序</span></div>
+                    <div><span class="prompt">$</span> <span class="command">history | cut -c 8- | sort | uniq</span></div>
+                </div>
+            </div>
+            
+            <h3>重定向</h3>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>&gt; 文件</code>
+                    <p>输出到文件（覆盖）</p>
+                    <div class="example">echo "hello" &gt; file.txt</div>
+                </div>
+                <div class="command-card">
+                    <code>&gt;&gt; 文件</code>
+                    <p>输出到文件（追加）</p>
+                    <div class="example">echo "world" &gt;&gt; file.txt</div>
+                </div>
+                <div class="command-card">
+                    <code>&lt; 文件</code>
+                    <p>从文件输入</p>
+                    <div class="example">sort &lt; unsorted.txt</div>
+                </div>
+                <div class="command-card">
+                    <code>2&gt; 文件</code>
+                    <p>错误输出到文件</p>
+                    <div class="example">cmd 2&gt; error.log</div>
+                </div>
+                <div class="command-card">
+                    <code>&amp;&gt; 文件</code>
+                    <p>标准输出和错误都重定向</p>
+                    <div class="example">cmd &amp;&gt; all.log</div>
+                </div>
+                <div class="command-card">
+                    <code>/dev/null</code>
+                    <p>黑洞，丢弃输出</p>
+                    <div class="example">cmd &gt; /dev/null 2&gt;&amp;1</div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 实际应用场景</h4>
+                <ul>
+                    <li><strong>备份配置：</strong><code>crontab -l &gt; crontab.backup</code></li>
+                    <li><strong>记录日志：</strong><code>./script.sh &gt; output.log 2&gt;&amp;1</code></li>
+                    <li><strong>查找大文件：</strong><code>du -h | sort -rh | head -10</code></li>
+                    <li><strong>统计代码行数：</strong><code>find . -name "*.js" | xargs wc -l</code></li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 权限管理 -->
+        <section class="section" id="permission">
+            <h2 class="section-title">
+                <span class="icon">🔐</span>
+                权限管理
+            </h2>
+            
+            <p>Linux/macOS 每个文件都有权限控制，谁可以读、写、执行：</p>
+            
+            <h3>查看权限</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">权限查看</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="prompt">$</span> <span class="command">ls -l</span></div>
+                    <div class="output">-rw-r--r--  1 user  staff  1234 Jan 15 10:00 file.txt</div>
+                    <div class="output">drwxr-xr-x  2 user  staff    64 Jan 15 09:50 folder</div>
+                    <div style="margin-top: 15px;">
+                        <div class="comment">文件类型：- 普通文件，d 目录</div>
+                        <div class="comment">权限位：rwx（读、写、执行）</div>
+                        <div class="comment">三组权限：所有者、所属组、其他人</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>修改权限 chmod</h3>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>chmod +x script.sh</code>
+                    <p>添加可执行权限</p>
+                    <div class="example">让脚本可以运行</div>
+                </div>
+                <div class="command-card">
+                    <code>chmod 755 file</code>
+                    <p>数字模式设置权限</p>
+                    <div class="example">rwxr-xr-x（所有者可读写执行）</div>
+                </div>
+                <div class="command-card">
+                    <code>chmod 644 file</code>
+                    <p>普通文件权限</p>
+                    <div class="example">rw-r--r--（所有人可读，仅所有者可写）</div>
+                </div>
+            </div>
+            
+            <h3>权限数字对照</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>权限</th>
+                    <th>数字</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>r--</td>
+                    <td>4</td>
+                    <td>只读</td>
+                </tr>
+                <tr>
+                    <td>-w-</td>
+                    <td>2</td>
+                    <td>只写</td>
+                </tr>
+                <tr>
+                    <td>--x</td>
+                    <td>1</td>
+                    <td>只执行</td>
+                </tr>
+                <tr>
+                    <td>rw-</td>
+                    <td>6</td>
+                    <td>读写</td>
+                </tr>
+                <tr>
+                    <td>rwx</td>
+                    <td>7</td>
+                    <td>读写执行</td>
+                </tr>
+                <tr>
+                    <td>r-x</td>
+                    <td>5</td>
+                    <td>读和执行</td>
+                </tr>
+            </table>
+            
+            <h3>修改所有者 chown</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">chown 示例</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="comment"># 修改文件所有者（需要 sudo）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">sudo chown username file.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 同时修改所有者和组</span></div>
+                    <div><span class="prompt">$</span> <span class="command">sudo chown user:group file.txt</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 递归修改目录</span></div>
+                    <div><span class="prompt">$</span> <span class="command">sudo chown -R user:group folder/</span></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 快捷键 -->
+        <section class="section" id="shortcut">
+            <h2 class="section-title">
+                <span class="icon">⌨️</span>
+                高效快捷键
+            </h2>
+            
+            <p>掌握这些快捷键，命令行效率提升 10 倍：</p>
+            
+            <h3>光标移动</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + A</span></td>
+                    <td>移到行首</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + E</span></td>
+                    <td>移到行尾</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + F</span></td>
+                    <td>前移一个字符（同 →）</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + B</span></td>
+                    <td>后移一个字符（同 ←）</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Alt + F</span></td>
+                    <td>前移一个单词</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Alt + B</span></td>
+                    <td>后移一个单词</td>
+                </tr>
+            </table>
+            
+            <h3>编辑操作</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + D</span></td>
+                    <td>删除光标处字符</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + H</span></td>
+                    <td>删除前一个字符（同 Backspace）</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + W</span></td>
+                    <td>删除前一个单词</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + U</span></td>
+                    <td>删除光标前整行</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + K</span></td>
+                    <td>删除光标后整行</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + Y</span></td>
+                    <td>粘贴刚才删除的内容</td>
+                </tr>
+            </table>
+            
+            <h3>历史命令</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td><span class="key">↑ / ↓</span></td>
+                    <td>浏览历史命令</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + R</span></td>
+                    <td>搜索历史命令（再按继续搜）</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + G</span></td>
+                    <td>取消搜索</td>
+                </tr>
+                <tr>
+                    <td><span class="key">!!</span></td>
+                    <td>执行上一条命令</td>
+                </tr>
+                <tr>
+                    <td><span class="key">!n</span></td>
+                    <td>执行第 n 条历史命令</td>
+                </tr>
+                <tr>
+                    <td><span class="key">!$</span></td>
+                    <td>上条命令的最后一个参数</td>
+                </tr>
+            </table>
+            
+            <h3>其他常用</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td><span class="key">Tab</span></td>
+                    <td>自动补全命令/路径</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + L</span></td>
+                    <td>清屏（同 clear）</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + C</span></td>
+                    <td>终止当前命令</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + Z</span></td>
+                    <td>暂停当前命令（后台运行用 fg）</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl + D</span></td>
+                    <td>退出终端（光标在行首时）</td>
+                </tr>
+            </table>
+            
+            <div class="tip-box">
+                <h4>💡 快捷键记忆技巧</h4>
+                <ul>
+                    <li><strong>Ctrl + A/E</strong>：A 是字母表第一个（开头），E 是 End（结尾）</li>
+                    <li><strong>Ctrl + F/B</strong>：F = Forward，B = Backward</li>
+                    <li><strong>Ctrl + U/K</strong>：U = Unix 风格删前面，K = KDE 风格删后面</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 速查表 -->
+        <section class="section" id="cheatsheet">
+            <h2 class="section-title">
+                <span class="icon">📋</span>
+                命令速查表
+            </h2>
+            
+            <h3>文件与目录</h3>
+            <div class="command-grid">
+                <div class="command-card"><code>ls -la</code><p>列出所有文件</p></div>
+                <div class="command-card"><code>cd ~</code><p>回到家目录</p></div>
+                <div class="command-card"><code>pwd</code><p>显示当前路径</p></div>
+                <div class="command-card"><code>mkdir dir</code><p>创建目录</p></div>
+                <div class="command-card"><code>rm -rf dir</code><p>删除目录（危险）</p></div>
+                <div class="command-card"><code>cp -r a b</code><p>复制目录</p></div>
+                <div class="command-card"><code>mv a b</code><p>移动/重命名</p></div>
+                <div class="command-card"><code>touch file</code><p>创建空文件</p></div>
+            </div>
+            
+            <h3>查看文件</h3>
+            <div class="command-grid">
+                <div class="command-card"><code>cat file</code><p>查看小文件</p></div>
+                <div class="command-card"><code>less file</code><p>分页查看</p></div>
+                <div class="command-card"><code>head -n 10</code><p>看前10行</p></div>
+                <div class="command-card"><code>tail -f log</code><p>实时追踪日志</p></div>
+                <div class="command-card"><code>wc -l</code><p>统计行数</p></div>
+                <div class="command-card"><code>file</code><p>查看文件类型</p></div>
+            </div>
+            
+            <h3>文本处理</h3>
+            <div class="command-grid">
+                <div class="command-card"><code>grep "text"</code><p>搜索文本</p></div>
+                <div class="command-card"><code>sed 's/a/b/'</code><p>替换文本</p></div>
+                <div class="command-card"><code>awk '{print $1}'</code><p>提取第一列</p></div>
+                <div class="command-card"><code>sort</code><p>排序</p></div>
+                <div class="command-card"><code>uniq</code><p>去重</p></div>
+                <div class="command-card"><code>tr 'a-z' 'A-Z'</code><p>大小写转换</p></div>
+            </div>
+            
+            <h3>系统与进程</h3>
+            <div class="command-grid">
+                <div class="command-card"><code>ps aux</code><p>查看进程</p></div>
+                <div class="command-card"><code>top / htop</code><p>动态监控</p></div>
+                <div class="command-card"><code>kill -9 PID</code><p>强制结束进程</p></div>
+                <div class="command-card"><code>df -h</code><p>查看磁盘空间</p></div>
+                <div class="command-card"><code>du -sh dir</code><p>查看目录大小</p></div>
+                <div class="command-card"><code>free -h</code><p>查看内存</p></div>
+            </div>
+            
+            <h3>网络相关</h3>
+            <div class="command-grid">
+                <div class="command-card"><code>curl url</code><p>下载/请求</p></div>
+                <div class="command-card"><code>wget url</code><p>下载文件</p></div>
+                <div class="command-card"><code>ping host</code><p>测试连通</p></div>
+                <div class="command-card"><code>netstat -tlnp</code><p>查看端口</p></div>
+                <div class="command-card"><code>ssh user@host</code><p>远程登录</p></div>
+                <div class="command-card"><code>scp file user@host:</code><p>远程复制</p></div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 学习建议</h4>
+                <ul>
+                    <li>不要死记硬背，先了解每个命令能做什么</li>
+                    <li>遇到需求时查速查表，多用自然就记住了</li>
+                    <li>善用 <code>man</code> 和 <code>--help</code> 查看帮助</li>
+                    <li>复杂的命令可以先在文本编辑器里写好再粘贴</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 结语 -->
+        <section class="footer-section">
+            <h2>🎉 开始你的 Shell 之旅！</h2>
+            <p>命令行是程序员的瑞士军刀，刚开始可能不习惯，但坚持一周，你会发现它比鼠标更高效。</p>
+            <p style="margin-top: 15px;">记住：善用 Tab 补全和历史搜索，效率翻倍！</p>
+        </section>
+    </div>
+    
+    <!-- 返回顶部 -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+    
+    <script>
+        // 返回顶部按钮
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

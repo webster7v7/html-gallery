@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0基础小白摄影入门指南 - 从零开始学摄影</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --code-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .header .logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        /* 主要内容区 */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 40px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .toc {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .toc-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin: 8px 0;
+        }
+
+        .toc-link {
+            color: var(--text-light);
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .toc-link:hover,
+        .toc-link.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* 内容区 */
+        .content {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--border);
+        }
+
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin: 30px 0 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: #dbeafe;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .tip-box.warning {
+            background: #fef3c7;
+            border-left-color: var(--warning);
+        }
+
+        .tip-box.success {
+            background: #d1fae5;
+            border-left-color: var(--success);
+        }
+
+        .tip-box.error {
+            background: #fee2e2;
+            border-left-color: var(--error);
+        }
+
+        .tip-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* 步骤卡片 */
+        .steps {
+            counter-reset: step;
+        }
+
+        .step-card {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+            padding-left: 80px;
+        }
+
+        .step-card::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        /* 表格 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        /* 练习区 */
+        .exercise {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px solid var(--success);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .exercise-title {
+            color: var(--success);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 按钮 */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #6d28d9;
+        }
+
+        /* 标签 */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #e0e7ff;
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 968px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* 进度条 */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 1001;
+            transition: width 0.3s;
+        }
+
+        /* 高亮文本 */
+        .highlight {
+            background: linear-gradient(120deg, #fef08a 0%, #fef08a 100%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        /* 示例图片框 */
+        .example-box {
+            background: #f1f5f9;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        /* 对比卡片 */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .compare-card {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .compare-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        /* 图标列表 */
+        .icon-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .icon-list li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+        }
+
+        .icon-list li::before {
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo"><svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" style="width:30px;height:30px;vertical-align:middle;"><path d="M329.34 165.33A42.67 42.67 0 0 1 362.67 149.33h298.66a42.67 42.67 0 0 1 33.32 16l72.54 90.67H874.67a106.67 106.67 0 0 1 106.66 106.47V768.21A106.56 106.56 0 0 1 874.75 874.67H149.21A106.54 106.54 0 0 1 42.67 768.19V362.45A106.67 106.67 0 0 1 149.33 256h107.5l72.53-90.67zM383.17 234.67l-72.53 90.66A42.67 42.67 0 0 1 277.33 341.33H149.33a21.33 21.33 0 0 0-21.33 21.14V768.21c0 11.63 9.51 21.14 21.2 21.14h725.55c11.73 0 21.25-9.51 21.25-21.14V362.45a21.33 21.33 0 0 0-21.33-21.12h-128a42.67 42.67 0 0 1-33.32-16l-72.54-90.66H383.19zM512 725.33a192 192 0 1 1 0-384 192 192 0 0 1 0 384z m0-85.33a106.67 106.67 0 1 0 0-213.33 106.67 106.67 0 0 0 0 213.33z" fill="white"/></svg></div>
+            <ul class="nav-links">
+                <li><a href="#start">快速开始</a></li>
+                <li><a href="#camera">认识相机</a></li>
+                <li><a href="#exposure">曝光三要素</a></li>
+                <li><a href="#composition">构图技巧</a></li>
+                <li><a href="#practice">实战练习</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="logo">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M329.34 165.33A42.67 42.67 0 0 1 362.67 149.33h298.66a42.67 42.67 0 0 1 33.32 16l72.54 90.67H874.67a106.67 106.67 0 0 1 106.66 106.47V768.21A106.56 106.56 0 0 1 874.75 874.67H149.21A106.54 106.54 0 0 1 42.67 768.19V362.45A106.67 106.67 0 0 1 149.33 256h107.5l72.53-90.67zM383.17 234.67l-72.53 90.66A42.67 42.67 0 0 1 277.33 341.33H149.33a21.33 21.33 0 0 0-21.33 21.14V768.21c0 11.63 9.51 21.14 21.2 21.14h725.55c11.73 0 21.25-9.51 21.25-21.14V362.45a21.33 21.33 0 0 0-21.33-21.12h-128a42.67 42.67 0 0 1-33.32-16l-72.54-90.66H383.19zM512 725.33a192 192 0 1 1 0-384 192 192 0 0 1 0 384z m0-85.33a106.67 106.67 0 1 0 0-213.33 106.67 106.67 0 0 0 0 213.33z" fill="white"/></svg>
+        </div>
+        <h1>摄影入门完全指南</h1>
+    </header>
+
+    <div class="main-container">
+        <!-- 侧边栏目录 -->
+        <aside class="sidebar">
+            <div class="toc">
+                <div class="toc-title">📚 学习目录</div>
+                <ul class="toc-list">
+                    <li class="toc-item"><a href="#intro" class="toc-link">1. 摄影是什么？</a></li>
+                    <li class="toc-item"><a href="#camera-types" class="toc-link">2. 认识相机类型</a></li>
+                    <li class="toc-item"><a href="#exposure" class="toc-link">3. 曝光三要素</a></li>
+                    <li class="toc-item"><a href="#focus" class="toc-link">4. 对焦与测光</a></li>
+                    <li class="toc-item"><a href="#modes" class="toc-link">5. 拍摄模式</a></li>
+                    <li class="toc-item"><a href="#composition" class="toc-link">6. 构图技巧</a></li>
+                    <li class="toc-item"><a href="#light" class="toc-link">7. 光线的运用</a></li>
+                    <li class="toc-item"><a href="#lens" class="toc-link">8. 镜头选择</a></li>
+                    <li class="toc-item"><a href="#post-process" class="toc-link">9. 后期处理基础</a></li>
+                    <li class="toc-item"><a href="#scenes" class="toc-link">10. 场景实战</a></li>
+                    <li class="toc-item"><a href="#tips" class="toc-link">11. 实用小技巧</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- 主要内容 -->
+        <main class="content">
+            <!-- 第1章：介绍 -->
+            <section class="section" id="intro">
+                <h1 class="section-title">👋 欢迎来到摄影的世界！</h1>
+                
+                <div class="tip-box">
+                    <div class="tip-title">🎯 本文目标读者</div>
+                    <p>完全0基础、想学习摄影、不知道怎么开始的你！不需要昂贵的设备，手机也能拍出好照片。</p>
+                </div>
+
+                <h2 class="section-subtitle">什么是摄影？</h2>
+                <p>摄影（Photography）源自希腊语，意思是<span class="highlight">"用光绘画"</span>。简单来说，摄影就是通过相机捕捉光线，记录下瞬间的影像。</p>
+                
+                <p>很多人认为摄影需要很贵的设备，其实不然：<span class="highlight">好照片的关键在于"后面那个头"（你的大脑），而不是"前面那个头"（镜头）</span>。</p>
+
+                <div class="tip-box success">
+                    <div class="tip-title">✨ 为什么要学摄影？</div>
+                    <p>1. <strong>记录生活</strong>：留住美好的瞬间和回忆<br>
+                       2. <strong>表达自我</strong>：用照片讲述你的故事<br>
+                       3. <strong>发现美好</strong>：学会用不同的视角看世界<br>
+                       4. <strong>社交利器</strong>：朋友圈点赞收割机<br>
+                       5. <strong>副业可能</strong>：接拍、卖图、自媒体</p>
+                </div>
+
+                <h2 class="section-subtitle">摄影的基础概念</h2>
+                <p>在开始之前，先了解几个最基本的概念：</p>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li><strong>📷 相机</strong>：捕捉光线的工具，可以是手机、卡片机、单反、微单</li>
+                    <li><strong>🎯 对焦</strong>：让拍摄对象变清晰的过程</li>
+                    <li><strong>💡 曝光</strong>：照片的明暗程度，由光圈、快门、ISO控制</li>
+                    <li><strong>🖼️ 构图</strong>：画面中元素的排列方式</li>
+                    <li><strong>🌈 白平衡</strong>：让白色在不同光线下都显示为白色</li>
+                </ul>
+            </section>
+
+            <!-- 第2章：相机类型 -->
+            <section class="section" id="camera-types">
+                <h1 class="section-title">📷 认识相机类型</h1>
+                
+                <p>市面上的相机五花八门，作为初学者，你只需要了解以下几种：</p>
+
+                <div class="step-card">
+                    <div class="step-title">手机相机</div>
+                    <p>最适合新手的入门设备！现在的智能手机摄影功能越来越强大。</p>
+                    <p><strong>优点：</strong>便携、随时可用、自动优化、学习成本低<br>
+                       <strong>缺点：</strong>变焦受限、弱光表现一般、手动控制有限</p>
+                    <span class="tag">推荐指数：⭐⭐⭐⭐⭐</span>
+                    <span class="tag">适合：所有人</span>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-title">卡片机/便携相机</div>
+                    <p>比手机专业，比单反便携的小型相机。</p>
+                    <p><strong>优点：</strong>画质比手机好、便携、有手动模式<br>
+                       <strong>缺点：</strong>不能换镜头、感光元件较小</p>
+                    <span class="tag">推荐指数：⭐⭐⭐</span>
+                    <span class="tag">适合：旅行爱好者</span>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-title">微单相机（无反相机）</div>
+                    <p>目前最流行的相机类型，没有反光镜结构，体积相对小巧。</p>
+                    <p><strong>优点：</strong>可换镜头、画质优秀、便携、功能强大<br>
+                       <strong>缺点：</strong>价格较高、电池续航一般</p>
+                    <span class="tag">推荐指数：⭐⭐⭐⭐⭐</span>
+                    <span class="tag">适合：想深入学习摄影的人</span>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-title">单反相机（DSLR）</div>
+                    <p>传统专业相机，有反光镜结构，正在逐渐被微单取代。</p>
+                    <p><strong>优点：</strong>续航强、镜头群丰富、握持感好<br>
+                       <strong>缺点：</strong>体积大、重量重、视频功能弱</p>
+                    <span class="tag">推荐指数：⭐⭐⭐</span>
+                    <span class="tag">适合：预算有限的专业学习者</span>
+                </div>
+
+                <div class="tip-box warning">
+                    <div class="tip-title">💡 新手建议</div>
+                    <p>如果你还没有相机，建议先用手机开始学习！当你发现手机的限制成为你进步的瓶颈时，再考虑购买专业相机。入门推荐：索尼A6000系列、富士X-T系列、佳能R50、尼康Z30等微单相机。</p>
+                </div>
+            </section>
+
+            <!-- 第3章：曝光三要素 -->
+            <section class="section" id="exposure">
+                <h1 class="section-title">💡 曝光三要素</h1>
+                
+                <p>曝光是摄影最核心的概念。一张照片的明暗程度，由三个参数共同决定：<span class="highlight">光圈、快门速度、ISO感光度</span>。这三个要素相互关联，被称为"曝光三角形"。</p>
+
+                <div class="example-box">
+                    📸 想象一下：你的眼睛 = 相机，瞳孔 = 光圈，眨眼速度 = 快门，眼睛敏感度 = ISO
+                </div>
+
+                <h2 class="section-subtitle">1️⃣ 光圈（Aperture）</h2>
+                <p>光圈是镜头里控制进光量的孔径大小，用<span class="highlight">f值</span>表示，如 f/1.8、f/2.8、f/8、f/16 等。</p>
+                
+                <div class="tip-box">
+                    <div class="tip-title">🎯 光圈的重要规律</div>
+                    <p><strong>f值越小 → 光圈越大 → 进光越多 → 背景越虚化</strong><br>
+                       <strong>f值越大 → 光圈越小 → 进光越少 → 画面越清晰</strong></p>
+                </div>
+
+                <table class="data-table">
+                    <tr>
+                        <th>光圈大小</th>
+                        <th>f值示例</th>
+                        <th>效果</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td>大光圈</td>
+                        <td>f/1.4 - f/2.8</td>
+                        <td>背景虚化、进光多</td>
+                        <td>人像、夜景、静物</td>
+                    </tr>
+                    <tr>
+                        <td>中等光圈</td>
+                        <td>f/4 - f/8</td>
+                        <td>平衡画质</td>
+                        <td>日常拍摄、街头</td>
+                    </tr>
+                    <tr>
+                        <td>小光圈</td>
+                        <td>f/11 - f/16</td>
+                        <td>全景清晰</td>
+                        <td>风景、建筑</td>
+                    </tr>
+                </table>
+
+                <h2 class="section-subtitle">2️⃣ 快门速度（Shutter Speed）</h2>
+                <p>快门速度是相机感光元件暴露光线的时间长短，通常以秒或分数表示，如 1/1000s、1/60s、1s 等。</p>
+
+                <div class="tip-box">
+                    <div class="tip-title">🎯 快门速度的规律</div>
+                    <p><strong>快门越快 → 进光越少 → 定格动作 → 画面越暗</strong><br>
+                       <strong>快门越慢 → 进光越多 → 记录轨迹 → 画面越亮</strong></p>
+                </div>
+
+                <table class="data-table">
+                    <tr>
+                        <th>快门速度</th>
+                        <th>效果</th>
+                        <th>适用场景</th>
+                        <th>注意事项</th>
+                    </tr>
+                    <tr>
+                        <td>1/1000s 以上</td>
+                        <td>定格高速运动</td>
+                        <td>体育、飞鸟、水花</td>
+                        <td>需要充足光线</td>
+                    </tr>
+                    <tr>
+                        <td>1/250s - 1/500s</td>
+                        <td>定格一般运动</td>
+                        <td>行走的人、车辆</td>
+                        <td>日常抓拍</td>
+                    </tr>
+                    <tr>
+                        <td>1/60s - 1/125s</td>
+                        <td>日常拍摄</td>
+                        <td>人像、静物</td>
+                        <td>手持安全快门</td>
+                    </tr>
+                    <tr>
+                        <td>1/30s 以下</td>
+                        <td>记录运动轨迹</td>
+                        <td>车流、流水、星空</td>
+                        <td>需要使用三脚架</td>
+                    </tr>
+                </table>
+
+                <div class="tip-box warning">
+                    <div class="tip-title">⚠️ 安全快门</div>
+                    <p>手持拍摄时，快门速度一般不要慢于<span class="highlight">1/焦距</span>。比如用50mm镜头，安全快门约1/50秒；用200mm长焦，安全快门约1/200秒。低于这个速度容易手抖糊片！</p>
+                </div>
+
+                <h2 class="section-subtitle">3️⃣ ISO感光度</h2>
+                <p>ISO是感光元件对光线的敏感程度，用数字表示，如 ISO 100、400、1600、6400 等。</p>
+
+                <div class="tip-box">
+                    <div class="tip-title">🎯 ISO的规律</div>
+                    <p><strong>ISO越低 → 画质越细腻 → 进光越少 → 画面越暗</strong><br>
+                       <strong>ISO越高 → 画质越粗糙（噪点） → 进光越多 → 画面越亮</strong></p>
+                </div>
+
+                <table class="data-table">
+                    <tr>
+                        <th>ISO范围</th>
+                        <th>画质表现</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td>ISO 100-400</td>
+                        <td>最佳画质，细腻干净</td>
+                        <td>光线充足的白天</td>
+                    </tr>
+                    <tr>
+                        <td>ISO 800-1600</td>
+                        <td>轻微噪点，可接受</td>
+                        <td>阴天、室内</td>
+                    </tr>
+                    <tr>
+                        <td>ISO 3200-6400</td>
+                        <td>明显噪点</td>
+                        <td>夜晚、昏暗环境</td>
+                    </tr>
+                    <tr>
+                        <td>ISO 12800以上</td>
+                        <td>严重噪点</td>
+                        <td>极端暗光（不得已）</td>
+                    </tr>
+                </table>
+
+                <div class="tip-box success">
+                    <div class="tip-title">✨ 曝光三要素的口诀</div>
+                    <p><strong>"光圈管虚实，快门定动静，ISO换亮度，三者要平衡"</strong></p>
+                    <p>调整其中一个参数，通常需要相应调整其他参数来保持曝光正常。比如开大光圈（画面变亮），可以提高快门速度或减少ISO来补偿。</p>
+                </div>
+            </section>
+
+            <!-- 第4章：对焦与测光 -->
+            <section class="section" id="focus">
+                <h1 class="section-title">🎯 对焦与测光</h1>
+
+                <h2 class="section-subtitle">对焦模式</h2>
+                <p>对焦是让拍摄主体变清晰的过程。现代相机/手机都有自动对焦功能，但了解对焦模式能帮你拍出更好的照片。</p>
+
+                <table class="data-table">
+                    <tr>
+                        <th>对焦模式</th>
+                        <th>符号</th>
+                        <th>特点</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td>单次对焦</td>
+                        <td>AF-S / S</td>
+                        <td>半按快门对焦后锁定</td>
+                        <td>静态主体、风光、人像</td>
+                    </tr>
+                    <tr>
+                        <td>连续对焦</td>
+                        <td>AF-C / C</td>
+                        <td>持续追踪移动主体</td>
+                        <td>运动、动物、儿童</td>
+                    </tr>
+                    <tr>
+                        <td>自动切换</td>
+                        <td>AF-A / A</td>
+                        <td>自动判断静态或动态</td>
+                        <td>日常随拍</td>
+                    </tr>
+                </table>
+
+                <h2 class="section-subtitle">测光模式</h2>
+                <p>测光是相机判断画面亮度的方法，决定照片的曝光程度。</p>
+
+                <table class="data-table">
+                    <tr>
+                        <th>测光模式</th>
+                        <th>特点</th>
+                        <th>适用场景</th>
+                    </tr>
+                    <tr>
+                        <td>评价测光/矩阵测光</td>
+                        <td>综合整个画面测光</td>
+                        <td>大部分场景，最常用</td>
+                    </tr>
+                    <tr>
+                        <td>中央重点测光</td>
+                        <td>以画面中央为主测光</td>
+                        <td>主体在画面中央时</td>
+                    </tr>
+                    <tr>
+                        <td>点测光</td>
+                        <td>只对极小区域测光</td>
+                        <td>逆光、舞台、光比大</td>
+                    </tr>
+                </table>
+
+                <div class="tip-box">
+                    <div class="tip-title">💡 对焦小技巧</div>
+                    <p>1. <strong>先对焦再构图</strong>：半按快门对焦后，保持半按状态移动相机重新构图<br>
+                       2. <strong>对焦在眼睛</strong>：拍人像时，对焦在离镜头最近的那只眼睛<br>
+                       3. <strong>使用对焦辅助</strong>：暗光环境下可以开启对焦辅助灯<br>
+                       4. <strong>手动对焦</strong>：拍微距或星空时，自动对焦可能失灵，需要手动对焦</p>
+                </div>
+            </section>
+
+            <!-- 第5章：拍摄模式 -->
+            <section class="section" id="modes">
+                <h1 class="section-title">📸 拍摄模式</h1>
+
+                <p>相机上的模式转盘提供多种拍摄模式，新手建议循序渐进：</p>
+
+                <div class="steps">
+                    <div class="step-card">
+                        <div class="step-title">自动模式（AUTO）</div>
+                        <p>相机自动决定所有参数，你只需按快门。</p>
+                        <p><strong>适合：</strong>完全不懂摄影的新手，紧急抓拍<br>
+                           <strong>缺点：</strong>无法自主控制效果</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">程序自动（P档）</div>
+                        <p>相机自动设置光圈快门，但你可以调整ISO、白平衡等。</p>
+                        <p><strong>适合：</strong>想开始了解参数的新手<br>
+                           <strong>进阶：</strong>可以调整曝光补偿</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">光圈优先（A/Av档）⭐推荐</div>
+                        <p>你手动设置光圈，相机自动匹配快门速度。</p>
+                        <p><strong>适合：</strong>需要控制景深的场景（人像、风景）<br>
+                           <strong>优点：</strong>最常用、最容易出效果的半自动模式</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">快门优先（S/Tv档）</div>
+                        <p>你手动设置快门速度，相机自动匹配光圈。</p>
+                        <p><strong>适合：</strong>需要控制动态的场景（运动、流水）<br>
+                           <strong>注意：</strong>光线不足时可能导致光圈不够大</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">手动模式（M档）</div>
+                        <p>所有参数都需要手动设置。</p>
+                        <p><strong>适合：</strong>有一定基础后，需要完全控制的场景<br>
+                           <strong>注意：</strong>新手慎用，容易拍出过曝或欠曝的照片</p>
+                    </div>
+                </div>
+
+                <div class="tip-box success">
+                    <div class="tip-title">🎯 新手学习路径</div>
+                    <p><strong>第一阶段</strong>：用AUTO或P档，熟悉相机操作<br>
+                       <strong>第二阶段</strong>：用A档（光圈优先），练习控制景深<br>
+                       <strong>第三阶段</strong>：尝试S档和M档，完全掌握曝光控制</p>
+                </div>
+            </section>
+
+            <!-- 第6章：构图技巧 -->
+            <section class="section" id="composition">
+                <h1 class="section-title">🖼️ 构图技巧</h1>
+
+                <p>构图是照片的骨架，好的构图能让平凡的场景变得引人入胜。以下是新手必学的构图法则：</p>
+
+                <h2 class="section-subtitle">1️⃣ 三分法（九宫格构图）</h2>
+                <p>将画面用横竖线分成9等份，把主体放在<span class="highlight">交叉点或线上</span>，而不是正中央。</p>
+                
+                <div class="example-box">
+                    📱 开启手机/相机的网格线功能，练习三分法构图<br>
+                    设置 → 相机 → 网格线（iPhone）/ 取景器网格（Android）
+                </div>
+
+                <h2 class="section-subtitle">2️⃣ 对称构图</h2>
+                <p>利用画面的对称性，营造平衡、稳定、庄重的感觉。</p>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li><strong>水平对称</strong>：倒影、建筑</li>
+                    <li><strong>垂直对称</strong>：门、窗、走廊</li>
+                    <li><strong>放射对称</strong>：楼梯、花瓣</li>
+                </ul>
+
+                <h2 class="section-subtitle">3️⃣ 引导线构图</h2>
+                <p>利用画面中的线条（道路、栏杆、河流等）引导观众视线到主体。</p>
+
+                <h2 class="section-subtitle">4️⃣ 框架式构图</h2>
+                <p>利用门、窗、树枝等形成天然"画框"，框住主体，增加层次感。</p>
+
+                <h2 class="section-subtitle">5️⃣ 留白构图</h2>
+                <p>画面中留出大量空白，营造意境和想象空间。适合极简风格。</p>
+
+                <h2 class="section-subtitle">6️⃣ 前景运用</h2>
+                <p>在画面前方加入元素（树叶、石头等），增加层次感和纵深感。</p>
+
+                <div class="tip-box">
+                    <div class="tip-title">🎯 构图进阶技巧</div>
+                    <p>• <strong>打破规则</strong>：熟练后，故意把主体放中央（对称美）或边缘（张力感）<br>
+                       • <strong>变换角度</strong>：蹲下来低角度、举高俯拍、侧面拍摄<br>
+                       • <strong>注意边缘</strong>：检查画面边缘是否有杂乱元素干扰<br>
+                       • <strong>横竖选择</strong>：风景多用横构图，人像多用竖构图</p>
+                </div>
+            </section>
+
+            <!-- 第7章：光线运用 -->
+            <section class="section" id="light">
+                <h1 class="section-title">🌈 光线的运用</h1>
+
+                <p>摄影是光的艺术。掌握光线的特性，是拍出好照片的关键。</p>
+
+                <h2 class="section-subtitle">自然光的方向</h2>
+
+                <table class="data-table">
+                    <tr>
+                        <th>光线方向</th>
+                        <th>特点</th>
+                        <th>效果</th>
+                        <th>适用</th>
+                    </tr>
+                    <tr>
+                        <td>顺光</td>
+                        <td>光源在摄影师背后</td>
+                        <td>画面明亮、细节清晰、但较平淡</td>
+                        <td>记录、证件照</td>
+                    </tr>
+                    <tr>
+                        <td>侧光</td>
+                        <td>光源在主体侧面45°-90°</td>
+                        <td>明暗对比、立体感强</td>
+                        <td>人像、建筑、风景</td>
+                    </tr>
+                    <tr>
+                        <td>逆光</td>
+                        <td>光源在主体背后</td>
+                        <td>剪影效果、轮廓光、氛围感</td>
+                        <td>艺术人像、日落</td>
+                    </tr>
+                    <tr>
+                        <td>顶光</td>
+                        <td>光源在正上方（正午）</td>
+                        <td>阴影重、对比强烈</td>
+                        <td>一般避免</td>
+                    </tr>
+                </table>
+
+                <h2 class="section-subtitle">黄金时段</h2>
+                <div class="tip-box success">
+                    <div class="tip-title">🌅 日出后和日落前1小时</div>
+                    <p>光线柔和、色温温暖、影子修长，是拍摄风光和人像的最佳时间。这段时间被称为<span class="highlight">"Golden Hour"（黄金时段）</span>。</p>
+                </div>
+
+                <h2 class="section-subtitle">天气与光线</h2>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li><strong>☀️ 晴天</strong>：光线强烈、对比度高、色彩鲜艳</li>
+                    <li><strong>☁️ 阴天</strong>：光线柔和、反差小、适合人像</li>
+                    <li><strong>🌧️ 雨天</strong>：漫反射光、色彩饱和、有倒影</li>
+                    <li><strong>🌫️ 雾天</strong>：朦胧、神秘、适合极简风格</li>
+                </ul>
+
+                <div class="tip-box">
+                    <div class="tip-title">💡 用光小技巧</div>
+                    <p>• <strong>窗边光</strong>：室内最好的光源，柔和自然<br>
+                       • <strong>寻找阴影</strong>：强烈的阳光下，找树荫或建筑物阴影处拍摄人像<br>
+                       • <strong>反光板</strong>：用白色泡沫板或锡纸纸板给暗部补光<br>
+                       • <strong>逆光补偿</strong>：逆光拍摄时增加曝光补偿，或对焦在亮部让主体成剪影</p>
+                </div>
+            </section>
+
+            <!-- 第8章：镜头选择 -->
+            <section class="section" id="lens">
+                <h1 class="section-title">🔍 镜头选择基础</h1>
+
+                <p>当你购买了可换镜头相机后，会面临镜头选择的问题。以下是常见镜头类型：</p>
+
+                <h2 class="section-subtitle">按焦距分类</h2>
+
+                <table class="data-table">
+                    <tr>
+                        <th>镜头类型</th>
+                        <th>焦距范围</th>
+                        <th>特点</th>
+                        <th>用途</th>
+                    </tr>
+                    <tr>
+                        <td>超广角</td>
+                        <td>10-24mm</td>
+                        <td>视野极广、透视夸张</td>
+                        <td>风景、建筑、星空</td>
+                    </tr>
+                    <tr>
+                        <td>广角</td>
+                        <td>24-35mm</td>
+                        <td>视野广、空间感强</td>
+                        <td>风景、环境人像、街拍</td>
+                    </tr>
+                    <tr>
+                        <td>标准镜头</td>
+                        <td>50mm左右</td>
+                        <td>接近人眼视角、轻便</td>
+                        <td>人文、日常、静物</td>
+                    </tr>
+                    <tr>
+                        <td>中长焦</td>
+                        <td>85-135mm</td>
+                        <td>背景虚化好、压缩感适中</td>
+                        <td>人像、特写</td>
+                    </tr>
+                    <tr>
+                        <td>长焦</td>
+                        <td>200-300mm</td>
+                        <td>压缩空间、远距离拍摄</td>
+                        <td>体育、动物、远景</td>
+                    </tr>
+                    <tr>
+                        <td>超长焦</td>
+                        <td>400mm+</td>
+                        <td>超远距离、专业级</td>
+                        <td>鸟类、野生动物</td>
+                    </tr>
+                </table>
+
+                <h2 class="section-subtitle">变焦 vs 定焦</h2>
+
+                <div class="compare-grid">
+                    <div class="compare-card">
+                        <h4>变焦镜头（如24-70mm）</h4>
+                        <p>✅ 焦距可调，构图灵活<br>
+                           ✅ 一镜走天下<br>
+                           ❌ 光圈通常较小<br>
+                           ❌ 体积重量较大</p>
+                    </div>
+                    <div class="compare-card">
+                        <h4>定焦镜头（如50mm f/1.8）</h4>
+                        <p>✅ 光圈大，虚化好<br>
+                           ✅ 画质通常更好<br>
+                           ✅ 轻便、价格低<br>
+                           ❌ 需要"变焦靠走"</p>
+                    </div>
+                </div>
+
+                <div class="tip-box success">
+                    <div class="tip-title">🎯 新手镜头推荐</div>
+                    <p><strong>第一支镜头</strong>：套机变焦镜头（18-55mm或类似），熟悉各种焦段<br>
+                       <strong>第二支镜头</strong>：50mm f/1.8（俗称"小痰盂"），便宜好用的定焦，体验大光圈魅力<br>
+                       <strong>升级方向</strong>：根据喜欢的题材选择（人像→85mm，风景→广角，打鸟→长焦）</p>
+                </div>
+            </section>
+
+            <!-- 第9章：后期处理 -->
+            <section class="section" id="post-process">
+                <h1 class="section-title">🎨 后期处理基础</h1>
+
+                <p>后期处理不是"造假"，而是对照片的二次创作，就像胶片时代的暗房技术。好的后期能让好照片更出色。</p>
+
+                <h2 class="section-subtitle">常用后期软件</h2>
+
+                <table class="data-table">
+                    <tr>
+                        <th>软件</th>
+                        <th>平台</th>
+                        <th>特点</th>
+                        <th>适合</th>
+                    </tr>
+                    <tr>
+                        <td>Lightroom</td>
+                        <td>PC/Mac</td>
+                        <td>批量处理、强大的调色功能</td>
+                        <td>专业摄影师</td>
+                    </tr>
+                    <tr>
+                        <td>Photoshop</td>
+                        <td>PC/Mac</td>
+                        <td>精细修图、创意合成</td>
+                        <td>深度后期</td>
+                    </tr>
+                    <tr>
+                        <td>Snapseed</td>
+                        <td>手机</td>
+                        <td>免费、功能全面</td>
+                        <td>手机摄影爱好者</td>
+                    </tr>
+                    <tr>
+                        <td>VSCO</td>
+                        <td>手机</td>
+                        <td>胶片滤镜、文艺风格</td>
+                        <td>社交分享</td>
+                    </tr>
+                </table>
+
+                <h2 class="section-subtitle">后期调整的基本参数</h2>
+
+                <div class="steps">
+                    <div class="step-card">
+                        <div class="step-title">曝光与对比度</div>
+                        <p><strong>曝光</strong>：整体明暗调整<br>
+                           <strong>对比度</strong>：明暗差异程度<br>
+                           <strong>高光/阴影</strong>：分别调整亮部和暗部细节</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">色彩调整</div>
+                        <p><strong>色温</strong>：冷暖色调（偏蓝或偏黄）<br>
+                           <strong>色调</strong>：偏绿或偏品红<br>
+                           <strong>饱和度</strong>：色彩鲜艳程度<br>
+                           <strong>自然饱和度</strong>：智能调整，不易过饱和</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">清晰度与锐化</div>
+                        <p><strong>清晰度</strong>：中间调对比，增加质感<br>
+                           <strong>锐化</strong>：边缘增强，让照片更清晰<br>
+                           ⚠️ 不要过度锐化，会出白边</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-title">裁切与校正</div>
+                        <p><strong>裁切</strong>：二次构图，去除多余元素<br>
+                           <strong>旋转</strong>：校正水平线<br>
+                           <strong>透视校正</strong>：修正建筑变形</p>
+                    </div>
+                </div>
+
+                <div class="tip-box warning">
+                    <div class="tip-title">⚠️ 后期原则</div>
+                    <p>• <strong>先拍好再修</strong>：后期救不了拍糊或严重过曝的照片<br>
+                       • <strong>适度调整</strong>：过度调色会显得不自然<br>
+                       • <strong>保留原片</strong>：RAW格式保留更多调整空间<br>
+                       • <strong>建立风格</strong>：多看优秀作品，形成自己的调色风格</p>
+                </div>
+            </section>
+
+            <!-- 第10章：场景实战 -->
+            <section class="section" id="scenes">
+                <h1 class="section-title">📸 场景实战指南</h1>
+
+                <h2 class="section-subtitle">人像摄影</h2>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li><strong>器材</strong>：50mm或85mm定焦，大光圈（f/1.8-f/2.8）</li>
+                    <li><strong>光线</strong>：黄金时段的侧光或逆光，阴天的柔和光</li>
+                    <li><strong>设置</strong>：A档，大光圈，对焦眼睛，连拍模式</li>
+                    <li><strong>构图</strong>：三分法，适当留白，注意背景简洁</li>
+                    <li><strong>引导</strong>：让模特放松，抓拍自然表情</li>
+                </ul>
+
+                <h2 class="section-subtitle">风景摄影</h2>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li><strong>器材</strong>：广角镜头（16-35mm），三脚架必备</li>
+                    <li><strong>光线</strong>：日出日落黄金时段，蓝调时刻</li>
+                    <li><strong>设置</strong>：小光圈（f/8-f/11），低ISO，慢快门</li>
+                    <li><strong>构图</strong>：前景中景远景层次，引导线，倒影</li>
+                    <li><strong>技巧</strong>：使用滤镜（偏振镜、ND减光镜）</li>
+                </ul>
+
+                <h2 class="section-subtitle">街头摄影</h2>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li><strong>器材</strong>：35mm或50mm，轻便为主</li>
+                    <li><strong>设置</strong>：光圈优先f/5.6-f/8，自动ISO，区域对焦</li>
+                    <li><strong>技巧</strong>：预判瞬间，融入环境，尊重被摄者</li>
+                    <li><strong>时机</strong>：等待决定性瞬间，注意光影和色彩</li>
+                </ul>
+
+                <h2 class="section-subtitle">美食摄影</h2>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li><strong>光线</strong>：自然光最佳，窗边45°侧光</li>
+                    <li><strong>角度</strong>：0°（平视）、45°、90°（俯拍）三种常用角度</li>
+                    <li><strong>搭配</strong>：注意餐具、桌布、配菜的整体搭配</li>
+                    <li><strong>设置</strong>：大光圈突出主体，注意白平衡准确</li>
+                </ul>
+
+                <h2 class="section-subtitle">夜景摄影</h2>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li><strong>器材</strong>：三脚架必备，广角镜头</li>
+                    <li><strong>设置</strong>：低ISO（100-400），小光圈（f/8-f/11），慢快门（几秒到几十秒）</li>
+                    <li><strong>技巧</strong>：使用快门线或2秒延时，避免手震</li>
+                    <li><strong>对焦</strong>：暗光下手动对焦到无穷远</li>
+                </ul>
+            </section>
+
+            <!-- 第11章：实用技巧 -->
+            <section class="section" id="tips">
+                <h1 class="section-title">💡 实用小技巧</h1>
+
+                <div class="tip-box success">
+                    <div class="tip-title">🎯 拍照前检查清单</div>
+                    <p>□ 镜头是否干净<br>
+                       □ 电池是否充足<br>
+                       □ 存储卡空间是否足够<br>
+                       □ 拍摄模式是否正确<br>
+                       □ ISO是否合适当前光线<br>
+                       □ 对焦模式是否匹配拍摄对象</p>
+                </div>
+
+                <h2 class="section-subtitle">快速提升的小习惯</h2>
+                <ul style="margin: 15px 0 15px 30px;">
+                    <li><strong>每天拍一张</strong>：坚持是最好的老师</li>
+                    <li><strong>回看分析</strong>：拍完后思考：哪里可以更好？</li>
+                    <li><strong>模仿学习</strong>：看到喜欢的照片，试着模仿拍摄</li>
+                    <li><strong>多看画册</strong>：学习大师的作品，提升审美</li>
+                    <li><strong>参加摄影社群</strong>：交流切磋，获得反馈</li>
+                </ul>
+
+                <h2 class="section-subtitle">常见错误避免</h2>
+                <table class="data-table">
+                    <tr>
+                        <th>错误</th>
+                        <th>原因</th>
+                        <th>解决方法</th>
+                    </tr>
+                    <tr>
+                        <td>照片拍糊</td>
+                        <td>手抖或主体移动</td>
+                        <td>提高快门速度、使用防抖、上三脚架</td>
+                    </tr>
+                    <tr>
+                        <td>曝光过度/不足</td>
+                        <td>测光不准</td>
+                        <td>使用曝光补偿、切换测光模式</td>
+                    </tr>
+                    <tr>
+                        <td>主体不突出</td>
+                        <td>背景太乱</td>
+                        <td>开大光圈、变换角度、靠近主体</td>
+                    </tr>
+                    <tr>
+                        <td>照片歪斜</td>
+                        <td>没有注意水平</td>
+                        <td>开启网格线、后期校正</td>
+                    </tr>
+                    <tr>
+                        <td>色彩怪异</td>
+                        <td>白平衡不准</td>
+                        <td>选择合适的白平衡模式或后期调整</td>
+                    </tr>
+                </table>
+
+                <div class="exercise">
+                    <div class="exercise-title">📝 30天摄影挑战</div>
+                    <p>每天一个主题，坚持一个月，摄影水平会有明显提升：</p>
+                    <p>Day 1-7：自拍、宠物、早餐、影子、门窗、云朵、落叶<br>
+                       Day 8-14：街拍、夜景、水滴、纹理、对称、倒影、美食<br>
+                       Day 15-21：陌生人（背影/剪影）、老建筑、花草、书籍、交通工具、星空/月亮、雨天<br>
+                       Day 22-28：极简风格、冷暖对比、运动瞬间、微距、黑白、日落、全家福<br>
+                       Day 29-30：自由创作、最满意的一张</p>
+                    <p style="margin-top: 15px;"><strong>规则：</strong>每天至少拍10张，选出最满意的一张分享。回顾时对比第一天和最后一天的作品。</p>
+                </div>
+
+                <div class="tip-box" style="margin-top: 30px;">
+                    <div class="tip-title">🎉 最后的建议</div>
+                    <p>摄影是一门需要<span class="highlight">技术+审美+练习</span>的艺术。不要被器材束缚，最好的相机就是你手边的那台。多拍、多看、多思考，享受记录生活的乐趣！</p>
+                    <p style="margin-top: 10px;">记住布列松的名言：<strong>"你的前一万张照片都是烂的。"</strong> 所以，大胆去拍吧！</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // 进度条
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // 目录高亮
+        const sections = document.querySelectorAll('.section');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

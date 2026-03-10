@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络基础入门指南 - 0基础小白也能懂的网络知识</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部 */
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        .header .logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header .logo svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header .badges {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 导航 */
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        
+        .nav-menu h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+        }
+        
+        .nav-item {
+            background: #f8f9fa;
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* 内容卡片 */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 1.7em;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title .icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3em;
+        }
+        
+        .section h3 {
+            color: #667eea;
+            margin: 25px 0 15px;
+            font-size: 1.25em;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        /* 概念卡片 */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .concept-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea30;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .concept-card h4 {
+            color: #5a67d8;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .concept-card p {
+            color: #4a5568;
+            font-size: 0.95em;
+            margin: 0;
+        }
+        
+        /* 比喻卡片 */
+        .analogy-box {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .analogy-box h4 {
+            color: #b45309;
+            margin-bottom: 10px;
+        }
+        
+        .analogy-box p {
+            color: #92400e;
+            margin: 0;
+        }
+        
+        /* 终端样式 */
+        .terminal {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 0;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .terminal-header {
+            background: #323232;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+        
+        .terminal-title {
+            color: #999;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        
+        .terminal-body {
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+        
+        .terminal-body .prompt {
+            color: #7ee787;
+        }
+        
+        .terminal-body .command {
+            color: #fff;
+        }
+        
+        .terminal-body .output {
+            color: #ccc;
+        }
+        
+        .terminal-body .comment {
+            color: #6a9955;
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .tip-box h4 {
+            color: #276749;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tip-box ul {
+            margin-left: 20px;
+            color: #2f855a;
+        }
+        
+        .tip-box li {
+            margin-bottom: 6px;
+        }
+        
+        /* 警告框 */
+        .warning-box {
+            background: #fff5f5;
+            border-left: 4px solid #ff6b6b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .warning-box h4 {
+            color: #c53030;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .warning-box ul {
+            margin-left: 20px;
+            color: #744210;
+        }
+        
+        /* 步骤列表 */
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+        }
+        
+        .step-list li {
+            position: relative;
+            padding-left: 55px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        
+        .step-list li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .step-list li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1em;
+        }
+        
+        .step-list li h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        /* 表格 */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .info-table th,
+        .info-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .info-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .info-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* 网络拓扑图 */
+        .topology {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .topology-flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .topology-item {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .topology-item .icon {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .topology-item .name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .topology-item .desc {
+            font-size: 0.8em;
+            color: #666;
+        }
+        
+        .topology-arrow {
+            color: #667eea;
+            font-size: 1.5em;
+        }
+        
+        /* 设备卡片 */
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .device-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .device-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .device-card .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .device-card h4 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .device-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 0;
+        }
+        
+        /* FAQ */
+        .faq-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 18px 20px;
+            background: #f8f9fa;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .faq-question:hover {
+            background: #f0f0f0;
+        }
+        
+        .faq-answer {
+            padding: 20px;
+            display: none;
+            background: white;
+        }
+        
+        .faq-answer.show {
+            display: block;
+        }
+        
+        .faq-toggle {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+        
+        .faq-toggle.rotate {
+            transform: rotate(180deg);
+        }
+        
+        /* 页脚 */
+        .footer-section {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+        
+        .footer-section h2 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+        
+        /* 返回顶部 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            display: none;
+        }
+        
+        .back-to-top:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+        }
+        
+        .back-to-top.show {
+            display: block;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .nav-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .section {
+                padding: 25px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.3em;
+            }
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">
+                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M522.67 42.67c3.78 0 7.53 0.17 11.24 0.49C782.95 54.61 981.33 260.14 981.33 512c0 251.86-198.4 457.39-447.42 468.82-3.71 0.34-7.47 0.51-11.24 0.51l-3.29-0.06C516.91 981.33 514.47 981.33 512 981.33 252.8 981.33 42.67 771.2 42.67 512S252.8 42.67 512 42.67l7.66 0.04 3.01-0.04zM490.67 533.33h-149.06c4.84 191.08 74.07 342.08 149.06 376.58V533.33z m213.06 0H554.67v376.58c74.99-34.52 144.21-185.51 149.06-376.55z m-426.13 0H107.22c8.75 168.85 120.85 310.4 274.26 362.52-60.16-81.11-100.39-212.65-103.89-362.5z m639.19 0h-149.03c-3.35 143.1-40.17 269.5-95.87 351.25C810.05 825.22 908.59 691.22 916.78 533.33zM381.48 128.13c-146.99 50.07-255.94 181.91-272.6 341.23h169.45c6.63-140.97 45.87-263.98 103.15-341.23zM342.4 469.33H490.67V114.09C418.5 147.29 351.64 288.43 342.4 469.33zM554.67 114.09V469.33h148.27C693.67 288.45 626.84 147.31 554.67 114.09z m117.18 25.32l1.84 2.73c51.9 77.67 87.04 194.47 93.29 327.19h148.12c-15.53-148.57-111.32-273.24-243.24-329.92z" fill="#4A90E2"/></svg>
+            </div>
+            <h1>网络技术 零基础入门指南</h1>
+            <p>0基础也能懂的网络知识，从 IP 地址到路由器配置，手把手教你解决常见网络问题</p>
+            <div class="badges">
+                <span class="badge">🎯 零基础友好</span>
+                <span class="badge">🔧 实操为主</span>
+                <span class="badge">❓ 问题排查</span>
+            </div>
+        </header>
+        
+        <!-- 导航 -->
+        <nav class="nav-menu">
+            <h3>📋 快速导航</h3>
+            <div class="nav-grid">
+                <a href="#concepts" class="nav-item">核心概念</a>
+                <a href="#ip" class="nav-item">IP地址</a>
+                <a href="#devices" class="nav-item">网络设备</a>
+                <a href="#topology" class="nav-item">网络拓扑</a>
+                <a href="#commands" class="nav-item">常用命令</a>
+                <a href="#setup" class="nav-item">家庭组网</a>
+                <a href="#troubleshoot" class="nav-item">故障排查</a>
+                <a href="#security" class="nav-item">安全建议</a>
+            </div>
+        </nav>
+        
+        <!-- 核心概念 -->
+        <section class="section" id="concepts">
+            <h2 class="section-title">
+                <span class="icon">📚</span>
+                网络核心概念
+            </h2>
+            
+            <p>理解这几个核心概念，你就掌握了网络的 80%：</p>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>📍 IP 地址</h4>
+                    <p>设备在网络中的"门牌号"，每台联网设备都有唯一的 IP 地址，用于互相识别和通信</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🎭 子网掩码</h4>
+                    <p>划分网络和主机的"分界线"，用来判断两个 IP 是否在同一个网络内</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🚪 网关</h4>
+                    <p>网络的"大门"，内网设备通过网关才能访问外网（互联网）</p>
+                </div>
+                <div class="concept-card">
+                    <h4>📖 DNS</h4>
+                    <p>域名系统，把网址（如 www.baidu.com）翻译成 IP 地址的"电话簿"</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🔢 MAC 地址</h4>
+                    <p>网卡的"身份证号"，由厂商烧录，全球唯一，用于局域网内设备识别</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🔌 端口</h4>
+                    <p>设备上的"服务窗口"，不同应用使用不同端口（如 HTTP 用 80，HTTPS 用 443）</p>
+                </div>
+            </div>
+            
+            <div class="analogy-box">
+                <h4>🏠 生活化比喻</h4>
+                <p>想象一栋公寓大楼：<strong>IP 地址</strong>是房间号（如 3 栋 502），<strong>MAC 地址</strong>是你的身份证号，<strong>网关</strong>是公寓大门，<strong>DNS</strong>是快递查询系统（知道"小明家"对应 502 房间），<strong>端口</strong>是房间里的不同功能区域（厨房、卧室、客厅）。</p>
+            </div>
+        </section>
+        
+        <!-- IP 地址详解 -->
+        <section class="section" id="ip">
+            <h2 class="section-title">
+                <span class="icon">📍</span>
+                IP 地址详解
+            </h2>
+            
+            <h3>IPv4 vs IPv6</h3>
+            <table class="info-table">
+                <tr>
+                    <th>特性</th>
+                    <th>IPv4</th>
+                    <th>IPv6</th>
+                </tr>
+                <tr>
+                    <td>地址长度</td>
+                    <td>32 位</td>
+                    <td>128 位</td>
+                </tr>
+                <tr>
+                    <td>地址格式</td>
+                    <td>192.168.1.1</td>
+                    <td>2001:0db8:85a3::8a2e:0370:7334</td>
+                </tr>
+                <tr>
+                    <td>地址数量</td>
+                    <td>约 43 亿个</td>
+                    <td>几乎无限（2^128）</td>
+                </tr>
+                <tr>
+                    <td>普及程度</td>
+                    <td>目前主流</td>
+                    <td>正在普及</td>
+                </tr>
+            </table>
+            
+            <h3>IP 地址分类</h3>
+            <table class="info-table">
+                <tr>
+                    <th>类型</th>
+                    <th>范围</th>
+                    <th>用途</th>
+                </tr>
+                <tr>
+                    <td>公网 IP</td>
+                    <td>除私有地址外</td>
+                    <td>互联网上的唯一标识</td>
+                </tr>
+                <tr>
+                    <td>私有 IP（A类）</td>
+                    <td>10.0.0.0 ~ 10.255.255.255</td>
+                    <td>大型企业内网</td>
+                </tr>
+                <tr>
+                    <td>私有 IP（B类）</td>
+                    <td>172.16.0.0 ~ 172.31.255.255</td>
+                    <td>中型企业内网</td>
+                </tr>
+                <tr>
+                    <td>私有 IP（C类）</td>
+                    <td>192.168.0.0 ~ 192.168.255.255</td>
+                    <td>家庭/小型办公（最常见）</td>
+                </tr>
+                <tr>
+                    <td>回环地址</td>
+                    <td>127.0.0.1</td>
+                    <td>本机测试（localhost）</td>
+                </tr>
+            </table>
+            
+            <div class="tip-box">
+                <h4>💡 小知识</h4>
+                <ul>
+                    <li>你在家看到的 192.168.x.x 是<strong>私有 IP</strong>，只在你的家庭网络内有效</li>
+                    <li>访问互联网时，路由器会把私有 IP 转换成<strong>公网 IP</strong>（NAT 技术）</li>
+                    <li>查询自己的公网 IP：百度搜索"IP"或在命令行输入 <code>curl ip.sb</code></li>
+                </ul>
+            </div>
+            
+            <h3>子网掩码</h3>
+            <p>子网掩码用来划分网络部分和主机部分，常见的有：</p>
+            <table class="info-table">
+                <tr>
+                    <th>子网掩码</th>
+                    <th>CIDR 表示</th>
+                    <th>可用主机数</th>
+                    <th>常见场景</th>
+                </tr>
+                <tr>
+                    <td>255.255.255.0</td>
+                    <td>/24</td>
+                    <td>254</td>
+                    <td>家庭网络</td>
+                </tr>
+                <tr>
+                    <td>255.255.0.0</td>
+                    <td>/16</td>
+                    <td>65534</td>
+                    <td>企业网络</td>
+                </tr>
+                <tr>
+                    <td>255.0.0.0</td>
+                    <td>/8</td>
+                    <td>16777214</td>
+                    <td>超大型网络</td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- 网络设备 -->
+        <section class="section" id="devices">
+            <h2 class="section-title">
+                <span class="icon">🔌</span>
+                常见网络设备
+            </h2>
+            
+            <div class="device-grid">
+                <div class="device-card">
+                    <div class="icon">📶</div>
+                    <h4>路由器（Router）</h4>
+                    <p>连接不同网络的设备，负责数据包的转发和路由选择，是家庭网络的核心</p>
+                </div>
+                <div class="device-card">
+                    <div class="icon">🔀</div>
+                    <h4>交换机（Switch）</h4>
+                    <p>连接局域网内的设备，实现设备间的数据交换，比集线器更智能高效</p>
+                </div>
+                <div class="device-card">
+                    <div class="icon">📡</div>
+                    <h4>光猫（Modem）</h4>
+                    <p>光电信号转换设备，把光纤的光信号转换成电信号，是接入互联网的入口</p>
+                </div>
+                <div class="device-card">
+                    <div class="icon">📳</div>
+                    <h4>AP（无线接入点）</h4>
+                    <p>提供 WiFi 覆盖的设备，可以单独购买，现在很多路由器自带 AP 功能</p>
+                </div>
+                <div class="device-card">
+                    <div class="icon">🔧</div>
+                    <h4>集线器（Hub）</h4>
+                    <p>早期的网络设备，简单广播数据，已被交换机取代，现在很少见</p>
+                </div>
+                <div class="device-card">
+                    <div class="icon">🛡️</div>
+                    <h4>防火墙</h4>
+                    <p>网络安全设备，控制进出网络的流量，阻挡非法访问和攻击</p>
+                </div>
+            </div>
+            
+            <div class="analogy-box">
+                <h4>🏢 公司比喻</h4>
+                <p><strong>路由器</strong>是前台，知道包裹该送到哪层楼；<strong>交换机</strong>是各层的收发室，负责把包裹送到具体办公室；<strong>光猫</strong>是快递公司的货车，负责和外部世界连接。</p>
+            </div>
+            
+            <h3>网线类型</h3>
+            <table class="info-table">
+                <tr>
+                    <th>类型</th>
+                    <th>传输速率</th>
+                    <th>传输距离</th>
+                    <th>用途</th>
+                </tr>
+                <tr>
+                    <td>五类线（Cat5）</td>
+                    <td>100Mbps</td>
+                    <td>100米</td>
+                    <td>已淘汰</td>
+                </tr>
+                <tr>
+                    <td>超五类（Cat5e）</td>
+                    <td>1Gbps</td>
+                    <td>100米</td>
+                    <td>千兆网络（最常见）</td>
+                </tr>
+                <tr>
+                    <td>六类线（Cat6）</td>
+                    <td>10Gbps</td>
+                    <td>55米（10G）</td>
+                    <td>万兆网络</td>
+                </tr>
+                <tr>
+                    <td>超六类（Cat6a）</td>
+                    <td>10Gbps</td>
+                    <td>100米</td>
+                    <td>专业万兆</td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- 网络拓扑 -->
+        <section class="section" id="topology">
+            <h2 class="section-title">
+                <span class="icon">🕸️</span>
+                家庭网络拓扑
+            </h2>
+            
+            <p>典型的家庭网络连接方式：</p>
+            
+            <div class="topology">
+                <div class="topology-flow">
+                    <div class="topology-item">
+                        <div class="icon">🌐</div>
+                        <div class="name">互联网</div>
+                        <div class="desc">WAN</div>
+                    </div>
+                    <span class="topology-arrow">→</span>
+                    <div class="topology-item">
+                        <div class="icon">📡</div>
+                        <div class="name">光猫</div>
+                        <div class="desc">拨号上网</div>
+                    </div>
+                    <span class="topology-arrow">→</span>
+                    <div class="topology-item">
+                        <div class="icon">📶</div>
+                        <div class="name">路由器</div>
+                        <div class="desc">分配 IP</div>
+                    </div>
+                    <span class="topology-arrow">→</span>
+                    <div class="topology-item">
+                        <div class="icon">🔀</div>
+                        <div class="name">交换机/AP</div>
+                        <div class="desc">扩展连接</div>
+                    </div>
+                    <span class="topology-arrow">→</span>
+                    <div class="topology-item">
+                        <div class="icon">💻</div>
+                        <div class="name">终端设备</div>
+                        <div class="desc">手机/电脑</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>两种上网模式</h3>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>🔧 光猫拨号（路由模式）</h4>
+                    <p>光猫负责拨号上网，路由器接在光猫下面作为二级路由。适合不懂网络设置的用户，但光猫性能可能较弱</p>
+                </div>
+                <div class="concept-card">
+                    <h4>⚡ 路由器拨号（桥接模式）</h4>
+                    <p>光猫设置为桥接模式，路由器负责拨号。性能更好，但需要配置，推荐有一定网络知识的用户使用</p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 桥接模式设置步骤</h4>
+                <ol style="margin-left: 20px; color: #2f855a;">
+                    <li>获取宽带账号密码（打电话问运营商）</li>
+                    <li>登录光猫管理页面（通常是 192.168.1.1）</li>
+                    <li>找到"网络"或"宽带设置"，将路由模式改为桥接模式</li>
+                    <li>登录路由器，设置上网方式为"PPPoE 拨号"</li>
+                    <li>输入宽带账号密码，保存重启</li>
+                </ol>
+            </div>
+        </section>
+        
+        <!-- 常用命令 -->
+        <section class="section" id="commands">
+            <h2 class="section-title">
+                <span class="icon">⌨️</span>
+                网络排查命令
+            </h2>
+            
+            <h3>Windows 命令</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">CMD / PowerShell</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="comment"># 查看 IP 配置</span></div>
+                    <div><span class="prompt">C:\&gt;</span> <span class="command">ipconfig</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 查看详细 IP 配置（包括 MAC 地址）</span></div>
+                    <div><span class="prompt">C:\&gt;</span> <span class="command">ipconfig /all</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 测试网络连通性</span></div>
+                    <div><span class="prompt">C:\&gt;</span> <span class="command">ping www.baidu.com</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 追踪数据包路由路径</span></div>
+                    <div><span class="prompt">C:\&gt;</span> <span class="command">tracert www.baidu.com</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 查看网络连接状态</span></div>
+                    <div><span class="prompt">C:\&gt;</span> <span class="command">netstat -an</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 刷新 DNS 缓存</span></div>
+                    <div><span class="prompt">C:\&gt;</span> <span class="command">ipconfig /flushdns</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 释放 IP 地址</span></div>
+                    <div><span class="prompt">C:\&gt;</span> <span class="command">ipconfig /release</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 重新获取 IP 地址</span></div>
+                    <div><span class="prompt">C:\&gt;</span> <span class="command">ipconfig /renew</span></div>
+                </div>
+            </div>
+            
+            <h3>Mac/Linux 命令</h3>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="comment"># 查看 IP 配置（Mac）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">ifconfig</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 查看 IP 配置（Linux）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">ip addr</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 测试网络连通性</span></div>
+                    <div><span class="prompt">$</span> <span class="command">ping www.baidu.com</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 追踪路由（Mac）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">traceroute www.baidu.com</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 追踪路由（Linux）</span></div>
+                    <div><span class="prompt">$</span> <span class="command">tracepath www.baidu.com</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 查询 DNS</span></div>
+                    <div><span class="prompt">$</span> <span class="command">nslookup www.baidu.com</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 查看网络连接</span></div>
+                    <div><span class="prompt">$</span> <span class="command">netstat -tuln</span></div>
+                    <div style="margin-top: 10px;"><span class="comment"># 测试端口连通性</span></div>
+                    <div><span class="prompt">$</span> <span class="command">nc -zv 192.168.1.1 80</span></div>
+                </div>
+            </div>
+            
+            <h3>命令详解</h3>
+            <table class="info-table">
+                <tr>
+                    <th>命令</th>
+                    <th>作用</th>
+                    <th>使用场景</th>
+                </tr>
+                <tr>
+                    <td><code>ping</code></td>
+                    <td>测试与目标主机的连通性</td>
+                    <td>判断能否上网、网络是否稳定</td>
+                </tr>
+                <tr>
+                    <td><code>ipconfig/ifconfig</code></td>
+                    <td>查看本机网络配置</td>
+                    <td>查看 IP、网关、DNS 等信息</td>
+                </tr>
+                <tr>
+                    <td><code>tracert/traceroute</code></td>
+                    <td>追踪数据包路由路径</td>
+                    <td>定位网络故障点</td>
+                </tr>
+                <tr>
+                    <td><code>nslookup</code></td>
+                    <td>查询域名对应的 IP</td>
+                    <td>排查 DNS 问题</td>
+                </tr>
+                <tr>
+                    <td><code>netstat</code></td>
+                    <td>查看网络连接状态</td>
+                    <td>查看端口占用情况</td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- 家庭组网 -->
+        <section class="section" id="setup">
+            <h2 class="section-title">
+                <span class="icon">🏠</span>
+                家庭组网指南
+            </h2>
+            
+            <h3>路由器选购建议</h3>
+            <table class="info-table">
+                <tr>
+                    <th>户型</th>
+                    <th>推荐方案</th>
+                    <th>预算参考</th>
+                </tr>
+                <tr>
+                    <td>小户型（&lt;80㎡）</td>
+                    <td>单台路由器（WiFi 6）</td>
+                    <td>200-400元</td>
+                </tr>
+                <tr>
+                    <td>中户型（80-120㎡）</td>
+                    <td>Mesh 组网（2台）</td>
+                    <td>500-1000元</td>
+                </tr>
+                <tr>
+                    <td>大户型（&gt;120㎡）</td>
+                    <td>AC+AP 或 Mesh（3台+）</td>
+                    <td>1000-3000元</td>
+                </tr>
+                <tr>
+                    <td>复式/别墅</td>
+                    <td>AC+AP 专业方案</td>
+                    <td>3000元+</td>
+                </tr>
+            </table>
+            
+            <div class="tip-box">
+                <h4>💡 路由器选购要点</h4>
+                <ul>
+                    <li><strong>WiFi 6（802.11ax）：</strong>新一代标准，速度更快，延迟更低，建议优先选择</li>
+                    <li><strong>千兆网口：</strong>WAN 口和 LAN 口都要支持千兆，否则宽带跑不满</li>
+                    <li><strong>5G 频段：</strong>双频路由器必备，5G 速度快但穿墙差，2.4G 穿墙好但速度慢</li>
+                    <li><strong>天线数量：</strong>不是越多越好，看实际需求和空间覆盖</li>
+                </ul>
+            </div>
+            
+            <h3>WiFi 设置建议</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>修改路由器管理密码</h4>
+                    <p>不要使用默认的 admin/admin，设置强密码防止被蹭网</p>
+                </li>
+                <li>
+                    <h4>设置 WiFi 名称（SSID）</h4>
+                    <p>建议使用英文或数字，避免中文兼容性问题。可以设置 2.4G 和 5G 不同名称，方便选择</p>
+                </li>
+                <li>
+                    <h4>设置 WiFi 密码</h4>
+                    <p>使用 WPA2/WPA3 加密，密码至少 8 位，包含大小写字母和数字</p>
+                </li>
+                <li>
+                    <h4>选择信道</h4>
+                    <p>2.4G 建议选择 1、6、11 信道（互不干扰），5G 可以选自动</p>
+                </li>
+                <li>
+                    <h4>开启访客网络</h4>
+                    <p>给客人使用，隔离主网络，保护隐私和设备安全</p>
+                </li>
+            </ul>
+            
+            <h3>优化 WiFi 信号</h3>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>📍 放置位置</h4>
+                    <p>放在房屋中心位置，远离金属物品、微波炉、蓝牙设备等干扰源</p>
+                </div>
+                <div class="concept-card">
+                    <h4>📐 天线角度</h4>
+                    <p>多根天线不要全部垂直，可以 45° 错开，覆盖更均匀</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🔧 定期重启</h4>
+                    <p>路由器长期运行会卡顿，建议每周重启一次，或设置自动重启</p>
+                </div>
+                <div class="concept-card">
+                    <h4>📶 信号强度</h4>
+                    <p>WiFi 信号不是越强越好，适当降低功率可以减少干扰</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 故障排查 -->
+        <section class="section" id="troubleshoot">
+            <h2 class="section-title">
+                <span class="icon">🔧</span>
+                常见故障排查
+            </h2>
+            
+            <h3>无法上网排查流程</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>第一步：检查物理连接</h4>
+                    <p>查看网线是否插好，光猫和路由器的指示灯是否正常（绿灯正常，红灯异常）</p>
+                </li>
+                <li>
+                    <h4>第二步：检查 IP 地址</h4>
+                    <p>运行 <code>ipconfig</code>（Windows）或 <code>ifconfig</code>（Mac），查看是否获取到 192.168.x.x 的 IP</p>
+                </li>
+                <li>
+                    <h4>第三步：Ping 网关</h4>
+                    <p>ping 路由器的 IP（通常是 192.168.1.1），不通说明电脑到路由器有问题</p>
+                </li>
+                <li>
+                    <h4>第四步：Ping 公网 IP</h4>
+                    <p>ping 114.114.114.114（国内 DNS），通说明网络正常，不通说明外网有问题</p>
+                </li>
+                <li>
+                    <h4>第五步：Ping 域名</h4>
+                    <p>ping www.baidu.com，如果 IP 通但域名不通，说明 DNS 有问题</p>
+                </li>
+            </ul>
+            
+            <h3>常见问题及解决方案</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>WiFi 能连但无法上网</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>可能原因：</strong></p>
+                    <ol>
+                        <li>宽带欠费或运营商故障</li>
+                        <li>光猫或路由器未拨号成功</li>
+                        <li>DNS 设置错误</li>
+                    </ol>
+                    <p><strong>解决方法：</strong></p>
+                    <ol>
+                        <li>拨打运营商客服查询宽带状态</li>
+                        <li>重启光猫和路由器</li>
+                        <li>检查路由器 WAN 口状态，确认已获取到公网 IP</li>
+                        <li>手动设置 DNS 为 223.5.5.5（阿里）或 114.114.114.114</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>WiFi 信号弱/覆盖差</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>解决方法：</strong></p>
+                    <ol>
+                        <li>调整路由器位置到房屋中心</li>
+                        <li>更换信道，避免邻居干扰（使用 WiFi 分析仪 APP 查看）</li>
+                        <li>增加 Mesh 节点或无线 AP 扩展覆盖</li>
+                        <li>考虑使用电力猫（通过电线传输网络）</li>
+                        <li>如果可能，预埋网线做有线 AP</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>网速慢/卡顿</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>排查步骤：</strong></p>
+                    <ol>
+                        <li>测速：使用 speedtest.cn 或运营商测速工具，确认是否达到签约带宽</li>
+                        <li>检查连接设备数：过多设备同时下载会抢占带宽</li>
+                        <li>检查是否有设备在下载/上传：暂停大流量应用</li>
+                        <li>切换 WiFi 频段：5G 频段干扰少、速度快，但穿墙差</li>
+                        <li>更换网线：老旧网线可能只支持百兆</li>
+                        <li>路由器性能瓶颈：老旧路由器处理能力有限，考虑更换</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>网页打不开，但 QQ/微信能用</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>原因：</strong>这是典型的 DNS 故障。QQ/微信使用 IP 直连，不需要 DNS；浏览器访问网页需要 DNS 解析域名。</p>
+                    <p><strong>解决方法：</strong></p>
+                    <ol>
+                        <li>刷新 DNS 缓存：Windows 运行 <code>ipconfig /flushdns</code></li>
+                        <li>更换 DNS 服务器：
+                            <ul>
+                                <li>阿里 DNS：223.5.5.5 / 223.6.6.6</li>
+                                <li>腾讯 DNS：119.29.29.29</li>
+                                <li>114 DNS：114.114.114.114</li>
+                                <li>Google DNS：8.8.8.8（国内可能不稳定）</li>
+                            </ul>
+                        </li>
+                        <li>在路由器或电脑上手动设置 DNS</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>能上网但经常掉线</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>可能原因及解决：</strong></p>
+                    <ol>
+                        <li>路由器过热：检查散热，必要时加风扇或更换</li>
+                        <li>IP 地址冲突：重启路由器重新分配 IP，或设置静态 IP</li>
+                        <li>光猫不稳定：联系运营商检查或更换光猫</li>
+                        <li>路由器性能不足：连接设备过多，考虑升级</li>
+                        <li>信道干扰：更换 WiFi 信道</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 安全建议 -->
+        <section class="section" id="security">
+            <h2 class="section-title">
+                <span class="icon">🛡️</span>
+                网络安全建议
+            </h2>
+            
+            <h3>基础安全措施</h3>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>🔑 修改默认密码</h4>
+                    <p>路由器管理密码、WiFi 密码都要修改，不要使用默认的 admin</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🔒 启用 WPA3</h4>
+                    <p>选择 WPA3 或 WPA2 加密，不要使用已不安全的 WEP</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🚫 关闭 WPS</h4>
+                    <p>WPS 功能有安全漏洞，建议关闭，手动输入密码更安全</p>
+                </div>
+                <div class="concept-card">
+                    <h4>👥 开启访客网络</h4>
+                    <p>访客网络与主网络隔离，保护你的设备和数据安全</p>
+                </div>
+            </div>
+            
+            <h3>进阶安全设置</h3>
+            <ul class="step-list">
+                <li>
+                    <h4>关闭远程管理</h4>
+                    <p>除非必要，关闭路由器的远程管理功能，防止被攻击</p>
+                </li>
+                <li>
+                    <h4>定期更新固件</h4>
+                    <p>及时更新路由器固件，修复安全漏洞</p>
+                </li>
+                <li>
+                    <h4>关闭 SSID 广播（可选）</h4>
+                    <p>隐藏 WiFi 名称，知道名称才能连接，增加安全性</p>
+                </li>
+                <li>
+                    <h4>启用 MAC 地址过滤</h4>
+                    <p>只允许指定设备连接，但 MAC 地址可以伪造，不是绝对安全</p>
+                </li>
+                <li>
+                    <h4>定期检查连接设备</h4>
+                    <p>在路由器管理页面查看连接设备列表，发现可疑设备及时踢出</p>
+                </li>
+            </ul>
+            
+            <div class="warning-box">
+                <h4>⚠️ 安全提醒</h4>
+                <ul>
+                    <li>不要使用公共场所的免费 WiFi 进行网银操作</li>
+                    <li>家中的 WiFi 密码不要告诉陌生人</li>
+                    <li>定期更换 WiFi 密码，特别是发现网速异常时</li>
+                    <li>智能设备（摄像头、智能音箱等）尽量使用访客网络</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 结语 -->
+        <section class="footer-section">
+            <h2>🎉 网络知识掌握了吗？</h2>
+            <p>网络知识看似复杂，但只要理解基本原理，大多数问题都能自己解决。记住：重启能解决 80% 的网络问题！</p>
+            <p style="margin-top: 15px;">遇到网络问题别慌，按排查流程一步步来，你也能成为家里的网络管理员 👨‍💻👩‍💻</p>
+        </section>
+    </div>
+    
+    <!-- 返回顶部 -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+    
+    <script>
+        // 返回顶部按钮
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // FAQ 展开/收起
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const toggle = element.querySelector('.faq-toggle');
+            answer.classList.toggle('show');
+            toggle.classList.toggle('rotate');
+        }
+    </script>
+</body>
+</html>

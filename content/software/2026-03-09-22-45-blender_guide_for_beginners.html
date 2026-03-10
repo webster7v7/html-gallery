@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blender 零基础入门指南 - 3D创作从入门到精通</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --blender-orange: #E87D0D;
+            --blender-dark: #1a1a1a;
+            --blender-gray: #2b2b2b;
+            --blender-light: #3c3c3c;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --accent-blue: #4a9eff;
+            --accent-green: #4ade80;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--blender-dark);
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+        
+        /* 导航 */
+        .navbar {
+            background: var(--blender-gray);
+            border-bottom: 2px solid var(--blender-orange);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--blender-orange);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--blender-orange);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--blender-orange);
+            background: var(--blender-light);
+        }
+        
+        /* 头部 */
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2418 50%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(232,125,13,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        header .logo {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        header .logo svg {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            display: block;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #fff, var(--blender-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            color: var(--text-secondary);
+        }
+        
+        .badges {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .badge {
+            background: rgba(232,125,13,0.2);
+            border: 1px solid var(--blender-orange);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: var(--blender-orange);
+        }
+        
+        /* 容器 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* 章节 */
+        .section {
+            margin-bottom: 60px;
+            background: var(--blender-gray);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1px solid var(--blender-light);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--blender-orange);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--blender-orange);
+        }
+        
+        .section h3 {
+            color: var(--accent-blue);
+            font-size: 1.4rem;
+            margin: 30px 0 15px;
+        }
+        
+        .section p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .section ul, .section ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .section li {
+            margin-bottom: 10px;
+        }
+        
+        /* 卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .feature-card {
+            background: var(--blender-light);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--blender-orange);
+            box-shadow: 0 10px 30px rgba(232,125,13,0.2);
+        }
+        
+        .feature-card .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h4 {
+            color: var(--blender-orange);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .feature-card p {
+            font-size: 0.95rem;
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: rgba(74,158,255,0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        
+        .tip-box strong {
+            color: var(--accent-blue);
+        }
+        
+        .warning-box {
+            background: rgba(255,193,7,0.1);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        
+        .warning-box strong {
+            color: #ffc107;
+        }
+        
+        .note-box {
+            background: rgba(232,125,13,0.1);
+            border-left: 4px solid var(--blender-orange);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        
+        .note-box strong {
+            color: var(--blender-orange);
+        }
+        
+        /* 代码块 */
+        .code-block {
+            background: #0d0d0d;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid var(--blender-light);
+        }
+        
+        .code-block code {
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .code-block .comment { color: #6a9955; }
+        .code-block .key { color: #9cdcfe; }
+        .code-block .value { color: #ce9178; }
+        
+        /* 快捷键表格 */
+        .shortcut-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .shortcut-table th {
+            background: var(--blender-orange);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .shortcut-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--blender-light);
+            color: var(--text-secondary);
+        }
+        
+        .shortcut-table tr:hover {
+            background: var(--blender-light);
+        }
+        
+        .shortcut-table kbd {
+            background: var(--blender-dark);
+            padding: 4px 10px;
+            border-radius: 5px;
+            border: 1px solid var(--blender-light);
+            color: var(--blender-orange);
+            font-family: monospace;
+        }
+        
+        /* 步骤 */
+        .steps {
+            counter-reset: step;
+            list-style: none;
+            margin-left: 0 !important;
+        }
+        
+        .steps li {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 30px;
+        }
+        
+        .steps li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: var(--blender-orange);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* 界面标注 */
+        .ui-legend {
+            background: var(--blender-light);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .ui-legend h4 {
+            color: var(--blender-orange);
+            margin-bottom: 15px;
+        }
+        
+        .ui-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--blender-dark);
+        }
+        
+        .ui-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ui-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+        
+        /* 工具卡片 */
+        .tool-card {
+            background: var(--blender-light);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid var(--blender-orange);
+        }
+        
+        .tool-card h5 {
+            color: var(--blender-orange);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        /* 模式切换 */
+        .mode-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .mode-tab {
+            background: var(--blender-light);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .mode-tab:hover, .mode-tab.active {
+            background: var(--blender-orange);
+            color: white;
+        }
+        
+        /* 按钮 */
+        .btn {
+            display: inline-block;
+            background: var(--blender-orange);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #ff9500;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(232,125,13,0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--blender-light);
+            border: 2px solid var(--blender-orange);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--blender-orange);
+        }
+        
+        /* 下载区域 */
+        .download-section {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, var(--blender-gray) 0%, var(--blender-light) 100%);
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        /* 底部 */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--blender-gray);
+            border-top: 2px solid var(--blender-orange);
+        }
+        
+        footer p {
+            color: var(--text-secondary);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .nav-links {
+                gap: 10px;
+            }
+            
+            .nav-links a {
+                font-size: 0.85rem;
+                padding: 3px 8px;
+            }
+        }
+        
+        /* 动画 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <!-- 导航 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+            <span>Blender 入门指南</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#intro">简介</a></li>
+                <li><a href="#install">安装</a></li>
+                <li><a href="#interface">界面</a></li>
+                <li><a href="#basics">基础操作</a></li>
+                <li><a href="#modeling">建模入门</a></li>
+                <li><a href="#render">渲染</a></li>
+                <li><a href="#tips">技巧</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 头部 -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M192.26 276.06a51.1 51.1 0 0 0-51.1 51.1c0 28.21 22.88 50.99 51.1 50.99h212.74L22.47 680.23c-25.6 20.27-29.99 57.57-9.72 83.17s57.68 29.99 83.28 9.72l212.43-167.71v0.21c0 182.02 160.18 329.56 357.77 329.56C863.82 935.18 1024 787.64 1024 605.62c0-115.46-64.47-217.03-162.06-275.85L563.3 98.53c-20.38-15.67-49.53-12.02-65.2 8.25a46.31 46.31 0 0 0 8.25 65.1l134.58 104.18H192.26z" fill="#E87D0D"/><path d="M670.82 378.18c-123.09 0-222.98 89.34-222.98 199.58s99.89 199.57 222.98 199.57c123.2 0 223.09-89.34 223.09-199.57S794.02 378.18 670.82 378.18z" fill="#FFFFFF"/><path d="M670.87 452.44c-77.01 0-139.39 56.11-139.39 125.28 0 69.28 62.38 125.39 139.39 125.39s139.39-56.11 139.39-125.39c0-69.17-62.38-125.28-139.39-125.28z" fill="#265787"/></svg>
+            </div>
+            <h1>Blender 零基础入门指南</h1>
+            <p>从零开始学习 3D 建模、动画和渲染，开启你的创作之旅</p>
+            <a href="#install" class="btn">开始下载</a>
+            <div class="badges">
+                <span class="badge">🎬 动画制作</span>
+                <span class="badge">🎮 游戏资产</span>
+                <span class="badge">🏗️ 3D建模</span>
+                <span class="badge">💡 完全免费</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- 简介 -->
+        <section class="section" id="intro">
+            <h2 class="section-title"><span>🤔</span> 什么是 Blender？</h2>
+            
+            <p>Blender 是一款<strong>免费开源</strong>的 3D 创作软件，功能涵盖建模、雕刻、动画、渲染、合成、视频剪辑等全流程。无论你是想做 3D 模型、游戏资产、动画短片还是视觉特效，Blender 都能胜任。</p>
+            
+            <div class="card-grid">
+                <div class="feature-card">
+                    <div class="icon">💰</div>
+                    <h4>完全免费</h4>
+                    <p>开源软件，无需付费，无功能限制，可商用</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🚀</div>
+                    <h4>功能全面</h4>
+                    <p>建模、雕刻、动画、渲染、合成一应俱全</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🌐</div>
+                    <h4>社区活跃</h4>
+                    <p>全球大量教程资源，中文社区日益壮大</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h4>持续更新</h4>
+                    <p>每 3 个月一个大版本，功能不断增强</p>
+                </div>
+            </div>
+            
+            <h3>用 Blender 能做什么？</h3>
+            <ul>
+                <li>🎬 <strong>3D 动画短片</strong> - 制作电影级的动画作品</li>
+                <li>🎮 <strong>游戏资产</strong> - 为 Unity、Unreal 等引擎制作模型</li>
+                <li>🏠 <strong>建筑可视化</strong> - 室内外设计效果图</li>
+                <li>🎨 <strong>产品设计</strong> - 工业设计和原型制作</li>
+                <li>✨ <strong>视觉特效</strong> - VFX 合成和特效制作</li>
+                <li>📐 <strong>3D 打印</strong> - 创建可打印的 3D 模型</li>
+            </ul>
+        </section>
+        
+        <!-- 安装 -->
+        <section class="section" id="install">
+            <h2 class="section-title"><span>💾</span> 下载与安装</h2>
+            
+            <div class="download-section">
+                <h3 style="color: var(--blender-orange); margin-bottom: 20px;">🚀 最新版本：Blender 4.x</h3>
+                <p style="margin-bottom: 25px;">支持 Windows、macOS、Linux，无需注册直接下载</p>
+                <a href="https://www.blender.org/download/" target="_blank" class="btn">前往官网下载</a>
+                <p style="margin-top: 20px; font-size: 0.9rem;">💡 建议下载稳定版本（Stable），测试版（Alpha/Beta）可能有 Bug</p>
+            </div>
+            
+            <h3>安装步骤</h3>
+            <ol class="steps">
+                <li>
+                    <strong>下载安装包</strong>
+                    <p>根据你的系统选择对应版本下载</p>
+                    <ul>
+                        <li>Windows: 下载 <code>.msi</code> 安装程序</li>
+                        <li>macOS: 下载 <code>.dmg</code> 镜像（支持 Intel 和 Apple Silicon）</li>
+                        <li>Linux: 下载 <code>.tar.xz</code> 压缩包或使用包管理器</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>运行安装</strong>
+                    <p>Windows 直接运行安装程序；macOS 拖入应用程序文件夹；Linux 解压后运行 <code>blender</code></p>
+                </li>
+                <li>
+                    <strong>首次启动</strong>
+                    <p>打开 Blender，选择语言为简体中文，建议启用"自动保存"功能</p>
+                </li>
+            </ol>
+            
+            <div class="tip-box">
+                <strong>💡 配置建议：</strong>Blender 对显卡有一定要求，建议至少有 8GB 内存，独立显卡（NVIDIA/AMD）可加速渲染。如果电脑配置较低，可以在首选项中调低视窗质量。
+            </div>
+        </section>
+        
+        <!-- 界面介绍 -->
+        <section class="section" id="interface">
+            <h2 class="section-title"><span>🖥️</span> 界面介绍</h2>
+            
+            <p>Blender 默认界面采用分区布局，每个区域都可以自由调整。首次打开可能会觉得复杂，但熟悉后会发现非常高效。</p>
+            
+            <div class="ui-legend">
+                <h4>📍 主要区域说明</h4>
+                <div class="ui-item">
+                    <div class="ui-color" style="background: #ff6b6b;"></div>
+                    <div>
+                        <strong>3D 视窗（中间最大区域）</strong>
+                        <p>场景的主要操作区域，可以旋转、缩放、平移视角查看模型</p>
+                    </div>
+                </div>
+                <div class="ui-item">
+                    <div class="ui-color" style="background: #4ecdc4;"></div>
+                    <div>
+                        <strong>工具栏（左侧）</strong>
+                        <p>选择、移动、旋转、缩放等基本工具</p>
+                    </div>
+                </div>
+                <div class="ui-item">
+                    <div class="ui-color" style="background: #ffe66d;"></div>
+                    <div>
+                        <strong>属性面板（右侧）</strong>
+                        <p>物体的属性、材质、修改器、渲染设置等</p>
+                    </div>
+                </div>
+                <div class="ui-item">
+                    <div class="ui-color" style="background: #a8e6cf;"></div>
+                    <div>
+                        <strong>时间轴（底部）</strong>
+                        <p>动画制作时使用，显示帧数和时间</p>
+                    </div>
+                </div>
+                <div class="ui-item">
+                    <div class="ui-color" style="background: #ff8b94;"></div>
+                    <div>
+                        <strong>大纲视图（右上角）</strong>
+                        <p>场景中的物体列表，可以管理物体的层级关系</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>界面操作基础</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>操作</th>
+                    <th>鼠标操作</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>旋转视角</td>
+                    <td><kbd>中键</kbd> 拖拽</td>
+                    <td>围绕场景中心旋转查看</td>
+                </tr>
+                <tr>
+                    <td>平移视角</td>
+                    <td><kbd>Shift</kbd> + <kbd>中键</kbd> 拖拽</td>
+                    <td>上下左右移动视角</td>
+                </tr>
+                <tr>
+                    <td>缩放视角</td>
+                    <td><kbd>滚轮</kbd> 滚动</td>
+                    <td>放大或缩小视图</td>
+                </tr>
+                <tr>
+                    <td>框选放大</td>
+                    <td><kbd>Shift</kbd> + <kbd>B</kbd> + 框选</td>
+                    <td>框选区域放大查看</td>
+                </tr>
+                <tr>
+                    <td>视角复位</td>
+                    <td><kbd>小键盘 0/1/3/7</kbd></td>
+                    <td>切换到相机/正交视图</td>
+                </tr>
+            </table>
+            
+            <div class="note-box">
+                <strong>🎯 重要提示：</strong>Blender 默认使用"中键"（鼠标滚轮按下）进行视角旋转。如果你的鼠标没有中键，可以在 编辑 → 偏好设置 → 输入 → 鼠标 中开启"模拟 3 键鼠标"，然后用 <kbd>Alt</kbd> + <kbd>左键</kbd> 代替。
+            </div>
+        </section>
+        
+        <!-- 基础操作 -->
+        <section class="section" id="basics">
+            <h2 class="section-title"><span>🎮</span> 基础操作</h2>
+            
+            <h3>物体基本变换</h3>
+            <p>选中物体后（<kbd>左键</kbd> 点击），可以使用以下快捷键：</p>
+            
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                    <th>操作说明</th>
+                </tr>
+                <tr>
+                    <td><kbd>G</kbd></td>
+                    <td>移动 (Grab)</td>
+                    <td>Grab - 抓取移动，移动鼠标后 <kbd>左键</kbd> 确认</td>
+                </tr>
+                <tr>
+                    <td><kbd>R</kbd></td>
+                    <td>旋转 (Rotate)</td>
+                    <td>旋转物体，可配合 <kbd>X/Y/Z</kbd> 锁定轴向</td>
+                </tr>
+                <tr>
+                    <td><kbd>S</kbd></td>
+                    <td>缩放 (Scale)</td>
+                    <td>缩放物体，<kbd>左键</kbd> 确认，<kbd>右键</kbd> 取消</td>
+                </tr>
+                <tr>
+                    <td><kbd>X/Y/Z</kbd></td>
+                    <td>锁定轴向</td>
+                    <td>变换时按可锁定对应轴向</td>
+                </tr>
+                <tr>
+                    <td><kbd>Shift</kbd> + <kbd>D</kbd></td>
+                    <td>复制</td>
+                    <td>Duplicate - 复制选中物体</td>
+                </tr>
+                <tr>
+                    <td><kbd>Tab</kbd></td>
+                    <td>编辑/物体模式切换</td>
+                    <td>编辑模式可以编辑顶点、边、面</td>
+                </tr>
+            </table>
+            
+            <div class="tip-box">
+                <strong>💡 操作技巧：</strong>按 <kbd>G</kbd>/<kbd>R</kbd>/<kbd>S</kbd> 后，可以直接按 <kbd>X</kbd>、<kbd>Y</kbd> 或 <kbd>Z</kbd> 锁定对应轴向。再按一次数字可以精确输入数值，如 <kbd>G</kbd> → <kbd>Z</kbd> → <kbd>2</kbd> → <kbd>Enter</kbd> 表示沿 Z 轴向上移动 2 个单位。
+            </div>
+            
+            <h3>常用编辑操作</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                </tr>
+                <tr>
+                    <td><kbd>A</kbd></td>
+                    <td>全选 / 取消全选</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl</kbd> + <kbd>I</kbd></td>
+                    <td>反选</td>
+                </tr>
+                <tr>
+                    <td><kbd>H</kbd></td>
+                    <td>隐藏选中</td>
+                </tr>
+                <tr>
+                    <td><kbd>Alt</kbd> + <kbd>H</kbd></td>
+                    <td>显示全部</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl</kbd> + <kbd>Z</kbd></td>
+                    <td>撤销</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd></td>
+                    <td>重做</td>
+                </tr>
+                <tr>
+                    <td><kbd>F12</kbd></td>
+                    <td>渲染图像</td>
+                </tr>
+                <tr>
+                    <td><kbd>Delete</kbd></td>
+                    <td>删除选中物体</td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- 建模入门 -->
+        <section class="section" id="modeling">
+            <h2 class="section-title"><span>🏗️</span> 建模入门</h2>
+            
+            <h3>添加基础物体</h3>
+            <p>按 <kbd>Shift</kbd> + <kbd>A</kbd> 打开添加菜单，可以选择添加各种基础几何体：</p>
+            
+            <div class="card-grid">
+                <div class="feature-card">
+                    <div class="icon">🧊</div>
+                    <h4>立方体 (Cube)</h4>
+                    <p>最基础的形状，适合建筑、箱子等</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⚪</div>
+                    <h4>球体 (UV Sphere)</h4>
+                    <p>球状物体，适合行星、球类等</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🛢️</div>
+                    <h4>圆柱 (Cylinder)</h4>
+                    <p>柱状物体，适合柱子、瓶子等</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🍩</div>
+                    <h4>圆环 (Torus)</h4>
+                    <p>甜甜圈形状，适合轮胎、装饰等</p>
+                </div>
+            </div>
+            
+            <h3>编辑模式详解</h3>
+            <p>按 <kbd>Tab</kbd> 进入编辑模式后，可以选择不同的选择模式：</p>
+            
+            <div class="mode-tabs">
+                <div class="mode-tab active">顶点 (Vertex)</div>
+                <div class="mode-tab">边 (Edge)</div>
+                <div class="mode-tab">面 (Face)</div>
+            </div>
+            
+            <table class="shortcut-table">
+                <tr>
+                    <th>快捷键</th>
+                    <th>功能</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td><kbd>1</kbd></td>
+                    <td>顶点选择模式</td>
+                    <td>选择并移动单个点</td>
+                </tr>
+                <tr>
+                    <td><kbd>2</kbd></td>
+                    <td>边选择模式</td>
+                    <td>选择并编辑边线</td>
+                </tr>
+                <tr>
+                    <td><kbd>3</kbd></td>
+                    <td>面选择模式</td>
+                    <td>选择并编辑面片</td>
+                </tr>
+                <tr>
+                    <td><kbd>E</kbd></td>
+                    <td>挤出 (Extrude)</td>
+                    <td>将选中的面/边拉伸出新的几何体</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl</kbd> + <kbd>R</kbd></td>
+                    <td>环切</td>
+                    <td>在模型上增加边线细分</td>
+                </tr>
+                <tr>
+                    <td><kbd>S</kbd> + <kbd>0</kbd></td>
+                    <td>合并到中心</td>
+                    <td>将选中的顶点合并</td>
+                </tr>
+                <tr>
+                    <td><kbd>M</kbd></td>
+                    <td>合并菜单</td>
+                    <td>选择合并方式（按距离、中心等）</td>
+                </tr>
+            </table>
+            
+            <h3>🎯 实战：制作一个简单的小桌子</h3>
+            <ol class="steps">
+                <li>
+                    <strong>创建桌面</strong>
+                    <p>按 <kbd>Shift</kbd> + <kbd>A</kbd> → 网格 → 立方体，然后按 <kbd>S</kbd> → <kbd>Y</kbd> → <kbd>2</kbd> → <kbd>Enter</kbd> 将桌面拉长</p>
+                </li>
+                <li>
+                    <strong>创建桌腿</strong>
+                    <p>再添加一个立方体，按 <kbd>S</kbd> 缩放成细长的形状，然后按 <kbd>G</kbd> 移动到角落</p>
+                </li>
+                <li>
+                    <strong>复制桌腿</strong>
+                    <p>选中桌腿，按 <kbd>Shift</kbd> + <kbd>D</kbd> 复制，<kbd>G</kbd> 移动到其他三个角落</p>
+                </li>
+                <li>
+                    <strong>调整高度</strong>
+                    <p>选中所有桌腿，按 <kbd>G</kbd> → <kbd>Z</kbd> 向下移动到合适位置</p>
+                </li>
+                <li>
+                    <strong>命名整理</strong>
+                    <p>在大纲视图中双击物体名称，改名为 "桌面"、"桌腿" 等</p>
+                </li>
+            </ol>
+            
+            <div class="success-box" style="background: rgba(74,222,128,0.1); border-left: 4px solid var(--accent-green); padding: 20px; border-radius: 0 10px 10px 0; margin: 20px 0;">
+                <strong style="color: var(--accent-green);">🎉 恭喜！</strong> 你已经完成了第一个 3D 模型！按 <kbd>F12</kbd> 可以渲染看看效果。
+            </div>
+        </section>
+        
+        <!-- 材质和渲染 -->
+        <section class="section" id="render">
+            <h2 class="section-title"><span>🎨</span> 材质与渲染</h2>
+            
+            <h3>添加材质</h3>
+            <p>让模型有颜色和质感，需要在属性面板中添加材质：</p>
+            
+            <ol class="steps">
+                <li>
+                    <strong>选中物体</strong>
+                    <p>在 3D 视窗中 <kbd>左键</kbd> 点击选中要添加材质的物体</p>
+                </li>
+                <li>
+                    <strong>打开材质属性</strong>
+                    <p>在右侧属性面板点击红色圆球图标（材质属性）</p>
+                </li>
+                <li>
+                    <strong>新建材质</strong>
+                    <p>点击"新建"按钮创建新材质</p>
+                </li>
+                <li>
+                    <strong>设置颜色</strong>
+                    <p>在"基础色"中选择你想要的颜色</p>
+                </li>
+                <li>
+                    <strong>调整参数</strong>
+                    <p>可以调整粗糙度、金属度等参数改变质感</p>
+                </li>
+            </ol>
+            
+            <div class="tool-card">
+                <h5>📊 常用材质参数</h5>
+                <ul>
+                    <li><strong>基础色 (Base Color)</strong> - 物体的主要颜色</li>
+                    <li><strong>粗糙度 (Roughness)</strong> - 0 是镜面，1 是磨砂</li>
+                    <li><strong>金属度 (Metallic)</strong> - 0 是非金属，1 是纯金属</li>
+                    <li><strong>透明度 (Alpha)</strong> - 设置透明效果</li>
+                </ul>
+            </div>
+            
+            <h3>EEVEE vs Cycles 渲染器</h3>
+            <div class="card-grid">
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h4>EEVEE（实时）</h4>
+                    <p>渲染速度快，适合预览、游戏风格渲染</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🎬</div>
+                    <h4>Cycles（光线追踪）</h4>
+                    <p>真实感强，适合高质量静帧、电影级渲染</p>
+                </div>
+            </div>
+            
+            <p>切换渲染器：在右侧属性面板点击相机图标（渲染属性），在"渲染引擎"中选择。</p>
+            
+            <h3>快速渲染设置</h3>
+            <table class="shortcut-table">
+                <tr>
+                    <th>操作</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td><kbd>F12</kbd></td>
+                    <td>渲染当前相机视角的图像</td>
+                </tr>
+                <tr>
+                    <td><kbd>Ctrl</kbd> + <kbd>F12</kbd></td>
+                    <td>渲染动画序列</td>
+                </tr>
+                <tr>
+                    <td><kbd>F11</kbd></td>
+                    <td>查看上次渲染结果</td>
+                </tr>
+                <tr>
+                    <td><kbd>Esc</kbd></td>
+                    <td>取消渲染</td>
+                </tr>
+            </table>
+            
+            <div class="tip-box">
+                <strong>💡 渲染小技巧：</strong>
+                <ul style="margin-top: 10px;">
+                    <li>按 <kbd>0</kbd>（小键盘）切换到相机视角</li>
+                    <li>按 <kbd>N</kbd> 打开侧边栏，在"视图"中可以锁定相机视角</li>
+                    <li>在渲染属性中可以设置输出分辨率和采样数</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- 实用技巧 -->
+        <section class="section" id="tips">
+            <h2 class="section-title"><span>💡</span> 实用技巧与资源</h2>
+            
+            <h3>🚀 效率提升技巧</h3>
+            <div class="tool-card">
+                <h5>🎯 快速对齐视图</h5>
+                <p><kbd>~</kbd>（波浪键）打开饼菜单，可以快速切换前后左右上下视图</p>
+            </div>
+            
+            <div class="tool-card">
+                <h5>🔍 快速聚焦</h5>
+                <p>选中物体后按 <kbd>.</kbd>（小键盘小数点）将视图聚焦到选中物体</p>
+            </div>
+            
+            <div class="tool-card">
+                <h5>📐 精确数值输入</h5>
+                <p>进行变换操作时，可以直接输入数字，如 <kbd>S</kbd> → <kbd>2</kbd> 表示放大 2 倍</p>
+            </div>
+            
+            <div class="tool-card">
+                <h5>🎨 快速切换着色方式</h5>
+                <p><kbd>Z</kbd> 打开着色饼菜单，可快速切换线框、实体、材质预览、渲染模式</p>
+            </div>
+            
+            <h3>⚠️ 新手常见问题</h3>
+            <div class="warning-box">
+                <strong>Q: 物体不见了怎么办？</strong>
+                <p>按 <kbd>.</kbd>（小键盘小数点）聚焦选中物体，或按 <kbd>Home</kbd> 键显示全部物体</p>
+            </div>
+            
+            <div class="warning-box">
+                <strong>Q: 无法选中物体？</strong>
+                <p>检查是否在正确的模式下（物体模式），以及是否启用了"仅选择可见"</p>
+            </div>
+            
+            <div class="warning-box">
+                <strong>Q: 渲染出来是黑色的？</strong>
+                <p>检查是否有灯光、相机视角是否正确、渲染设置中的曝光是否正常</p>
+            </div>
+            
+            <div class="warning-box">
+                <strong>Q: 软件卡顿？</strong>
+                <p>可以降低视窗细分级别、关闭阴影、减少多边形数量，或升级硬件配置</p>
+            </div>
+            
+            <h3>📚 学习资源推荐</h3>
+            <ul>
+                <li><strong>Blender 官方文档</strong> - <a href="https://docs.blender.org/" target="_blank" style="color: var(--blender-orange);">docs.blender.org</a> 最权威的学习资料</li>
+                <li><strong>Blender 中文社区</strong> - <a href="https://www.blendercn.org/" target="_blank" style="color: var(--blender-orange);">blendercn.org</a> 中文教程和交流</li>
+                <li><strong>B 站教程</strong> - 搜索"Blender 教程"有大量免费中文视频</li>
+                <li><strong>Blender Guru</strong> - YouTube 上最受欢迎的 Blender 教程频道</li>
+                <li><strong>Poliigon</strong> - 高质量材质贴图资源</li>
+            </ul>
+            
+            <h3>🎯 学习路径建议</h3>
+            <ol class="steps">
+                <li>
+                    <strong>基础操作（1-2 周）</strong>
+                    <p>熟悉界面、基本变换、视图操作</p>
+                </li>
+                <li>
+                    <strong>简单建模（2-3 周）</strong>
+                    <p>学习编辑模式、挤出、环切等基础建模工具</p>
+                </li>
+                <li>
+                    <strong>材质与渲染（1-2 周）</strong>
+                    <p>了解材质节点、灯光设置、基础渲染</p>
+                </li>
+                <li>
+                    <strong>深入学习（持续）</strong>
+                    <p>雕刻、动画、几何节点、合成等专业领域</p>
+                </li>
+            </ol>
+            
+            <div class="note-box">
+                <strong>🌟 给新手的建议：</strong>不要试图一次学会所有功能，Blender 功能非常强大，建议先掌握基础建模，然后根据自己的兴趣方向（动画、渲染、雕刻等）深入学习。坚持练习，每天做一点，进步会很明显！
+            </div>
+        </section>
+    </div>
+    
+    <!-- 底部 -->
+    <footer>
+        <p style="font-size: 2rem; margin-bottom: 15px;">🎨</p>
+        <h3 style="color: var(--blender-orange); margin-bottom: 15px;">开始你的 3D 创作之旅吧！</h3>
+        <p>记住：每个大师都是从初学者开始的，关键是坚持练习</p>
+        <p style="margin-top: 20px; opacity: 0.6;">Blender 零基础入门指南 | 祝你学习愉快</p>
+    </footer>
+</body>
+</html>

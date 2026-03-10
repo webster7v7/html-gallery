@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💻 电脑配置选购指南 - 零基础小白必看</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --pc-dark: #0f0f23;
+            --pc-card: #1a1a2e;
+            --pc-accent: #00d4ff;
+            --pc-accent2: #7b2cbf;
+            --pc-text: #e0e0e0;
+            --pc-muted: #888;
+            --pc-border: #2a2a3e;
+            --pc-green: #00c853;
+            --pc-orange: #ff9100;
+            --pc-red: #ff5252;
+            --pc-yellow: #ffd600;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: var(--pc-text);
+            background: linear-gradient(135deg, var(--pc-dark) 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        /* 头部 */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 50%, #00d4ff22 100%);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(123, 44, 191, 0.1) 0%, transparent 50%);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header .logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #fff, var(--pc-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--pc-muted);
+        }
+        
+        .badges {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid var(--pc-accent);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 导航 */
+        .nav-menu {
+            background: var(--pc-card);
+            border-radius: 15px;
+            padding: 25px;
+            margin: -40px auto 40px;
+            max-width: 1100px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            border: 1px solid var(--pc-border);
+        }
+        
+        .nav-menu h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--pc-accent);
+            font-size: 1.2em;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+        
+        .nav-item {
+            background: var(--pc-dark);
+            padding: 12px 10px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--pc-text);
+            font-size: 0.9em;
+            transition: all 0.3s;
+            border: 1px solid var(--pc-border);
+        }
+        
+        .nav-item:hover {
+            background: var(--pc-accent);
+            color: var(--pc-dark);
+            transform: translateY(-2px);
+        }
+        
+        /* 主容器 */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        /* 章节 */
+        .section {
+            background: var(--pc-card);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--pc-border);
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--pc-accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title span {
+            font-size: 1.3em;
+        }
+        
+        h3 {
+            font-size: 1.4em;
+            margin: 30px 0 15px;
+            color: var(--pc-accent);
+        }
+        
+        h4 {
+            font-size: 1.15em;
+            margin: 25px 0 12px;
+            color: var(--pc-accent2);
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: #bbb;
+        }
+        
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            color: #bbb;
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: linear-gradient(135deg, rgba(0, 200, 83, 0.1) 0%, rgba(0, 200, 83, 0.05) 100%);
+            border: 1px solid var(--pc-green);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .tip-box-title {
+            color: var(--pc-green);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 145, 0, 0.1) 0%, rgba(255, 145, 0, 0.05) 100%);
+            border: 1px solid var(--pc-orange);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning-box-title {
+            color: var(--pc-orange);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%);
+            border: 1px solid var(--pc-accent);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-box-title {
+            color: var(--pc-accent);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+        
+        .danger-box {
+            background: linear-gradient(135deg, rgba(255, 82, 82, 0.1) 0%, rgba(255, 82, 82, 0.05) 100%);
+            border: 1px solid var(--pc-red);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .danger-box-title {
+            color: var(--pc-red);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+        
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--pc-dark);
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 0.95em;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--pc-border);
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--pc-accent2), var(--pc-accent));
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        /* 硬件卡片 */
+        .hw-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .hw-card {
+            background: var(--pc-dark);
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid var(--pc-border);
+            transition: all 0.3s;
+        }
+        
+        .hw-card:hover {
+            border-color: var(--pc-accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+        }
+        
+        .hw-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .hw-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--pc-accent);
+        }
+        
+        .hw-desc {
+            color: #888;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+        
+        .hw-importance {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+        
+        .importance-high {
+            background: rgba(255, 82, 82, 0.2);
+            color: var(--pc-red);
+        }
+        
+        .importance-medium {
+            background: rgba(255, 145, 0, 0.2);
+            color: var(--pc-orange);
+        }
+        
+        .importance-low {
+            background: rgba(0, 200, 83, 0.2);
+            color: var(--pc-green);
+        }
+        
+        /* 配置推荐卡片 */
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .config-card {
+            background: linear-gradient(135deg, var(--pc-dark) 0%, #1f1f3a 100%);
+            border-radius: 15px;
+            padding: 30px;
+            border: 2px solid var(--pc-border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .config-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--pc-accent), var(--pc-accent2));
+        }
+        
+        .config-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .badge-budget {
+            background: rgba(0, 200, 83, 0.2);
+            color: var(--pc-green);
+        }
+        
+        .badge-mainstream {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--pc-accent);
+        }
+        
+        .badge-high {
+            background: rgba(123, 44, 191, 0.3);
+            color: #b388ff;
+        }
+        
+        .badge-enthusiast {
+            background: linear-gradient(135deg, rgba(255, 145, 0, 0.2), rgba(255, 82, 82, 0.2));
+            color: var(--pc-orange);
+        }
+        
+        .config-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .config-price {
+            font-size: 1.8em;
+            color: var(--pc-accent);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .config-use {
+            color: var(--pc-muted);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--pc-border);
+        }
+        
+        .config-spec {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .config-spec li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--pc-border);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .config-spec li:last-child {
+            border-bottom: none;
+        }
+        
+        .spec-label {
+            color: var(--pc-muted);
+        }
+        
+        .spec-value {
+            color: #fff;
+            font-weight: 500;
+        }
+        
+        /* 品牌标签 */
+        .brand-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        .brand-tag {
+            background: var(--pc-dark);
+            border: 1px solid var(--pc-border);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        
+        .brand-tag.recommended {
+            background: rgba(0, 200, 83, 0.15);
+            border-color: var(--pc-green);
+            color: var(--pc-green);
+        }
+        
+        /* 避坑列表 */
+        .trap-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .trap-list li {
+            background: var(--pc-dark);
+            border-left: 4px solid var(--pc-red);
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .trap-title {
+            color: var(--pc-red);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        /* 步骤 */
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .step-list li {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 30px;
+        }
+        
+        .step-list li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--pc-accent), var(--pc-accent2));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        /* 对比框 */
+        .compare-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .compare-item {
+            background: var(--pc-dark);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .compare-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--pc-accent);
+        }
+        
+        /* 代码/参数块 */
+        .code-block {
+            background: #0a0a15;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid var(--pc-border);
+            font-family: 'Consolas', monospace;
+        }
+        
+        .param-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--pc-border);
+        }
+        
+        .param-line:last-child {
+            border-bottom: none;
+        }
+        
+        .param-name {
+            color: var(--pc-accent);
+        }
+        
+        .param-value {
+            color: #aaa;
+        }
+        
+        /* 标签 */
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            margin-left: 8px;
+        }
+        
+        .tag-intel {
+            background: rgba(0, 113, 197, 0.2);
+            color: #4fc3f7;
+        }
+        
+        .tag-amd {
+            background: rgba(237, 28, 36, 0.2);
+            color: #ff8a80;
+        }
+        
+        .tag-nvidia {
+            background: rgba(118, 185, 0, 0.2);
+            color: #aed581;
+        }
+        
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--pc-muted);
+            border-top: 1px solid var(--pc-border);
+            margin-top: 40px;
+        }
+        
+        /* 锚点偏移 */
+        .section[id] {
+            scroll-margin-top: 100px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-menu {
+                position: relative;
+                top: 0;
+                margin: 20px;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .section-title {
+                font-size: 1.5em;
+            }
+            
+            .compare-box {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M469.328 810.654H213.33l42.546-149.154 170.842-0.062z" fill="#434A54"/><path d="M42.674 682.656c-11.766 0-21.344-9.562-21.344-21.344V256.002c0-11.75 9.578-21.344 21.344-21.344H640c11.75 0 21.312 9.594 21.312 21.344v405.31c0 11.782-9.562 21.344-21.312 21.344H42.674z" fill="#5D9CEC"/><path d="M640 213.346H42.674c-23.562 0-42.67 19.094-42.67 42.656v405.31C0.002 684.876 19.112 704 42.674 704H640c23.562 0 42.688-19.124 42.688-42.688V256.002c0-23.562-19.126-42.656-42.688-42.656z m0 447.966H42.674V256.002H640v405.31z" fill="#656D78"/><path d="M1023.996 789.312c0 11.78-9.562 21.342-21.312 21.342h-256c-11.812 0-21.376-9.562-21.376-21.342V234.658c0-11.782 9.562-21.312 21.376-21.312h256c11.75 0 21.312 9.532 21.312 21.312v554.654z" fill="#CCD1D9"/></svg>
+            </div>
+            <h1>电脑配置选购指南</h1>
+            <p>零基础小白也能看懂的电脑硬件科普，避免被坑，买到最适合自己的电脑！</p>
+            <div class="badges">
+                <span class="badge">🔧 硬件科普</span>
+                <span class="badge">💰 配置推荐</span>
+                <span class="badge">⚡ 避坑指南</span>
+                <span class="badge">🛒 选购技巧</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 导航 -->
+    <nav class="nav-menu">
+        <h3>📑 快速导航</h3>
+        <div class="nav-grid">
+            <a href="#overview" class="nav-item">电脑组成</a>
+            <a href="#cpu" class="nav-item">CPU 处理器</a>
+            <a href="#gpu" class="nav-item">显卡 GPU</a>
+            <a href="#ram" class="nav-item">内存 RAM</a>
+            <a href="#storage" class="nav-item">硬盘存储</a>
+            <a href="#motherboard" class="nav-item">主板</a>
+            <a href="#psu" class="nav-item">电源散热</a>
+            <a href="#recommend" class="nav-item">配置推荐</a>
+            <a href="#buy-guide" class="nav-item">购买指南</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- 电脑组成概述 -->
+        <section class="section" id="overview">
+            <h2 class="section-title"><span>🖥️</span> 一台电脑由什么组成？</h2>
+            
+            <p>选购电脑前，先了解一下电脑的主要部件。就像买车要知道发动机、变速箱一样，买电脑也要懂点基础知识！</p>
+            
+            <div class="hw-grid">
+                <div class="hw-card">
+                    <div class="hw-icon">🧠</div>
+                    <div class="hw-name">CPU（处理器）</div>
+                    <div class="hw-desc">电脑的大脑，负责计算和指令处理。CPU 越强，电脑处理任务越快。</div>
+                    <span class="hw-importance importance-high">⚡ 最重要</span>
+                </div>
+                <div class="hw-card">
+                    <div class="hw-icon">🎮</div>
+                    <div class="hw-name">显卡（GPU）</div>
+                    <div class="hw-desc">负责图形处理，玩游戏、做视频剪辑都需要。核显够用就不买独显。</div>
+                    <span class="hw-importance importance-medium">🎨 游戏/设计必备</span>
+                </div>
+                <div class="hw-card">
+                    <div class="hw-icon">📊</div>
+                    <div class="hw-name">内存（RAM）</div>
+                    <div class="hw-desc">临时存储运行中的程序和数据。越大越好，16GB 是起步。</div>
+                    <span class="hw-importance importance-high">⚡ 很重要</span>
+                </div>
+                <div class="hw-card">
+                    <div class="hw-icon">💾</div>
+                    <div class="hw-name">硬盘（存储）</div>
+                    <div class="hw-desc">永久保存文件、系统和软件。SSD 固态硬盘是必选项！</div>
+                    <span class="hw-importance importance-high">⚡ 很重要</span>
+                </div>
+                <div class="hw-card">
+                    <div class="hw-icon">🔌</div>
+                    <div class="hw-name">主板</div>
+                    <div class="hw-desc">连接所有硬件的平台。选主板主要看接口和扩展性。</div>
+                    <span class="hw-importance importance-medium">🔧 稳定为主</span>
+                </div>
+                <div class="hw-card">
+                    <div class="hw-icon">⚡</div>
+                    <div class="hw-name">电源（PSU）</div>
+                    <div class="hw-desc">给所有硬件供电。别省钱，买品牌电源，安全第一！</div>
+                    <span class="hw-importance importance-medium">🛡️ 不能省</span>
+                </div>
+                <div class="hw-card">
+                    <div class="hw-icon">🌡️</div>
+                    <div class="hw-name">散热器</div>
+                    <div class="hw-desc">给 CPU 降温。原装够用就买原装，高端 CPU 买更好的。</div>
+                    <span class="hw-importance importance-low">🆒 按需选择</span>
+                </div>
+                <div class="hw-card">
+                    <div class="hw-icon">📦</div>
+                    <div class="hw-name">机箱</div>
+                    <div class="hw-desc">装所有硬件的盒子。看个人喜好，注意散热和尺寸。</div>
+                    <span class="hw-importance importance-low">🎨 看颜值</span>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-box-title">💡 新手购买建议</div>
+                <ul>
+                    <li><strong>预算有限</strong>：优先投入 CPU 和内存，显卡可以后期升级</li>
+                    <li><strong>主打游戏</strong>：显卡预算应该最高，占总预算 40-50%</li>
+                    <li><strong>办公上网</strong>：核显够用，重点看 CPU 和 SSD</li>
+                    <li><strong>设计师/剪辑</strong>：内存要大（32GB+），CPU 和显卡都要好</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CPU 详解 -->
+        <section class="section" id="cpu">
+            <h2 class="section-title"><span>🧠</span> CPU 处理器选购指南</h2>
+            
+            <p>CPU 是电脑的核心，决定了电脑"算得快不快"。目前市面上主流的是 <strong>Intel（英特尔）</strong>和 <strong>AMD</strong> 两家。</p>
+            
+            <h3>📊 Intel vs AMD 怎么选？</h3>
+            <table>
+                <tr>
+                    <th>对比项</th>
+                    <th>Intel（酷睿系列）</th>
+                    <th>AMD（锐龙系列）</th>
+                </tr>
+                <tr>
+                    <td>命名</td>
+                    <td>i3 / i5 / i7 / i9</td>
+                    <td>R3 / R5 / R7 / R9</td>
+                </tr>
+                <tr>
+                    <td>单核性能</td>
+                    <td>更强，游戏帧数略高</td>
+                    <td>稍弱，但差距越来越小</td>
+                </tr>
+                <tr>
+                    <td>多核性能</td>
+                    <td>中高端强</td>
+                    <td>同价位通常更多核心</td>
+                </tr>
+                <tr>
+                    <td>功耗发热</td>
+                    <td>较高（特别是 13/14 代）</td>
+                    <td>相对较低</td>
+                </tr>
+                <tr>
+                    <td>价格</td>
+                    <td>同性能稍贵</td>
+                    <td>性价比更高</td>
+                </tr>
+                <tr>
+                    <td>核显</td>
+                    <td>核显弱（F 后缀没有核显）</td>
+                    <td>核显较强（G 后缀）</td>
+                </tr>
+            </table>
+            
+            <h3>🔢 CPU 型号怎么看？</h3>
+            <div class="code-block">
+                <div class="param-line">
+                    <span class="param-name">Intel 酷睿 i5-13600K</span>
+                    <span class="param-value">i5 = 定位 | 13 = 第13代 | 600 = 型号 | K = 可超频</span>
+                </div>
+                <div class="param-line">
+                    <span class="param-name">AMD 锐龙 R7-7700X</span>
+                    <span class="param-value">R7 = 定位 | 7 = 第7代 | 700 = 型号 | X = 高性能版</span>
+                </div>
+            </div>
+            
+            <h4>后缀含义</h4>
+            <table>
+                <tr>
+                    <th>后缀</th>
+                    <th>Intel 含义</th>
+                    <th>AMD 含义</th>
+                </tr>
+                <tr>
+                    <td>K / X</td>
+                    <td>可超频</td>
+                    <td>高性能版</td>
+                </tr>
+                <tr>
+                    <td>F</td>
+                    <td>无核显（需配独显）</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>无后缀/T</td>
+                    <td>标准版/低功耗版</td>
+                    <td>标准版</td>
+                </tr>
+                <tr>
+                    <td>G</td>
+                    <td>-</td>
+                    <td>带核显（APU）</td>
+                </tr>
+            </table>
+            
+            <h3>🎯 不同用途 CPU 推荐</h3>
+            <div class="config-grid">
+                <div class="config-card">
+                    <div class="config-badge badge-budget">入门</div>
+                    <div class="config-title">办公/上网课</div>
+                    <div class="config-price">¥500-1000</div>
+                    <div class="config-use">文档处理、看视频、轻度网游</div>
+                    <ul class="config-spec">
+                        <li><span class="spec-label">Intel</span><span class="spec-value">i3-12100 / i5-12400</span></li>
+                        <li><span class="spec-label">AMD</span><span class="spec-value">R5-5600G / R5-7500F</span></li>
+                    </ul>
+                </div>
+                <div class="config-card">
+                    <div class="config-badge badge-mainstream">主流</div>
+                    <div class="config-title">游戏/设计</div>
+                    <div class="config-price">¥1200-2000</div>
+                    <div class="config-use">3A 游戏、视频剪辑、编程开发</div>
+                    <ul class="config-spec">
+                        <li><span class="spec-label">Intel</span><span class="spec-value">i5-13400 / i5-13600K</span></li>
+                        <li><span class="spec-label">AMD</span><span class="spec-value">R5-7600X / R7-7700</span></li>
+                    </ul>
+                </div>
+                <div class="config-card">
+                    <div class="config-badge badge-high">高端</div>
+                    <div class="config-title">专业工作</div>
+                    <div class="config-price">¥2500-4000</div>
+                    <div class="config-use">重度剪辑、3D 渲染、直播推流</div>
+                    <ul class="config-spec">
+                        <li><span class="spec-label">Intel</span><span class="spec-value">i7-13700K / i9-13900</span></li>
+                        <li><span class="spec-label">AMD</span><span class="spec-value">R7-7800X3D / R9-7900X</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <div class="warning-box-title">⚠️ 避坑提醒</div>
+                <ul>
+                    <li>不要买太老的 CPU（Intel 10 代以前、AMD 3000 系列以前）</li>
+                    <li>散片 vs 盒装：散片便宜但无保修，盒装贵但有 3 年保</li>
+                    <li>Intel 13/14 代高端型号有稳定性问题，建议买 12 代或等新款</li>
+                    <li>买带 F 的 CPU 必须配独立显卡！</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 显卡详解 -->
+        <section class="section" id="gpu">
+            <h2 class="section-title"><span>🎮</span> 显卡 GPU 选购指南</h2>
+            
+            <p>显卡负责处理图形画面，是游戏玩家和内容创作者最重要的配件。不玩游戏不做设计的用户，用 CPU 自带的核显就够了！</p>
+            
+            <h3>📊 显卡类型</h3>
+            <div class="compare-box">
+                <div class="compare-item">
+                    <div class="compare-title">🧩 核显（集成显卡）</div>
+                    <ul>
+                        <li>集成在 CPU 里，无需额外购买</li>
+                        <li>功耗低、发热小、便宜</li>
+                        <li>能玩 LOL、CS2 等网游</li>
+                        <li>办公、看视频完全够用</li>
+                    </ul>
+                </div>
+                <div class="compare-item">
+                    <div class="compare-title">🎮 独显（独立显卡）</div>
+                    <ul>
+                        <li>单独购买，插在主板上</li>
+                        <li>性能强，玩游戏必备</li>
+                        <li>功耗高、发热大、贵</li>
+                        <li>NVIDIA / AMD 两家可选</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>🃏 NVIDIA vs AMD 显卡</h3>
+            <table>
+                <tr>
+                    <th>品牌</th>
+                    <th>NVIDIA（英伟达）</th>
+                    <th>AMD（镭龙）</th>
+                </tr>
+                <tr>
+                    <td>系列</td>
+                    <td>RTX 40 系列 / GTX 系列</td>
+                    <td>RX 7000 系列 / RX 6000 系列</td>
+                </tr>
+                <tr>
+                    <td>优势</td>
+                    <td>光追强、DLSS 技术、AI 计算、驱动稳定</td>
+                    <td>性价比高、传统光栅强、显存大</td>
+                </tr>
+                <tr>
+                    <td>劣势</td>
+                    <td>价格贵、显存抠门</td>
+                    <td>光追弱、驱动偶尔有问题</td>
+                </tr>
+                <tr>
+                    <td>适合</td>
+                    <td>游戏玩家、AI 从业者</td>
+                    <td>预算有限、纯游戏玩家</td>
+                </tr>
+            </table>
+            
+            <h3>💰 显卡性价比推荐（2024-2025）</h3>
+            <table>
+                <tr>
+                    <th>预算</th>
+                    <th>NVIDIA</th>
+                    <th>AMD</th>
+                    <th>适合游戏</th>
+                </tr>
+                <tr>
+                    <td>¥1000 以下</td>
+                    <td>RTX 3050 / GTX 1660S</td>
+                    <td>RX 6500XT / RX 6650XT</td>
+                    <td>网游、1080P 中画质</td>
+                </tr>
+                <tr>
+                    <td>¥1500-2500</td>
+                    <td>RTX 4060</td>
+                    <td>RX 6750GRE 12G</td>
+                    <td>1080P 高画质、2K 中画质</td>
+                </tr>
+                <tr>
+                    <td>¥3000-4000</td>
+                    <td>RTX 4060 Ti / RTX 4070</td>
+                    <td>RX 7700XT / RX 7800XT</td>
+                    <td>2K 高画质、部分 4K</td>
+                </tr>
+                <tr>
+                    <td>¥4500-6000</td>
+                    <td>RTX 4070 Ti / RTX 4070 TiS</td>
+                    <td>RX 7900GRE / RX 7900XT</td>
+                    <td>4K 高画质</td>
+                </tr>
+                <tr>
+                    <td>¥8000+</td>
+                    <td>RTX 4080 / RTX 4090</td>
+                    <td>RX 7900XTX</td>
+                    <td>4K 最高画质、光追全开</td>
+                </tr>
+            </table>
+            
+            <h3>🎯 显卡型号怎么看？</h3>
+            <div class="code-block">
+                <div class="param-line">
+                    <span class="param-name">NVIDIA RTX 4070 Ti SUPER</span>
+                    <span class="param-value">RTX = 支持光追 | 40 = 第40系 | 70 = 定位 | Ti = 增强版 | SUPER = 加强版</span>
+                </div>
+                <div class="param-line">
+                    <span class="param-name">AMD RX 7800 XT</span>
+                    <span class="param-value">RX = 游戏显卡 | 7 = 第7代 | 800 = 定位 | XT = 高性能版</span>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <div class="tip-box-title">💡 显存大小建议</div>
+                <ul>
+                    <li><strong>1080P 游戏</strong>：6GB 够用，8GB 更好</li>
+                    <li><strong>2K 游戏</strong>：8GB 起步，12GB 更好</li>
+                    <li><strong>4K 游戏</strong>：12GB 起步，16GB 更好</li>
+                    <li><strong>AI 绘图/大模型</strong>：越大越好，建议 12GB+</li>
+                </ul>
+            </div>
+            
+            <div class="danger-box">
+                <div class="danger-box-title">🚨 显卡避坑（重要！）</div>
+                <ul>
+                    <li><strong>矿卡重灾区</strong>：RTX 30 系（除 3050）、RX 6000 系二手卡，矿难后大量矿卡流入市场</li>
+                    <li><strong>不要买</strong>：GT 1030、GTX 1050/Ti、MX 系列（性能太弱，不如核显）</li>
+                    <li><strong>品牌选择</strong>：华硕、微星、技嘉、七彩虹、影驰、索泰等大牌都可以，避开杂牌</li>
+                    <li><strong>丐版 vs 旗舰</strong>：同芯片性能差距 5% 以内，选便宜的丐版更划算</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 内存详解 -->
+        <section class="section" id="ram">
+            <h2 class="section-title"><span>📊</span> 内存 RAM 选购指南</h2>
+            
+            <p>内存是电脑的"短期记忆"，程序运行时需要加载到内存中。内存越大，能同时运行的程序越多，电脑越流畅。</p>
+            
+            <h3>📏 内存容量怎么选？</h3>
+            <table>
+                <tr>
+                    <th>容量</th>
+                    <th>适合场景</th>
+                    <th>2025 年推荐度</th>
+                </tr>
+                <tr>
+                    <td>8GB</td>
+                    <td>纯办公、上网课</td>
+                    <td>❌ 不推荐，很快淘汰</td>
+                </tr>
+                <tr>
+                    <td>16GB</td>
+                    <td>主流游戏、日常办公、轻度剪辑</td>
+                    <td>✅ 入门标配</td>
+                </tr>
+                <tr>
+                    <td>32GB</td>
+                    <td>3A 游戏、视频剪辑、编程开发</td>
+                    <td>✅ 强烈推荐</td>
+                </tr>
+                <tr>
+                    <td>64GB+</td>
+                    <td>专业渲染、虚拟机等重度工作</td>
+                    <td>🎯 按需购买</td>
+                </tr>
+            </table>
+            
+            <h3>🔧 内存参数解读</h3>
+            <div class="code-block">
+                <div class="param-line">
+                    <span class="param-name">DDR4 3200MHz 16GB (8GB×2)</span>
+                </div>
+                <div style="margin-top: 15px; padding-left: 20px;">
+                    <div class="param-line">
+                        <span class="param-name">DDR4</span>
+                        <span class="param-value">内存代数，目前主流是 DDR4 和 DDR5</span>
+                    </div>
+                    <div class="param-line">
+                        <span class="param-name">3200MHz</span>
+                        <span class="param-value">内存频率，越高越快</span>
+                    </div>
+                    <div class="param-line">
+                        <span class="param-name">16GB</span>
+                        <span class="param-value">总容量</span>
+                    </div>
+                    <div class="param-line">
+                        <span class="param-name">8GB×2</span>
+                        <span class="param-value">两根 8GB 组成双通道（性能更好）</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>DDR4 vs DDR5 怎么选？</h3>
+            <table>
+                <tr>
+                    <th>对比</th>
+                    <th>DDR4</th>
+                    <th>DDR5</th>
+                </tr>
+                <tr>
+                    <td>频率</td>
+                    <td>2400-3600MHz</td>
+                    <td>4800-8000MHz+</td>
+                </tr>
+                <tr>
+                    <td>价格</td>
+                    <td>便宜</td>
+                    <td>贵 30-50%</td>
+                </tr>
+                <tr>
+                    <td>游戏性能</td>
+                    <td>差距 5-10%</td>
+                    <td>略强</td>
+                </tr>
+                <tr>
+                    <td>适用平台</td>
+                    <td>Intel 12代及以前、AMD 5000系</td>
+                    <td>Intel 13代+、AMD 7000系+</td>
+                </tr>
+            </table>
+            
+            <div class="info-box">
+                <div class="info-box-title">💡 内存选购建议</div>
+                <ul>
+                    <li><strong>新装机</strong>：直接上 DDR5，价格已经降下来了</li>
+                    <li><strong>老电脑升级</strong>：继续用 DDR4，没必要换平台</li>
+                    <li><strong>容量优先</strong>：16GB × 2（32GB）比 8GB × 2 更有意义</li>
+                    <li><strong>双通道必组</strong>：两根内存比单根性能好 20-30%</li>
+                    <li><strong>品牌推荐</strong>：金士顿、芝奇、海盗船、威刚、光威、阿斯加特</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 硬盘详解 -->
+        <section class="section" id="storage">
+            <h2 class="section-title"><span>💾</span> 硬盘存储选购指南</h2>
+            
+            <p>硬盘用于永久保存你的文件、系统和软件。<strong>SSD 固态硬盘是必选项</strong>，比传统机械硬盘快 10 倍以上！</p>
+            
+            <h3>💿 硬盘类型对比</h3>
+            <table>
+                <tr>
+                    <th>类型</th>
+                    <th>机械硬盘 HDD</th>
+                    <th>SATA 固态 SSD</th>
+                    <th>NVMe 固态 SSD</th>
+                </tr>
+                <tr>
+                    <td>速度</td>
+                    <td>100-200 MB/s</td>
+                    <td>400-550 MB/s</td>
+                    <td>2000-7000 MB/s</td>
+                </tr>
+                <tr>
+                    <td>价格</td>
+                    <td> cheapest</td>
+                    <td>便宜</td>
+                    <td>贵一点（已大幅降价）</td>
+                </tr>
+                <tr>
+                    <td>用途</td>
+                    <td>存电影、备份</td>
+                    <td>老电脑升级</td>
+                    <td>系统盘、游戏盘首选</td>
+                </tr>
+                <tr>
+                    <td>寿命</td>
+                    <td>长（怕震动）</td>
+                    <td>中等</td>
+                    <td>中等</td>
+                </tr>
+            </table>
+            
+            <h3>🎯 硬盘配置建议</h3>
+            <div class="config-grid">
+                <div class="config-card">
+                    <div class="config-title">🥉 基础方案</div>
+                    <div class="config-price">¥300-500</div>
+                    <ul class="config-spec">
+                        <li><span class="spec-label">系统盘</span><span class="spec-value">512GB NVMe SSD</span></li>
+                    </ul>
+                    <p style="margin-top: 15px; color: #888; font-size: 0.9em;">适合预算紧张，后期可加装</p>
+                </div>
+                <div class="config-card">
+                    <div class="config-title">🥈 主流方案 ⭐</div>
+                    <div class="config-price">¥600-1000</div>
+                    <ul class="config-spec">
+                        <li><span class="spec-label">系统盘</span><span class="spec-value">1TB NVMe SSD</span></li>
+                    </ul>
+                    <p style="margin-top: 15px; color: #888; font-size: 0.9em;">1TB 性价比最高，系统和游戏都够</p>
+                </div>
+                <div class="config-card">
+                    <div class="config-title">🥇 豪华方案</div>
+                    <div class="config-price">¥1200-2000</div>
+                    <ul class="config-spec">
+                        <li><span class="spec-label">系统盘</span><span class="spec-value">1TB NVMe SSD（PCIe 4.0）</span></li>
+                        <li><span class="spec-label">游戏盘</span><span class="spec-value">2TB NVMe SSD</span></li>
+                        <li><span class="spec-label">仓库盘</span><span class="spec-value">4TB 机械硬盘</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>🏷️ 固态硬盘品牌推荐</h3>
+            <div class="brand-tags">
+                <span class="brand-tag recommended">三星 980/990 Pro</span>
+                <span class="brand-tag recommended">西数 SN580/SN850X</span>
+                <span class="brand-tag recommended">铠侠 RC20/SD10</span>
+                <span class="brand-tag recommended">致态 TiPlus 7100</span>
+                <span class="brand-tag">海力士 P41</span>
+                <span class="brand-tag">宏碁 GM7</span>
+                <span class="brand-tag">爱国者 P7000Z</span>
+            </div>
+            
+            <div class="warning-box">
+                <div class="warning-box-title">⚠️ 硬盘避坑</div>
+                <ul>
+                    <li><strong>不要买杂牌 SSD</strong>：金士顿 A400、杂牌黑片容易掉盘丢数据</li>
+                    <li><strong>QLC 颗粒</strong>：寿命短速度慢，尽量选 TLC 颗粒</li>
+                    <li><strong>PCIe 4.0 vs 3.0</strong>：日常使用差距不大，哪个便宜买哪个</li>
+                    <li><strong>重要数据</strong>：SSD 坏了难恢复，重要资料多备份！</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 主板详解 -->
+        <section class="section" id="motherboard">
+            <h2 class="section-title"><span>🔌</span> 主板选购指南</h2>
+            
+            <p>主板是所有硬件的"底座"，选择主板主要看<strong>芯片组</strong>（决定支持什么 CPU）和<strong>扩展性</strong>（接口数量）。</p>
+            
+            <h3>🔧 主板芯片组（平台）</h3>
+            <table>
+                <tr>
+                    <th>平台</th>
+                    <th>入门芯片组</th>
+                    <th>主流芯片组</th>
+                    <th>高端芯片组</th>
+                </tr>
+                <tr>
+                    <td>Intel DDR4</td>
+                    <td>H610</td>
+                    <td>B660/B760</td>
+                    <td>Z690/Z790</td>
+                </tr>
+                <tr>
+                    <td>Intel DDR5</td>
+                    <td>H610</td>
+                    <td>B760</td>
+                    <td>Z790</td>
+                </tr>
+                <tr>
+                    <td>AMD DDR4</td>
+                    <td>A520</td>
+                    <td>B450/B550</td>
+                    <td>X570</td>
+                </tr>
+                <tr>
+                    <td>AMD DDR5</td>
+                    <td>A620</td>
+                    <td>B650</td>
+                    <td>X670/X670E</td>
+                </tr>
+            </table>
+            
+            <h3>🎯 芯片组选择建议</h3>
+            <ul>
+                <li><strong>H610 / A520 / A620</strong>：适合 i3/R5 非 K 系列，不能超频，扩展少，但够用便宜</li>
+                <li><strong>B760 / B550 / B650</strong>：⭐ 性价比首选，适合大部分用户，接口够用</li>
+                <li><strong>Z790 / X670</strong>：带 K 的 CPU 要超频才需要，扩展接口更多</li>
+            </ul>
+            
+            <h3>📐 主板尺寸</h3>
+            <table>
+                <tr>
+                    <th>尺寸</th>
+                    <th>大小</th>
+                    <th>适用场景</th>
+                </tr>
+                <tr>
+                    <td>E-ATX</td>
+                    <td>超大</td>
+                    <td>顶级发烧友，扩展极强</td>
+                </tr>
+                <tr>
+                    <td>ATX</td>
+                    <td>标准大板</td>
+                    <td>⭐ 主流选择，扩展性好</td>
+                </tr>
+                <tr>
+                    <td>M-ATX</td>
+                    <td>中板</td>
+                    <td>⭐ 性价比最高，机箱兼容好</td>
+                </tr>
+                <tr>
+                    <td>ITX</td>
+                    <td>迷你小板</td>
+                    <td>小机箱、HTPC，贵且扩展少</td>
+                </tr>
+            </table>
+            
+            <h3>🏷️ 主板品牌推荐</h3>
+            <div class="brand-tags">
+                <span class="brand-tag recommended">华硕 TUF/PRIME/ROG</span>
+                <span class="brand-tag recommended">微星 MAG/MPG</span>
+                <span class="brand-tag">技嘉 GAMING/小雕</span>
+                <span class="brand-tag">华擎 Steel Legend</span>
+                <span class="brand-tag">铭瑄 终结者</span>
+            </div>
+            
+            <div class="tip-box">
+                <div class="tip-box-title">💡 主板选购建议</div>
+                <ul>
+                    <li><strong>够用就好</strong>：主板不影响性能，B 系列芯片组对 90% 用户够用</li>
+                    <li><strong>确认接口</strong>：看需要几个 M.2 接口、USB 接口、Type-C</li>
+                    <li><strong>BIOS 更新</strong>：新 CPU 可能需要主板更新 BIOS，买前确认</li>
+                    <li><strong>WiFi 蓝牙</strong>：需要无线功能买带 WIFI 后缀的型号</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 电源和散热 -->
+        <section class="section" id="psu">
+            <h2 class="section-title"><span>⚡</span> 电源 & 散热选购指南</h2>
+            
+            <h3>🔌 电源（PSU）</h3>
+            <p>电源给所有硬件供电，<strong>千万别省钱</strong>！劣质电源可能烧坏整台电脑。</p>
+            
+            <h4>功率怎么选？</h4>
+            <table>
+                <tr>
+                    <th>配置</th>
+                    <th>推荐功率</th>
+                    <th>举例</th>
+                </tr>
+                <tr>
+                    <td>核显办公</td>
+                    <td>300-400W</td>
+                    <td>i5-12400 核显</td>
+                </tr>
+                <tr>
+                    <td>入门游戏</td>
+                    <td>450-550W</td>
+                    <td>i5 + RTX 4060</td>
+                </tr>
+                <tr>
+                    <td>主流游戏</td>
+                    <td>550-650W</td>
+                    <td>i5 + RTX 4070</td>
+                </tr>
+                <tr>
+                    <td>高端游戏</td>
+                    <td>750-850W</td>
+                    <td>i7 + RTX 4080</td>
+                </tr>
+                <tr>
+                    <td>顶级旗舰</td>
+                    <td>1000W+</td>
+                    <td>i9 + RTX 4090</td>
+                </tr>
+            </table>
+            
+            <h4>电源品牌推荐（按 tiers）</h4>
+            <div class="brand-tags">
+                <span class="brand-tag recommended">海韵 PRIME/FOCUS</span>
+                <span class="brand-tag recommended">振华 LEADEX</span>
+                <span class="brand-tag recommended">全汉 Hydro</span>
+                <span class="brand-tag">长城 G/X 系列</span>
+                <span class="brand-tag">航嘉 MVP</span>
+                <span class="brand-tag">先马 黑钻/XP</span>
+                <span class="brand-tag">安钛克 NE/NEO</span>
+            </div>
+            
+            <div class="warning-box">
+                <div class="warning-box-title">⚠️ 电源避坑</div>
+                <ul>
+                    <li><strong>不要买</strong>：杂牌电源、机箱赠送的电源、爵柏/红牛等杂牌</li>
+                    <li><strong>80Plus 认证</strong>：金牌/白金牌更好，但铜牌也够用</li>
+                    <li><strong>直出 vs 全模组</strong>：全模组走线方便好看，贵一点；直出够用</li>
+                    <li><strong>留有余量</strong>：功率选大一点点，以后升级不用换电源</li>
+                </ul>
+            </div>
+            
+            <h3>🌡️ CPU 散热器</h3>
+            <p>给 CPU 降温，防止过热降频。大部分 CPU 自带散热器，但中高端 CPU 建议买更好的。</p>
+            
+            <h4>散热器类型</h4>
+            <table>
+                <tr>
+                    <th>类型</th>
+                    <th>特点</th>
+                    <th>适合</th>
+                </tr>
+                <tr>
+                    <td>原装散热器</td>
+                    <td>免费、够用、噪音稍大</td>
+                    <td>i5/R5 非 K 系列</td>
+                </tr>
+                <tr>
+                    <td>百元风冷</td>
+                    <td>四热管、静音、性价比高</td>
+                    <td>⭐ i5/R5 超频、i7/R7</td>
+                </tr>
+                <tr>
+                    <td>高端风冷</td>
+                    <td>六热管、双风扇、性能强</td>
+                    <td>i7/R7 超频</td>
+                </tr>
+                <tr>
+                    <td>水冷 240mm</td>
+                    <td>颜值高、散热好</td>
+                    <td>i7/R7、侧透机箱</td>
+                </tr>
+                <tr>
+                    <td>水冷 360mm</td>
+                    <td>顶级散热、价格高</td>
+                    <td>i9/R9、顶级平台</td>
+                </tr>
+            </table>
+            
+            <div class="tip-box">
+                <div class="tip-box-title">💡 散热器推荐型号</div>
+                <ul>
+                    <li><strong>性价比</strong>：利民 AX120 R SE、玄冰 400、乔思伯 CR-1400</li>
+                    <li><strong>中高端</strong>：利民 PA120、FS140，猫头鹰 NH-D15</li>
+                    <li><strong>水冷</strong>：利民 Frozen Magic、VK GL360、恩杰 Kraken</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 配置推荐 -->
+        <section class="section" id="recommend">
+            <h2 class="section-title"><span>💰</span> 配置单推荐（2025年）</h2>
+            
+            <p>以下配置单仅供参考，价格会波动，建议多平台比价。京东自营、天猫旗舰店、拼多多百亿补贴都可以考虑。</p>
+            
+            <h3>🥉 入门办公/轻度游戏（¥2000-3000）</h3>
+            <div class="code-block" style="background: linear-gradient(135deg, rgba(0,200,83,0.1), transparent);">
+                <div class="param-line"><span class="param-name">CPU</span><span class="param-value">AMD R5-5600G（核显）/ Intel i3-12100</span></div>
+                <div class="param-line"><span class="param-name">主板</span><span class="param-value">A520 / H610</span></div>
+                <div class="param-line"><span class="param-name">内存</span><span class="param-value">16GB DDR4 3200（8GB×2）</span></div>
+                <div class="param-line"><span class="param-name">硬盘</span><span class="param-value">512GB NVMe SSD</span></div>
+                <div class="param-line"><span class="param-name">电源</span><span class="param-value">300W 电源</span></div>
+                <div class="param-line"><span class="param-name">机箱</span><span class="param-value">普通办公机箱</span></div>
+            </div>
+            <p style="color: #888;">适合：办公、网课、LOL/CF 等网游、轻度 PS</p>
+            
+            <h3>🥈 主流游戏（¥4000-5000）</h3>
+            <div class="code-block" style="background: linear-gradient(135deg, rgba(0,212,255,0.1), transparent);">
+                <div class="param-line"><span class="param-name">CPU</span><span class="param-value">Intel i5-12400F / AMD R5-5600</span></div>
+                <div class="param-line"><span class="param-name">主板</span><span class="param-value">B660 / B550</span></div>
+                <div class="param-line"><span class="param-name">显卡</span><span class="param-value">RX 6750GRE 12G / RTX 4060</span></div>
+                <div class="param-line"><span class="param-name">内存</span><span class="param-value">16GB DDR4 3200（8GB×2）</span></div>
+                <div class="param-line"><span class="param-name">硬盘</span><span class="param-value">1TB NVMe SSD</span></div>
+                <div class="param-line"><span class="param-name">电源</span><span class="param-value">550W 80Plus 铜牌</span></div>
+                <div class="param-line"><span class="param-name">散热</span><span class="param-value">4热管风冷</span></div>
+            </div>
+            <p style="color: #888;">适合：1080P 高画质玩 3A 游戏、直播、视频剪辑</p>
+            
+            <h3>⭐ 2K 游戏畅玩（¥6000-8000）</h3>
+            <div class="code-block" style="background: linear-gradient(135deg, rgba(123,44,191,0.15), transparent);">
+                <div class="param-line"><span class="param-name">CPU</span><span class="param-value">Intel i5-13400F / AMD R5-7500F</span></div>
+                <div class="param-line"><span class="param-name">主板</span><span class="param-value">B760 DDR5 / B650</span></div>
+                <div class="param-line"><span class="param-name">显卡</span><span class="param-value">RTX 4070 / RX 7800XT</span></div>
+                <div class="param-line"><span class="param-name">内存</span><span class="param-value">32GB DDR5 5600（16GB×2）</span></div>
+                <div class="param-line"><span class="param-name">硬盘</span><span class="param-value">1TB PCIe 4.0 SSD</span></div>
+                <div class="param-line"><span class="param-name">电源</span><span class="param-value">650W 80Plus 金牌</span></div>
+                <div class="param-line"><span class="param-name">散热</span><span class="param-value">利民 AX120 / PA120</span></div>
+            </div>
+            <p style="color: #888;">适合：2K 高画质 3A 游戏、中度生产力工作</p>
+            
+            <h3>🥇 高端旗舰（¥10000-15000）</h3>
+            <div class="code-block" style="background: linear-gradient(135deg, rgba(255,145,0,0.15), transparent);">
+                <div class="param-line"><span class="param-name">CPU</span><span class="param-value">Intel i7-13700KF / AMD R7-7800X3D</span></div>
+                <div class="param-line"><span class="param-name">主板</span><span class="param-value">Z790 / X670</span></div>
+                <div class="param-line"><span class="param-name">显卡</span><span class="param-value">RTX 4070 Ti Super / RX 7900XTX</span></div>
+                <div class="param-line"><span class="param-name">内存</span><span class="param-value">32GB DDR5 6000+（16GB×2）</span></div>
+                <div class="param-line"><span class="param-name">硬盘</span><span class="param-value">2TB PCIe 4.0 SSD</span></div>
+                <div class="param-line"><span class="param-name">电源</span><span class="param-value">750-850W 金牌全模组</span></div>
+                <div class="param-line"><span class="param-name">散热</span><span class="param-value">360 水冷 / 高端双塔风冷</span></div>
+            </div>
+            <p style="color: #888;">适合：4K 游戏、专业视频剪辑、3D 渲染、直播</p>
+            
+            <h3>👑 顶级发烧（¥20000+）</h3>
+            <div class="code-block" style="background: linear-gradient(135deg, rgba(255,215,0,0.1), transparent);">
+                <div class="param-line"><span class="param-name">CPU</span><span class="param-value">Intel i9-14900K / AMD R9-7950X3D</span></div>
+                <div class="param-line"><span class="param-name">主板</span><span class="param-value">ROG Z790 HERO / CROSSHAIR</span></div>
+                <div class="param-line"><span class="param-name">显卡</span><span class="param-value">RTX 4090</span></div>
+                <div class="param-line"><span class="param-name">内存</span><span class="param-value">64GB DDR5 6400（32GB×2）</span></div>
+                <div class="param-line"><span class="param-name">硬盘</span><span class="param-value">2TB+2TB NVMe SSD RAID</span></div>
+                <div class="param-line"><span class="param-name">电源</span><span class="param-value">1000W+ 白金/钛金</span></div>
+                <div class="param-line"><span class="param-name">散热</span><span class="param-value">顶级 360 水冷</span></div>
+            </div>
+            <p style="color: #888;">适合：顶级游戏体验、专业工作站、AI 训练</p>
+        </section>
+
+        <!-- 购买指南 -->
+        <section class="section" id="buy-guide">
+            <h2 class="section-title"><span>🛒</span> 购买渠道 & 避坑指南</h2>
+            
+            <h3>🛍️ 购买渠道对比</h3>
+            <table>
+                <tr>
+                    <th>渠道</th>
+                    <th>优点</th>
+                    <th>缺点</th>
+                    <th>适合</th>
+                </tr>
+                <tr>
+                    <td>京东自营</td>
+                    <td>售后最好、正品保证、发票正规</td>
+                    <td>价格稍贵</td>
+                    <td>⭐ 新手首选</td>
+                </tr>
+                <tr>
+                    <td>天猫旗舰店</td>
+                    <td>正品保证、活动多</td>
+                    <td>售后不如京东</td>
+                    <td>大促时购买</td>
+                </tr>
+                <tr>
+                    <td>拼多多百亿补贴</td>
+                    <td>价格最低</td>
+                    <td>售后一般、需辨别店铺</td>
+                    <td>有经验的老手</td>
+                </tr>
+                <tr>
+                    <td>线下电脑城</td>
+                    <td>即买即走</td>
+                    <td>容易被坑、价格虚高</td>
+                    <td>❌ 不推荐</td>
+                </tr>
+            </table>
+            
+            <h3>🕳️ 常见陷阱</h3>
+            <ul class="trap-list">
+                <li>
+                    <div class="trap-title">🚫 "i9 级" "i7 级" 洋垃圾整机</div>
+                    <p>淘宝/抖音常见的「i9 级 32 核 64 线程」整机，实际是用十年前的服务器 CPU（E5 洋垃圾），性能极差还费电，千万别买！</p>
+                </li>
+                <li>
+                    <div class="trap-title">🚫 杂牌配件</div>
+                    <p>整机常用的「军工级主板」「电竞显卡」通常是杂牌或翻新的，稳定性极差。认准华硕、微星、技嘉等大牌。</p>
+                </li>
+                <li>
+                    <div class="trap-title">🚫 二手显卡充新</div>
+                    <p>RTX 30 系、RX 6000 系是矿卡重灾区，买二手/整机极容易中招。买新卡选 RTX 40 系或 RX 7000 系。</p>
+                </li>
+                <li>
+                    <div class="trap-title">🚫 缩水电源</div>
+                    <p>「500W 大功率电源」可能是杂牌虚标，实际功率 200W，容易烧硬件。电源认准海韵、振华、长城等大牌。</p>
+                </li>
+                <li>
+                    <div class="trap-title">🚫 以换代修套路</div>
+                    <p>有些店铺所谓「三年保修」实际是给你换二手/维修过的良品。重要配件选京东自营，售后最有保障。</p>
+                </li>
+            </ul>
+            
+            <h3>✅ 验机指南</h3>
+            <ol class="step-list">
+                <li>
+                    <strong>检查外观</strong><br>
+                    开箱时录制视频，检查包装是否完好，配件是否齐全，硬件是否有划痕或损坏。
+                </li>
+                <li>
+                    <strong>核对型号</strong><br>
+                    用 CPU-Z、GPU-Z 等软件查看硬件型号，确认与购买的一致，防止偷梁换柱。
+                </li>
+                <li>
+                    <strong>跑分测试</strong><br>
+                    用鲁大师、3DMark、Cinebench 等跑分，分数与网上评测对比，差距过大可能有问题。
+                </li>
+                <li>
+                    <strong>压力测试</strong><br>
+                    用 AIDA64、FurMark 进行烤机测试，观察温度是否正常（CPU < 85°C，显卡 < 80°C）。
+                </li>
+                <li>
+                    <strong>检查使用时间</strong><br>
+                    用 CrystalDiskInfo 看硬盘通电时间，新机应该在几十小时以内。
+                </li>
+            </ol>
+            
+            <div class="tip-box">
+                <div class="tip-box-title">💡 装机服务</div>
+                <p>不会装机可以：</p>
+                <ul>
+                    <li><strong>京东上门装机</strong>：约 100-200 元，专业师傅上门</li>
+                    <li><strong>电脑店装机</strong>：约 50-100 元，但要全程盯着防止换配件</li>
+                    <li><strong>自己学装机</strong>：B 站有很多教程，其实很简单，还能省钱</li>
+                </ul>
+            </div>
+            
+            <h3>📅 什么时候买最划算？</h3>
+            <table>
+                <tr>
+                    <th>时间节点</th>
+                    <th>活动</th>
+                    <th>优惠力度</th>
+                </tr>
+                <tr>
+                    <td>6 月 18 日</td>
+                    <td>618 年中大促</td>
+                    <td>⭐⭐⭐ 很大</td>
+                </tr>
+                <tr>
+                    <td>11 月 11 日</td>
+                    <td>双 11</td>
+                    <td>⭐⭐⭐ 很大</td>
+                </tr>
+                <tr>
+                    <td>1 月底-2 月</td>
+                    <td>年货节 / 开学季</td>
+                    <td>⭐⭐ 中等</td>
+                </tr>
+                <tr>
+                    <td>新品发布后</td>
+                    <td>旧款降价清库存</td>
+                    <td>⭐⭐ 看情况</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>🎉 恭喜你读完了这份指南！</p>
+            <p>希望能帮助你买到称心如意的电脑，避免被坑！</p>
+            <p style="margin-top: 15px;">记住：最适合自己需求和预算的，才是最好的配置。</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">Made with 💻 | Computer Buying Guide for Beginners</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 恋爱零基础入门指南 - 从认识自己到遇见TA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --love-primary: #ff6b9d;
+            --love-secondary: #c44569;
+            --love-accent: #f8b500;
+            --love-soft: #ffeaa7;
+            --love-bg: #fff5f7;
+            --love-card: #ffffff;
+            --love-text: #2d3436;
+            --love-muted: #636e72;
+            --love-border: #dfe6e9;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, var(--love-bg) 0%, #ffffff 100%);
+            color: var(--love-text);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        /* 导航 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--love-border);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--love-primary);
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--love-text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--love-primary);
+        }
+
+        /* 头部 */
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffeaa7 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '💕💕💕';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            font-size: 1.5rem;
+            opacity: 0.3;
+            letter-spacing: 30px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: var(--love-secondary);
+        }
+
+        header .logo {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        header .logo svg {
+            width: 50px !important;
+            height: 50px !important;
+            max-width: 50px !important;
+            max-height: 50px !important;
+            display: block;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--love-muted);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .heart-divider {
+            font-size: 2rem;
+            margin: 20px 0;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 章节 */
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--love-soft);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--love-secondary);
+        }
+
+        .section-icon {
+            font-size: 2rem;
+        }
+
+        /* 步骤卡片 */
+        .step-card {
+            background: var(--love-card);
+            border: 1px solid var(--love-border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.15);
+            border-color: var(--love-primary);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--love-primary), var(--love-secondary));
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            color: var(--love-text);
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: rgba(255, 107, 157, 0.1);
+            border-left: 4px solid var(--love-primary);
+            padding: 18px 22px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+        }
+
+        .tip-box.warning {
+            background: rgba(248, 181, 0, 0.1);
+            border-left-color: var(--love-accent);
+        }
+
+        .tip-box.info {
+            background: rgba(116, 185, 255, 0.1);
+            border-left-color: #74b9ff;
+        }
+
+        .tip-box.success {
+            background: rgba(0, 184, 148, 0.1);
+            border-left-color: #00b894;
+        }
+
+        .tip-box strong {
+            color: var(--love-secondary);
+        }
+
+        /* 概念卡片 */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .concept-card {
+            background: var(--love-card);
+            border: 1px solid var(--love-border);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .concept-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--love-primary);
+        }
+
+        .concept-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .concept-title {
+            font-size: 1.1rem;
+            color: var(--love-secondary);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .concept-desc {
+            font-size: 0.95rem;
+            color: var(--love-muted);
+        }
+
+        /* 对话示例 */
+        .chat-example {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            margin: 10px 0;
+            font-size: 0.95rem;
+        }
+
+        .chat-bubble.good {
+            background: #d4edda;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.bad {
+            background: #f8d7da;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-label {
+            font-size: 0.75rem;
+            color: var(--love-muted);
+            margin-bottom: 5px;
+        }
+
+        /* 检查清单 */
+        .checklist {
+            background: var(--love-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid var(--love-border);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 12px 0;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .checklist-item:hover {
+            background: rgba(255, 107, 157, 0.05);
+        }
+
+        .check-box {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--love-primary);
+            border-radius: 6px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* 误区表格 */
+        .myth-table {
+            background: var(--love-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--love-border);
+            margin: 25px 0;
+        }
+
+        .myth-row {
+            display: flex;
+            border-bottom: 1px solid var(--love-border);
+        }
+
+        .myth-row:last-child {
+            border-bottom: none;
+        }
+
+        .myth-row.header {
+            background: rgba(255, 107, 157, 0.1);
+            font-weight: bold;
+        }
+
+        .myth-cell {
+            flex: 1;
+            padding: 15px 20px;
+        }
+
+        .myth-cell:first-child {
+            border-right: 1px solid var(--love-border);
+            background: rgba(248, 181, 0, 0.1);
+        }
+
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--love-primary), var(--love-accent));
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 25px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 18px;
+            height: 18px;
+            background: var(--love-primary);
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 8px rgba(255, 107, 157, 0.4);
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            color: var(--love-secondary);
+            margin-bottom: 8px;
+        }
+
+        /* 按钮 */
+        .action-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--love-primary), var(--love-secondary));
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 5px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.4);
+        }
+
+        .action-btn.secondary {
+            background: #fff;
+            color: var(--love-primary);
+            border: 2px solid var(--love-primary);
+        }
+
+        /* 引用 */
+        .quote-block {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(255, 234, 167, 0.1));
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--love-secondary);
+        }
+
+        .quote-author {
+            margin-top: 15px;
+            font-style: normal;
+            font-size: 0.9rem;
+            color: var(--love-muted);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffeaa7 100%);
+            border-top: 1px solid var(--love-border);
+        }
+
+        footer p {
+            color: var(--love-muted);
+            margin-bottom: 10px;
+        }
+
+        /* 进度条 */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--love-primary), var(--love-accent));
+            z-index: 9999;
+            transition: width 0.3s;
+        }
+
+        /* 回到顶部 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--love-card);
+            border: 2px solid var(--love-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--love-primary);
+            transform: translateY(-5px);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .chat-bubble {
+                max-width: 90%;
+            }
+
+            .myth-row {
+                flex-direction: column;
+            }
+
+            .myth-cell:first-child {
+                border-right: none;
+                border-bottom: 1px solid var(--love-border);
+            }
+        }
+
+        /* 强调 */
+        .highlight {
+            background: linear-gradient(120deg, rgba(255, 107, 157, 0.2), rgba(255, 234, 167, 0.2));
+            padding: 2px 8px;
+            border-radius: 6px;
+            color: var(--love-secondary);
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        a {
+            color: var(--love-primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    
+        
+        
+        
+        </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- 导航 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+            <ul class="nav-links">
+                <li><a href="#prepare">准备</a></li>
+                <li><a href="#meet">认识</a></li>
+                <li><a href="#chat">聊天</a></li>
+                <li><a href="#date">约会</a></li>
+                <li><a href="#relationship">相处</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 头部 -->
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 890.9L158.6 537.5C111.7 490.6 85 428.4 85 362.3c0-66.1 26.7-128.3 73.6-175.2C205.5 140.2 267.7 113.5 333.8 113.5c48.3 0 94.4 14.5 133.7 41.3 25.9 17.5 48.2 39.8 65.7 65.7 11.4 16.9 21.1 34.8 28.9 53.6 7.8-18.8 17.5-36.7 28.9-53.6 17.5-25.9 39.8-48.2 65.7-65.7 39.3-26.8 85.4-41.3 133.7-41.3 66.1 0 128.3 26.7 175.2 73.6 46.9 46.9 73.6 109.1 73.6 175.2 0 66.1-26.7 128.3-73.6 175.2L512 890.9z" fill="#FF6B6B"/></svg>
+        </div>
+        <h1>恋爱零基础入门指南</h1>
+        <p>从认识自己开始，学习建立健康、真诚的亲密关系。没有套路，只有真心与成长。</p>
+        <div class="heart-divider">💕 💕 💕</div>
+    </header>
+
+    <div class="container">
+        <!-- 前言 -->
+        <section class="section">
+            <div class="quote-block">
+                "好的爱情，是两个人格独立的人，决定一起走过人生的一段路。"
+                <div class="quote-author">—— 先学会爱自己，才能更好地爱别人</div>
+            </div>
+
+            <div class="tip-box success">
+                <strong>🌟 本指南的核心理念：</strong>
+                <ul style="margin-top: 10px;">
+                    <li>✅ 真诚永远是最好的策略</li>
+                    <li>✅ 自我提升比技巧更重要</li>
+                    <li>✅ 尊重是关系的基础</li>
+                    <li>✅ 合适比优秀更重要</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 准备篇 -->
+        <section class="section" id="prepare">
+            <h2 class="section-title"><span class="section-icon">🌱</span>第一步：先准备好自己</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">认识自己</h3>
+                </div>
+                <p>在寻找另一半之前，先问问自己：</p>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <div class="check-box"></div>
+                        <div>我喜欢什么样的生活？（安静/热闹/冒险...）</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="check-box"></div>
+                        <div>我的核心价值观是什么？（家庭/事业/自由...）</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="check-box"></div>
+                        <div>我能给对方带来什么？</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="check-box"></div>
+                        <div>我有哪些需要改进的地方？</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">建立自信</h3>
+                </div>
+                <p>自信不是觉得自己完美，而是接受自己不完美但依然值得被爱。</p>
+                
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <div class="concept-icon">💪</div>
+                        <div class="concept-title">身体健康</div>
+                        <div class="concept-desc">规律作息、适度运动，身体是自信的基础</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">📚</div>
+                        <div class="concept-title">持续学习</div>
+                        <div class="concept-desc">培养兴趣爱好，让自己成为有趣的人</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">👔</div>
+                        <div class="concept-title">外在形象</div>
+                        <div class="concept-desc">干净整洁的穿着，展现对生活的态度</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">😊</div>
+                        <div class="concept-title">社交技能</div>
+                        <div class="concept-desc">学会倾听、表达，建立良好人际关系</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box warning">
+                <strong>⚠️ 常见误区：不要为了恋爱而恋爱</strong><br>
+                如果只是为了"摆脱单身"而匆忙开始一段关系，往往会导致更多问题。先让自己成为完整的个体，再寻找能共同成长的人。
+            </div>
+        </section>
+
+        <!-- 认识篇 -->
+        <section class="section" id="meet">
+            <h2 class="section-title"><span class="section-icon">🌈</span>第二步：扩展社交圈，认识新朋友</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">去哪里认识人？</h3>
+                </div>
+                
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <div class="concept-icon">🎨</div>
+                        <div class="concept-title">兴趣社团</div>
+                        <div class="concept-desc">读书会、运动俱乐部、手工课，共同爱好是最好的话题</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🎉</div>
+                        <div class="concept-title">朋友介绍</div>
+                        <div class="concept-desc">参加朋友聚会，信任背书让关系更容易开始</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">💼</div>
+                        <div class="concept-title">工作学习</div>
+                        <div class="concept-desc">同事、同学、行业交流活动，有自然的接触机会</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">📱</div>
+                        <div class="concept-title">社交软件</div>
+                        <div class="concept-desc">正规交友平台，但要注意安全和真诚</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">初次接触的技巧</h3>
+                </div>
+                
+                <p><strong>✅ 正确的打开方式：</strong></p>
+                <ul>
+                    <li>从<strong>共同场景</strong>切入（"你也喜欢这本书吗？"）</li>
+                    <li>保持<strong>自然微笑</strong>和眼神接触，但不要盯着看</li>
+                    <li>先做<strong>朋友</strong>，不要急着表白</li>
+                    <li>展示<strong>真实的自己</strong>，不要伪装</li>
+                </ul>
+
+                <div class="chat-example">
+                    <div class="chat-label">❌ 尴尬开场</div>
+                    <div class="chat-bubble bad">"你好，我觉得你很漂亮，可以加个微信吗？"</div>
+                    
+                    <div class="chat-label">✅ 自然开场</div>
+                    <div class="chat-bubble good">"你好，我看到你也在看《xxx》，你觉得这本书怎么样？"</div>
+                </div>
+            </div>
+
+            <div class="tip-box info">
+                <strong>💡 黄金法则：</strong>让别人喜欢你的最好方法，是真诚地对他们感兴趣。多问关于对方的问题，认真倾听。
+            </div>
+        </section>
+
+        <!-- 聊天篇 -->
+        <section class="section" id="chat">
+            <h2 class="section-title"><span class="section-icon">💬</span>第三步：聊天与沟通</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">聊天原则：FORD 法则</h3>
+                </div>
+                <p>不知道聊什么？记住这四个安全话题：</p>
+                
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <div class="concept-icon">👨‍👩‍👧</div>
+                        <div class="concept-title">F - Family 家庭</div>
+                        <div class="concept-desc">"你周末一般怎么过？" "家里养宠物吗？"</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">💼</div>
+                        <div class="concept-title">O - Occupation 职业</div>
+                        <div class="concept-desc">"你工作中最有成就感的事是什么？"</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🎬</div>
+                        <div class="concept-title">R - Recreation 娱乐</div>
+                        <div class="concept-desc">"最近有看什么好看的电影/剧吗？"</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🎯</div>
+                        <div class="concept-title">D - Dreams 梦想</div>
+                        <div class="concept-desc">"如果不考虑现实，你最想做什么？"</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">避免的聊天雷区</h3>
+                </div>
+
+                <div class="myth-table">
+                    <div class="myth-row header">
+                        <div class="myth-cell">❌ 避免</div>
+                        <div class="myth-cell">✅ 替代</div>
+                    </div>
+                    <div class="myth-row">
+                        <div class="myth-cell">连续追问（查户口式）</div>
+                        <div class="myth-cell">分享自己也鼓励对方分享</div>
+                    </div>
+                    <div class="myth-row">
+                        <div class="myth-cell">只发"在吗""吃了吗"</div>
+                        <div class="myth-cell">直接说事 + 关心："在忙吗？今天降温记得加衣服"</div>
+                    </div>
+                    <div class="myth-row">
+                        <div class="myth-cell">过度自夸</div>
+                        <div class="myth-cell">通过故事自然展示优点</div>
+                    </div>
+                    <div class="myth-row">
+                        <div class="myth-cell">负能量轰炸</div>
+                        <div class="myth-cell">适度分享，但保持积极</div>
+                    </div>
+                    <div class="myth-row">
+                        <div class="myth-cell">秒回压力（要求对方秒回）</div>
+                        <div class="myth-cell">理解对方有自己的生活</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box success">
+                <strong>🎯 聊天频率建议：</strong>
+                <ul style="margin-top: 10px;">
+                    <li>初期：每天少量高质量交流胜过整天闲聊</li>
+                    <li>观察对方回复速度，保持大致对等</li>
+                    <li>如果对方回复简短/慢，可能正忙，不要连环追问</li>
+                    <li>适时结束对话，留下期待："我先去健身了，晚点跟你分享有趣的事"</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 约会篇 -->
+        <section class="section" id="date">
+            <h2 class="section-title"><span class="section-icon">🌹</span>第四步：约会与相处</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">如何发出约会邀请？</h3>
+                </div>
+                
+                <p><strong>关键：具体 + 轻松 + 给对方拒绝的空间</strong></p>
+
+                <div class="chat-example">
+                    <div class="chat-label">❌ 压力型</div>
+                    <div class="chat-bubble bad">"这周六有空吗？我想约你出去。"（太正式，压力大）</div>
+                    
+                    <div class="chat-label">✅ 轻松型</div>
+                    <div class="chat-bubble good">"我知道一家很棒的咖啡馆，这周六下午要不要一起去试试？如果忙的话改天也行~"</div>
+                </div>
+
+                <div class="tip-box info">
+                    <strong>💡 首次约会建议：</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>选择<strong>公共场合</strong>（咖啡馆、博物馆、公园）</li>
+                        <li>时间控制在<strong>2-3小时</strong>，留有余地</li>
+                        <li>有<strong>活动</strong>比纯吃饭好（逛展、做手工、散步）</li>
+                        <li>提前想好<strong>话题</strong>，避免冷场</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">约会中的注意事项</h3>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">约会前</div>
+                        <div>确认时间地点，收拾整洁，准备几个话题</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">约会中</div>
+                        <div>手机静音，专注交流；主动买单或AA；注意对方的舒适度</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">约会后</div>
+                        <div>简单表达感谢（"今天很开心，谢谢你"），但不要过度追问"你觉得我怎么样"</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">什么时候表白？</h3>
+                </div>
+                
+                <div class="tip-box warning">
+                    <strong>⚠️ 重要：不要过早表白！</strong><br>
+                    "做我女朋友吧"应该是在你们已经像情侣一样相处，只差一个仪式感的时候说，而不是在刚认识不久时用来"攻城略地"的工具。
+                </div>
+
+                <p><strong>表白的正确时机：</strong></p>
+                <ul>
+                    <li>✅ 你们已经多次约会，双方都表现得很开心</li>
+                    <li>✅ 有自然的肢体接触（牵手、靠肩）且对方不抗拒</li>
+                    <li>✅ 你们讨论过未来的计划，对方把你纳入考虑</li>
+                    <li>✅ 你感觉到"就是现在了"的直觉</li>
+                </ul>
+
+                <p><strong>表白的方式：</strong></p>
+                <ul>
+                    <li>真诚直接："我喜欢你，想和你在一起，你什么想法？"</li>
+                    <li>当面表白 > 电话 > 文字（重要的事要当面说）</li>
+                    <li>准备好接受任何答案，尊重对方的选择</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 相处篇 -->
+        <section class="section" id="relationship">
+            <h2 class="section-title"><span class="section-icon">💝</span>第五步：建立健康的恋爱关系</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">健康关系的特征</h3>
+                </div>
+
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <div class="concept-icon">⚖️</div>
+                        <div class="concept-title">平等</div>
+                        <div class="concept-desc">没有谁是"上位"，决策共同商量</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🗣️</div>
+                        <div class="concept-title">沟通</div>
+                        <div class="concept-desc">能表达需求，也能倾听对方</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🌱</div>
+                        <div class="concept-title">成长</div>
+                        <div class="concept-desc">互相支持，成为更好的自己</div>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🔒</div>
+                        <div class="concept-title">信任</div>
+                        <div class="concept-desc">不查岗、不控制、给彼此空间</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">处理冲突的正确方式</h3>
+                </div>
+
+                <p>吵架不可怕，可怕的是用错误的方式吵架。</p>
+
+                <div class="myth-table">
+                    <div class="myth-row header">
+                        <div class="myth-cell">❌ 破坏性行为</div>
+                        <div class="myth-cell">✅ 建设性行为</div>
+                    </div>
+                    <div class="myth-row">
+                        <div class="myth-cell">冷暴力（不理人）</div>
+                        <div class="myth-cell">"我需要冷静一下，1小时后我们谈谈"</div>
+                    </div>
+                    <div class="myth-row">
+                        <div class="myth-cell">翻旧账</div>
+                        <div class="myth-cell">就事论事，专注于当前问题</div>
+                    </div>
+                    <div class="myth-row">
+                        <div class="myth-cell">人身攻击（"你总是..."）</div>
+                        <div class="myth-cell">表达感受（"我感到...因为..."）</div>
+                    </div>
+                    <div class="myth-row">
+                        <div class="myth-cell">争输赢</div>
+                        <div class="myth-cell">寻找双赢解决方案</div>
+                    </div>
+                </div>
+
+                <div class="tip-box success">
+                    <strong>🗝️ 非暴力沟通公式：</strong><br>
+                    "当 <strong>[事实]</strong> 发生时，我感到 <strong>[感受]</strong>，因为我需要 <strong>[需求]</strong>，你是否愿意 <strong>[请求]</strong>？"<br><br>
+                    示例："当你迟到没有提前说时，我感到担心，因为我需要安全感，下次如果会晚能否提前告诉我？"
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">保持独立自我</h3>
+                </div>
+
+                <p>恋爱不是两个人变成一个人，而是两个完整的圆相交。</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <div class="check-box"></div>
+                        <div>保留自己的兴趣爱好和朋友圈</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="check-box"></div>
+                        <div>有自己的事业/学业目标</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="check-box"></div>
+                        <div>独处时能照顾好自己</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="check-box"></div>
+                        <div>不把对方当作幸福的唯一来源</div>
+                    </div>
+                </div>
+
+                <div class="tip-box warning">
+                    <strong>⚠️ 警惕这些信号：</strong>如果你发现自己为了对方放弃了所有朋友、爱好，或者对方要求你切断社交联系，这可能是<strong>控制型关系</strong>，需要重新审视。
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">❓</span>常见问题</h2>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">Q1</div>
+                    <h3 class="step-title">被拒绝了怎么办？</h3>
+                </div>
+                <p>拒绝是恋爱的一部分，不代表你不够好。</p>
+                <ul>
+                    <li>尊重对方的选择，不要纠缠</li>
+                    <li>允许自己难过，但不要自我否定</li>
+                    <li>反思是否有可以改进的地方，但不要过度自责</li>
+                    <li>记住：合适的人会在对的时间出现</li>
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">Q2</div>
+                    <h3 class="step-title">怎么判断对方是否喜欢我？</h3>
+                </div>
+                <p><strong>积极信号：</strong></p>
+                <ul>
+                    <li>主动找你聊天，分享日常</li>
+                    <li>回复及时且内容有延伸</li>
+                    <li>愿意花时间陪你</li>
+                    <li>身体语言开放（面向你、靠近你）</li>
+                    <li>对你好奇，问很多问题</li>
+                </ul>
+                <p><strong>消极信号：</strong></p>
+                <ul>
+                    <li>总是你主动，对方从不主动</li>
+                    <li>回复简短敷衍（"嗯""哦"）</li>
+                    <li>多次邀约都拒绝且不提改期</li>
+                    <li>回避肢体接触</li>
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">Q3</div>
+                    <h3 class="step-title">异地恋能维持吗？</h3>
+                </div>
+                <p>可以，但需要更多努力：</p>
+                <ul>
+                    <li>有明确的结束异地的计划</li>
+                    <li>定期见面（至少几个月一次）</li>
+                    <li>日常保持联系，分享生活</li>
+                    <li>信任对方，不查岗</li>
+                    <li>有自己的生活，不要整天等消息</li>
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">Q4</div>
+                    <h3 class="step-title">什么时候应该分手？</h3>
+                </div>
+                <p>如果关系中持续存在以下情况，考虑分手：</p>
+                <ul>
+                    <li>🚩 身体或情感暴力</li>
+                    <li>🚩 反复欺骗或背叛</li>
+                    <li>🚩 严重价值观冲突（如是否要孩子）</li>
+                    <li>🚩 长期不快乐，感到被消耗</li>
+                    <li>🚩 努力沟通后问题依然无法解决</li>
+                </ul>
+                <div class="tip-box">
+                    分手决定不必匆忙，但如果涉及暴力或欺骗，请果断离开并寻求帮助。
+                </div>
+            </div>
+        </section>
+
+        <!-- 总结 -->
+        <section class="section">
+            <h2 class="section-title"><span class="section-icon">🎓</span>写在最后</h2>
+
+            <div class="quote-block">
+                "爱情不是寻找完美的人，而是学会用完美的眼光，欣赏那个并不完美的人。"
+                <div class="quote-author">—— 萨姆·基恩</div>
+            </div>
+
+            <div class="tip-box success">
+                <strong>🌟 记住这些核心要点：</strong>
+                <ol style="margin-top: 15px; margin-left: 25px;">
+                    <li>先爱自己，才能爱别人</li>
+                    <li>真诚比技巧更重要</li>
+                    <li>合适比优秀更重要</li>
+                    <li>沟通解决大部分问题</li>
+                    <li>保持独立，共同成长</li>
+                    <li>没有完美的人，也没有完美的关系</li>
+                    <li>分手不是失败，有时是必要的结束</li>
+                </ol>
+            </div>
+
+            <p style="text-align: center; margin-top: 40px; font-size: 1.1rem;">
+                愿你在爱与被爱的路上，成为更好的自己 💕
+            </p>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="#" class="action-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">再读一遍</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- 回到顶部 -->
+    <div class="back-to-top" id="backToTop">⬆️</div>
+
+    <footer>
+        <p>💕 愿每个人都能找到属于自己的幸福</p>
+        <p>记住：好的爱情让人成长，而不是让人迷失</p>
+        <p style="margin-top: 20px; opacity: 0.7;">Made with ❤️ for Love</p>
+    </footer>
+
+    <script>
+        // 滚动进度条
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+
+            // 回到顶部按钮
+            const backToTop = document.getElementById('backToTop');
+            if (winScroll > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // 回到顶部
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // 动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.step-card, .concept-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
