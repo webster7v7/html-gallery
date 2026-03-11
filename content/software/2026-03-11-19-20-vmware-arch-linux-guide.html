@@ -854,7 +854,13 @@ lsblk</code></pre>
                 <div class="step">
                     <h4><span class="step-number">8</span><span class="step-title">安装基础系统</span></h4>
                     <div class="code-header">📟 终端</div>
-                    <pre><code>pacstrap /mnt base base-devel linux linux-firmware vim nano networkmanager grub efibootmgr</code></pre>
+                    <pre><code># 先替换国内镜像源（提速，避免下载慢）
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+echo 'Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist
+pacman -Syy  # 刷新源
+
+# 安装基础系统
+pacstrap /mnt base base-devel linux linux-firmware vim nano networkmanager grub efibootmgr</code></pre>
                     <p>这会安装基础系统、内核、网络管理器和引导程序。根据网络速度，可能需要 5-15 分钟。</p>
                     <div class="tip-box">
                         如果下载很慢，可以先配置国内镜像源（见下一节"安装后配置"）。
