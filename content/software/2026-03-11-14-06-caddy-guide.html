@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caddy 小白指南 - 自动HTTPS的现代化Web服务器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .gradient-text {
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .code-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+        .step-number {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+        .copy-btn {
+            transition: all 0.2s;
+        }
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .copy-btn.copied {
+            background: #10b981;
+            color: white;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen">
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-slate-900 to-blue-900/20"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-96 bg-emerald-500/10 blur-3xl"></div>
+
+        <div class="relative max-w-6xl mx-auto px-6 py-20">
+            <div class="text-center space-y-6">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    零配置 · 自动HTTPS · 反向代理
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold tracking-tight">
+                    <span class="gradient-text">Caddy</span>
+                    <span class="text-slate-400 font-light">小白指南</span>
+                </h1>
+                <p class="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    告别 Nginx 的复杂配置，只需 3 行代码，自动获取 SSL 证书，让你的网站秒变 HTTPS
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 pt-4">
+                    <a href="#install" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold transition-all shadow-lg shadow-emerald-900/50">
+                        开始安装
+                    </a>
+                    <a href="#compare" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-semibold transition-all border border-slate-700">
+                        对比 Nginx
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- What is Caddy -->
+    <section class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-bold text-white">Caddy 是什么？</h2>
+                    <p class="text-slate-400 text-lg leading-relaxed">
+                        Caddy 是一个用 <span class="text-cyan-400 font-mono">Go 语言</span> 编写的开源 Web 服务器，2015 年由 Matt Holt 开发。它的设计理念是<strong class="text-white">"简单易用"</strong>——把复杂的 Web 服务器配置简化到极致。
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold">自动 HTTPS</h4>
+                                <p class="text-slate-500 text-sm">自动申请、续期 Let's Encrypt 证书，无需手动操作</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold">配置极简</h4>
+                                <p class="text-slate-500 text-sm">Caddyfile 语法直观，3 行配置即可运行</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold">现代协议</h4>
+                                <p class="text-slate-500 text-sm">原生支持 HTTP/2、HTTP/3 (QUIC)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card rounded-2xl p-8 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 blur-3xl"></div>
+                    <div class="relative">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <span class="ml-2 text-xs text-slate-500 mono">Caddyfile</span>
+                        </div>
+                        <pre class="mono text-sm text-emerald-300 leading-relaxed overflow-x-auto">
+example.com {
+    root * /var/www/html
+    file_server
+}</pre>
+                        <div class="mt-4 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                            <p class="text-emerald-400 text-sm font-medium">✓ 自动 HTTPS 已启用</p>
+                            <p class="text-emerald-400/70 text-xs mt-1">证书自动申请并续期，无需额外配置</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation -->
+    <section id="install" class="py-20 px-6 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4">安装 Caddy</h2>
+                <p class="text-slate-400">支持 Linux、Windows、macOS，推荐使用官方安装脚本</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Ubuntu/Debian -->
+                <div class="glass-card rounded-2xl p-6 feature-card transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-orange-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Ubuntu / Debian</h3>
+                    <div class="code-block p-4 mt-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs text-slate-500">Terminal</span>
+                            <button onclick="copyCode(this)" class="copy-btn text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                        </div>
+                        <code class="mono text-xs text-slate-300 block">
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy
+                        </code>
+                    </div>
+                </div>
+
+                <!-- CentOS/RHEL -->
+                <div class="glass-card rounded-2xl p-6 feature-card transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">CentOS / RHEL</h3>
+                    <div class="code-block p-4 mt-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs text-slate-500">Terminal</span>
+                            <button onclick="copyCode(this)" class="copy-btn text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                        </div>
+                        <code class="mono text-xs text-slate-300 block">
+sudo dnf install 'dnf-command(copr)'
+sudo dnf copr enable @caddy/caddy
+sudo dnf install caddy
+                        </code>
+                    </div>
+                </div>
+
+                <!-- Docker -->
+                <div class="glass-card rounded-2xl p-6 feature-card transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-cyan-400" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Docker (推荐)</h3>
+                    <div class="code-block p-4 mt-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs text-slate-500">Terminal</span>
+                            <button onclick="copyCode(this)" class="copy-btn text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                        </div>
+                        <code class="mono text-xs text-slate-300 block">
+docker run -d -p 80:80 -p 443:443   --name caddy   -v $(pwd)/Caddyfile:/etc/caddy/Caddyfile   -v $(pwd):/srv   caddy:2
+                        </code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verify Installation -->
+            <div class="mt-8 glass-card rounded-2xl p-6 border-l-4 border-emerald-500">
+                <h4 class="text-white font-semibold mb-2">验证安装</h4>
+                <div class="flex items-center gap-4">
+                    <code class="mono text-emerald-300 bg-slate-950 px-4 py-2 rounded-lg">caddy version</code>
+                    <span class="text-slate-400 text-sm">应显示版本号，如 v2.7.x</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Steps -->
+    <section class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4">5 分钟快速上手</h2>
+                <p class="text-slate-400">从安装到运行，只需 3 个简单步骤</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Step 1 -->
+                <div class="flex gap-6 items-start">
+                    <div class="step-number w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0">1</div>
+                    <div class="flex-1 glass-card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-white mb-3">创建 Caddyfile</h3>
+                        <p class="text-slate-400 mb-4">在项目目录创建名为 <code class="mono text-emerald-400">Caddyfile</code> 的文件（无后缀），这是 Caddy 的配置文件。</p>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="code-block p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs text-slate-500">静态网站</span>
+                                    <button onclick="copyCode(this)" class="copy-btn text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                                </div>
+                                <pre class="mono text-sm text-slate-300">
+example.com {
+    root * /var/www/html
+    file_server
+}</pre>
+                            </div>
+                            <div class="code-block p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs text-slate-500">反向代理</span>
+                                    <button onclick="copyCode(this)" class="copy-btn text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                                </div>
+                                <pre class="mono text-sm text-slate-300">
+example.com {
+    reverse_proxy localhost:3000
+}</pre>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                            <p class="text-blue-400 text-sm"><strong>提示：</strong>将 <code class="mono">example.com</code> 替换为你的域名，确保 DNS 解析到服务器 IP</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex gap-6 items-start">
+                    <div class="step-number w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0">2</div>
+                    <div class="flex-1 glass-card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-white mb-3">放置网站文件</h3>
+                        <p class="text-slate-400 mb-4">如果是静态网站，将 HTML 文件放入配置的目录：</p>
+                        <div class="code-block p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs text-slate-500">Bash</span>
+                                <button onclick="copyCode(this)" class="copy-btn text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                            </div>
+                            <code class="mono text-sm text-slate-300 block">
+sudo mkdir -p /var/www/html
+echo "&lt;h1&gt;Hello Caddy!&lt;/h1&gt;" | sudo tee /var/www/html/index.html
+                            </code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex gap-6 items-start">
+                    <div class="step-number w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0">3</div>
+                    <div class="flex-1 glass-card rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-white mb-3">启动 Caddy</h3>
+                        <p class="text-slate-400 mb-4">在 Caddyfile 所在目录运行：</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="code-block p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs text-slate-500">前台运行（调试）</span>
+                                    <button onclick="copyCode(this)" class="copy-btn text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                                </div>
+                                <code class="mono text-sm text-slate-300 block">caddy run</code>
+                            </div>
+                            <div class="code-block p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs text-slate-500">后台服务（生产）</span>
+                                    <button onclick="copyCode(this)" class="copy-btn text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                                </div>
+                                <code class="mono text-sm text-slate-300 block">
+sudo systemctl start caddy
+sudo systemctl enable caddy
+                                </code>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                            <p class="text-emerald-400 text-sm">🎉 完成！访问你的域名，Caddy 已自动配置 HTTPS，证书自动续期</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Common Use Cases -->
+    <section class="py-20 px-6 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4">常用配置场景</h2>
+                <p class="text-slate-400">复制即用，满足 90% 的需求</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Static Site -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">静态网站托管</h3>
+                    </div>
+                    <div class="code-block p-4 mb-3">
+                        <button onclick="copyCode(this)" class="copy-btn absolute top-2 right-2 text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                        <pre class="mono text-sm text-slate-300">
+example.com {
+    root * /var/www/html
+    file_server
+    encode gzip
+}</pre>
+                    </div>
+                    <p class="text-slate-500 text-sm">自动开启 Gzip 压缩，提升加载速度</p>
+                </div>
+
+                <!-- Reverse Proxy -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">反向代理（Node.js/Python）</h3>
+                    </div>
+                    <div class="code-block p-4 mb-3">
+                        <button onclick="copyCode(this)" class="copy-btn absolute top-2 right-2 text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                        <pre class="mono text-sm text-slate-300">
+example.com {
+    reverse_proxy localhost:3000
+    header_up X-Real-IP {remote}
+}</pre>
+                    </div>
+                    <p class="text-slate-500 text-sm">传递真实 IP 给后端应用</p>
+                </div>
+
+                <!-- Multi-site -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">多站点托管</h3>
+                    </div>
+                    <div class="code-block p-4 mb-3">
+                        <button onclick="copyCode(this)" class="copy-btn absolute top-2 right-2 text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                        <pre class="mono text-sm text-slate-300">
+example.com {
+    root * /var/www/example
+    file_server
+}
+
+api.example.com {
+    reverse_proxy localhost:8080
+}</pre>
+                    </div>
+                    <p class="text-slate-500 text-sm">一个 Caddyfile 管理多个域名</p>
+                </div>
+
+                <!-- Path Proxy -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">路径分流</h3>
+                    </div>
+                    <div class="code-block p-4 mb-3">
+                        <button onclick="copyCode(this)" class="copy-btn absolute top-2 right-2 text-xs px-2 py-1 rounded text-slate-400 hover:text-white">复制</button>
+                        <pre class="mono text-sm text-slate-300">
+example.com {
+    reverse_proxy /api/* localhost:8080
+    reverse_proxy /app/* localhost:3000
+    file_server
+}</pre>
+                    </div>
+                    <p class="text-slate-500 text-sm">不同路径代理到不同后端服务</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison -->
+    <section id="compare" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4">Caddy vs Nginx</h2>
+                <p class="text-slate-400">为什么小白应该选择 Caddy？</p>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-800/50">
+                            <tr>
+                                <th class="px-6 py-4 text-slate-300 font-semibold">特性</th>
+                                <th class="px-6 py-4 text-emerald-400 font-semibold">Caddy</th>
+                                <th class="px-6 py-4 text-slate-400 font-semibold">Nginx</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <tr class="hover:bg-slate-800/30 transition-colors">
+                                <td class="px-6 py-4 text-slate-300">HTTPS 配置</td>
+                                <td class="px-6 py-4 text-emerald-400">✓ 零配置，自动申请续期</td>
+                                <td class="px-6 py-4 text-slate-400">需手动配置 Certbot</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30 transition-colors">
+                                <td class="px-6 py-4 text-slate-300">配置文件</td>
+                                <td class="px-6 py-4 text-emerald-400">✓ 3 行搞定，语法简单</td>
+                                <td class="px-6 py-4 text-slate-400">数十行，学习曲线陡峭</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30 transition-colors">
+                                <td class="px-6 py-4 text-slate-300">HTTP/3 支持</td>
+                                <td class="px-6 py-4 text-emerald-400">✓ 原生支持</td>
+                                <td class="px-6 py-4 text-slate-400">需额外编译模块</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30 transition-colors">
+                                <td class="px-6 py-4 text-slate-300">性能</td>
+                                <td class="px-6 py-4 text-slate-400">足够快，适合中小项目</td>
+                                <td class="px-6 py-4 text-emerald-400">✓ 极高，适合高并发</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30 transition-colors">
+                                <td class="px-6 py-4 text-slate-300">生态成熟度</td>
+                                <td class="px-6 py-4 text-slate-400">较新，插件较少</td>
+                                <td class="px-6 py-4 text-emerald-400">✓ 生态完善，文档丰富</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-6 bg-slate-800/30 border-t border-slate-800">
+                    <p class="text-slate-400 text-sm"><strong class="text-white">建议：</strong>个人项目、中小网站、快速原型开发选 <span class="text-emerald-400">Caddy</span>；大型高并发生产环境选 <span class="text-blue-400">Nginx</span>。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands -->
+    <section class="py-20 px-6 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4">常用命令速查</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between group hover:border-emerald-500/50 transition-colors">
+                    <code class="mono text-emerald-300 text-sm">caddy run</code>
+                    <span class="text-slate-500 text-xs">前台运行</span>
+                </div>
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between group hover:border-emerald-500/50 transition-colors">
+                    <code class="mono text-emerald-300 text-sm">caddy start</code>
+                    <span class="text-slate-500 text-xs">后台启动</span>
+                </div>
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between group hover:border-emerald-500/50 transition-colors">
+                    <code class="mono text-emerald-300 text-sm">caddy stop</code>
+                    <span class="text-slate-500 text-xs">停止服务</span>
+                </div>
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between group hover:border-emerald-500/50 transition-colors">
+                    <code class="mono text-emerald-300 text-sm">caddy reload</code>
+                    <span class="text-slate-500 text-xs">重载配置（热更新）</span>
+                </div>
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between group hover:border-emerald-500/50 transition-colors">
+                    <code class="mono text-emerald-300 text-sm">caddy validate</code>
+                    <span class="text-slate-500 text-xs">验证配置语法</span>
+                </div>
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between group hover:border-emerald-500/50 transition-colors">
+                    <code class="mono text-emerald-300 text-sm">caddy list-modules</code>
+                    <span class="text-slate-500 text-xs">查看已安装模块</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="text-slate-500 mb-4">参考文档：<a href="https://caddyserver.com/docs/" class="text-emerald-400 hover:text-emerald-300 transition-colors" target="_blank">Caddy 官方文档</a> · <a href="https://caddy2.dengxiaolong.com/docs/" class="text-emerald-400 hover:text-emerald-300 transition-colors" target="_blank">中文文档</a></p>
+            <p class="text-slate-600 text-sm">Caddy 小白指南 · 零配置自动 HTTPS Web 服务器</p>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block, .glass-card').querySelector('code, pre');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = '已复制!';
+                btn.classList.add('copied');
+
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荣耀Magic7 Pro 小白上手指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #00D2FF 0%, #3A7BD5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .magic-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .yoyo-glow {
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .tip-card {
+            border-left: 4px solid #00D2FF;
+        }
+        .warning-card {
+            border-left: 4px solid #f59e0b;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden bg-white">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 opacity-70"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-6">
+                <span class="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></span>
+                MagicOS 9.0 全新体验
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+                荣耀 <span class="gradient-text">Magic7 Pro</span><br>
+                <span class="text-2xl md:text-3xl font-normal text-gray-600 mt-4 block">0基础小白完全上手指南</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-600">
+                从开机设置到AI智能体，从影像大师到隐私安全<br>
+                一份指南，让你从新手变高手
+            </p>
+            <div class="mt-8 flex justify-center gap-4">
+                <button onclick="document.getElementById('quick-start').scrollIntoView({behavior: 'smooth'})" 
+                        class="px-8 py-3 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition shadow-lg hover:shadow-xl">
+                    快速开始
+                </button>
+                <button onclick="document.getElementById('ai-features').scrollIntoView({behavior: 'smooth'})" 
+                        class="px-8 py-3 rounded-full bg-white text-blue-600 border-2 border-blue-600 font-semibold hover:bg-blue-50 transition">
+                    AI功能专区
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Start Guide -->
+    <section id="quick-start" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">📱 开机必做三件事</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="relative p-6 bg-gray-50 rounded-2xl card-hover">
+                    <div class="step-number w-12 h-12 rounded-full text-white flex items-center justify-center text-xl font-bold mb-4">1</div>
+                    <h3 class="text-xl font-semibold mb-3">账号与备份</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✓</span>登录荣耀账号（设置 > 登录荣耀账号）</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✓</span>开启云备份（设置 > 华为云 > 云备份）</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✓</span>开启查找设备（防丢必备）</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
+                        💡 <strong>提示：</strong>荣耀账号可在荣耀手机、平板、电脑间同步数据
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative p-6 bg-gray-50 rounded-2xl card-hover">
+                    <div class="step-number w-12 h-12 rounded-full text-white flex items-center justify-center text-xl font-bold mb-4">2</div>
+                    <h3 class="text-xl font-semibold mb-3">安全设置</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✓</span>设置锁屏密码（推荐6位数字+指纹）</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✓</span>录入3D人脸识别（支持戴口罩识别）</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✓</span>开启应用锁（保护微信、相册等）</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-yellow-50 rounded-lg text-sm text-yellow-800 warning-card">
+                        ⚠️ <strong>注意：</strong>72小时未用密码解锁将强制要求输入密码（防遗忘机制）
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative p-6 bg-gray-50 rounded-2xl card-hover">
+                    <div class="step-number w-12 h-12 rounded-full text-white flex items-center justify-center text-xl font-bold mb-4">3</div>
+                    <h3 class="text-xl font-semibold mb-3">显示优化</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✓</span>开启AI自然光绿洲护眼（设置 > 显示 > 护眼）</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✓</span>开启智能分辨率（省电+流畅）</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2">✓</span>调整字体大小（显示 > 字体与显示大小）</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
+                        💡 <strong>技巧：</strong>设置护眼时段，夜间自动切换黑白阅读模式
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Features Section -->
+    <section id="ai-features" class="py-16 bg-gradient-to-b from-white to-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">🤖 YOYO智能体 · 一句话搞定</h2>
+                <p class="text-gray-600">MagicOS 9.0核心功能，模糊理解、自动执行、一语到位</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- YOYO Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg yoyo-glow card-hover">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                        <span class="text-2xl">🎙️</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">语音唤醒</h3>
+                    <p class="text-sm text-gray-600 mb-3">"你好YOYO"或长按电源键1秒唤醒</p>
+                    <div class="text-xs bg-gray-100 p-2 rounded">
+                        <strong>示例：</strong>"帮我点一杯瑞幸拿铁"
+                    </div>
+                </div>
+
+                <!-- Any Door -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                        <span class="text-2xl">🚪</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">任意门</h3>
+                    <p class="text-sm text-gray-600 mb-3">指关节敲击并画圈，一步直达服务</p>
+                    <div class="text-xs bg-gray-100 p-2 rounded">
+                        <strong>用法：</strong>圈选地址→导航，圈选商品→比价
+                    </div>
+                </div>
+
+                <!-- Magic Capsule -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                        <span class="text-2xl">💊</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">灵动胶囊</h3>
+                    <p class="text-sm text-gray-600 mb-3">实时活动显示在屏幕顶部，一瞥即得</p>
+                    <div class="text-xs bg-gray-100 p-2 rounded">
+                        <strong>场景：</strong>外卖进度、打车信息、音乐播放
+                    </div>
+                </div>
+
+                <!-- AI Anti-fraud -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                        <span class="text-2xl">🛡️</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">AI换脸检测</h3>
+                    <p class="text-sm text-gray-600 mb-3">视频通话自动识别AI换脸诈骗</p>
+                    <div class="text-xs bg-gray-100 p-2 rounded">
+                        <strong>开启：</strong>设置 > 安全 > 反诈防护
+                    </div>
+                </div>
+            </div>
+
+            <!-- YOYO Command Examples -->
+            <div class="mt-12 bg-white rounded-2xl p-8 shadow-lg">
+                <h3 class="text-xl font-semibold mb-6">🎯 YOYO智能体实用指令示例</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                            <span class="text-blue-600 font-medium mr-3">"关闭应用自动续费"</span>
+                            <span class="text-sm text-gray-600">→ 自动跳转到各APP续费管理</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                            <span class="text-blue-600 font-medium mr-3">"关闭系统应用通知"</span>
+                            <span class="text-sm text-gray-600">→ 批量管理通知权限</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                            <span class="text-blue-600 font-medium mr-3">"打开面对面翻译"</span>
+                            <span class="text-sm text-gray-600">→ 实时对话翻译</span>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center p-3 bg-purple-50 rounded-lg">
+                            <span class="text-purple-600 font-medium mr-3">"帮我记会议纪要"</span>
+                            <span class="text-sm text-gray-600">→ 自动录音并生成摘要</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-purple-50 rounded-lg">
+                            <span class="text-purple-600 font-medium mr-3">"AI消除路人"</span>
+                            <span class="text-sm text-gray-600">→ 图库中选图编辑</span>
+                        </div>
+                        <div class="flex items-center p-3 bg-purple-50 rounded-lg">
+                            <span class="text-purple-600 font-medium mr-3">"打开AI扩图"</span>
+                            <span class="text-sm text-gray-600">→ 智能扩展照片画幅</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Camera Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">📸 影像系统 · 鹰眼相机</h2>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-gray-50 rounded-2xl p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white mr-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">鹰眼AI抓拍</h3>
+                    </div>
+                    <p class="text-gray-600 mb-3">运动场景中长按快门，自动选取最清晰瞬间</p>
+                    <div class="text-sm text-blue-600 bg-blue-50 p-2 rounded">
+                        适用：宠物、儿童、运动比赛
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-gray-50 rounded-2xl p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white mr-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">100倍AI长焦</h3>
+                    </div>
+                    <p class="text-gray-600 mb-3">启用AI长焦防抖优化，点击三脚架图标激活辅助线</p>
+                    <div class="text-sm text-blue-600 bg-blue-50 p-2 rounded">
+                        提示：高倍变焦建议双手握持或靠稳
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-gray-50 rounded-2xl p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white mr-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">AI魔法修图</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>• <strong>AI消除：</strong>圈选路人/杂物一键移除</li>
+                        <li>• <strong>人脸修复：</strong>闭眼修复、人脸增强</li>
+                        <li>• <strong>AI扩图：</strong>旋转扩图、自由比例扩展</li>
+                        <li>• <strong>AI风格：</strong>一键艺术化效果</li>
+                    </ul>
+                    <div class="mt-3 text-sm text-blue-600 bg-blue-50 p-2 rounded">
+                        路径：图库 > 选择照片 > 编辑 > 魔法修图
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Photo -->
+            <div class="mt-8 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6">
+                <h3 class="font-semibold mb-3">🎬 动态照片模式</h3>
+                <p class="text-gray-600 mb-3">拍摄前后1.5秒动态画面，可选择最佳帧设为封面，或导出为GIF/视频分享</p>
+                <div class="flex gap-4 text-sm">
+                    <span class="px-3 py-1 bg-white rounded-full shadow">支持小红书Live图</span>
+                    <span class="px-3 py-1 bg-white rounded-full shadow">支持微博动图</span>
+                    <span class="px-3 py-1 bg-white rounded-full shadow">支持微信状态</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practical Tips -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">💡 实用技巧大全</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Tip 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm tip-card">
+                    <h3 class="font-semibold text-lg mb-2 flex items-center">
+                        <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">1</span>
+                        指关节手势（截屏神器）
+                    </h3>
+                    <ul class="mt-3 space-y-2 text-gray-600 text-sm">
+                        <li>• <strong>双击：</strong>全屏截图</li>
+                        <li>• <strong>画圈：</strong>局部截图（任意形状）</li>
+                        <li>• <strong>画S：</strong>长截图（滚动截屏）</li>
+                        <li>• <strong>敲击画圈：</strong>打开任意门</li>
+                    </ul>
+                </div>
+
+                <!-- Tip 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm tip-card">
+                    <h3 class="font-semibold text-lg mb-2 flex items-center">
+                        <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">2</span>
+                        资源库（应用整理）
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-2">桌面任意位置上滑，自动分类所有应用，支持智能推荐</p>
+                    <div class="text-xs bg-gray-100 p-2 rounded">
+                        比文件夹更高效，自动归类社交、工具、游戏等类别
+                    </div>
+                </div>
+
+                <!-- Tip 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm tip-card">
+                    <h3 class="font-semibold text-lg mb-2 flex items-center">
+                        <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">3</span>
+                        智慧隐私通话
+                    </h3>
+                    <p class="text-gray-600 text-sm">开启后通过骨传导技术防止通话漏音，电梯/办公室必备</p>
+                    <div class="text-xs text-gray-500 mt-2">设置 > 声音和振动 > 智慧隐私通话</div>
+                </div>
+
+                <!-- Tip 4 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm tip-card">
+                    <h3 class="font-semibold text-lg mb-2 flex items-center">
+                        <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">4</span>
+                        游戏弹幕通知
+                    </h3>
+                    <p class="text-gray-600 text-sm">微信/QQ消息以弹幕形式飘过屏幕，不遮挡游戏画面</p>
+                    <div class="text-xs text-gray-500 mt-2">游戏管家 > 弹幕通知 > 可自定义颜色/速度</div>
+                </div>
+
+                <!-- Tip 5 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm tip-card">
+                    <h3 class="font-semibold text-lg mb-2 flex items-center">
+                        <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">5</span>
+                        湿手触控
+                    </h3>
+                    <p class="text-gray-600 text-sm">屏幕有水或手指潮湿时依然可精准操作，雨天/厨房场景必备</p>
+                    <div class="text-xs bg-green-100 text-green-800 p-2 rounded mt-2">MagicOS 9.0已扩展至全场景支持</div>
+                </div>
+
+                <!-- Tip 6 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm tip-card">
+                    <h3 class="font-semibold text-lg mb-2 flex items-center">
+                        <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">6</span>
+                        扇形变焦
+                    </h3>
+                    <p class="text-gray-600 text-sm">长按变焦组件展开扇形盘，滑动更精准，支持0.5x-100x</p>
+                    <div class="text-xs text-gray-500 mt-2">相机界面 > 长按变焦条 > 展开扇形盘</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Satellite & Emergency -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">🛰️ 卫星通信与应急功能</h2>
+            
+            <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-8 text-white">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 flex items-center">
+                            <span class="text-3xl mr-3">📡</span>
+                            天通卫星通信
+                        </h3>
+                        <p class="text-gray-300 mb-4">1TB版本支持，无地面网络时仍可发送短信和定位</p>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-center"><span class="text-yellow-400 mr-2">▸</span> 设置 > 移动网络 > 卫星通信</li>
+                            <li class="flex items-center"><span class="text-yellow-400 mr-2">▸</span> 长按电源键激活连接</li>
+                            <li class="flex items-center"><span class="text-yellow-400 mr-2">▸</span> 支持发送定位与短报文</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white/10 rounded-xl p-6">
+                        <h4 class="font-semibold mb-3 text-yellow-400">⚠️ 使用条件</h4>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li>• 需在开阔地带使用（远离建筑物遮挡）</li>
+                            <li>• 需提前开通卫星通信服务（联系运营商）</li>
+                            <li>• 手机需保持一定角度对准卫星</li>
+                            <li>• 仅1TB存储版本支持此功能</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Features -->
+            <div class="mt-8 grid md:grid-cols-3 gap-6">
+                <div class="bg-red-50 border border-red-100 rounded-xl p-6">
+                    <h4 class="font-semibold text-red-800 mb-2">🆘 SOS紧急求助</h4>
+                    <p class="text-sm text-red-600">连按5次电源键自动发送位置信息给紧急联系人</p>
+                    <div class="mt-3 text-xs text-gray-600">设置 > 安全 > SOS紧急求助</div>
+                </div>
+                <div class="bg-orange-50 border border-orange-100 rounded-xl p-6">
+                    <h4 class="font-semibold text-orange-800 mb-2">🔋 应急电量模式</h4>
+                    <p class="text-sm text-orange-600">1%电量仍可通话/扫码，最长待机数小时</p>
+                    <div class="mt-3 text-xs text-gray-600">电量低于5%时自动提示开启</div>
+                </div>
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-6">
+                    <h4 class="font-semibold text-blue-800 mb-2">📍 关机验证密码</h4>
+                    <p class="text-sm text-blue-600">开启后关机需输入密码，防丢失后被强制关机</p>
+                    <div class="mt-3 text-xs text-gray-600">设置 > 安全 > 关机验证密码</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Battery & Performance -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">🔋 续航与性能优化</h2>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Battery Tips -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-xl font-semibold mb-4">省电技巧</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-1 text-green-600 text-xs">1</div>
+                            <div>
+                                <h4 class="font-medium">开启AI智慧节电</h4>
+                                <p class="text-sm text-gray-600">系统自动识别后台高耗电应用并限制唤醒</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-1 text-green-600 text-xs">2</div>
+                            <div>
+                                <h4 class="font-medium">智能充电模式</h4>
+                                <p class="text-sm text-gray-600">夜间充电至80%暂停，起床前充满，保护电池健康</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-1 text-green-600 text-xs">3</div>
+                            <div>
+                                <h4 class="font-medium">一键省电</h4>
+                                <p class="text-sm text-gray-600">下拉控制中心 > 一键省电，关闭非必要后台</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-xl font-semibold mb-4">性能模式</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-blue-50 rounded-lg">
+                            <h4 class="font-medium text-blue-900">性能模式</h4>
+                            <p class="text-sm text-blue-700">游戏/大型应用时使用，CPU/GPU满血运行（耗电增加）</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h4 class="font-medium">均衡模式</h4>
+                            <p class="text-sm text-gray-600">日常使用推荐，智能调度性能与功耗</p>
+                        </div>
+                        <div class="p-4 bg-yellow-50 rounded-lg">
+                            <h4 class="font-medium text-yellow-900">低电量模式</h4>
+                            <p class="text-sm text-yellow-700">限制后台活动，延长续航，适合应急</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charging Info -->
+            <div class="mt-8 bg-white rounded-2xl p-6 shadow-sm">
+                <h3 class="text-lg font-semibold mb-4">⚡ 100W有线 + 80W无线快充</h3>
+                <div class="grid md:grid-cols-3 gap-4 text-center">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600">10分钟</div>
+                        <div class="text-sm text-gray-600">充至约50%</div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600">30分钟</div>
+                        <div class="text-sm text-gray-600">完全充满</div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600">反向充电</div>
+                        <div class="text-sm text-gray-600">可为耳机/手表充电</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy & Security -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">🔒 隐私安全中心</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl">
+                    <div class="text-3xl mb-3">🛡️</div>
+                    <h3 class="font-semibold mb-2">应用锁</h3>
+                    <p class="text-sm text-gray-600">为微信、相册等加锁，防他人窥探</p>
+                    <div class="mt-3 text-xs text-blue-600">设置 > 安全 > 应用锁</div>
+                </div>
+
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl">
+                    <div class="text-3xl mb-3">👁️</div>
+                    <h3 class="font-semibold mb-2">隐私访问记录</h3>
+                    <p class="text-sm text-gray-600">查看哪些应用调用了相机、麦克风、位置</p>
+                    <div class="mt-3 text-xs text-purple-600">设置 > 隐私 > 隐私访问记录</div>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-50 to-teal-50 p-6 rounded-xl">
+                    <div class="text-3xl mb-3">📋</div>
+                    <h3 class="font-semibold mb-2">剪贴板保护</h3>
+                    <p class="text-sm text-gray-600">15分钟自动清除，读取时提醒</p>
+                    <div class="mt-3 text-xs text-green-600">防止密码等敏感信息泄露</div>
+                </div>
+
+                <div class="bg-gradient-to-br from-orange-50 to-yellow-50 p-6 rounded-xl">
+                    <div class="text-3xl mb-3">🎭</div>
+                    <h3 class="font-semibold mb-2">AI换脸检测</h3>
+                    <p class="text-sm text-gray-600">视频通话实时检测对方是否AI换脸</p>
+                    <div class="mt-3 text-xs text-orange-600">设置 > 安全 > 反诈防护</div>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-gray-900 text-white rounded-2xl p-6">
+                <h3 class="font-semibold mb-4 flex items-center">
+                    <span class="text-yellow-400 mr-2">⚠️</span>
+                    安全建议清单
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                    <ul class="space-y-2 text-gray-300">
+                        <li>□ 开启"查找设备"功能（防丢必备）</li>
+                        <li>□ 设置SIM卡锁（防拔卡使用）</li>
+                        <li>□ 开启"支付保护中心"（财产保护）</li>
+                        <li>□ 定期检查应用权限（设置 > 隐私 > 权限管理）</li>
+                    </ul>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>□ 开启"安全输入"（密码输入时防截屏）</li>
+                        <li>□ 设置"应用安装限制"（仅允许应用市场）</li>
+                        <li>□ 开启"防伪基站"（自动识别诈骗短信）</li>
+                        <li>□ 定期备份重要数据到云端</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">❓ 常见问题速查</h2>
+            
+            <div class="space-y-4">
+                <details class="bg-white rounded-lg shadow-sm group">
+                    <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
+                        <span>如何隐藏应用？</span>
+                        <span class="transform group-open:rotate-180 transition">▼</span>
+                    </summary>
+                    <div class="px-4 pb-4 text-gray-600 text-sm">
+                        MagicOS 9.0不支持直接隐藏应用图标，建议使用<strong>应用锁</strong>或<strong>隐私空间</strong>（设置 > 隐私 > 隐私空间）。隐私空间相当于手机里的第二套系统，输入不同密码进入不同空间。
+                    </div>
+                </details>
+
+                <details class="bg-white rounded-lg shadow-sm group">
+                    <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
+                        <span>灵动胶囊不显示怎么办？</span>
+                        <span class="transform group-open:rotate-180 transition">▼</span>
+                    </summary>
+                    <div class="px-4 pb-4 text-gray-600 text-sm">
+                        1. 确认开启：设置 > 通知和状态栏 > 灵动胶囊<br>
+                        2. 部分应用（如机票、火车票）需手动开启实时活动权限<br>
+                        3. 尝试重启应用或重新开关灵动胶囊开关
+                    </div>
+                </details>
+
+                <details class="bg-white rounded-lg shadow-sm group">
+                    <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
+                        <span>YOYO唤醒不灵敏？</span>
+                        <span class="transform group-open:rotate-180 transition">▼</span>
+                    </summary>
+                    <div class="px-4 pb-4 text-gray-600 text-sm">
+                        1. 重新录入语音：设置 > 智慧助手 > YOYO助理 > 语音唤醒 > 重新录入<br>
+                        2. 检查是否开启了"免打扰模式"<br>
+                        3. 尝试长按电源键1秒唤醒作为替代方案
+                    </div>
+                </details>
+
+                <details class="bg-white rounded-lg shadow-sm group">
+                    <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
+                        <span>如何关闭系统广告？</span>
+                        <span class="transform group-open:rotate-180 transition">▼</span>
+                    </summary>
+                    <div class="px-4 pb-4 text-gray-600 text-sm">
+                        1. 设置 > 隐私 > 广告与隐私 > 开启"限制广告跟踪"<br>
+                        2. 应用市场 > 我的 > 设置 > 关闭"个性化推荐"<br>
+                        3. 浏览器 > 设置 > 关闭"资讯推送"<br>
+                        4. 负一屏 > 设置 > 关闭"推荐服务"
+                    </div>
+                </details>
+
+                <details class="bg-white rounded-lg shadow-sm group">
+                    <summary class="p-4 cursor-pointer font-medium flex justify-between items-center">
+                        <span>手机发热怎么办？</span>
+                        <span class="transform group-open:rotate-180 transition">▼</span>
+                    </summary>
+                    <div class="px-4 pb-4 text-gray-600 text-sm">
+                        1. 关闭不必要的后台应用（上滑悬停进入多任务，上滑关闭）<br>
+                        2. 取下手机壳散热<br>
+                        3. 避免边充电边玩游戏<br>
+                        4. 开启"性能模式"中的"均衡模式"<br>
+                        5. 系统升级后2-3天内发热属正常现象（后台优化中）
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-2xl font-bold mb-4">荣耀Magic7 Pro</h3>
+            <p class="text-gray-400 mb-6">越AI越自由 · 开启智慧新旅程</p>
+            <div class="flex justify-center space-x-6 text-sm text-gray-500">
+                <span>MagicOS 9.0</span>
+                <span>•</span>
+                <span>YOYO智能体</span>
+                <span>•</span>
+                <span>骁龙8至尊版</span>
+                <span>•</span>
+                <span>卫星通信</span>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-xs text-gray-600">
+                <p>本指南基于MagicOS 9.0制作 | 部分功能因版本差异可能略有不同</p>
+                <p class="mt-2">建议：设置 > 系统和更新 > 软件更新 > 保持系统为最新版本</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card-hover').forEach((el) => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(20px)";
+            el.style.transition = "all 0.6s ease-out";
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proteus 完全入门指南 | 从零开始掌握电路仿真</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        proteus: {
+                            blue: '#0066CC',
+                            dark: '#1a1a2e',
+                            light: '#16213e',
+                            accent: '#0f3460',
+                            gold: '#e94560'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #0066CC, 0 0 10px #0066CC' },
+                            '100%': { boxShadow: '0 0 20px #0066CC, 0 0 30px #0066CC' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .circuit-line {
+            stroke-dasharray: 5,5;
+            animation: dash 20s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -100; }
+        }
+        .led-glow {
+            animation: ledPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes ledPulse {
+            0%, 100% { filter: drop-shadow(0 0 2px #ef4444); opacity: 0.3; }
+            50% { filter: drop-shadow(0 0 10px #ef4444); opacity: 1; }
+        }
+        .step-card {
+            transition: all 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 102, 204, 0.3);
+        }
+        .comparison-row:hover {
+            background: rgba(0, 102, 204, 0.1);
+        }
+        .code-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+        }
+        .progress-bar {
+            transition: width 1s ease-in-out;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="antialiased min-h-screen">
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden py-20 px-4">
+        <div class="absolute inset-0 opacity-20">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0,50 Q25,30 50,50 T100,50" stroke="#0066CC" stroke-width="0.5" fill="none" class="circuit-line"/>
+                <path d="M0,60 Q25,40 50,60 T100,60" stroke="#0066CC" stroke-width="0.3" fill="none" class="circuit-line" style="animation-delay: -5s"/>
+            </svg>
+        </div>
+
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <div class="inline-block mb-4 px-4 py-1 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 text-sm font-medium">
+                电子设计自动化 EDA
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                Proteus
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto">
+                从零基础到电路仿真大师<br>
+                <span class="text-blue-400">单片机仿真 · PCB设计 · 虚拟仪器</span>
+            </p>
+
+            <!-- Interactive Circuit Preview -->
+            <div class="glass-panel rounded-2xl p-8 max-w-4xl mx-auto mt-12">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="text-left flex-1">
+                        <h3 class="text-2xl font-bold mb-4 text-white">实时仿真演示</h3>
+                        <div class="space-y-3 text-sm text-gray-400">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                <span>AT89C51 单片机运行中</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                <span>时钟频率: 11.0592MHz</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                <span>程序: LED_Blink.hex</span>
+                            </div>
+                        </div>
+                        <button onclick="toggleSimulation()" id="simBtn" class="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-all flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+                            运行仿真
+                        </button>
+                    </div>
+
+                    <!-- Animated Circuit Diagram -->
+                    <div class="relative w-64 h-48 bg-slate-900 rounded-xl border border-slate-700 p-4">
+                        <svg class="w-full h-full" viewBox="0 0 200 150">
+                            <!-- MCU -->
+                            <rect x="70" y="50" width="60" height="40" fill="#1e293b" stroke="#3b82f6" stroke-width="2" rx="2"/>
+                            <text x="100" y="75" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="monospace">AT89C51</text>
+
+                            <!-- LED -->
+                            <circle id="led1" cx="160" cy="40" r="8" fill="#374151" stroke="#ef4444" stroke-width="2"/>
+                            <polygon id="ledGlow" points="160,32 164,40 160,48 156,40" fill="#ef4444" opacity="0"/>
+
+                            <!-- Resistor -->
+                            <rect x="155" y="70" width="10" height="30" fill="#f59e0b" stroke="#d97706" stroke-width="1"/>
+                            <text x="175" y="88" fill="#9ca3af" font-size="8">1kΩ</text>
+
+                            <!-- Ground -->
+                            <path d="M160 110 L160 120 M150 120 L170 120 M155 125 L165 125" stroke="#6b7280" stroke-width="2" fill="none"/>
+
+                            <!-- Wires -->
+                            <path d="M130 60 L160 60 L160 32" stroke="#10b981" stroke-width="2" fill="none" class="wire"/>
+                            <path d="M160 48 L160 70" stroke="#10b981" stroke-width="2" fill="none" class="wire"/>
+                            <path d="M160 100 L160 110" stroke="#10b981" stroke-width="2" fill="none" class="wire"/>
+
+                            <!-- Power -->
+                            <text x="40" y="55" fill="#fbbf24" font-size="10">+5V</text>
+                            <path d="M50 60 L70 60" stroke="#fbbf24" stroke-width="2"/>
+                            <circle cx="50" cy="60" r="3" fill="#fbbf24"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- What is Proteus -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Proteus 是什么？</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    英国 Labcenter Electronics 开发的电子设计自动化（EDA）软件，<br>
+                    集电路原理图设计、PCB 布局、单片机仿真于一体
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- ISIS -->
+                <div class="glass-panel rounded-xl p-6 step-card">
+                    <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-blue-400">ISIS</h3>
+                    <p class="text-gray-400 text-sm mb-3">原理图设计与仿真</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li>• 绘制电路图</li>
+                        <li>• 元件连线</li>
+                        <li>• 实时仿真验证</li>
+                    </ul>
+                </div>
+
+                <!-- ARES -->
+                <div class="glass-panel rounded-xl p-6 step-card">
+                    <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-green-400">ARES</h3>
+                    <p class="text-gray-400 text-sm mb-3">PCB 布局布线</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li>• 自动生成电路板</li>
+                        <li>• 元件布局优化</li>
+                        <li>• 输出 Gerber 文件</li>
+                    </ul>
+                </div>
+
+                <!-- VSM -->
+                <div class="glass-panel rounded-xl p-6 step-card">
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-purple-400">VSM</h3>
+                    <p class="text-gray-400 text-sm mb-3">虚拟系统建模</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li>• 仿真单片机运行</li>
+                        <li>• 支持 8051/AVR/ARM/PIC</li>
+                        <li>• 虚拟仪器调试</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Guide -->
+    <section class="py-16 px-4 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">零基础快速入门</h2>
+
+            <div class="relative">
+                <!-- Progress Line -->
+                <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-500 transform md:-translate-x-1/2"></div>
+
+                <!-- Step 1 -->
+                <div class="relative mb-12 md:flex items-center">
+                    <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                        <div class="glass-panel p-6 rounded-xl inline-block text-left w-full">
+                            <h3 class="text-xl font-bold mb-2 text-blue-400">1. 安装与界面认识</h3>
+                            <p class="text-gray-400 text-sm mb-3">推荐 Proteus 8.9+，支持 STM32 等新芯片</p>
+                            <div class="code-block rounded p-3 text-xs font-mono text-gray-300">
+                                <div class="text-green-400"># 版本选择建议</div>
+                                <div>Proteus 8.9 SP2 - 稳定兼容</div>
+                                <div>Proteus 9.0 - 新功能支持</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-blue-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">1</div>
+                    <div class="md:w-1/2 md:pl-12 hidden md:block">
+                        <div class="text-gray-500 text-sm">界面布局：工具栏 + 蓝色工作区 + 仿真控制区</div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative mb-12 md:flex items-center">
+                    <div class="md:w-1/2 md:pr-12 hidden md:block text-right">
+                        <div class="text-gray-500 text-sm">右侧搜元件(P) → 左侧连线 → 底部播放</div>
+                    </div>
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-cyan-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">2</div>
+                    <div class="md:w-1/2 md:pl-12 mb-4 md:mb-0">
+                        <div class="glass-panel p-6 rounded-xl">
+                            <h3 class="text-xl font-bold mb-2 text-cyan-400">2. 核心操作三要素</h3>
+                            <div class="grid grid-cols-3 gap-2 mt-4">
+                                <div class="bg-slate-800 p-3 rounded text-center">
+                                    <div class="text-2xl mb-1">🔍</div>
+                                    <div class="text-xs text-gray-400">搜元件</div>
+                                    <div class="text-xs text-blue-400 font-mono">P键</div>
+                                </div>
+                                <div class="bg-slate-800 p-3 rounded text-center">
+                                    <div class="text-2xl mb-1">⚡</div>
+                                    <div class="text-xs text-gray-400">连导线</div>
+                                    <div class="text-xs text-blue-400 font-mono">Wire</div>
+                                </div>
+                                <div class="bg-slate-800 p-3 rounded text-center">
+                                    <div class="text-2xl mb-1">▶️</div>
+                                    <div class="text-xs text-gray-400">运行</div>
+                                    <div class="text-xs text-blue-400 font-mono">Play</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative mb-12 md:flex items-center">
+                    <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                        <div class="glass-panel p-6 rounded-xl inline-block text-left w-full">
+                            <h3 class="text-xl font-bold mb-2 text-green-400">3. 第一个项目：点亮 LED</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <span class="text-gray-300">AT89C51 (单片机)</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <span class="text-gray-300">LED-RED (红色发光二极管)</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                                    <span class="text-gray-300">RES (1kΩ 电阻)</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-gray-500 rounded-full"></span>
+                                    <span class="text-gray-300">POWER/GROUND (电源/地)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-green-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">3</div>
+                    <div class="md:w-1/2 md:pl-12 hidden md:block">
+                        <div class="text-gray-500 text-sm">P1.0 → LED阳极 → 电阻 → GND</div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative md:flex items-center">
+                    <div class="md:w-1/2 md:pr-12 hidden md:block text-right">
+                        <div class="text-gray-500 text-sm">Keil编译 → 导入HEX → 设置频率 → 运行</div>
+                    </div>
+                    <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-purple-500 rounded-full border-4 border-slate-900 transform -translate-x-1/2 flex items-center justify-center font-bold text-sm">4</div>
+                    <div class="md:w-1/2 md:pl-12 mb-4 md:mb-0">
+                        <div class="glass-panel p-6 rounded-xl">
+                            <h3 class="text-xl font-bold mb-2 text-purple-400">4. 导入程序与仿真</h3>
+                            <div class="code-block rounded p-3 text-xs font-mono">
+                                <div class="text-gray-400">// Keil C 代码示例</div>
+                                <div class="text-purple-400">#include</div> <div class="text-blue-400">&lt;reg51.h&gt;</div>
+                                <div class="text-yellow-400">sbit</div> LED = P1^0;
+                                <div class="text-yellow-400">void</div> <div class="text-green-400">main</div>() {
+                                <div class="ml-4 text-yellow-400">while</div>(1) {
+                                <div class="ml-8">LED = ~LED;</div>
+                                <div class="ml-8 text-green-400">delay</div>(500);
+                                <div class="ml-4">}</div>
+                                }
+                            </div>
+                            <div class="mt-3 text-xs text-gray-500">
+                                编译生成 .hex 文件 → 双击芯片加载 → 设置 11.0592MHz
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Circuit Builder -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">交互式电路构建器</h2>
+
+            <div class="glass-panel rounded-2xl p-6 md:p-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Component Palette -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4 text-blue-400">元件库</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="addComponent('mcu')" class="p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-blue-500 transition-all text-left group">
+                                <div class="text-2xl mb-1 group-hover:scale-110 transition-transform">🖥️</div>
+                                <div class="text-sm font-medium">AT89C51</div>
+                                <div class="text-xs text-gray-500">单片机</div>
+                            </button>
+                            <button onclick="addComponent('led')" class="p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-red-500 transition-all text-left group">
+                                <div class="text-2xl mb-1 group-hover:scale-110 transition-transform">💡</div>
+                                <div class="text-sm font-medium">LED-RED</div>
+                                <div class="text-xs text-gray-500">发光二极管</div>
+                            </button>
+                            <button onclick="addComponent('resistor')" class="p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-yellow-500 transition-all text-left group">
+                                <div class="text-2xl mb-1 group-hover:scale-110 transition-transform">⚡</div>
+                                <div class="text-sm font-medium">RES</div>
+                                <div class="text-xs text-gray-500">电阻 1kΩ</div>
+                            </button>
+                            <button onclick="addComponent('power')" class="p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-green-500 transition-all text-left group">
+                                <div class="text-2xl mb-1 group-hover:scale-110 transition-transform">🔋</div>
+                                <div class="text-sm font-medium">POWER</div>
+                                <div class="text-xs text-gray-500">+5V 电源</div>
+                            </button>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
+                            <h4 class="font-semibold mb-2 text-sm">当前电路状态</h4>
+                            <div id="circuitStatus" class="text-sm text-gray-400">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="w-2 h-2 bg-gray-500 rounded-full"></span>
+                                    <span>等待添加元件...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Circuit Canvas -->
+                    <div class="bg-slate-900 rounded-xl border border-slate-700 p-4 relative min-h-[300px]">
+                        <div class="absolute top-2 right-2 text-xs text-gray-500 font-mono">ISIS Workspace</div>
+                        <svg id="circuitCanvas" class="w-full h-full" viewBox="0 0 300 250">
+                            <!-- Grid -->
+                            <defs>
+                                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+                                </pattern>
+                            </defs>
+                            <rect width="100%" height="100%" fill="url(#grid)"/>
+
+                            <!-- Components will be added here dynamically -->
+                            <g id="componentsLayer"></g>
+
+                            <!-- Connection lines -->
+                            <g id="wiresLayer"></g>
+                        </svg>
+
+                        <div class="absolute bottom-4 left-4 right-4 flex gap-2">
+                            <button onclick="clearCircuit()" class="flex-1 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded border border-red-500/30 text-sm">
+                                清空电路
+                            </button>
+                            <button onclick="autoWire()" class="flex-1 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded border border-blue-500/30 text-sm">
+                                自动连线
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shortcuts & Tips -->
+    <section class="py-16 px-4 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Shortcuts -->
+                <div class="glass-panel rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span class="text-blue-400">⌨️</span> 常用快捷键
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
+                            <span class="text-gray-300">缩放视图</span>
+                            <kbd class="px-2 py-1 bg-slate-700 rounded text-sm font-mono text-blue-400">Ctrl + 滚轮</kbd>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
+                            <span class="text-gray-300">旋转元件</span>
+                            <kbd class="px-2 py-1 bg-slate-700 rounded text-sm font-mono text-blue-400">空格</kbd>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
+                            <span class="text-gray-300">重复操作</span>
+                            <kbd class="px-2 py-1 bg-slate-700 rounded text-sm font-mono text-blue-400">R</kbd>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
+                            <span class="text-gray-300">打开网格</span>
+                            <kbd class="px-2 py-1 bg-slate-700 rounded text-sm font-mono text-blue-400">G</kbd>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
+                            <span class="text-gray-300">取消操作</span>
+                            <kbd class="px-2 py-1 bg-slate-700 rounded text-sm font-mono text-blue-400">Esc</kbd>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips -->
+                <div class="glass-panel rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span class="text-yellow-400">⚠️</span> 避坑指南
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex gap-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                            <div class="text-red-400 text-xl">🚫</div>
+                            <div>
+                                <div class="font-semibold text-red-400 text-sm">路径不要有中文</div>
+                                <div class="text-xs text-gray-400 mt-1">安装目录和工程文件路径避免中文和空格，防止崩溃</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                            <div class="text-yellow-400 text-xl">⚡</div>
+                            <div>
+                                <div class="font-semibold text-yellow-400 text-sm">必须接 GROUND</div>
+                                <div class="text-xs text-gray-400 mt-1">所有电路必须接地，浮空会导致仿真失败或不准确</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                            <div class="text-blue-400 text-xl">📁</div>
+                            <div>
+                                <div class="font-semibold text-blue-400 text-sm">HEX 文件格式</div>
+                                <div class="text-xs text-gray-400 mt-1">单片机程序必须是 .hex 格式，Keil 编译后生成</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                            <div class="text-green-400 text-xl">🔄</div>
+                            <div>
+                                <div class="font-semibold text-green-400 text-sm">时钟频率一致</div>
+                                <div class="text-xs text-gray-400 mt-1">Proteus 中的晶振频率必须与 Keil 编译设置一致</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">Proteus vs 其他 EDA 软件</h2>
+
+            <div class="glass-panel rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-slate-800/50 border-b border-slate-700">
+                                <th class="p-4 text-gray-400 font-semibold">特性</th>
+                                <th class="p-4 text-blue-400 font-semibold">Proteus</th>
+                                <th class="p-4 text-gray-400 font-semibold">Multisim</th>
+                                <th class="p-4 text-gray-400 font-semibold">Altium Designer</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="comparison-row border-b border-slate-800">
+                                <td class="p-4 text-gray-300">单片机仿真</td>
+                                <td class="p-4"><span class="text-green-400">★★★ 极强</span><br><span class="text-xs text-gray-500">可运行真实程序</span></td>
+                                <td class="p-4 text-gray-400">★★ 一般</td>
+                                <td class="p-4 text-gray-400">★ 无</td>
+                            </tr>
+                            <tr class="comparison-row border-b border-slate-800">
+                                <td class="p-4 text-gray-300">电路仿真</td>
+                                <td class="p-4"><span class="text-green-400">★★★ 混合信号</span></td>
+                                <td class="p-4"><span class="text-green-400">★★★ 专业模拟</span></td>
+                                <td class="p-4 text-gray-400">★★ 基础</td>
+                            </tr>
+                            <tr class="comparison-row border-b border-slate-800">
+                                <td class="p-4 text-gray-300">PCB 设计</td>
+                                <td class="p-4 text-gray-400">★★ 中等</td>
+                                <td class="p-4 text-gray-400">★ 无</td>
+                                <td class="p-4"><span class="text-green-400">★★★ 工业级</span></td>
+                            </tr>
+                            <tr class="comparison-row border-b border-slate-800">
+                                <td class="p-4 text-gray-300">学习难度</td>
+                                <td class="p-4 text-yellow-400">中等</td>
+                                <td class="p-4 text-green-400">简单</td>
+                                <td class="p-4 text-red-400">较难</td>
+                            </tr>
+                            <tr class="comparison-row">
+                                <td class="p-4 text-gray-300">最佳适用</td>
+                                <td class="p-4 text-blue-400">单片机/嵌入式教学</td>
+                                <td class="p-4 text-gray-400">模拟电路分析</td>
+                                <td class="p-4 text-gray-400">专业 PCB 生产</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-6 text-center text-gray-400 text-sm">
+                💡 <span class="text-blue-400">建议</span>：单片机/嵌入式初学者首选 Proteus，无需硬件即可完成从编程到调试的全流程
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Path -->
+    <section class="py-16 px-4 bg-slate-900/50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">学习路线图</h2>
+
+            <div class="space-y-6">
+                <!-- Level 1 -->
+                <div class="glass-panel rounded-xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-green-400">Level 1: 基础入门</h3>
+                        <span class="text-xs bg-green-500/20 text-green-400 px-3 py-1 rounded-full">1-2周</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">LED 流水灯</span>
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">数码管显示</span>
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">按键控制</span>
+                    </div>
+                    <div class="mt-4 w-full bg-slate-800 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <!-- Level 2 -->
+                <div class="glass-panel rounded-xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-blue-400">Level 2: 外设应用</h3>
+                        <span class="text-xs bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full">2-4周</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">LCD1602 显示</span>
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">串口通信</span>
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">ADC 采集</span>
+                    </div>
+                    <div class="mt-4 w-full bg-slate-800 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full progress-bar" style="width: 75%"></div>
+                    </div>
+                </div>
+
+                <!-- Level 3 -->
+                <div class="glass-panel rounded-xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-purple-400">Level 3: 综合项目</h3>
+                        <span class="text-xs bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full">1-2月</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">电机控制</span>
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">PID 算法</span>
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">传感器融合</span>
+                    </div>
+                    <div class="mt-4 w-full bg-slate-800 rounded-full h-2">
+                        <div class="bg-purple-500 h-2 rounded-full progress-bar" style="width: 50%"></div>
+                    </div>
+                </div>
+
+                <!-- Level 4 -->
+                <div class="glass-panel rounded-xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-yellow-500"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-yellow-400">Level 4: 硬件实现</h3>
+                        <span class="text-xs bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full">持续</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">PCB Layout</span>
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">打样生产</span>
+                        <span class="px-3 py-1 bg-slate-800 rounded text-sm text-gray-300">实物调试</span>
+                    </div>
+                    <div class="mt-4 w-full bg-slate-800 rounded-full h-2">
+                        <div class="bg-yellow-500 h-2 rounded-full progress-bar" style="width: 25%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">推荐学习资源</h2>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <a href="#" class="glass-panel rounded-xl p-6 hover:border-blue-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    </div>
+                    <h3 class="font-bold mb-2">官方文档</h3>
+                    <p class="text-sm text-gray-400">Help → Topics 查看完整功能说明和仿真模型库</p>
+                </a>
+
+                <a href="#" class="glass-panel rounded-xl p-6 hover:border-green-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <h3 class="font-bold mb-2">经典教材</h3>
+                    <p class="text-sm text-gray-400">《PROTEUS入门实用教程》周润景等著，系统全面</p>
+                </a>
+
+                <a href="#" class="glass-panel rounded-xl p-6 hover:border-purple-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="font-bold mb-2">视频教程</h3>
+                    <p class="text-sm text-gray-400">B站搜索"Proteus 51单片机"，跟随实战项目学习</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto text-center text-gray-500 text-sm">
+            <p>Proteus 入门指南 | 电子设计自动化 EDA 工具</p>
+            <p class="mt-2 text-xs">适合单片机/嵌入式开发初学者 · 无需硬件即可仿真调试</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simulation State
+        let isRunning = false;
+        let circuitComponents = [];
+
+        function toggleSimulation() {
+            isRunning = !isRunning;
+            const btn = document.getElementById('simBtn');
+            const led = document.getElementById('led1');
+            const glow = document.getElementById('ledGlow');
+
+            if (isRunning) {
+                btn.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg> 停止仿真';
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('bg-red-600');
+
+                // LED Blink Animation
+                led.style.fill = '#ef4444';
+                glow.style.opacity = '1';
+                glow.classList.add('led-glow');
+            } else {
+                btn.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg> 运行仿真';
+                btn.classList.add('bg-blue-600');
+                btn.classList.remove('bg-red-600');
+
+                led.style.fill = '#374151';
+                glow.style.opacity = '0';
+                glow.classList.remove('led-glow');
+            }
+        }
+
+        // Circuit Builder
+        function addComponent(type) {
+            const status = document.getElementById('circuitStatus');
+            const componentsLayer = document.getElementById('componentsLayer');
+
+            let componentHTML = '';
+            let statusText = '';
+
+            switch(type) {
+                case 'mcu':
+                    componentHTML = `
+                        <g transform="translate(50, 80)">
+                            <rect x="0" y="0" width="80" height="60" fill="#1e293b" stroke="#3b82f6" stroke-width="2" rx="4"/>
+                            <text x="40" y="35" text-anchor="middle" fill="#60a5fa" font-size="12" font-family="monospace">AT89C51</text>
+                            <circle cx="40" cy="55" r="2" fill="#10b981"/>
+                        </g>
+                    `;
+                    statusText = '已添加: AT89C51 单片机';
+                    break;
+                case 'led':
+                    componentHTML = `
+                        <g transform="translate(180, 40)">
+                            <circle cx="0" cy="0" r="10" fill="#374151" stroke="#ef4444" stroke-width="2"/>
+                            <polygon points="-4,-4 4,0 -4,4" fill="#ef4444" opacity="0.8"/>
+                            <text x="15" y="5" fill="#9ca3af" font-size="10">LED</text>
+                        </g>
+                    `;
+                    statusText = '已添加: LED 发光二极管';
+                    break;
+                case 'resistor':
+                    componentHTML = `
+                        <g transform="translate(180, 100)">
+                            <rect x="-5" y="-15" width="10" height="30" fill="#f59e0b" stroke="#d97706" stroke-width="1"/>
+                            <text x="15" y="5" fill="#9ca3af" font-size="10">1kΩ</text>
+                        </g>
+                    `;
+                    statusText = '已添加: 1kΩ 电阻';
+                    break;
+                case 'power':
+                    componentHTML = `
+                        <g transform="translate(20, 40)">
+                            <circle cx="0" cy="0" r="8" fill="#fbbf24"/>
+                            <text x="-15" y="-12" fill="#fbbf24" font-size="10">+5V</text>
+                            <text x="15" y="5" fill="#9ca3af" font-size="10">VCC</text>
+                        </g>
+                    `;
+                    statusText = '已添加: +5V 电源';
+                    break;
+            }
+
+            if (componentHTML) {
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                g.innerHTML = componentHTML;
+                componentsLayer.appendChild(g);
+
+                status.innerHTML = `<div class="flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span><span>${statusText}</span></div>`;
+            }
+        }
+
+        function clearCircuit() {
+            document.getElementById('componentsLayer').innerHTML = '';
+            document.getElementById('wiresLayer').innerHTML = '';
+            document.getElementById('circuitStatus').innerHTML = '<div class="flex items-center gap-2"><span class="w-2 h-2 bg-gray-500 rounded-full"></span><span>等待添加元件...</span></div>';
+        }
+
+        function autoWire() {
+            const wiresLayer = document.getElementById('wiresLayer');
+            // Simple wiring visualization
+            const wire = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            wire.setAttribute("d", "M90 110 L180 110 L180 90");
+            wire.setAttribute("stroke", "#10b981");
+            wire.setAttribute("stroke-width", "2");
+            wire.setAttribute("fill", "none");
+            wire.classList.add("circuit-line");
+            wiresLayer.appendChild(wire);
+
+            document.getElementById('circuitStatus').innerHTML = '<div class="flex items-center gap-2"><span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span><span>已自动连接: P1.0 → LED</span></div>';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add entrance animations
+            const cards = document.querySelectorAll('.step-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

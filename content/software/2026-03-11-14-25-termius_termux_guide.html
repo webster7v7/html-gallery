@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 11 通过 Termius 连接 Android Termux 完全指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --termius-orange: #FF6B35;
+            --termius-dark: #1a1a2e;
+            --termux-green: #00d4aa;
+            --win11-blue: #0078d4;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e2e8f0;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #FF6B35 0%, #00d4aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 107, 53, 0.3);
+            transform: translateY(-2px);
+        }
+        .code-block {
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            border-left: 4px solid var(--termius-orange);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        .connection-line {
+            background: linear-gradient(90deg, var(--win11-blue), var(--termius-orange), var(--termux-green));
+            height: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        .connection-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: flow 2s infinite;
+        }
+        @keyframes flow {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(0, 212, 170, 0.2) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%);
+            border-left: 4px solid #ffc107;
+        }
+        .success-box {
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(0, 200, 150, 0.1) 100%);
+            border-left: 4px solid var(--termux-green);
+        }
+        .tab-active {
+            background: rgba(255, 107, 53, 0.2);
+            border-color: var(--termius-orange);
+            color: #FF6B35;
+        }
+        .method-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .method-card.active {
+            border-color: var(--termius-orange);
+            background: rgba(255, 107, 53, 0.1);
+        }
+        .hidden-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .hidden-content.show {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .copy-btn {
+            transition: all 0.2s ease;
+        }
+        .copy-btn:hover {
+            background: rgba(255, 107, 53, 0.2);
+            color: #FF6B35;
+        }
+        .copy-btn.copied {
+            background: rgba(0, 212, 170, 0.2);
+            color: var(--termux-green);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen">
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden py-20 px-4">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-orange-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                    <span class="text-sm text-gray-400">远程开发实战指南</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    <span class="gradient-text">Windows 11</span>
+                    <span class="text-white"> × </span>
+                    <span class="gradient-text">Termius</span>
+                    <span class="text-white"> × </span>
+                    <span class="gradient-text">Termux</span>
+                </h1>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                    在 PC 上无缝操控 Android 设备的终极方案。通过现代 SSH 客户端 Termius，将手机变成随身 Linux 服务器。
+                </p>
+            </div>
+
+            <!-- Connection Visualization -->
+            <div class="glass-card rounded-2xl p-8 mb-12">
+                <div class="flex items-center justify-between gap-4 flex-wrap md:flex-nowrap">
+                    <div class="flex items-center gap-4 flex-1">
+                        <div class="w-16 h-16 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-2xl">
+                            🪟
+                        </div>
+                        <div>
+                            <div class="font-bold text-lg">Windows 11</div>
+                            <div class="text-sm text-gray-400">客户端主机</div>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 px-4">
+                        <div class="connection-line rounded-full mb-2"></div>
+                        <div class="text-center text-xs text-gray-500">SSH Protocol · Port 8022</div>
+                    </div>
+
+                    <div class="flex items-center gap-4 flex-1 justify-end">
+                        <div class="text-right">
+                            <div class="font-bold text-lg">Android</div>
+                            <div class="text-sm text-gray-400">Termux 服务器</div>
+                        </div>
+                        <div class="w-16 h-16 rounded-xl bg-green-600/20 border border-green-500/30 flex items-center justify-center text-2xl">
+                            🤖
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 pb-20 space-y-12">
+
+        <!-- Overview Cards -->
+        <section class="grid md:grid-cols-3 gap-6">
+            <div class="glass-card rounded-xl p-6">
+                <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-2xl">
+                    ⚡
+                </div>
+                <h3 class="font-bold text-lg mb-2">零配置连接</h3>
+                <p class="text-gray-400 text-sm">无需 root，无需复杂网络设置，同一 WiFi 下即连即用</p>
+            </div>
+            <div class="glass-card rounded-xl p-6">
+                <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-2xl">
+                    🔒
+                </div>
+                <h3 class="font-bold text-lg mb-2">企业级安全</h3>
+                <p class="text-gray-400 text-sm">支持 ED25519 密钥、AES-256 加密、生物识别保护 [^3^]</p>
+            </div>
+            <div class="glass-card rounded-xl p-6">
+                <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-2xl">
+                    📱
+                </div>
+                <h3 class="font-bold text-lg mb-2">跨平台同步</h3>
+                <p class="text-gray-400 text-sm">Termius 支持云端同步配置，多设备无缝切换 [^1^]</p>
+            </div>
+        </section>
+
+        <!-- Step 1: Termux Setup -->
+        <section class="glass-card rounded-2xl p-8">
+            <div class="flex items-start gap-4 mb-8">
+                <div class="step-number w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                    1
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">配置 Android Termux 服务端</h2>
+                    <p class="text-gray-400">在手机上搭建 SSH 服务器，开放远程访问权限</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="code-block rounded-lg p-4 font-mono text-sm relative group">
+                    <button class="copy-btn absolute top-3 right-3 px-3 py-1 rounded bg-white/10 text-xs" onclick="copyCode(this)">复制</button>
+                    <div class="text-gray-300">
+                        <span class="text-green-400"># 更新软件源并安装 OpenSSH</span><br>
+                        pkg update && pkg upgrade -y<br>
+                        pkg install openssh -y<br><br>
+
+                        <span class="text-green-400"># 设置登录密码（必须执行）</span><br>
+                        passwd<br><br>
+
+                        <span class="text-green-400"># 启动 SSH 服务（默认端口 8022）</span><br>
+                        sshd<br><br>
+
+                        <span class="text-green-400"># 查看当前用户名（连接时需要）</span><br>
+                        whoami<br>
+                        <span class="text-gray-500"># 输出示例: u0_a123</span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="success-box rounded-lg p-4">
+                        <div class="flex items-center gap-2 mb-2 text-green-400 font-semibold">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            获取 IP 地址
+                        </div>
+                        <code class="font-mono text-sm text-gray-300">ifconfig</code> 或 <code class="font-mono text-sm text-gray-300">ip addr</code><br>
+                        <span class="text-sm text-gray-400 mt-1 block">查找 wlan0 下的 inet 地址，如 192.168.1.5</span>
+                    </div>
+                    <div class="warning-box rounded-lg p-4">
+                        <div class="flex items-center gap-2 mb-2 text-yellow-400 font-semibold">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            后台保活设置
+                        </div>
+                        <span class="text-sm text-gray-300">执行 <code class="font-mono">termux-wake-lock</code> 防止进程被杀</span><br>
+                        <span class="text-sm text-gray-400 mt-1 block">建议将 Termux 加入电池优化白名单</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: Connection Methods -->
+        <section class="glass-card rounded-2xl p-8">
+            <div class="flex items-start gap-4 mb-8">
+                <div class="step-number w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                    2
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">选择连接方式</h2>
+                    <p class="text-gray-400">根据网络环境选择最适合的连接方案</p>
+                </div>
+            </div>
+
+            <!-- Method Tabs -->
+            <div class="grid md:grid-cols-3 gap-4 mb-6">
+                <div class="method-card glass-card rounded-lg p-4 active" onclick="switchMethod('wifi')">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-xl">📶</div>
+                        <div>
+                            <div class="font-semibold">WiFi 局域网</div>
+                            <div class="text-xs text-gray-400">同一网络下直连</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="method-card glass-card rounded-lg p-4" onclick="switchMethod('usb')">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-xl">🔌</div>
+                        <div>
+                            <div class="font-semibold">USB 调试</div>
+                            <div class="text-xs text-gray-400">无网络/更安全</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="method-card glass-card rounded-lg p-4" onclick="switchMethod('hotspot')">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center text-xl">📡</div>
+                        <div>
+                            <div class="font-semibold">手机热点</div>
+                            <div class="text-xs text-gray-400">外出无路由器</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Method Contents -->
+            <div id="method-wifi" class="hidden-content show">
+                <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6">
+                    <h4 class="font-bold text-blue-400 mb-4">WiFi 局域网连接（推荐）</h4>
+                    <div class="space-y-3 text-sm">
+                        <p class="text-gray-300">1. 确保 Windows 11 和 Android 连接同一 WiFi 网络</p>
+                        <p class="text-gray-300">2. 在 Termux 中获取手机 IP: <code class="font-mono bg-black/30 px-2 py-1 rounded">ifconfig</code></p>
+                        <p class="text-gray-300">3. 在 Termius 中新建主机，填入 IP 和端口 8022</p>
+                        <div class="code-block rounded p-3 font-mono text-xs mt-3">
+                            连接参数示例:<br>
+                            Host: 192.168.1.5:8022<br>
+                            Username: u0_a123<br>
+                            Password: [你设置的密码]
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="method-usb" class="hidden-content">
+                <div class="bg-purple-500/10 border border-purple-500/30 rounded-lg p-6">
+                    <h4 class="font-bold text-purple-400 mb-4">USB ADB 转发（无需 WiFi）</h4>
+                    <div class="space-y-3 text-sm">
+                        <p class="text-gray-300">1. 开启手机 USB 调试模式（开发者选项）</p>
+                        <p class="text-gray-300">2. Windows 安装 ADB 工具（通过 Android Studio 或单独下载）</p>
+                        <div class="code-block rounded p-3 font-mono text-xs">
+                            <span class="text-green-400"># 在 Windows PowerShell/CMD 执行</span><br>
+                            adb forward tcp:8022 tcp:8022<br><br>
+                            <span class="text-gray-500"># 然后 Termius 连接 localhost:8022 即可</span>
+                        </div>
+                        <p class="text-gray-400 mt-2">* 优势：不依赖无线网络，数据传输更稳定安全</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="method-hotspot" class="hidden-content">
+                <div class="bg-orange-500/10 border border-orange-500/30 rounded-lg p-6">
+                    <h4 class="font-bold text-orange-400 mb-4">手机热点直连</h4>
+                    <div class="space-y-3 text-sm">
+                        <p class="text-gray-300">1. Android 开启个人热点</p>
+                        <p class="text-gray-300">2. Windows 11 连接该热点</p>
+                        <p class="text-gray-300">3. 在 Termux 中查看热点分配的 IP（通常是 192.168.43.x 或 172.20.10.x）</p>
+                        <div class="code-block rounded p-3 font-mono text-xs">
+                            <span class="text-green-400"># 查看路由信息获取网关 IP</span><br>
+                            ip route | grep default
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 3: Termius Configuration -->
+        <section class="glass-card rounded-2xl p-8">
+            <div class="flex items-start gap-4 mb-8">
+                <div class="step-number w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                    3
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">Windows Termius 客户端配置</h2>
+                    <p class="text-gray-400">现代 SSH 客户端的专业级连接体验 [^4^]</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-lg flex items-center gap-2">
+                        <span class="w-8 h-8 rounded bg-orange-500/20 flex items-center justify-center text-sm">1</span>
+                        新建主机配置
+                    </h3>
+                    <div class="space-y-3 text-sm text-gray-300">
+                        <div class="flex justify-between border-b border-white/10 pb-2">
+                            <span class="text-gray-400">Label</span>
+                            <span>My Android Phone</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-2">
+                            <span class="text-gray-400">Address</span>
+                            <span class="font-mono text-orange-400">192.168.x.x:8022</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-2">
+                            <span class="text-gray-400">Username</span>
+                            <span class="font-mono">u0_a123</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-2">
+                            <span class="text-gray-400">Password</span>
+                            <span>••••••••</span>
+                        </div>
+                    </div>
+
+                    <div class="success-box rounded-lg p-3 mt-4">
+                        <p class="text-sm text-green-400">💡 高级功能：建议启用"Sync across devices"以在多设备间同步此配置</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-lg flex items-center gap-2">
+                        <span class="w-8 h-8 rounded bg-orange-500/20 flex items-center justify-center text-sm">2</span>
+                        密钥认证（更安全）
+                    </h3>
+                    <p class="text-sm text-gray-400 mb-3">替代密码登录，使用 ED25519 密钥对 [^9^]</p>
+
+                    <div class="code-block rounded-lg p-4 font-mono text-xs space-y-2">
+                        <span class="text-green-400"># 在 Termux 生成密钥</span><br>
+                        ssh-keygen -t ed25519 -C "termux"<br><br>
+                        <span class="text-green-400"># 查看并复制公钥内容</span><br>
+                        cat ~/.ssh/id_ed25519.pub<br><br>
+                        <span class="text-green-400"># 授权公钥</span><br>
+                        cat id_ed25519.pub >> ~/.ssh/authorized_keys
+                    </div>
+
+                    <p class="text-xs text-gray-400 mt-2">将私钥导入 Termius Keychain，禁用密码登录更安全</p>
+                </div>
+            </div>
+
+            <!-- Termius Features Highlight -->
+            <div class="mt-8 grid md:grid-cols-4 gap-4">
+                <div class="bg-white/5 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-2">📁</div>
+                    <div class="text-sm font-medium">SFTP 文件传输</div>
+                    <div class="text-xs text-gray-500 mt-1">内置图形化文件管理 [^2^]</div>
+                </div>
+                <div class="bg-white/5 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-2">🎨</div>
+                    <div class="text-sm font-medium">主题定制</div>
+                    <div class="text-xs text-gray-500 mt-1">12+ 终端配色方案</div>
+                </div>
+                <div class="bg-white/5 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-2">⚡</div>
+                    <div class="text-sm font-medium">代码片段</div>
+                    <div class="text-xs text-gray-500 mt-1">保存常用命令一键执行 [^1^]</div>
+                </div>
+                <div class="bg-white/5 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-2">🔐</div>
+                    <div class="text-sm font-medium">生物识别</div>
+                    <div class="text-xs text-gray-500 mt-1">指纹/面部解锁密钥 [^3^]</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Tips -->
+        <section class="glass-card rounded-2xl p-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <span class="text-3xl">🚀</span>
+                进阶优化技巧
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-orange-400">自动启动 SSH 服务</h3>
+                    <div class="code-block rounded-lg p-4 font-mono text-sm">
+                        <span class="text-green-400"># 添加到 ~/.bashrc，每次启动自动运行</span><br>
+                        echo "sshd" >> ~/.bashrc<br><br>
+                        <span class="text-green-400"># 或者创建启动脚本</span><br>
+                        echo "sshd -p 8022" > ~/.termux/boot/sshd<br>
+                        chmod +x ~/.termux/boot/sshd
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-orange-400">固定 IP 配置（可选）</h3>
+                    <p class="text-sm text-gray-400">避免每次查看 IP，可在路由器设置静态 DHCP 绑定，或在 Termux 使用静态 IP：</p>
+                    <div class="code-block rounded-lg p-4 font-mono text-sm">
+                        <span class="text-gray-500"># 需要 root 或使用 adb shell</span><br>
+                        ifconfig wlan0 192.168.1.100 netmask 255.255.255.0
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 warning-box rounded-lg p-4">
+                <h4 class="font-semibold text-yellow-400 mb-2">⚠️ 安全建议</h4>
+                <ul class="text-sm text-gray-300 space-y-1 list-disc list-inside">
+                    <li>避免在公共 WiFi 下开放 SSH 服务</li>
+                    <li>定期更换密码或使用密钥认证</li>
+                    <li>可通过 <code class="font-mono bg-black/30 px-1 rounded">who</code> 命令查看当前登录用户</li>
+                    <li>使用 <code class="font-mono bg-black/30 px-1 rounded">pkill sshd</code> 随时停止服务</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Troubleshooting -->
+        <section class="glass-card rounded-2xl p-8">
+            <h2 class="text-2xl font-bold mb-6">🛠️ 常见问题排查</h2>
+
+            <div class="space-y-4">
+                <div class="border border-white/10 rounded-lg overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center bg-white/5 hover:bg-white/10 transition" onclick="toggleFaq(this)">
+                        <span class="font-medium">连接超时/拒绝连接</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="hidden px-6 py-4 bg-black/20 text-sm text-gray-300 space-y-2">
+                        <p>• 检查手机和电脑是否在同一网络（ping 测试）</p>
+                        <p>• 确认 Termux 中 <code class="font-mono">sshd</code> 已运行（<code class="font-mono">ps aux | grep sshd</code>）</p>
+                        <p>• 检查 Android 防火墙/省电模式是否限制 Termux 联网</p>
+                        <p>• 尝试切换连接方式（WiFi 转 USB 或热点）</p>
+                    </div>
+                </div>
+
+                <div class="border border-white/10 rounded-lg overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center bg-white/5 hover:bg-white/10 transition" onclick="toggleFaq(this)">
+                        <span class="font-medium">认证失败/密码错误</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="hidden px-6 py-4 bg-black/20 text-sm text-gray-300 space-y-2">
+                        <p>• 重新在 Termux 执行 <code class="font-mono">passwd</code> 设置密码</p>
+                        <p>• 注意 Termux 用户名格式为 <code class="font-mono">u0_a数字</code>，不是 root</p>
+                        <p>• 检查 Termius 中用户名是否包含多余空格</p>
+                        <p>• 尝试使用密钥认证替代密码</p>
+                    </div>
+                </div>
+
+                <div class="border border-white/10 rounded-lg overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center bg-white/5 hover:bg-white/10 transition" onclick="toggleFaq(this)">
+                        <span class="font-medium">连接后很快断开</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="hidden px-6 py-4 bg-black/20 text-sm text-gray-300 space-y-2">
+                        <p>• 执行 <code class="font-mono">termux-wake-lock</code> 保持后台运行</p>
+                        <p>• 手机设置 → 电池 → 忽略 Termux 的电池优化</p>
+                        <p>• 锁定 Termux 应用（多任务界面下拉锁定）</p>
+                        <p>• 关闭手机"智能省电"功能</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases -->
+        <section class="glass-card rounded-2xl p-8">
+            <h2 class="text-2xl font-bold mb-6">💡 实用场景</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl p-6 border border-white/10">
+                    <div class="text-3xl mb-3">💻</div>
+                    <h3 class="font-bold mb-2">远程开发</h3>
+                    <p class="text-sm text-gray-400">在 PC 上编辑代码，通过手机 Termux 运行 Python/Node 环境测试</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500/10 to-teal-500/10 rounded-xl p-6 border border-white/10">
+                    <div class="text-3xl mb-3">🔧</div>
+                    <h3 class="font-bold mb-2">服务器维护</h3>
+                    <p class="text-sm text-gray-400">手机作为跳板机，通过 Termius 管理远程 Linux 服务器</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-xl p-6 border border-white/10">
+                    <div class="text-3xl mb-3">📊</div>
+                    <h3 class="font-bold mb-2">监控与日志</h3>
+                    <p class="text-sm text-gray-400">利用 Termius 多标签功能，同时监控手机上的多个服务状态</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-8 px-4 text-center text-gray-500 text-sm">
+        <p>基于 Termius 跨平台 SSH 客户端与 Termux Android 终端环境构建</p>
+        <p class="mt-2">参考文档：Termius 官方文档 [^3^] | Termux Wiki [^8^]</p>
+    </footer>
+
+    <script>
+        // Copy code functionality
+        function copyCode(btn) {
+            const codeBlock = btn.parentElement.querySelector('div');
+            const text = codeBlock.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = '已复制!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '复制';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Method switching
+        function switchMethod(method) {
+            // Update cards
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.hidden-content').forEach(content => {
+                content.classList.remove('show');
+            });
+            document.getElementById('method-' + method).classList.add('show');
+        }
+
+        // FAQ toggle
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const arrow = btn.querySelector('svg');
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Add smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
