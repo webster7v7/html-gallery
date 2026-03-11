@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>零基础 VMware 安装 Arch Linux 完全指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1793d1 0%, #08d9d6 50%, #667eea 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        .header-icons {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        nav {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 2px solid #e9ecef;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        nav a {
+            display: block;
+            padding: 10px 18px;
+            background: white;
+            color: #1793d1;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            border: 2px solid #1793d1;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        nav a:hover {
+            background: #1793d1;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(23, 147, 209, 0.3);
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #1793d1;
+            font-size: 1.9em;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #08d9d6;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h3 {
+            color: #495057;
+            font-size: 1.4em;
+            margin: 30px 0 18px 0;
+            padding-left: 15px;
+            border-left: 4px solid #1793d1;
+        }
+
+        h4 {
+            color: #6c757d;
+            font-size: 1.15em;
+            margin: 25px 0 12px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+            font-size: 1.02em;
+        }
+
+        .intro-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-left: 5px solid #1793d1;
+            padding: 25px;
+            border-radius: 0 15px 15px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 5px solid #ffc107;
+            padding: 20px 25px;
+            border-radius: 0 15px 15px 0;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .warning-box::before {
+            content: "⚠️ ";
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #d1ecf1 0%, #a8e6cf 100%);
+            border-left: 5px solid #17a2b8;
+            padding: 20px 25px;
+            border-radius: 0 15px 15px 0;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .tip-box::before {
+            content: "💡 ";
+            font-size: 1.2em;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #d4edda 0%, #b8e994 100%);
+            border-left: 5px solid #28a745;
+            padding: 20px 25px;
+            border-radius: 0 15px 15px 0;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #dee2e6;
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        code {
+            background: #f1f3f4;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            color: #e83e8c;
+            font-size: 0.92em;
+            border: 1px solid #e9ecef;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 18px 0;
+            position: relative;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            border: none;
+            font-size: 1em;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            color: #abb2bf;
+            padding: 12px 20px;
+            border-radius: 12px 12px 0 0;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .code-header + pre {
+            border-radius: 0 0 12px 12px;
+            margin-top: 0;
+        }
+
+        ul, ol {
+            margin: 18px 0 18px 30px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        .step {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step:hover {
+            border-color: #1793d1;
+            box-shadow: 0 8px 30px rgba(23, 147, 209, 0.12);
+            transform: translateY(-3px);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1793d1, #08d9d6);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-right: 12px;
+            box-shadow: 0 4px 10px rgba(23, 147, 209, 0.3);
+        }
+
+        .step-title {
+            font-size: 1.25em;
+            color: #333;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        th {
+            background: linear-gradient(135deg, #1793d1, #08d9d6);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e3f2fd;
+        }
+
+        .command-table td:first-child {
+            font-family: "Consolas", monospace;
+            color: #e83e8c;
+            font-weight: bold;
+            background: #f8f9fa;
+        }
+
+        .screenshot-desc {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .screenshot-desc strong {
+            color: #1793d1;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .check-list {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .check-list li {
+            padding-left: 35px;
+            position: relative;
+        }
+
+        .check-list li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #1793d1;
+            font-size: 1.3em;
+        }
+
+        footer {
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        footer a {
+            color: #08d9d6;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .key-combo {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 40px 25px;
+            }
+            
+            header h1 {
+                font-size: 1.7em;
+            }
+            
+            nav {
+                padding: 15px;
+            }
+            
+            nav ul {
+                gap: 8px;
+            }
+            
+            nav a {
+                padding: 8px 14px;
+                font-size: 0.85em;
+            }
+            
+            main {
+                padding: 25px;
+            }
+            
+            .step {
+                padding: 20px;
+            }
+            
+            pre {
+                padding: 18px;
+                font-size: 0.85em;
+            }
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #1793d1, #08d9d6);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.6em;
+            box-shadow: 0 6px 20px rgba(23, 147, 209, 0.4);
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(23, 147, 209, 0.5);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #1793d1, #08d9d6);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        .badge-warning {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-icons">💻 🐧 🏔️</div>
+            <h1>零基础 VMware 安装 Arch Linux 完全指南</h1>
+            <p>在虚拟机中安全、轻松地体验 Arch Linux，无需担心损坏物理机</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#why-vmware">为什么选择虚拟机</a></li>
+                <li><a href="#prepare">准备工作</a></li>
+                <li><a href="#vmware-setup">VMware配置</a></li>
+                <li><a href="#install">安装Arch</a></li>
+                <li><a href="#post-install">安装后配置</a></li>
+                <li><a href="#tools">VMware Tools</a></li>
+                <li><a href="#snapshot">快照功能</a></li>
+                <li><a href="#faq">常见问题</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- 为什么选择虚拟机 -->
+            <section id="why-vmware">
+                <h2><span class="emoji">🤔</span> 为什么选择 VMware 安装 Arch？</h2>
+                
+                <div class="intro-box">
+                    <strong>对于零基础小白来说，在 VMware 虚拟机中安装 Arch Linux 是最安全、最推荐的方式！</strong>
+                </div>
+
+                <h3>VMware 的优势</h3>
+                <table>
+                    <tr>
+                        <th>优势</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>🛡️ 零风险</td>
+                        <td>完全独立于物理机，操作失误不会损坏真实系统</td>
+                    </tr>
+                    <tr>
+                        <td>💾 快照功能</td>
+                        <td>随时可以保存状态，搞砸了能一键恢复</td>
+                    </tr>
+                    <tr>
+                        <td>🔄 易于重装</td>
+                        <td>不满意可以直接删除重建，几分钟搞定</td>
+                    </tr>
+                    <tr>
+                        <td>🖥️ 多系统并存</td>
+                        <td>可以同时运行 Windows 和 Arch，随时切换</td>
+                    </tr>
+                    <tr>
+                        <td>📸 方便截图录屏</td>
+                        <td>便于记录学习过程、分享经验</td>
+                    </tr>
+                    <tr>
+                        <td>🧪 随意折腾</td>
+                        <td>可以放心尝试各种配置，不用担心系统崩溃</td>
+                    </tr>
+                </table>
+
+                <div class="tip-box">
+                    <strong>建议：</strong>先在 VMware 中熟练掌握 Arch，之后再考虑是否安装到物理机！
+                </div>
+            </section>
+
+            <!-- 准备工作 -->
+            <section id="prepare">
+                <h2><span class="emoji">📋</span> 准备工作</h2>
+
+                <h3>系统要求</h3>
+                <ul class="check-list">
+                    <li>Windows 10/11 或 Linux/macOS 主机系统</li>
+                    <li>至少 8GB 内存（推荐 16GB）</li>
+                    <li>至少 50GB 可用磁盘空间</li>
+                    <li>CPU 支持虚拟化（Intel VT-x 或 AMD-V）</li>
+                    <li>稳定的网络连接</li>
+                </ul>
+
+                <h3>需要下载的软件</h3>
+                <table>
+                    <tr>
+                        <th>软件</th>
+                        <th>下载地址</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>VMware Workstation Pro</td>
+                        <td><a href="https://support.broadcom.com/security-advisory/security-advisory-detail.html?securit-advisory-id=SA24541" target="_blank">Broadcom 官网</a></td>
+                        <td>个人使用免费（需注册）</td>
+                    </tr>
+                    <tr>
+                        <td>VMware Workstation Player</td>
+                        <td><a href="https://support.broadcom.com/security-advisory/security-advisory-detail.html?securit-advisory-id=SA24541" target="_blank">Broadcom 官网</a></td>
+                        <td>免费版，功能稍少</td>
+                    </tr>
+                    <tr>
+                        <td>Arch Linux ISO</td>
+                        <td><a href="https://archlinux.org/download/" target="_blank">archlinux.org</a></td>
+                        <td>下载最新 ISO 镜像</td>
+                    </tr>
+                </table>
+
+                <div class="warning-box">
+                    <strong>注意：</strong>从 Broadcom 官网下载 VMware 需要注册账号。如果不想注册，也可以使用 <strong>VirtualBox</strong>（完全免费）。
+                </div>
+
+                <h3>开启 CPU 虚拟化</h3>
+                <p>大部分电脑默认已开启，如果 VMware 提示虚拟化未启用，需要进入 BIOS 开启：</p>
+                <ol>
+                    <li>重启电脑，按 <span class="key-combo">F2/Del/F12</span>（根据主板品牌）进入 BIOS</li>
+                    <li>找到 <strong>Intel VT-x</strong> 或 <strong>AMD-V</strong> / <strong>SVM Mode</strong></li>
+                    <li>设置为 <strong>Enabled</strong></li>
+                    <li>保存退出（通常是 F10）</li>
+                </ol>
+            </section>
+
+            <!-- VMware 配置 -->
+            <section id="vmware-setup">
+                <h2><span class="emoji">⚙️</span> VMware 虚拟机配置</h2>
+
+                <div class="step">
+                    <h4><span class="step-number">1</span><span class="step-title">安装 VMware</span></h4>
+                    <p>下载 VMware Workstation Pro 或 Player，双击安装包按提示安装即可。</p>
+                    <div class="info-box">
+                        <strong>安装提示：</strong>
+                        <ul>
+                            <li>Windows 安装时可能会提示重启，保存好工作再安装</li>
+                            <li>安装完成后需要重启电脑</li>
+                            <li>Pro 版本需要许可证，个人使用可在 Broadcom 网站申请免费许可</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">2</span><span class="step-title">创建新虚拟机</span></h4>
+                    <p>打开 VMware，点击 <strong>"创建新的虚拟机"</strong>（Create a New Virtual Machine）</p>
+                    
+                    <div class="screenshot-desc">
+                        <strong>🖼️ 界面示意</strong>
+                        <p>VMware 主界面 → 点击 "创建新的虚拟机" 按钮</p>
+                    </div>
+
+                    <p>选择配置类型：</p>
+                    <ul>
+                        <li><strong>典型（推荐）</strong> - 选择这个，简单快捷</li>
+                        <li>自定义 - 高级用户选择，可以详细配置硬件</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">3</span><span class="step-title">选择安装源</span></h4>
+                    <p>选择 <strong>"安装程序光盘映像文件(iso)"</strong>，然后浏览选择下载好的 Arch Linux ISO 文件。</p>
+                    
+                    <div class="screenshot-desc">
+                        <strong>🖼️ 界面示意</strong>
+                        <p>浏览按钮 → 找到下载的 archlinux-xxxx.xx.xx-x86_64.iso 文件</p>
+                    </div>
+
+                    <div class="tip-box">
+                        如果提示 "无法检测此光盘映像中的操作系统"，这是正常的，直接点"下一步"即可。
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">4</span><span class="step-title">选择客户机操作系统</span></h4>
+                    <table>
+                        <tr>
+                            <td>客户机操作系统</td>
+                            <td><strong>Linux</strong></td>
+                        </tr>
+                        <tr>
+                            <td>版本</td>
+                            <td><strong>Other Linux 6.x kernel 64-bit</strong>（或最新的版本）</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">5</span><span class="step-title">命名虚拟机</span></h4>
+                    <table>
+                        <tr>
+                            <td>虚拟机名称</td>
+                            <td><strong>Arch Linux</strong>（或你喜欢的名字）</td>
+                        </tr>
+                        <tr>
+                            <td>位置</td>
+                            <td>选择一个空间充足的磁盘（建议 SSD）</td>
+                        </tr>
+                    </table>
+                    <div class="warning-box">
+                        <strong>注意：</strong>确保选择的磁盘有足够的空间（至少 50GB 空闲）！
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">6</span><span class="step-title">指定磁盘容量</span></h4>
+                    <table>
+                        <tr>
+                            <td>最大磁盘大小</td>
+                            <td><strong>64 GB 或更大</strong>（根据你的空间决定）</td>
+                        </tr>
+                        <tr>
+                            <td>存储方式</td>
+                            <td><strong>将虚拟磁盘存储为单个文件</strong>（性能更好）</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="tip-box">
+                        虚拟磁盘是<strong>按需分配</strong>的，不会立即占用 64GB 空间，用多少占多少。
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">7</span><span class="step-title">自定义硬件（重要！）</span></h4>
+                    <p>点击 <strong>"自定义硬件..."</strong> 按钮，进行以下配置：</p>
+
+                    <h4>内存配置</h4>
+                    <table>
+                        <tr>
+                            <td>内存</td>
+                            <td><strong>4096 MB (4GB)</strong> 或更多</td>
+                        </tr>
+                    </table>
+                    <p>建议分配物理机内存的 1/3 到 1/2，但不超过 8192 MB（除非你要运行大型应用）</p>
+
+                    <h4>处理器配置</h4>
+                    <table>
+                        <tr>
+                            <td>处理器数量</td>
+                            <td><strong>2 个</strong> 或更多</td>
+                        </tr>
+                        <tr>
+                            <td>每个处理器的内核数量</td>
+                            <td><strong>2 个</strong> 或更多</td>
+                        </tr>
+                        <tr>
+                            <td>虚拟化引擎</td>
+                            <td>勾选 <strong>"虚拟化 Intel VT-x/EPT 或 AMD-V/RVI"</strong>（可选，用于嵌套虚拟化）</td>
+                        </tr>
+                    </table>
+
+                    <h4>网络适配器</h4>
+                    <table>
+                        <tr>
+                            <td>网络连接</td>
+                            <td><strong>NAT 模式</strong>（默认，最简单）或 <strong>桥接模式</strong></td>
+                        </tr>
+                    </table>
+
+                    <h4>显示器</h4>
+                    <table>
+                        <tr>
+                            <td>3D 图形</td>
+                            <td>可以取消勾选（提高兼容性）</td>
+                        </tr>
+                    </table>
+
+                    <div class="success-box">
+                        配置完成后点击 <strong>"关闭"</strong> → <strong>"完成"</strong>，虚拟机创建成功！
+                    </div>
+                </div>
+            </section>
+
+            <!-- 安装 Arch Linux -->
+            <section id="install">
+                <h2><span class="emoji">💿</span> 安装 Arch Linux</h2>
+
+                <div class="intro-box">
+                    现在正式开始安装 Arch Linux！由于是虚拟机，<strong>不需要考虑分区会丢失数据的问题</strong>，放心操作！
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">1</span><span class="step-title">启动虚拟机</span></h4>
+                    <p>在 VMware 主界面选中 Arch Linux 虚拟机，点击 <strong>"开启此虚拟机"</strong>。</p>
+                    
+                    <div class="screenshot-desc">
+                        <strong>🖼️ 界面示意</strong>
+                        <p>选择 "Arch Linux install medium (x86_64, UEFI)" 进入安装环境</p>
+                    </div>
+
+                    <div class="tip-box">
+                        首次启动可能会提示安装 VMware Tools，先选择"以后提醒我"，等系统装完再处理。
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">2</span><span class="step-title">进入安装环境</span></h4>
+                    <p>看到 Arch Linux 启动菜单后，直接回车选择第一个选项，稍等片刻会进入命令行界面。</p>
+                    <p>你应该看到类似这样的提示：</p>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>root@archiso ~ # _</code></pre>
+                    <p>这表示你已经进入了 Arch 的安装环境。</p>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">3</span><span class="step-title">检查网络连接</span></h4>
+                    <p>VMware 的 NAT 网络通常自动连接，验证一下：</p>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>ping archlinux.org -c 4</code></pre>
+                    <p>如果看到 <span class="highlight">64 bytes from...</span> 的回复，说明网络正常！按 <span class="key-combo">Ctrl+C</span> 停止。</p>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">4</span><span class="step-title">更新系统时间</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>timedatectl set-ntp true
+timedatectl status</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">5</span><span class="step-title">分区（虚拟机简单方案）</span></h4>
+                    <p>查看磁盘：</p>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>fdisk -l</code></pre>
+                    <p>你应该看到 <code>/dev/sda</code> 或 <code>/dev/nvme0n1</code>，这就是虚拟磁盘。</p>
+
+                    <div class="info-box">
+                        <strong>💡 VMware 虚拟机分区方案（推荐新手）</strong>
+                        <p>由于是虚拟机，不需要复杂的分区，简单分两个区即可：</p>
+                        <ul>
+                            <li>EFI 分区：512MB（用于启动）</li>
+                            <li>根分区：剩余全部空间（系统和数据放在一起）</li>
+                        </ul>
+                    </div>
+
+                    <p>使用 cfdisk 分区（图形化界面，适合新手）：</p>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>cfdisk /dev/sda</code></pre>
+
+                    <p>操作步骤：</p>
+                    <ol>
+                        <li>选择 <strong>gpt</strong> 分区表类型，回车</li>
+                        <li>选择 <strong>[ New ]</strong> 新建分区</li>
+                        <li>输入大小 <code>512M</code>，回车</li>
+                        <li>类型选择 <strong>EFI System</strong></li>
+                        <li>再次选择 <strong>[ New ]</strong></li>
+                        <li>大小保持默认（全部剩余空间），回车</li>
+                        <li>选择 <strong>[ Write ]</strong> 写入更改</li>
+                        <li>输入 <code>yes</code> 确认</li>
+                        <li>选择 <strong>[ Quit ]</strong> 退出</li>
+                    </ol>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">6</span><span class="step-title">格式化分区</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 格式化 EFI 分区为 FAT32
+mkfs.fat -F32 /dev/sda1
+
+# 格式化根分区为 ext4
+mkfs.ext4 /dev/sda2</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">7</span><span class="step-title">挂载分区</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 挂载根分区
+mount /dev/sda2 /mnt
+
+# 创建并挂载 EFI 分区
+mkdir -p /mnt/boot/EFI
+mount /dev/sda1 /mnt/boot/EFI
+
+# 检查挂载情况
+lsblk</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">8</span><span class="step-title">安装基础系统</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>pacstrap /mnt base base-devel linux linux-firmware vim nano networkmanager grub efibootmgr</code></pre>
+                    <p>这会安装基础系统、内核、网络管理器和引导程序。根据网络速度，可能需要 5-15 分钟。</p>
+                    <div class="tip-box">
+                        如果下载很慢，可以先配置国内镜像源（见下一节"安装后配置"）。
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">9</span><span class="step-title">生成 fstab</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>genfstab -U /mnt >> /mnt/etc/fstab
+
+# 检查生成的文件
+cat /mnt/etc/fstab</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">10</span><span class="step-title">进入新系统</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>arch-chroot /mnt</code></pre>
+                    <p>现在你已经"进入"了新安装的系统，后续的设置都会保存到这个系统中。</p>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">11</span><span class="step-title">设置时区</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+hwclock --systohc</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">12</span><span class="step-title">设置语言</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 编辑 locale.gen
+nano /etc/locale.gen</code></pre>
+                    <p>找到并取消注释（删除行首的 #）：</p>
+                    <pre><code>en_US.UTF-8 UTF-8
+zh_CN.UTF-8 UTF-8</code></pre>
+                    <p>保存：<span class="key-combo">Ctrl+O</span> → 回车 → <span class="key-combo">Ctrl+X</span></p>
+                    
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 生成 locale
+locale-gen
+
+# 设置默认语言
+echo "LANG=zh_CN.UTF-8" > /etc/locale.conf</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">13</span><span class="step-title">设置主机名</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 设置主机名（可自定义）
+echo "arch-vm" > /etc/hostname
+
+# 编辑 hosts
+nano /etc/hosts</code></pre>
+                    <p>添加以下内容：</p>
+                    <pre><code>127.0.0.1   localhost
+::1         localhost
+127.0.1.1   arch-vm.localdomain   arch-vm</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">14</span><span class="step-title">设置 root 密码</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>passwd</code></pre>
+                    <p>输入两次密码（不会显示），请记住这个密码！</p>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">15</span><span class="step-title">安装 GRUB 引导</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 安装 GRUB 到 EFI 分区
+grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB
+
+# 生成配置文件
+grub-mkconfig -o /boot/grub/grub.cfg</code></pre>
+                    <div class="success-box">
+                        如果显示 "Installation finished. No error reported." 说明安装成功！
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">16</span><span class="step-title">启用网络服务</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>systemctl enable NetworkManager</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">17</span><span class="step-title">退出并重启</span></h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 退出 chroot 环境
+exit
+
+# 卸载分区
+umount -R /mnt
+
+# 重启
+reboot</code></pre>
+                    <div class="warning-box">
+                        重启后，在 VMware 启动画面快速按 <span class="key-combo">ESC</span> 键，进入 Boot Manager 选择从硬盘启动，或者等待自动进入 GRUB。
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <strong>🎉 恭喜！</strong> Arch Linux 基础安装完成！现在你应该看到登录提示，输入 root 和刚才设置的密码即可登录。
+                </div>
+            </section>
+
+            <!-- 安装后配置 -->
+            <section id="post-install">
+                <h2><span class="emoji">🔧</span> 安装后配置</h2>
+
+                <h3>1. 创建普通用户</h3>
+                <p>使用 root 登录后，创建一个日常使用的普通用户：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 创建用户（替换 yourname 为你想要的用户名）
+useradd -m -G wheel yourname
+
+# 设置密码
+passwd yourname
+
+# 安装 sudo
+pacman -S sudo
+
+# 赋予 sudo 权限
+EDITOR=nano visudo</code></pre>
+                <p>找到 <code># %wheel ALL=(ALL:ALL) ALL</code>，删除行首的 <code>#</code>，保存退出。</p>
+
+                <h3>2. 配置国内镜像源（加速下载）</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 安装 reflector
+sudo pacman -S reflector
+
+# 自动选择最快镜像
+sudo reflector --country China --protocol https --latest 10 --sort rate --save /etc/pacman.d/mirrorlist</code></pre>
+
+                <h3>3. 添加 Arch Linux CN 源</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code>sudo nano /etc/pacman.conf</code></pre>
+                <p>在文件末尾添加：</p>
+                <pre><code>[archlinuxcn]
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch</code></pre>
+                <p>然后导入密钥：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code>sudo pacman -Sy
+sudo pacman -S archlinuxcn-keyring</code></pre>
+
+                <h3>4. 安装常用工具</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 基本工具
+sudo pacman -S git wget curl neofetch htop
+
+# 中文字体
+sudo pacman -S noto-fonts-cjk wqy-microhei
+
+# 安装 yay (AUR 助手)
+sudo pacman -S yay</code></pre>
+
+                <h3>5. 安装桌面环境（可选）</h3>
+                <p>如果想使用图形界面，安装 KDE Plasma（推荐新手）：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 安装 KDE Plasma
+sudo pacman -S plasma-meta kde-applications
+
+# 安装显示管理器
+sudo pacman -S sddm
+sudo systemctl enable sddm
+
+# 重启进入图形界面
+reboot</code></pre>
+
+                <div class="tip-box">
+                    重启后会自动进入登录界面（SDDM），选择你的用户登录即可进入 KDE 桌面。
+                </div>
+            </section>
+
+            <!-- VMware Tools -->
+            <section id="tools">
+                <h2><span class="emoji">🛠️</span> 安装 VMware Tools</h2>
+
+                <div class="intro-box">
+                    <strong>VMware Tools</strong> 是 VMware 的增强工具，安装后可以：
+                    <ul>
+                        <li>自适应调整虚拟机分辨率</li>
+                        <li>在主机和虚拟机之间复制粘贴</li>
+                        <li>共享文件夹</li>
+                        <li>更好的鼠标和显卡性能</li>
+                    </ul>
+                </div>
+
+                <h3>安装 open-vm-tools（推荐）</h3>
+                <p>Arch 官方仓库提供了开源的 VMware Tools：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 安装 open-vm-tools
+sudo pacman -S open-vm-tools
+
+# 安装桌面环境集成（如果安装了桌面）
+sudo pacman -S open-vm-tools-desktop
+
+# 启用服务
+sudo systemctl enable vmtoolsd
+sudo systemctl start vmtoolsd</code></pre>
+
+                <h3>验证安装</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 检查服务状态
+systemctl status vmtoolsd
+
+# 查看 VMware Tools 版本
+vmware-toolbox-cmd -v</code></pre>
+
+                <h3>设置共享文件夹（可选）</h3>
+                <ol>
+                    <li>在 VMware 菜单中：虚拟机 → 设置 → 选项 → 共享文件夹</li>
+                    <li>选择"总是启用"，添加要共享的主机文件夹</li>
+                    <li>在虚拟机中挂载：</li>
+                </ol>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 创建挂载点
+mkdir -p ~/shared
+
+# 挂载共享文件夹（替换 shared-folder-name 为你设置的名称）
+sudo mount -t fuse.vmhgfs-fuse .host:/shared-folder-name ~/shared -o allow_other
+
+# 要开机自动挂载，编辑 /etc/fstab
+sudo nano /etc/fstab</code></pre>
+                <p>添加：</p>
+                <pre><code>.host:/shared-folder-name /home/yourname/shared fuse.vmhgfs-fuse allow_other,defaults 0 0</code></pre>
+
+                <div class="success-box">
+                    安装 VMware Tools 后，<strong>重启虚拟机</strong>，然后尝试调整 VMware 窗口大小，分辨率应该会自动适应！
+                </div>
+            </section>
+
+            <!-- 快照功能 -->
+            <section id="snapshot">
+                <h2><span class="emoji">📸</span> 使用快照功能（救命神器）</h2>
+
+                <div class="intro-box">
+                    <strong>快照是 VMware 最强大的功能之一！</strong> 它可以将虚拟机当前状态保存下来，随时恢复。
+                </div>
+
+                <h3>什么时候创建快照？</h3>
+                <ul>
+                    <li>✅ 系统刚安装完成，配置好基础环境后</li>
+                    <li>✅ 安装大型软件或更新系统前</li>
+                    <li>✅ 尝试不确定的操作前</li>
+                    <li>✅ 系统运行正常，想保留这个好状态时</li>
+                </ul>
+
+                <h3>如何创建快照</h3>
+                <ol>
+                    <li>关闭虚拟机（或挂起）</li>
+                    <li>VMware 菜单：虚拟机 → 快照 → 拍摄快照</li>
+                    <li>输入快照名称和描述（如："刚安装完成，已配置好网络"）</li>
+                    <li>点击"拍摄快照"</li>
+                </ol>
+
+                <div class="screenshot-desc">
+                    <strong>🖼️ 界面示意</strong>
+                    <p>虚拟机 → 快照 → 拍摄快照 → 填写名称 → 拍摄快照</p>
+                </div>
+
+                <h3>如何恢复快照</h3>
+                <p>如果系统搞砸了，轻松恢复：</p>
+                <ol>
+                    <li>关闭虚拟机</li>
+                    <li>VMware 菜单：虚拟机 → 快照 → 恢复到快照</li>
+                    <li>选择要恢复的快照</li>
+                    <li>点击"恢复"</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>注意：</strong>恢复快照会丢失快照之后做的所有更改！重要文件记得备份！
+                </div>
+
+                <h3>快照管理技巧</h3>
+                <table>
+                    <tr>
+                        <th>操作</th>
+                        <th>路径</th>
+                    </tr>
+                    <tr>
+                        <td>查看所有快照</td>
+                        <td>虚拟机 → 快照 → 快照管理器</td>
+                    </tr>
+                    <tr>
+                        <td>删除快照</td>
+                        <td>快照管理器 → 选择快照 → 删除</td>
+                    </tr>
+                    <tr>
+                        <td>克隆虚拟机</td>
+                        <td>虚拟机 → 管理 → 克隆（基于快照创建新虚拟机）</td>
+                    </tr>
+                </table>
+
+                <div class="tip-box">
+                    <strong>建议：</strong>定期清理不需要的旧快照，因为快照会占用磁盘空间。
+                </div>
+            </section>
+
+            <!-- 常见问题 -->
+            <section id="faq">
+                <h2><span class="emoji">❓</span> 常见问题解决</h2>
+
+                <h3>1. 无法启动，卡在黑屏</h3>
+                <div class="info-box">
+                    <strong>可能原因：</strong>显卡兼容性问题
+                    <p><strong>解决：</strong>编辑虚拟机设置 → 显示器 → 取消勾选"加速 3D 图形"</p>
+                </div>
+
+                <h3>2. 网络无法连接</h3>
+                <div class="info-box">
+                    <strong>检查步骤：</strong>
+                    <ol>
+                        <li>确认 VMware 虚拟网络服务已启动（Windows 服务中）</li>
+                        <li>虚拟机设置 → 网络适配器 → 确认选择 NAT 或桥接模式</li>
+                        <li>在 Arch 中检查网络服务：<code>systemctl status NetworkManager</code></li>
+                        <li>如果未运行，启动它：<code>sudo systemctl start NetworkManager</code></li>
+                    </ol>
+                </div>
+
+                <h3>3. 分辨率无法调整</h3>
+                <div class="info-box">
+                    <strong>解决：</strong>
+                    <ol>
+                        <li>确保已安装 open-vm-tools-desktop</li>
+                        <li>重启虚拟机</li>
+                        <li>VMware 菜单：查看 → 自动调整大小 → 自动适应客户机</li>
+                    </ol>
+                </div>
+
+                <h3>4. 无法复制粘贴</h3>
+                <div class="info-box">
+                    <strong>解决：</strong>
+                    <ol>
+                        <li>确认已安装 open-vm-tools-desktop</li>
+                        <li>VMware 菜单：虚拟机 → 可移动设备 → 确保没有禁用复制粘贴</li>
+                        <li>重启 vmtoolsd 服务：<code>sudo systemctl restart vmtoolsd</code></li>
+                    </ol>
+                </div>
+
+                <h3>5. 更新系统后无法启动</h3>
+                <div class="info-box">
+                    <strong>解决：</strong>
+                    <ol>
+                        <li>使用 Arch ISO 重新启动虚拟机</li>
+                        <li>按照安装步骤中的挂载方式，挂载分区</li>
+                        <li>arch-chroot /mnt 进入系统</li>
+                        <li>检查并修复问题（如重新安装内核、重建 initramfs 等）</li>
+                        <li>或者：直接恢复快照！这就是用虚拟机的好处 😄</li>
+                    </ol>
+                </div>
+
+                <h3>6. 磁盘空间不足</h3>
+                <div class="info-box">
+                    <strong>解决：</strong>
+                    <ol>
+                        <li>关闭虚拟机</li>
+                        <li>VMware 菜单：虚拟机 → 设置 → 硬盘 → 扩展</li>
+                        <li>输入新的最大磁盘大小</li>
+                        <li>启动虚拟机，使用 GParted 扩展分区</li>
+                    </ol>
+                </div>
+
+                <h3>7. 想备份整个虚拟机</h3>
+                <div class="info-box">
+                    <strong>方法：</strong>
+                    <ol>
+                        <li>关闭虚拟机</li>
+                        <li>找到虚拟机文件夹（创建时指定的位置）</li>
+                        <li>复制整个文件夹到安全位置</li>
+                        <li>需要恢复时，VMware → 文件 → 打开 → 选择 .vmx 文件</li>
+                    </ol>
+                </div>
+
+                <div class="success-box">
+                    <strong>记住：</strong>在 VMware 里折腾 Arch，最坏的情况就是删除虚拟机重建！放心大胆地学习和尝试吧！
+                </div>
+            </section>
+
+            <!-- 实用技巧 -->
+            <section>
+                <h2><span class="emoji">💡</span> VMware + Arch 实用技巧</h2>
+
+                <h3>快捷键速查</h3>
+                <table>
+                    <tr>
+                        <th>快捷键</th>
+                        <th>作用</th>
+                    </tr>
+                    <tr>
+                        <td><span class="key-combo">Ctrl+G</span></td>
+                        <td>将输入定向到虚拟机（点击虚拟机内部）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="key-combo">Ctrl+Alt</span></td>
+                        <td>将输入从虚拟机释放（回到主机）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="key-combo">Ctrl+Alt+Enter</span></td>
+                        <td>全屏模式</td>
+                    </tr>
+                    <tr>
+                        <td><span class="key-combo">Ctrl+Alt+Insert</span></td>
+                        <td>向虚拟机发送 Ctrl+Alt+Delete</td>
+                    </tr>
+                    <tr>
+                        <td><span class="key-combo">Ctrl+Shift+Alt+T</span></td>
+                        <td>在 VMware 中打开终端</td>
+                    </tr>
+                </table>
+
+                <h3>性能优化建议</h3>
+                <ul>
+                    <li>将虚拟机磁盘文件放在 SSD 上，大幅提升 IO 性能</li>
+                    <li>分配足够的内存，但不要超过物理机的一半</li>
+                    <li>如果不需要，可以关闭虚拟机的 3D 加速</li>
+                    <li>定期整理虚拟机磁盘：虚拟机 → 管理 → 清理磁盘</li>
+                    <li>禁用不必要的启动服务，加快启动速度</li>
+                </ul>
+
+                <h3>学习路线建议</h3>
+                <ol>
+                    <li><strong>第一阶段：</strong>熟悉命令行基本操作（ls, cd, cp, mv 等）</li>
+                    <li><strong>第二阶段：</strong>学习 pacman 包管理，安装常用软件</li>
+                    <li><strong>第三阶段：</strong>尝试安装和配置桌面环境</li>
+                    <li><strong>第四阶段：</strong>深入理解 Arch 的配置文件和系统结构</li>
+                    <li><strong>第五阶段：</strong>尝试在物理机上安装（可选）</li>
+                </ol>
+
+                <div class="success-box">
+                    <strong>🎉 祝你学习愉快！</strong> Arch Linux 的学习曲线虽然陡峭，但收获绝对值得。记住：<strong>Wiki 是你的好朋友</strong> → <a href="https://wiki.archlinux.org/" target="_blank">wiki.archlinux.org</a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Made with ❤️ for Arch Linux 新手</p>
+            <p>在 VMware 中安全地探索 Arch Linux 世界</p>
+            <p>参考：<a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a> | <a href="https://www.vmware.com/" target="_blank">VMware</a></p>
+        </footer>
+    </div>
+
+    <a href="#" class="back-to-top">↑</a>
+</body>
+</html>

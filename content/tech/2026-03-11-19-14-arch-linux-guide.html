@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>零基础 Arch Linux 使用指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1793d1 0%, #08d9d6 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .arch-logo {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e9ecef;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        nav a {
+            display: block;
+            padding: 10px 20px;
+            background: white;
+            color: #1793d1;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid #1793d1;
+        }
+
+        nav a:hover {
+            background: #1793d1;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(23, 147, 209, 0.3);
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #1793d1;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #08d9d6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: #495057;
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+        }
+
+        h4 {
+            color: #6c757d;
+            font-size: 1.1em;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .intro-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-left: 5px solid #1793d1;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 25px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+
+        .warning-box::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+
+        .tip-box {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+
+        .tip-box::before {
+            content: "💡 ";
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .code-header {
+            background: #1a1a1a;
+            color: #888;
+            padding: 8px 15px;
+            border-radius: 10px 10px 0 0;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-header + pre {
+            border-radius: 0 0 10px 10px;
+            margin-top: 0;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .step {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            border-color: #1793d1;
+            box-shadow: 0 5px 20px rgba(23, 147, 209, 0.1);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #1793d1, #08d9d6);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #1793d1, #08d9d6);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e3f2fd;
+        }
+
+        .command-table td:first-child {
+            font-family: "Consolas", monospace;
+            color: #e83e8c;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #2d2d2d;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        footer a {
+            color: #08d9d6;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 40px 20px;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            nav {
+                padding: 15px 20px;
+            }
+            
+            nav ul {
+                gap: 8px;
+            }
+            
+            nav a {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+            
+            main {
+                padding: 25px;
+            }
+            
+            pre {
+                padding: 15px;
+                font-size: 0.85em;
+            }
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1793d1;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5em;
+            box-shadow: 0 4px 15px rgba(23, 147, 209, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background: #08d9d6;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="arch-logo">🏔️</div>
+            <h1>零基础 Arch Linux 使用指南</h1>
+            <p>从零开始，轻松上手最纯净的 Linux 发行版</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#intro">简介</a></li>
+                <li><a href="#install">安装指南</a></li>
+                <li><a href="#config">基础配置</a></li>
+                <li><a href="#pacman">软件管理</a></li>
+                <li><a href="#desktop">桌面环境</a></li>
+                <li><a href="#apps">常用软件</a></li>
+                <li><a href="#tips">实用技巧</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- 简介 -->
+            <section id="intro">
+                <h2><span class="emoji">📖</span> 什么是 Arch Linux？</h2>
+                
+                <div class="intro-box">
+                    <strong>Arch Linux</strong> 是一款轻量级、灵活的 Linux 发行版，遵循<strong>简洁</strong>、<strong>现代</strong>、<strong>实用</strong>、<strong>以用户为中心</strong>的设计理念。
+                </div>
+
+                <h3>为什么选择 Arch Linux？</h3>
+                <ul>
+                    <li><strong>滚动更新</strong> - 永远使用最新版本的软件，无需重装系统</li>
+                    <li><strong>轻量简洁</strong> - 只安装你需要的东西，没有臃肿的预装软件</li>
+                    <li><strong>丰富的软件库</strong> - 官方仓库 + AUR（Arch 用户仓库）拥有海量软件</li>
+                    <li><strong>学习价值高</strong> - 深入了解 Linux 系统的绝佳选择</li>
+                    <li><strong>活跃的社区</strong> - Arch Wiki 是最全面的 Linux 文档之一</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>注意：</strong>Arch Linux 需要一定的动手能力，安装过程使用命令行。但别担心，跟着本教程一步步来，你一定能成功！
+                </div>
+            </section>
+
+            <!-- 安装指南 -->
+            <section id="install">
+                <h2><span class="emoji">💿</span> 安装 Arch Linux</h2>
+
+                <h3>准备工作</h3>
+                <ol>
+                    <li>下载 Arch Linux ISO 镜像：<a href="https://archlinux.org/download/" target="_blank">官网下载</a></li>
+                    <li>制作启动 U 盘（推荐工具：Rufus、Ventoy 或 balenaEtcher）</li>
+                    <li>备份重要数据！</li>
+                    <li>确保电脑已连接网络（有线网络最简单）</li>
+                </ol>
+
+                <h3>详细安装步骤</h3>
+
+                <div class="step">
+                    <h4><span class="step-number">1</span>启动到安装环境</h4>
+                    <p>插入 U 盘，从 U 盘启动，选择 "Arch Linux install medium"。成功后会进入命令行界面。</p>
+                    <div class="tip-box">
+                        如果键盘布局不是美式键盘，可以修改：<code>loadkeys cn</code>（中文键盘）
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">2</span>检查网络连接</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>ping archlinux.org</code></pre>
+                    <p>如果显示数据包返回，说明网络正常。按 <code>Ctrl+C</code> 停止。</p>
+                    <p>如果是 WiFi，使用：<code>iwctl</code> 进行连接</p>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">3</span>更新系统时间</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>timedatectl set-ntp true</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">4</span>分区（重要！）</h4>
+                    <p>查看磁盘：</p>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>fdisk -l</code></pre>
+                    <p>找到你的硬盘（通常是 <code>/dev/sda</code> 或 <code>/dev/nvme0n1</code>）</p>
+                    
+                    <div class="warning-box">
+                        <strong>注意：</strong>分区会清除数据！请确认选择正确的磁盘！
+                    </div>
+
+                    <p>使用 cfdisk 分区（适合新手）：</p>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>cfdisk /dev/sda</code></pre>
+
+                    <p>推荐分区方案（UEFI）：</p>
+                    <table>
+                        <tr>
+                            <th>分区</th>
+                            <th>大小</th>
+                            <th>类型</th>
+                            <th>用途</th>
+                        </tr>
+                        <tr>
+                            <td>/dev/sda1</td>
+                            <td>512MB</td>
+                            <td>EFI System</td>
+                            <td>启动分区</td>
+                        </tr>
+                        <tr>
+                            <td>/dev/sda2</td>
+                            <td>剩余空间</td>
+                            <td>Linux filesystem</td>
+                            <td>根分区</td>
+                        </tr>
+                    </table>
+                    <p>写入后选择 Quit 退出</p>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">5</span>格式化分区</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 格式化 EFI 分区
+mkfs.fat -F32 /dev/sda1
+
+# 格式化根分区（ext4）
+mkfs.ext4 /dev/sda2</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">6</span>挂载分区</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 挂载根分区
+mount /dev/sda2 /mnt
+
+# 创建并挂载 EFI 分区
+mkdir -p /mnt/boot/EFI
+mount /dev/sda1 /mnt/boot/EFI</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">7</span>安装基础系统</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>pacstrap /mnt base base-devel linux linux-firmware vim nano networkmanager</code></pre>
+                    <p>这会安装基础系统、Linux 内核、常用工具和编辑器。</p>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">8</span>生成 fstab 文件</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>genfstab -U /mnt >> /mnt/etc/fstab</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">9</span>进入新系统</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>arch-chroot /mnt</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">10</span>设置时区</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 查看时区
+ls /usr/share/zoneinfo/Asia
+
+# 设置时区（中国）
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+hwclock --systohc</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">11</span>设置语言</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 编辑 locale.gen
+nano /etc/locale.gen</code></pre>
+                    <p>找到并取消注释（删除 #）：</p>
+                    <pre><code>en_US.UTF-8 UTF-8
+zh_CN.UTF-8 UTF-8</code></pre>
+                    <p>保存（Ctrl+O，回车，Ctrl+X），然后执行：</p>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>locale-gen
+echo "LANG=zh_CN.UTF-8" > /etc/locale.conf</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">12</span>设置主机名</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 设置主机名（myarch 可以改成你喜欢的名字）
+echo "myarch" > /etc/hostname
+
+# 编辑 hosts 文件
+nano /etc/hosts</code></pre>
+                    <p>添加以下内容：</p>
+                    <pre><code>127.0.0.1   localhost
+::1         localhost
+127.0.1.1   myarch.localdomain   myarch</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">13</span>设置 root 密码</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>passwd</code></pre>
+                    <p>输入两次密码（不会显示）</p>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">14</span>安装引导程序（GRUB）</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 安装 GRUB 和相关包
+pacman -S grub efibootmgr
+
+# 安装 GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB
+
+# 生成配置文件
+grub-mkconfig -o /boot/grub/grub.cfg</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">15</span>启用网络服务</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code>systemctl enable NetworkManager</code></pre>
+                </div>
+
+                <div class="step">
+                    <h4><span class="step-number">16</span>退出并重启</h4>
+                    <div class="code-header">📟 终端</div>
+                    <pre><code># 退出 chroot 环境
+exit
+
+# 卸载分区
+umount -R /mnt
+
+# 重启
+reboot</code></pre>
+                    <p>记得拔出 U 盘！</p>
+                </div>
+
+                <div class="success-box">
+                    <strong>🎉 恭喜！</strong> Arch Linux 基础安装完成！重启后使用 root 账号和刚才设置的密码登录。
+                </div>
+            </section>
+
+            <!-- 基础配置 -->
+            <section id="config">
+                <h2><span class="emoji">⚙️</span> 基础配置</h2>
+
+                <h3>1. 创建普通用户</h3>
+                <p>日常使用不建议用 root，创建一个普通用户：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 创建用户（yourname 换成你的名字）
+useradd -m -G wheel yourname
+
+# 设置密码
+passwd yourname
+
+# 安装 sudo
+pacman -S sudo
+
+# 赋予 sudo 权限
+EDITOR=nano visudo</code></pre>
+                <p>找到 <code># %wheel ALL=(ALL:ALL) ALL</code> 这一行，取消注释（删除 #），保存退出。</p>
+
+                <h3>2. 添加 Arch Linux CN 源（推荐）</h3>
+                <p>Arch Linux 中文社区源包含很多常用中文软件：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 编辑 pacman 配置
+nano /etc/pacman.conf</code></pre>
+                <p>在文件末尾添加：</p>
+                <pre><code>[archlinuxcn]
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch</code></pre>
+                <p>然后导入 GPG key：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code>pacman -Syy
+pacman -S archlinuxcn-keyring</code></pre>
+
+                <h3>3. 更换国内镜像源（加速下载）</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 安装 reflector
+pacman -S reflector
+
+# 自动生成最快镜像源列表
+reflector --country China --protocol https --latest 10 --sort rate --save /etc/pacman.d/mirrorlist</code></pre>
+
+                <h3>4. 安装微码（重要）</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># Intel CPU
+pacman -S intel-ucode
+
+# AMD CPU
+pacman -S amd-ucode
+
+# 重新生成 GRUB 配置
+grub-mkconfig -o /boot/grub/grub.cfg</code></pre>
+            </section>
+
+            <!-- 软件管理 -->
+            <section id="pacman">
+                <h2><span class="emoji">📦</span> 软件包管理</h2>
+
+                <p>Arch Linux 使用 <strong>pacman</strong> 作为包管理器，以下是常用命令：</p>
+
+                <h3>pacman 常用命令</h3>
+                <table class="command-table">
+                    <tr>
+                        <th>命令</th>
+                        <th>作用</th>
+                    </tr>
+                    <tr>
+                        <td>pacman -S 包名</td>
+                        <td>安装软件包</td>
+                    </tr>
+                    <tr>
+                        <td>pacman -R 包名</td>
+                        <td>删除软件包</td>
+                    </tr>
+                    <tr>
+                        <td>pacman -Rs 包名</td>
+                        <td>删除软件包及依赖</td>
+                    </tr>
+                    <tr>
+                        <td>pacman -Syu</td>
+                        <td>更新系统（同步仓库 + 升级）</td>
+                    </tr>
+                    <tr>
+                        <td>pacman -Sy</td>
+                        <td>同步软件仓库</td>
+                    </tr>
+                    <tr>
+                        <td>pacman -Ss 关键词</td>
+                        <td>搜索软件包</td>
+                    </tr>
+                    <tr>
+                        <td>pacman -Qi 包名</td>
+                        <td>查看已安装包信息</td>
+                    </tr>
+                    <tr>
+                        <td>pacman -Ql 包名</td>
+                        <td>查看包安装的文件</td>
+                    </tr>
+                    <tr>
+                        <td>pacman -Sc</td>
+                        <td>清理软件包缓存</td>
+                    </tr>
+                </table>
+
+                <div class="tip-box">
+                    <strong>更新系统的正确姿势：</strong>定期执行 <code>sudo pacman -Syu</code> 保持系统最新。Arch 是滚动更新，建议每周至少更新一次。
+                </div>
+
+                <h3>AUR（Arch 用户仓库）</h3>
+                <p>AUR 包含大量用户贡献的软件包，使用 <strong>yay</strong> 工具可以方便地安装：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 安装 yay（使用 archlinuxcn 源）
+sudo pacman -S yay
+
+# 或者从 AUR 安装
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si</code></pre>
+
+                <p>yay 常用命令：</p>
+                <table class="command-table">
+                    <tr>
+                        <th>命令</th>
+                        <th>作用</th>
+                    </tr>
+                    <tr>
+                        <td>yay -S 包名</td>
+                        <td>从 AUR/官方仓库安装</td>
+                    </tr>
+                    <tr>
+                        <td>yay -R 包名</td>
+                        <td>删除软件包</td>
+                    </tr>
+                    <tr>
+                        <td>yay -Syu</td>
+                        <td>更新所有包（包括 AUR）</td>
+                    </tr>
+                    <tr>
+                        <td>yay 关键词</td>
+                        <td>搜索并交互式安装</td>
+                    </tr>
+                    <tr>
+                        <td>yay -Yc</td>
+                        <td>清理不需要的依赖</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- 桌面环境 -->
+            <section id="desktop">
+                <h2><span class="emoji">🖥️</span> 安装桌面环境</h2>
+
+                <p>Arch 默认只有命令行，需要手动安装桌面环境。以下是几种热门选择：</p>
+
+                <h3>方案一：KDE Plasma（推荐新手）</h3>
+                <p>现代化、功能丰富、美观的桌面环境：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 安装 KDE Plasma 和常用应用
+sudo pacman -S plasma kde-applications sddm
+
+# 启用显示管理器
+sudo systemctl enable sddm
+
+# 安装中文字体
+sudo pacman -S noto-fonts-cjk wqy-microhei</code></pre>
+
+                <h3>方案二：GNOME</h3>
+                <p>简洁、现代的桌面环境：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 安装 GNOME
+sudo pacman -S gnome gnome-tweaks gdm
+
+# 启用显示管理器
+sudo systemctl enable gdm</code></pre>
+
+                <h3>方案三：XFCE（轻量级）</h3>
+                <p>适合老旧电脑：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 安装 XFCE
+sudo pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter
+
+# 启用显示管理器
+sudo systemctl enable lightdm</code></pre>
+
+                <h3>方案四：i3wm（平铺窗口管理器）</h3>
+                <p>适合键盘党、极客：</p>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 安装 i3
+sudo pacman -S i3-wm i3status dmenu rxvt-unicode lightdm lightdm-gtk-greeter
+
+# 启用显示管理器
+sudo systemctl enable lightdm</code></pre>
+
+                <div class="tip-box">
+                    安装完桌面环境后，重启即可进入图形界面：<code>sudo reboot</code>
+                </div>
+            </section>
+
+            <!-- 常用软件 -->
+            <section id="apps">
+                <h2><span class="emoji">🛠️</span> 常用软件安装</h2>
+
+                <h3>中文输入法</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># Fcitx5 输入法框架
+sudo pacman -S fcitx5-im fcitx5-chinese-addons fcitx5-qt fcitx5-gtk
+
+# 编辑环境变量
+nano ~/.bashrc</code></pre>
+                <p>添加以下内容：</p>
+                <pre><code>export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx</code></pre>
+
+                <h3>浏览器</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># Firefox
+sudo pacman -S firefox firefox-i18n-zh-cn
+
+# 或者 Chromium
+sudo pacman -S chromium</code></pre>
+
+                <h3>开发工具</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># VS Code
+sudo pacman -S code
+
+# Git
+sudo pacman -S git
+
+# Node.js
+sudo pacman -S nodejs npm
+
+# Python
+sudo pacman -S python python-pip</code></pre>
+
+                <h3>多媒体</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># VLC 播放器
+sudo pacman -S vlc
+
+# MPV 播放器（轻量）
+sudo pacman -S mpv
+
+# 音乐播放器
+sudo pacman -S elisa</code></pre>
+
+                <h3>办公软件</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># LibreOffice
+sudo pacman -S libreoffice-still-zh-cn
+
+# WPS Office（AUR）
+yay -S wps-office-cn wps-office-mui-zh-cn</code></pre>
+
+                <h3>实用工具</h3>
+                <table class="command-table">
+                    <tr>
+                        <th>软件</th>
+                        <th>安装命令</th>
+                        <th>说明</th>
+                    </tr>
+                    <tr>
+                        <td>QQ</td>
+                        <td>yay -S linuxqq</td>
+                        <td>腾讯 QQ Linux 版</td>
+                    </tr>
+                    <tr>
+                        <td>微信</td>
+                        <td>yay -S wechat-uos</td>
+                        <td>微信（需 AUR）</td>
+                    </tr>
+                    <tr>
+                        <td>网易云音乐</td>
+                        <td>yay -S netease-cloud-music</td>
+                        <td>音乐播放器</td>
+                    </tr>
+                    <tr>
+                        <td>QQ音乐</td>
+                        <td>yay -S qqmusic-bin</td>
+                        <td>QQ音乐 Linux 版</td>
+                    </tr>
+                    <tr>
+                        <td>百度网盘</td>
+                        <td>yay -S baidunetdisk-bin</td>
+                        <td>百度网盘</td>
+                    </tr>
+                    <tr>
+                        <td>Flameshot</td>
+                        <td>sudo pacman -S flameshot</td>
+                        <td>截图工具</td>
+                    </tr>
+                    <tr>
+                        <td>Peek</td>
+                        <td>sudo pacman -S peek</td>
+                        <td>GIF 录屏</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- 实用技巧 -->
+            <section id="tips">
+                <h2><span class="emoji">💡</span> 实用技巧</h2>
+
+                <h3>1. 系统维护</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 更新系统
+sudo pacman -Syu
+
+# 清理缓存（保留最近3个版本）
+sudo paccache -r
+
+# 删除孤立包
+sudo pacman -Rns $(pacman -Qtdq)
+
+# 查看系统信息
+neofetch</code></pre>
+
+                <h3>2. 解决更新问题</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 如果更新失败，先同步密钥环
+sudo pacman -Sy archlinux-keyring
+
+# 强制刷新数据库
+sudo pacman -Syyu
+
+# 修复损坏的包
+sudo pacman -S --overwrite="*" 包名</code></pre>
+
+                <h3>3. 常用快捷键</h3>
+                <table>
+                    <tr>
+                        <th>快捷键</th>
+                        <th>作用</th>
+                    </tr>
+                    <tr>
+                        <td>Ctrl + Alt + T</td>
+                        <td>打开终端（KDE）</td>
+                    </tr>
+                    <tr>
+                        <td>Alt + F2</td>
+                        <td>运行命令</td>
+                    </tr>
+                    <tr>
+                        <td>Alt + Tab</td>
+                        <td>切换窗口</td>
+                    </tr>
+                    <tr>
+                        <td>Print Screen</td>
+                        <td>截图</td>
+                    </tr>
+                    <tr>
+                        <td>Ctrl + Alt + Del</td>
+                        <td>打开系统监视器</td>
+                    </tr>
+                </table>
+
+                <h3>4. 学习资源</h3>
+                <ul>
+                    <li><strong>Arch Wiki：</strong><a href="https://wiki.archlinux.org/" target="_blank">wiki.archlinux.org</a> - 最权威的 Arch 文档</li>
+                    <li><strong>Arch Linux 中文论坛：</strong><a href="https://bbs.archlinuxcn.org/" target="_blank">bbs.archlinuxcn.org</a></li>
+                    <li><strong>Man 手册：</strong>命令行输入 <code>man 命令名</code> 查看帮助</li>
+                </ul>
+
+                <h3>5. 常用终端命令速查</h3>
+                <div class="code-header">📟 终端</div>
+                <pre><code># 文件操作
+ls          # 列出文件
+ls -la      # 列出所有文件（包括隐藏）
+cd 目录名    # 进入目录
+cd ..       # 返回上级
+pwd         # 显示当前路径
+mkdir 目录名 # 创建目录
+rm 文件名    # 删除文件
+rm -r 目录名 # 删除目录
+cp 源 目标   # 复制
+mv 源 目标   # 移动/重命名
+
+# 系统操作
+top         # 查看进程
+htop        # 更好的进程查看器（需安装）
+df -h       # 查看磁盘空间
+free -h     # 查看内存
+uname -a    # 查看内核版本
+shutdown now # 关机
+reboot      # 重启
+
+# 文件查看
+cat 文件名   # 查看文件内容
+head 文件名  # 查看前10行
+tail 文件名  # 查看后10行
+less 文件名  # 分页查看
+nano 文件名  # 编辑文件</code></pre>
+
+                <div class="success-box">
+                    <strong>🎉 恭喜！</strong> 你已经掌握了 Arch Linux 的基础使用。记住，遇到问题先查 <a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a>，几乎所有问题都能在那里找到答案！
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Made with ❤️ for Arch Linux 新手</p>
+            <p>Last Updated: 2024</p>
+            <p>参考：<a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a></p>
+        </footer>
+    </div>
+
+    <a href="#" class="back-to-top">↑</a>
+</body>
+</html>
