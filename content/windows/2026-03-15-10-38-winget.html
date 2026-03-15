@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>winget 0基础小白指南 | Windows 包管理器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        'win-blue': '#0078D4',
+                        'win-dark': '#1E1E1E',
+                        'win-gray': '#2D2D2D',
+                        'terminal-bg': '#0C0C0C',
+                        'terminal-green': '#13A10E',
+                    },
+                    animation: {
+                        'cursor': 'cursor 1s step-end infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        cursor: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .code-block {
+            background: #1E1E1E;
+            border-left: 4px solid #0078D4;
+        }
+        .command-tag {
+            background: rgba(0, 120, 212, 0.2);
+            border: 1px solid rgba(0, 120, 212, 0.4);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #0078D4, #005A9E);
+        }
+        .hover-lift {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .syntax-keyword { color: #569CD6; }
+        .syntax-string { color: #CE9178; }
+        .syntax-command { color: #9CDCFE; }
+        .syntax-comment { color: #6A9955; }
+        .syntax-param { color: #DCDCAA; }
+    </style>
+</head>
+<body class="text-gray-100 font-sans antialiased">
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden pt-20 pb-16 px-6">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%230078D4\' fill-opacity=\'0.1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+        </div>
+        
+        <div class="max-w-5xl mx-auto text-center relative z-10 animate-fade-in">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-medium mb-6">
+                <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                Windows 官方包管理器
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-100 to-blue-400 bg-clip-text text-transparent">
+                winget
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                0基础小白指南 · 一条命令安装软件<br>
+                <span class="text-blue-400 font-mono text-lg">告别手动下载 · 一键搞定所有</span>
+            </p>
+            
+            <!-- Quick Install Demo -->
+            <div class="max-w-2xl mx-auto glass-card rounded-xl p-6 text-left font-mono text-sm md:text-base shadow-2xl">
+                <div class="flex items-center gap-2 mb-3 text-gray-500 text-xs uppercase tracking-wider">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3"></path></svg>
+                    PowerShell / CMD
+                </div>
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-green-500">➜</span>
+                        <span class="syntax-command">winget</span>
+                        <span class="syntax-param">install</span>
+                        <span class="syntax-string">"Microsoft.PowerToys"</span>
+                        <span class="animate-cursor">▊</span>
+                    </div>
+                    <div class="text-gray-500 text-sm mt-2"># 按回车，自动下载并安装 PowerToys</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- What is winget -->
+    <section class="px-6 py-16 max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="animate-slide-up">
+                <h2 class="text-3xl font-bold mb-4 text-white">什么是 winget？</h2>
+                <p class="text-gray-400 text-lg leading-relaxed mb-6">
+                    winget（Windows Package Manager）是微软官方推出的命令行包管理工具。就像手机上的应用商店一样，但用命令行操作——输入一条命令，自动搜索、下载、安装软件，无需手动找官网、点下一步。
+                </p>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3 text-gray-300">
+                        <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <span>Windows 10/11 自带，无需额外安装</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-300">
+                        <div class="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <span>官方软件源，安全无毒</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-300">
+                        <div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                        </div>
+                        <span>支持数千款常用软件</span>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-8 hover-lift">
+                <div class="flex items-center justify-between mb-6">
+                    <span class="text-sm text-gray-500 uppercase tracking-wider">传统方式 vs winget</span>
+                    <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">效率提升 10x</span>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4 opacity-50">
+                        <div class="w-6 h-6 rounded bg-gray-700 flex items-center justify-center text-xs">1</div>
+                        <div class="text-sm text-gray-400">打开浏览器 → 搜索软件官网 → 找下载按钮 → 下载.exe → 双击运行 → 一路下一步 → 完成</div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <svg class="w-6 h-6 text-gray-600 rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-6 h-6 rounded bg-blue-600 flex items-center justify-center text-xs text-white font-bold">✓</div>
+                        <div class="text-sm text-white font-mono bg-blue-900/30 p-3 rounded-lg flex-1">
+                            winget install vscode<br>
+                            <span class="text-blue-400"># 回车，30秒搞定</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Check -->
+    <section class="px-6 py-16 bg-black/20">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">第一步：检查是否已安装</h2>
+            <div class="glass-card rounded-2xl p-8">
+                <p class="text-gray-400 mb-6">Windows 10 (1809+) 和 Windows 11 已内置 winget。按 <kbd class="px-2 py-1 bg-gray-700 rounded text-white font-mono text-sm">Win + R</kbd>，输入 <kbd class="px-2 py-1 bg-gray-700 rounded text-white font-mono text-sm">cmd</kbd> 回车，然后输入：</p>
+                
+                <div class="code-block rounded-lg p-4 font-mono text-sm mb-4 relative group">
+                    <button onclick="copyCode(this)" class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-xs">
+                        复制
+                    </button>
+                    <span class="syntax-command">winget</span> <span class="syntax-param">--version</span>
+                </div>
+                
+                <div class="bg-green-900/20 border border-green-500/30 rounded-lg p-4 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <div>
+                        <p class="text-green-400 font-medium mb-1">如果显示版本号（如 v1.9.25200），说明已就绪！</p>
+                        <p class="text-gray-400 text-sm">如果提示"不是内部或外部命令"，去 Microsoft Store 搜索 "App Installer" 并更新。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Commands -->
+    <section class="px-6 py-16 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-12 text-center">核心命令 · 5个够用了</h2>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Search -->
+            <div class="glass-card rounded-xl p-6 hover-lift border-t-4 border-blue-500">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold">搜索软件</h3>
+                </div>
+                <div class="code-block rounded-lg p-3 font-mono text-sm mb-3">
+                    <span class="syntax-command">winget</span> <span class="syntax-param">search</span> <span class="syntax-string">chrome</span>
+                </div>
+                <p class="text-gray-400 text-sm">找软件，看有哪些版本可用</p>
+            </div>
+
+            <!-- Install -->
+            <div class="glass-card rounded-xl p-6 hover-lift border-t-4 border-green-500">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold">安装软件</h3>
+                </div>
+                <div class="code-block rounded-lg p-3 font-mono text-sm mb-3">
+                    <span class="syntax-command">winget</span> <span class="syntax-param">install</span> <span class="syntax-string">vscode</span>
+                </div>
+                <p class="text-gray-400 text-sm">自动下载并安装，静默安装加 <code class="text-green-400">--silent</code></p>
+            </div>
+
+            <!-- List -->
+            <div class="glass-card rounded-xl p-6 hover-lift border-t-4 border-purple-500">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold">查看已安装</h3>
+                </div>
+                <div class="code-block rounded-lg p-3 font-mono text-sm mb-3">
+                    <span class="syntax-command">winget</span> <span class="syntax-param">list</span>
+                </div>
+                <p class="text-gray-400 text-sm">列出系统上所有已安装的软件</p>
+            </div>
+
+            <!-- Upgrade -->
+            <div class="glass-card rounded-xl p-6 hover-lift border-t-4 border-yellow-500">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold">升级软件</h3>
+                </div>
+                <div class="code-block rounded-lg p-3 font-mono text-sm mb-3">
+                    <span class="syntax-command">winget</span> <span class="syntax-param">upgrade</span> <span class="syntax-string">--all</span>
+                </div>
+                <p class="text-gray-400 text-sm">升级所有软件，或指定软件名升级单个</p>
+            </div>
+
+            <!-- Uninstall -->
+            <div class="glass-card rounded-xl p-6 hover-lift border-t-4 border-red-500">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold">卸载软件</h3>
+                </div>
+                <div class="code-block rounded-lg p-3 font-mono text-sm mb-3">
+                    <span class="syntax-command">winget</span> <span class="syntax-param">uninstall</span> <span class="syntax-string">chrome</span>
+                </div>
+                <p class="text-gray-400 text-sm">彻底卸载，比控制面板更干净</p>
+            </div>
+
+            <!-- Show -->
+            <div class="glass-card rounded-xl p-6 hover-lift border-t-4 border-gray-500">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-gray-500/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold">查看详情</h3>
+                </div>
+                <div class="code-block rounded-lg p-3 font-mono text-sm mb-3">
+                    <span class="syntax-command">winget</span> <span class="syntax-param">show</span> <span class="syntax-string">vscode</span>
+                </div>
+                <p class="text-gray-400 text-sm">显示软件版本、官网、描述等详细信息</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practical Examples -->
+    <section class="px-6 py-16 bg-black/20">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">实战场景 · 复制即用</h2>
+            
+            <div class="space-y-6">
+                <!-- Scenario 1 -->
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="step-number w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm">1</span>
+                        <h3 class="text-lg font-semibold">新电脑装机必备（批量安装）</h3>
+                    </div>
+                    <div class="code-block rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                        <span class="syntax-comment"># 一行命令装5个常用软件</span><br>
+                        <span class="syntax-command">winget</span> <span class="syntax-param">install</span> <span class="syntax-string">Microsoft.VisualStudioCode Git.Git Mozilla.Firefox 7zip.7zip VideoLAN.VLC</span> <span class="syntax-param">--silent</span>
+                    </div>
+                </div>
+
+                <!-- Scenario 2 -->
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="step-number w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm">2</span>
+                        <h3 class="text-lg font-semibold">查找特定软件（精确ID）</h3>
+                    </div>
+                    <div class="code-block rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                        <span class="syntax-comment"># 搜索微信，找到准确的包名</span><br>
+                        <span class="syntax-command">winget</span> <span class="syntax-param">search</span> <span class="syntax-string">wechat</span><br><br>
+                        <span class="syntax-comment"># 安装时使用精确ID避免装错</span><br>
+                        <span class="syntax-command">winget</span> <span class="syntax-param">install</span> <span class="syntax-string">Tencent.WeChat</span>
+                    </div>
+                </div>
+
+                <!-- Scenario 3 -->
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="step-number w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm">3</span>
+                        <h3 class="text-lg font-semibold">导出/导入软件清单（换机神器）</h3>
+                    </div>
+                    <div class="code-block rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                        <span class="syntax-comment"># 旧电脑导出所有已安装软件</span><br>
+                        <span class="syntax-command">winget</span> <span class="syntax-param">export</span> <span class="syntax-param">-o</span> <span class="syntax-string">"D:\apps.json"</span><br><br>
+                        <span class="syntax-comment"># 新电脑一键恢复所有软件</span><br>
+                        <span class="syntax-command">winget</span> <span class="syntax-param">import</span> <span class="syntax-param">-i</span> <span class="syntax-string">"D:\apps.json"</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Common Software IDs -->
+    <section class="px-6 py-16 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center">常用软件 ID 速查表</h2>
+        <div class="glass-card rounded-xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-white/5 border-b border-white/10">
+                        <tr>
+                            <th class="px-6 py-4 font-semibold text-gray-300">软件</th>
+                            <th class="px-6 py-4 font-semibold text-gray-300">安装命令</th>
+                            <th class="px-6 py-4 font-semibold text-gray-300">类别</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">VS Code</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install Microsoft.VisualStudioCode</td>
+                            <td class="px-6 py-4 text-gray-400">开发工具</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">Git</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install Git.Git</td>
+                            <td class="px-6 py-4 text-gray-400">开发工具</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">Python</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install Python.Python.3.12</td>
+                            <td class="px-6 py-4 text-gray-400">开发工具</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">Node.js</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install OpenJS.NodeJS</td>
+                            <td class="px-6 py-4 text-gray-400">开发工具</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">Chrome</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install Google.Chrome</td>
+                            <td class="px-6 py-4 text-gray-400">浏览器</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">Firefox</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install Mozilla.Firefox</td>
+                            <td class="px-6 py-4 text-gray-400">浏览器</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">7-Zip</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install 7zip.7zip</td>
+                            <td class="px-6 py-4 text-gray-400">工具</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">PowerToys</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install Microsoft.PowerToys</td>
+                            <td class="px-6 py-4 text-gray-400">系统增强</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">Windows Terminal</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install Microsoft.WindowsTerminal</td>
+                            <td class="px-6 py-4 text-gray-400">终端</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-medium">VLC</td>
+                            <td class="px-6 py-4 font-mono text-sm text-blue-400">winget install VideoLAN.VLC</td>
+                            <td class="px-6 py-4 text-gray-400">播放器</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips -->
+    <section class="px-6 py-16 max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center">小白避坑指南</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="glass-card rounded-xl p-6 border-l-4 border-yellow-500">
+                <h3 class="font-semibold text-yellow-400 mb-2">⚠️ 权限问题</h3>
+                <p class="text-gray-400 text-sm">部分软件安装需要管理员权限。如遇报错，右键"终端"选择"以管理员身份运行"再执行命令。</p>
+            </div>
+            <div class="glass-card rounded-xl p-6 border-l-4 border-blue-500">
+                <h3 class="font-semibold text-blue-400 mb-2">🔍 找不到软件？</h3>
+                <p class="text-gray-400 text-sm">不是所有软件都在 winget 仓库。搜索不到时，仍需手动下载安装包。</p>
+            </div>
+            <div class="glass-card rounded-xl p-6 border-l-4 border-green-500">
+                <h3 class="font-semibold text-green-400 mb-2">✅ 安装确认</h3>
+                <p class="text-gray-400 text-sm">默认安装前会提示确认（ Agreements ），按 <kbd class="px-1 bg-gray-700 rounded">Y</kbd> 继续，或加 <code class="text-green-400">--accept-package-agreements</code> 自动同意。</p>
+            </div>
+            <div class="glass-card rounded-xl p-6 border-l-4 border-purple-500">
+                <h3 class="font-semibold text-purple-400 mb-2">📦 多版本选择</h3>
+                <p class="text-gray-400 text-sm">搜索后注意看 Source 列：msstore 是微软商店版，winget 是官方源，ID 格式通常是 <code class="text-purple-400">Publisher.AppName</code>。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-6 py-12 text-center text-gray-500 text-sm">
+        <p>基于微软官方文档整理 | Windows Package Manager</p>
+        <p class="mt-2">参考来源：Microsoft Docs、CSDN技术博客、掘金社区 [^2^][^3^][^5^]</p>
+    </footer>
+
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.innerText.replace('复制', '').trim();
+            navigator.clipboard.writeText(code).then(() => {
+                const original = btn.innerText;
+                btn.innerText = '已复制!';
+                btn.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btn.innerText = original;
+                    btn.classList.remove('bg-green-600');
+                }, 2000);
+            });
+        }
+
+        // Add smooth scroll animation for elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `opacity 0.5s ease-out ${index * 0.1}s, transform 0.5s ease-out ${index * 0.1}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
