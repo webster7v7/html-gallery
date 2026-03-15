@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Digital Rain - 黑客帝国代码雨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        /* 扫描线效果 */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            background: linear-gradient(
+                transparent 50%,
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        /* 屏幕发光效果 */
+        .glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            background: radial-gradient(
+                ellipse at center,
+                transparent 0%,
+                rgba(0, 255, 0, 0.03) 50%,
+                rgba(0, 0, 0, 0.4) 100%
+            );
+        }
+
+        /* 中央Logo */
+        .logo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 2s ease-in 1s forwards;
+        }
+
+        .logo h1 {
+            font-size: 4vw;
+            color: #0f0;
+            text-shadow: 
+                0 0 10px #0f0,
+                0 0 20px #0f0,
+                0 0 40px #0f0,
+                0 0 80px #0f0;
+            letter-spacing: 0.5em;
+            font-weight: bold;
+        }
+
+        .logo p {
+            color: #0a0;
+            font-size: 1.2vw;
+            margin-top: 20px;
+            letter-spacing: 0.3em;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* 状态栏 */
+        .status-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            color: #0f0;
+            font-size: 12px;
+            z-index: 30;
+            text-shadow: 0 0 5px #0f0;
+        }
+
+        /* 闪烁效果 */
+        .flicker {
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.95; }
+        }
+
+        /* 控制面板 */
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 40;
+            background: rgba(0, 20, 0, 0.9);
+            border: 1px solid #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .controls button {
+            background: #001100;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .controls button:hover {
+            background: #0f0;
+            color: #000;
+            box-shadow: 0 0 15px #0f0;
+        }
+
+        /* 二进制背景装饰 */
+        .binary-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.03;
+            font-size: 14px;
+            color: #0f0;
+            overflow: hidden;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <!-- 扫描线 -->
+    <div class="scanlines"></div>
+    
+    <!-- 发光效果 -->
+    <div class="glow"></div>
+    
+    <!-- 二进制背景 -->
+    <div class="binary-bg" id="binaryBg"></div>
+    
+    <!-- 主画布 -->
+    <canvas id="matrix"></canvas>
+    
+    <!-- 中央Logo -->
+    <div class="logo">
+        <h1 class="flicker">MATRIX</h1>
+        <p>THE SYSTEM HAS YOU</p>
+    </div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div>SYSTEM: ONLINE</div>
+        <div id="streamCount">STREAMS: 0</div>
+        <div id="fps">FPS: 60</div>
+    </div>
+    
+    <!-- 控制面板 -->
+    <div class="controls">
+        <button onclick="changeColor('green')">绿色 (经典)</button>
+        <button onclick="changeColor('red')">红色</button>
+        <button onclick="changeColor('blue')">蓝色</button>
+        <button onclick="changeColor('purple')">紫色</button>
+        <button onclick="changeColor('gold')">金色</button>
+        <button onclick="toggleSpeed()">切换速度</button>
+        <button onclick="toggleTrails()">切换拖尾</button>
+    </div>
+
+    <script>
+        // ==================== 矩阵代码雨核心 ====================
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        // 设置画布尺寸
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // 字符集 - 包含日文片假名、数字、字母、符号
+        const katakana = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const special = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`';
+        const chinese = '的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经十三之进着等部度家电力里如水化高自二理起小物现实加量都两体制机当使点从业本去把性好应开它合还因由其些然前外天政四日那社义事平形相全表间样与关各重新线内数正心反你明看原又么利比或但质气第向道命此变条只没结解问意建月公无系军很情者最立代想已通并提直题党程展五果料象员革位入常文总次品式活设及管特件长求老头基资边流路级少图山统接知较将组见计别她手角期根论运农指几九区强放决西被干做必战先回则任取完举色';
+        
+        let chars = katakana + latin + nums + special;
+        
+        const fontSize = 16;
+        let columns = Math.floor(canvas.width / fontSize);
+        
+        // 颜色配置
+        const colors = {
+            green: { main: '#0f0', bright: '#fff', glow: 'rgba(0, 255, 0, 0.1)', bg: 'rgba(0, 0, 0, 0.05)' },
+            red: { main: '#f00', bright: '#fff', glow: 'rgba(255, 0, 0, 0.1)', bg: 'rgba(0, 0, 0, 0.05)' },
+            blue: { main: '#0af', bright: '#fff', glow: 'rgba(0, 170, 255, 0.1)', bg: 'rgba(0, 0, 0, 0.05)' },
+            purple: { main: '#d0f', bright: '#fff', glow: 'rgba(204, 0, 255, 0.1)', bg: 'rgba(0, 0, 0, 0.05)' },
+            gold: { main: '#fa0', bright: '#fff', glow: 'rgba(255, 170, 0, 0.1)', bg: 'rgba(0, 0, 0, 0.05)' }
+        };
+        
+        let currentColor = colors.green;
+        let speed = 1;
+        let trails = true;
+
+        // 雨滴类
+        class RainDrop {
+            constructor(x) {
+                this.x = x;
+                this.y = Math.random() * -100;
+                this.speed = (Math.random() * 2 + 1) * speed;
+                this.chars = [];
+                this.length = Math.floor(Math.random() * 15) + 5;
+                this.opacity = Math.random() * 0.5 + 0.5;
+                this.generateChars();
+            }
+            
+            generateChars() {
+                this.chars = [];
+                for (let i = 0; i < this.length; i++) {
+                    this.chars.push(chars[Math.floor(Math.random() * chars.length)]);
+                }
+            }
+            
+            update() {
+                this.y += this.speed * speed;
+                
+                // 随机改变字符
+                if (Math.random() > 0.95) {
+                    const idx = Math.floor(Math.random() * this.length);
+                    this.chars[idx] = chars[Math.floor(Math.random() * chars.length)];
+                }
+                
+                // 重置
+                if (this.y > canvas.height + this.length * fontSize) {
+                    this.y = Math.random() * -50;
+                    this.speed = (Math.random() * 2 + 1) * speed;
+                    this.length = Math.floor(Math.random() * 15) + 5;
+                    this.generateChars();
+                }
+            }
+            
+            draw() {
+                for (let i = 0; i < this.chars.length; i++) {
+                    const charY = this.y - i * fontSize;
+                    if (charY < -fontSize || charY > canvas.height + fontSize) continue;
+                    
+                    // 头部最亮
+                    if (i === 0) {
+                        ctx.fillStyle = currentColor.bright;
+                        ctx.shadowColor = currentColor.main;
+                        ctx.shadowBlur = 10;
+                    } else {
+                        // 渐变透明
+                        const alpha = Math.max(0, 1 - i / this.length) * this.opacity;
+                        ctx.fillStyle = currentColor.main;
+                        ctx.globalAlpha = alpha;
+                        ctx.shadowBlur = 0;
+                    }
+                    
+                    ctx.fillText(this.chars[i], this.x, charY);
+                    ctx.globalAlpha = 1;
+                }
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        // 创建雨滴
+        const drops = [];
+        function initDrops() {
+            drops.length = 0;
+            columns = Math.floor(canvas.width / fontSize);
+            for (let i = 0; i < columns; i++) {
+                // 随机初始延迟
+                if (Math.random() > 0.1) {
+                    const drop = new RainDrop(i * fontSize);
+                    drop.y = Math.random() * canvas.height - canvas.height;
+                    drops.push(drop);
+                }
+            }
+            document.getElementById('streamCount').textContent = `STREAMS: ${drops.length}`;
+        }
+        initDrops();
+
+        // 特殊效果 - 偶尔出现的闪光字符
+        class Glitch {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = Math.floor(Math.random() * columns) * fontSize;
+                this.y = Math.floor(Math.random() * canvas.height / fontSize) * fontSize;
+                this.life = Math.floor(Math.random() * 10) + 5;
+                this.char = chars[Math.floor(Math.random() * chars.length)];
+            }
+            
+            update() {
+                this.life--;
+                if (this.life <= 0) {
+                    this.reset();
+                }
+                if (Math.random() > 0.7) {
+                    this.char = chars[Math.floor(Math.random() * chars.length)];
+                }
+            }
+            
+            draw() {
+                ctx.fillStyle = '#fff';
+                ctx.shadowColor = currentColor.main;
+                ctx.shadowBlur = 20;
+                ctx.fillText(this.char, this.x, this.y);
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        const glitches = [];
+        for (let i = 0; i < 5; i++) {
+            glitches.push(new Glitch());
+        }
+
+        // 粒子效果
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.life = Math.random() * 100 + 50;
+                this.size = Math.random() * 2 + 1;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+                
+                if (this.life <= 0 || this.x < 0 || this.x > canvas.width || 
+                    this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            
+            draw() {
+                ctx.fillStyle = currentColor.main;
+                ctx.globalAlpha = this.life / 150 * 0.5;
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        const particles = [];
+        for (let i = 0; i < 30; i++) {
+            particles.push(new Particle());
+        }
+
+        // 渲染循环
+        let lastTime = 0;
+        let frameCount = 0;
+        let fps = 60;
+
+        function animate(currentTime) {
+            // 计算FPS
+            if (currentTime - lastTime >= 1000) {
+                fps = frameCount;
+                frameCount = 0;
+                lastTime = currentTime;
+                document.getElementById('fps').textContent = `FPS: ${fps}`;
+            }
+            frameCount++;
+
+            // 拖尾效果
+            if (trails) {
+                ctx.fillStyle = currentColor.bg;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            ctx.font = fontSize + 'px monospace';
+            ctx.textBaseline = 'top';
+
+            // 更新和绘制雨滴
+            drops.forEach(drop => {
+                drop.update();
+                drop.draw();
+            });
+
+            // 偶尔绘制闪光字符
+            if (Math.random() > 0.9) {
+                glitches.forEach(glitch => {
+                    glitch.update();
+                    glitch.draw();
+                });
+            }
+
+            // 绘制粒子
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // 偶尔的全屏闪光效果
+            if (Math.random() > 0.999) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // ==================== 控制功能 ====================
+        
+        function changeColor(colorName) {
+            currentColor = colors[colorName];
+            // 更新页面上的文字颜色
+            document.querySelectorAll('.logo h1, .logo p, .status-bar div').forEach(el => {
+                el.style.textShadow = `0 0 10px ${currentColor.main}, 0 0 20px ${currentColor.main}`;
+                if (el.classList.contains('flicker')) {
+                    el.style.color = currentColor.main;
+                }
+            });
+        }
+
+        function toggleSpeed() {
+            if (speed === 1) {
+                speed = 2;
+            } else if (speed === 2) {
+                speed = 0.5;
+            } else {
+                speed = 1;
+            }
+        }
+
+        function toggleTrails() {
+            trails = !trails;
+        }
+
+        // 生成二进制背景
+        function generateBinaryBg() {
+            const binaryBg = document.getElementById('binaryBg');
+            let binary = '';
+            for (let i = 0; i < 2000; i++) {
+                binary += Math.random() > 0.5 ? '1' : '0';
+                if (i % 100 === 0) binary += '\n';
+            }
+            binaryBg.textContent = binary;
+        }
+        generateBinaryBg();
+
+        // 键盘交互
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case '1': changeColor('green'); break;
+                case '2': changeColor('red'); break;
+                case '3': changeColor('blue'); break;
+                case '4': changeColor('purple'); break;
+                case '5': changeColor('gold'); break;
+                case ' ': toggleSpeed(); break;
+                case 't': case 'T': toggleTrails(); break;
+            }
+        });
+
+        // 鼠标交互 - 鼠标附近的雨滴加速
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            drops.forEach(drop => {
+                const dist = Math.abs(drop.x - mouseX);
+                if (dist < 50 && Math.abs(drop.y - mouseY) < 100) {
+                    drop.y += 5;
+                }
+            });
+        });
+
+        // 窗口大小改变时重新初始化
+        window.addEventListener('resize', () => {
+            resize();
+            initDrops();
+        });
+
+        // 启动动画
+        animate(0);
+
+        // ==================== 控制台彩蛋 ====================
+        console.log('%c⚠ THE MATRIX HAS YOU ⚠', 'color: #0f0; font-size: 20px; font-weight: bold;');
+        console.log('%cFOLLOW THE WHITE RABBIT', 'color: #0a0; font-size: 14px;');
+        console.log('%c快捷键: 1-5切换颜色, 空格切换速度, T切换拖尾', 'color: #0f0; font-size: 12px;');
+    </script>
+</body>
+</html>

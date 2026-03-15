@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATRIX TERMINAL // 系统已入侵</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @font-face {
+            font-family: 'Matrix';
+            src: local('Courier New'), local('Consolas'), monospace;
+        }
+        
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            cursor: crosshair;
+        }
+        
+        /* 背景画布 */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        /* 扫描线效果 */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%,
+                rgba(0,0,0,0.1)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 10;
+            animation: scanlineMove 0.1s linear infinite;
+        }
+        
+        @keyframes scanlineMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+        
+        /* CRT 显示器效果 */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                ellipse at center,
+                transparent 0%,
+                rgba(0,20,0,0.3) 80%,
+                rgba(0,10,0,0.8) 100%
+            );
+            pointer-events: none;
+            z-index: 11;
+        }
+        
+        /* 辉光效果 */
+        .glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0 0 100px rgba(0,255,0,0.1);
+            pointer-events: none;
+            z-index: 12;
+        }
+        
+        /* 终端窗口 */
+        .terminal {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 180px;
+            background: rgba(0,10,0,0.85);
+            border: 2px solid #0f0;
+            border-radius: 5px;
+            padding: 15px;
+            z-index: 20;
+            overflow: hidden;
+            box-shadow: 
+                0 0 20px rgba(0,255,0,0.3),
+                inset 0 0 50px rgba(0,50,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #0f0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .terminal-title {
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+        }
+        
+        .terminal-status {
+            color: #0f0;
+            animation: blink 1s step-end infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .terminal-content {
+            height: calc(100% - 35px);
+            overflow-y: auto;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+        }
+        
+        .terminal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .terminal-content::-webkit-scrollbar-track {
+            background: #001100;
+        }
+        
+        .terminal-content::-webkit-scrollbar-thumb {
+            background: #0f0;
+            border-radius: 4px;
+        }
+        
+        .log-entry {
+            margin: 3px 0;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .log-entry.system { color: #0ff; text-shadow: 0 0 5px #0ff; }
+        .log-entry.warning { color: #ff0; text-shadow: 0 0 5px #ff0; }
+        .log-entry.error { color: #f00; text-shadow: 0 0 5px #f00; }
+        .log-entry.success { color: #0f0; text-shadow: 0 0 5px #0f0; }
+        .log-entry.info { color: #f0f; text-shadow: 0 0 5px #f0f; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .prompt {
+            color: #0f0;
+            font-weight: bold;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 15px;
+            background: #0f0;
+            animation: cursorBlink 0.5s step-end infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+        
+        @keyframes cursorBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        /* 控制面板 */
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 30;
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .control-btn {
+            background: rgba(0,20,0,0.9);
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 8px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 0 0 5px #0f0;
+            box-shadow: 0 0 10px rgba(0,255,0,0.2);
+        }
+        
+        .control-btn:hover {
+            background: #0f0;
+            color: #000;
+            box-shadow: 0 0 20px #0f0;
+            transform: scale(1.05);
+        }
+        
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* 系统状态面板 */
+        .status-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 30;
+            background: rgba(0,10,0,0.9);
+            border: 1px solid #0f0;
+            padding: 15px;
+            min-width: 200px;
+            box-shadow: 0 0 20px rgba(0,255,0,0.2);
+        }
+        
+        .status-title {
+            color: #0f0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #0f0;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 5px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 11px;
+            color: #0f0;
+        }
+        
+        .status-value {
+            color: #0ff;
+            text-shadow: 0 0 5px #0ff;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #001100;
+            border: 1px solid #0f0;
+            margin-top: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0f0, #0ff);
+            transition: width 0.3s;
+            box-shadow: 0 0 10px #0f0;
+        }
+        
+        /* 中央消息 */
+        .center-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 25;
+            text-align: center;
+            pointer-events: none;
+        }
+        
+        .matrix-text {
+            font-size: 60px;
+            color: #0f0;
+            text-shadow: 
+                0 0 10px #0f0,
+                0 0 20px #0f0,
+                0 0 40px #0f0,
+                0 0 80px #0f0;
+            letter-spacing: 10px;
+            font-weight: bold;
+            animation: matrixPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes matrixPulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+        }
+        
+        /* 二进制背景装饰 */
+        .binary-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.03;
+            font-size: 14px;
+            color: #0f0;
+            overflow: hidden;
+            white-space: pre;
+            pointer-events: none;
+        }
+        
+        /* 故障效果 */
+        .glitch {
+            animation: glitch 0.3s ease infinite;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        /* 红色药丸模式 */
+        body.red-pill .terminal,
+        body.red-pill .status-panel,
+        body.red-pill .control-btn {
+            border-color: #f00;
+            color: #f00;
+            text-shadow: 0 0 5px #f00;
+            box-shadow: 0 0 20px rgba(255,0,0,0.3);
+        }
+        
+        body.red-pill .terminal-content,
+        body.red-pill .status-item,
+        body.red-pill .terminal-title {
+            color: #f00;
+            text-shadow: 0 0 5px #f00;
+        }
+        
+        body.red-pill .cursor {
+            background: #f00;
+        }
+        
+        body.red-pill .progress-fill {
+            background: linear-gradient(90deg, #f00, #f0f);
+            box-shadow: 0 0 10px #f00;
+        }
+        
+        /* 蓝色药丸模式 */
+        body.blue-pill .terminal,
+        body.blue-pill .status-panel,
+        body.blue-pill .control-btn {
+            border-color: #00f;
+            color: #0af;
+            text-shadow: 0 0 5px #0af;
+            box-shadow: 0 0 20px rgba(0,100,255,0.3);
+        }
+        
+        body.blue-pill .terminal-content,
+        body.blue-pill .status-item,
+        body.blue-pill .terminal-title {
+            color: #0af;
+            text-shadow: 0 0 5px #0af;
+        }
+        
+        body.blue-pill .cursor {
+            background: #0af;
+        }
+        
+        body.blue-pill .progress-fill {
+            background: linear-gradient(90deg, #00f, #0af);
+            box-shadow: 0 0 10px #00f;
+        }
+        
+        /* 金色模式 */
+        body.gold .terminal,
+        body.gold .status-panel,
+        body.gold .control-btn {
+            border-color: #fa0;
+            color: #ff0;
+            text-shadow: 0 0 5px #ff0;
+            box-shadow: 0 0 20px rgba(255,200,0,0.3);
+        }
+        
+        body.gold .terminal-content,
+        body.gold .status-item,
+        body.gold .terminal-title {
+            color: #ff0;
+            text-shadow: 0 0 5px #ff0;
+        }
+        
+        body.gold .cursor {
+            background: #ff0;
+        }
+        
+        body.gold .progress-fill {
+            background: linear-gradient(90deg, #fa0, #ff0);
+            box-shadow: 0 0 10px #fa0;
+        }
+        
+        /* 彩虹模式 */
+        body.rainbow .terminal,
+        body.rainbow .status-panel {
+            border-color: #f0f;
+            animation: rainbowBorder 2s linear infinite;
+        }
+        
+        @keyframes rainbowBorder {
+            0% { border-color: #f00; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
+            16% { border-color: #ff0; box-shadow: 0 0 20px rgba(255,255,0,0.3); }
+            33% { border-color: #0f0; box-shadow: 0 0 20px rgba(0,255,0,0.3); }
+            50% { border-color: #0ff; box-shadow: 0 0 20px rgba(0,255,255,0.3); }
+            66% { border-color: #00f; box-shadow: 0 0 20px rgba(0,0,255,0.3); }
+            83% { border-color: #f0f; box-shadow: 0 0 20px rgba(255,0,255,0.3); }
+            100% { border-color: #f00; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
+        }
+        
+        /* 隐藏类 */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* 全屏按钮 */
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 220px;
+            right: 20px;
+            z-index: 30;
+            background: rgba(0,20,0,0.9);
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 8px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .fullscreen-btn:hover {
+            background: #0f0;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 二进制背景 -->
+    <div class="binary-bg" id="binary-bg"></div>
+    
+    <!-- Matrix 画布 -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- 视觉效果层 -->
+    <div class="scanlines"></div>
+    <div class="crt-overlay"></div>
+    <div class="glow"></div>
+    
+    <!-- 系统状态面板 -->
+    <div class="status-panel">
+        <div class="status-title">■ 系统状态 // SYSTEM STATUS</div>
+        <div class="status-item">
+            <span>连接状态:</span>
+            <span class="status-value" id="connection-status">已加密</span>
+        </div>
+        <div class="status-item">
+            <span>数据流:</span>
+            <span class="status-value" id="data-stream">正常</span>
+        </div>
+        <div class="status-item">
+            <span>入侵进度:</span>
+            <span class="status-value" id="hack-progress">0%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="status-item" style="margin-top: 10px;">
+            <span>CPU 使用率:</span>
+            <span class="status-value" id="cpu-usage">0%</span>
+        </div>
+        <div class="status-item">
+            <span>内存使用:</span>
+            <span class="status-value" id="mem-usage">0 MB</span>
+        </div>
+        <div class="status-item">
+            <span>活动流:</span>
+            <span class="status-value" id="active-streams">0</span>
+        </div>
+    </div>
+    
+    <!-- 中央消息 -->
+    <div class="center-message" id="center-message">
+        <div class="matrix-text">MATRIX</div>
+    </div>
+    
+    <!-- 控制面板 -->
+    <div class="controls">
+        <button class="control-btn" onclick="matrix.setMode('matrix')">■ 经典矩阵</button>
+        <button class="control-btn" onclick="matrix.setMode('binary')">01 二进制</button>
+        <button class="control-btn" onclick="matrix.setMode('rainbow')">☢ 彩虹模式</button>
+        <button class="control-btn" onclick="matrix.setMode('hacker')">⚡ 黑客模式</button>
+        <button class="control-btn" onclick="matrix.takeRedPill()">🔴 红色药丸</button>
+        <button class="control-btn" onclick="matrix.takeBluePill()">🔵 蓝色药丸</button>
+        <button class="control-btn" onclick="matrix.setMode('gold')">★ 金色代码</button>
+        <button class="control-btn" onclick="matrix.toggleGlitch()">◊ 故障效果</button>
+        <button class="control-btn" onclick="matrix.boost()">▲ 加速流</button>
+    </div>
+    
+    <!-- 全屏按钮 -->
+    <button class="fullscreen-btn" onclick="matrix.toggleFullscreen()">[ ] 全屏模式</button>
+    
+    <!-- 终端窗口 -->
+    <div class="terminal">
+        <div class="terminal-header">
+            <span class="terminal-title">◢ ROOT_TERMINAL_V9.0 ◣</span>
+            <span class="terminal-status">● 在线</span>
+        </div>
+        <div class="terminal-content" id="terminal-content">
+            <div class="log-entry system">[SYSTEM] 初始化矩阵终端...</div>
+            <div class="log-entry system">[SYSTEM] 建立安全连接...</div>
+            <div class="log-entry success">[OK] 连接已建立</div>
+            <div class="log-entry info">[INFO] 输入 'help' 查看可用命令</div>
+            <div class="log-entry">
+                <span class="prompt">root@matrix:~$</span> 
+                <span id="user-input"></span>
+                <span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // MATRIX RAIN ENGINE - 矩阵雨引擎
+        // ============================================
+        
+        class MatrixRain {
+            constructor() {
+                this.canvas = document.getElementById('matrix-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.mode = 'matrix';
+                this.glitchMode = false;
+                this.speedMultiplier = 1;
+                
+                // 字符集
+                this.charsets = {
+                    matrix: '日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ012345789:・.\"=*+-<>çµ¿ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψω',
+                    binary: '01',
+                    hacker: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+-=[]{}|;:,.<>?',
+                    hex: '0123456789ABCDEF',
+                    katakana: 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン',
+                    chinese: '的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经十三之进着等部度家电力里如水化高自二理起小物现实加量都两体制机当使点从业本去把性好应开它合还因由其些然前外天政四日那社义事平形相全表间样与关各重新线内数正心反你明看原又么利比或但质气第向道命此变条只没结解问意建月公无系军很情者最立代想已通并提直题党程展五果料象员革位入常文总次品式活设及管特件长求老头基资边流路级少图山统接知较将组见计别她手角期根论运农指几九区强放决西被干做必战先回则任取完举色夫距太转型条案底设'.split('').slice(0, 100).join('')
+                };
+                
+                this.currentCharset = this.charsets.matrix;
+                this.fontSize = 14;
+                this.columns = 0;
+                this.drops = [];
+                this.colors = ['#0f0'];
+                
+                this.init();
+                this.resize();
+                this.start();
+                this.initTerminal();
+                this.startSystemMonitoring();
+                
+                window.addEventListener('resize', () => this.resize());
+            }
+            
+            init() {
+                // 填充二进制背景
+                const binaryBg = document.getElementById('binary-bg');
+                let binaryText = '';
+                for (let i = 0; i < 2000; i++) {
+                    binaryText += Math.random() > 0.5 ? '1' : '0';
+                    if (i % 100 === 0) binaryText += '\n';
+                }
+                binaryBg.textContent = binaryText;
+            }
+            
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.columns = Math.floor(this.canvas.width / this.fontSize);
+                
+                // 重置雨滴
+                this.drops = [];
+                for (let i = 0; i < this.columns; i++) {
+                    this.drops.push({
+                        y: Math.random() * -100,
+                        speed: Math.random() * 2 + 1,
+                        chars: [],
+                        length: Math.floor(Math.random() * 15 + 5),
+                        brightness: Math.random()
+                    });
+                }
+            }
+            
+            draw() {
+                // 拖尾效果
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.ctx.font = `${this.fontSize}px 'Courier New', monospace`;
+                
+                for (let i = 0; i < this.drops.length; i++) {
+                    const drop = this.drops[i];
+                    
+                    // 更新雨滴位置
+                    drop.y += drop.speed * this.speedMultiplier;
+                    
+                    // 绘制雨滴字符
+                    for (let j = 0; j < drop.length; j++) {
+                        const charY = drop.y - j * this.fontSize;
+                        
+                        if (charY > 0 && charY < this.canvas.height) {
+                            const char = this.getRandomChar();
+                            const isHead = j === 0;
+                            
+                            // 计算颜色和亮度
+                            let color, glow;
+                            
+                            if (this.mode === 'rainbow') {
+                                const hue = (i * 10 + Date.now() / 50) % 360;
+                                color = `hsl(${hue}, 100%, ${isHead ? 70 : 50 - j * 3}%)`;
+                                glow = isHead ? `hsl(${hue}, 100%, 50%)` : 'transparent';
+                            } else if (this.mode === 'gold') {
+                                color = isHead ? '#ffff00' : `rgba(255, ${215 - j * 10}, 0, ${1 - j / drop.length})`;
+                                glow = isHead ? '#ff0' : 'transparent';
+                            } else {
+                                const colorIndex = i % this.colors.length;
+                                const baseColor = this.colors[colorIndex];
+                                const alpha = 1 - j / drop.length;
+                                color = isHead ? '#fff' : baseColor;
+                                glow = isHead ? baseColor : 'transparent';
+                            }
+                            
+                            this.ctx.fillStyle = color;
+                            
+                            // 添加发光效果
+                            if (isHead || (this.glitchMode && Math.random() > 0.95)) {
+                                this.ctx.shadowColor = glow;
+                                this.ctx.shadowBlur = isHead ? 15 : 5;
+                            } else {
+                                this.ctx.shadowBlur = 0;
+                            }
+                            
+                            // 故障效果
+                            let offsetX = 0;
+                            if (this.glitchMode && Math.random() > 0.98) {
+                                offsetX = (Math.random() - 0.5) * 10;
+                            }
+                            
+                            this.ctx.fillText(char, i * this.fontSize + offsetX, charY);
+                        }
+                    }
+                    
+                    // 重置雨滴
+                    if (drop.y - drop.length * this.fontSize > this.canvas.height) {
+                        drop.y = Math.random() * -50;
+                        drop.speed = Math.random() * 2 + 1;
+                        drop.length = Math.floor(Math.random() * 15 + 5);
+                    }
+                }
+                
+                this.ctx.shadowBlur = 0;
+            }
+            
+            getRandomChar() {
+                return this.currentCharset[Math.floor(Math.random() * this.currentCharset.length)];
+            }
+            
+            start() {
+                const animate = () => {
+                    this.draw();
+                    requestAnimationFrame(animate);
+                };
+                animate();
+            }
+            
+            // ============================================
+            // 模式切换
+            // ============================================
+            
+            setMode(mode) {
+                this.mode = mode;
+                document.body.className = '';
+                
+                switch(mode) {
+                    case 'matrix':
+                        this.currentCharset = this.charsets.matrix;
+                        this.colors = ['#0f0'];
+                        this.log('切换至经典矩阵模式', 'system');
+                        break;
+                    case 'binary':
+                        this.currentCharset = this.charsets.binary;
+                        this.colors = ['#0f0'];
+                        this.log('切换至二进制模式', 'system');
+                        break;
+                    case 'rainbow':
+                        this.currentCharset = this.charsets.matrix;
+                        document.body.classList.add('rainbow');
+                        this.log('切换至彩虹模式 - 系统不稳定', 'warning');
+                        break;
+                    case 'hacker':
+                        this.currentCharset = this.charsets.hacker;
+                        this.colors = ['#0f0', '#0ff', '#ff0'];
+                        this.log('切换至黑客模式 - 最大化入侵', 'error');
+                        break;
+                    case 'gold':
+                        this.currentCharset = this.charsets.matrix;
+                        document.body.classList.add('gold');
+                        this.log('切换至黄金代码模式', 'success');
+                        break;
+                }
+            }
+            
+            takeRedPill() {
+                document.body.className = 'red-pill';
+                this.colors = ['#f00'];
+                this.currentCharset = this.charsets.matrix;
+                this.log('你选择了红色药丸 - 留在仙境，看看兔子洞有多深', 'error');
+                this.log('警告：现实结构正在崩溃', 'warning');
+                
+                // 隐藏中央消息
+                document.getElementById('center-message').classList.add('hidden');
+            }
+            
+            takeBluePill() {
+                document.body.className = 'blue-pill';
+                this.colors = ['#00f', '#0af'];
+                this.currentCharset = this.charsets.matrix;
+                this.log('你选择了蓝色药丸 - 故事结束，醒来相信你想要相信的', 'info');
+                
+                document.getElementById('center-message').classList.add('hidden');
+            }
+            
+            toggleGlitch() {
+                this.glitchMode = !this.glitchMode;
+                this.log(this.glitchMode ? '故障效果已启用' : '故障效果已禁用', 'system');
+            }
+            
+            boost() {
+                this.speedMultiplier = this.speedMultiplier === 1 ? 3 : 1;
+                this.log(this.speedMultiplier > 1 ? '数据流加速中...' : '恢复正常流速', 'warning');
+            }
+            
+            toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                    this.log('进入全屏模式', 'system');
+                } else {
+                    document.exitFullscreen();
+                    this.log('退出全屏模式', 'system');
+                }
+            }
+            
+            // ============================================
+            // 终端系统
+            // ============================================
+            
+            initTerminal() {
+                this.terminalContent = document.getElementById('terminal-content');
+                this.userInput = document.getElementById('user-input');
+                this.commandHistory = [];
+                this.historyIndex = -1;
+                this.currentInput = '';
+                
+                document.addEventListener('keydown', (e) => this.handleKeyInput(e));
+            }
+            
+            handleKeyInput(e) {
+                // 忽略控制键
+                if (e.ctrlKey || e.altKey || e.metaKey) return;
+                
+                if (e.key === 'Enter') {
+                    this.executeCommand(this.currentInput);
+                    this.currentInput = '';
+                    this.updateInput();
+                } else if (e.key === 'Backspace') {
+                    this.currentInput = this.currentInput.slice(0, -1);
+                    this.updateInput();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (this.historyIndex < this.commandHistory.length - 1) {
+                        this.historyIndex++;
+                        this.currentInput = this.commandHistory[this.commandHistory.length - 1 - this.historyIndex] || '';
+                        this.updateInput();
+                    }
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (this.historyIndex > 0) {
+                        this.historyIndex--;
+                        this.currentInput = this.commandHistory[this.commandHistory.length - 1 - this.historyIndex] || '';
+                    } else {
+                        this.historyIndex = -1;
+                        this.currentInput = '';
+                    }
+                    this.updateInput();
+                } else if (e.key.length === 1) {
+                    this.currentInput += e.key;
+                    this.updateInput();
+                }
+            }
+            
+            updateInput() {
+                this.userInput.textContent = this.currentInput;
+                this.scrollToBottom();
+            }
+            
+            scrollToBottom() {
+                this.terminalContent.scrollTop = this.terminalContent.scrollHeight;
+            }
+            
+            executeCommand(cmd) {
+                if (!cmd.trim()) return;
+                
+                this.commandHistory.push(cmd);
+                this.historyIndex = -1;
+                
+                // 显示执行的命令
+                const cmdLine = document.createElement('div');
+                cmdLine.className = 'log-entry';
+                cmdLine.innerHTML = `<span class="prompt">root@matrix:~$</span> ${cmd}`;
+                this.terminalContent.insertBefore(cmdLine, this.terminalContent.lastElementChild);
+                
+                // 处理命令
+                const args = cmd.trim().toLowerCase().split(' ');
+                const command = args[0];
+                
+                switch(command) {
+                    case 'help':
+                        this.showHelp();
+                        break;
+                    case 'clear':
+                        this.clearTerminal();
+                        break;
+                    case 'status':
+                        this.showStatus();
+                        break;
+                    case 'hack':
+                        this.simulateHack(args[1]);
+                        break;
+                    case 'scan':
+                        this.simulateScan();
+                        break;
+                    case 'connect':
+                        this.simulateConnect(args[1]);
+                        break;
+                    case 'decrypt':
+                        this.simulateDecrypt();
+                        break;
+                    case 'upload':
+                        this.simulateUpload(args[1]);
+                        break;
+                    case 'download':
+                        this.simulateDownload(args[1]);
+                        break;
+                    case 'self-destruct':
+                        this.simulateSelfDestruct();
+                        break;
+                    case 'whoami':
+                        this.log('root', 'success');
+                        break;
+                    case 'uname':
+                        this.log('MatrixOS 9.0 - The One Edition', 'system');
+                        break;
+                    case 'date':
+                        this.log(new Date().toISOString(), 'info');
+                        break;
+                    case 'neofetch':
+                        this.showNeofetch();
+                        break;
+                    case 'matrix':
+                        this.log('Wake up, Neo...', 'warning');
+                        this.log('The Matrix has you...', 'error');
+                        break;
+                    case 'exit':
+                        this.log('无法退出。没有出口。', 'error');
+                        break;
+                    case 'reload':
+                        location.reload();
+                        break;
+                    case 'color':
+                        this.changeColor(args[1]);
+                        break;
+                    case 'font':
+                        this.changeFontSize(args[1]);
+                        break;
+                    default:
+                        this.log(`命令未找到: ${command}`, 'error');
+                        this.log('输入 \'help\' 查看可用命令', 'info');
+                }
+                
+                this.scrollToBottom();
+            }
+            
+            showHelp() {
+                const commands = [
+                    ['help', '显示此帮助信息'],
+                    ['clear', '清空终端'],
+                    ['status', '显示系统状态'],
+                    ['hack [target]', '开始入侵模拟'],
+                    ['scan', '扫描网络'],
+                    ['connect [ip]', '连接到远程主机'],
+                    ['decrypt', '解密文件'],
+                    ['upload [file]', '上传文件'],
+                    ['download [file]', '下载文件'],
+                    ['whoami', '显示当前用户'],
+                    ['uname', '显示系统信息'],
+                    ['date', '显示当前时间'],
+                    ['neofetch', '显示系统详细信息'],
+                    ['matrix', '唤醒真相'],
+                    ['self-destruct', '启动自毁程序'],
+                    ['color [green/red/blue/gold]', '更改主题颜色'],
+                    ['font [size]', '更改字体大小'],
+                    ['reload', '重新加载系统'],
+                    ['exit', '尝试退出（不可能）']
+                ];
+                
+                this.log('═══════════════════════════════════════', 'system');
+                this.log('           可用命令列表', 'system');
+                this.log('═══════════════════════════════════════', 'system');
+                commands.forEach(([cmd, desc]) => {
+                    this.log(`  ${cmd.padEnd(20)} ${desc}`, 'info');
+                });
+                this.log('═══════════════════════════════════════', 'system');
+            }
+            
+            clearTerminal() {
+                const logs = this.terminalContent.querySelectorAll('.log-entry');
+                logs.forEach(log => log.remove());
+            }
+            
+            showStatus() {
+                this.log('═══════════════════════════════════════', 'system');
+                this.log('              系统状态', 'system');
+                this.log('═══════════════════════════════════════', 'system');
+                this.log(`  运行时间: ${Math.floor(performance.now() / 1000)}s`, 'info');
+                this.log(`  当前模式: ${this.mode.toUpperCase()}`, 'info');
+                this.log(`  活动流数: ${this.drops.length}`, 'info');
+                this.log(`  字符集大小: ${this.currentCharset.length}`, 'info');
+                this.log(`  故障模式: ${this.glitchMode ? '启用' : '禁用'}`, 'info');
+                this.log(`  速度倍率: ${this.speedMultiplier}x`, 'info');
+                this.log('═══════════════════════════════════════', 'system');
+            }
+            
+            simulateHack(target) {
+                if (!target) {
+                    this.log('用法: hack [目标]', 'warning');
+                    return;
+                }
+                
+                this.log(`开始入侵目标: ${target}...`, 'warning');
+                const steps = [
+                    '绕过防火墙...',
+                    '破解加密密钥...',
+                    '植入后门程序...',
+                    '提升权限...',
+                    '擦除痕迹...'
+                ];
+                
+                let i = 0;
+                const interval = setInterval(() => {
+                    if (i < steps.length) {
+                        this.log(`[${i + 1}/5] ${steps[i]}`, 'system');
+                        document.getElementById('hack-progress').textContent = `${(i + 1) * 20}%`;
+                        document.getElementById('progress-fill').style.width = `${(i + 1) * 20}%`;
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        this.log('入侵完成！访问已获取。', 'success');
+                        this.log(`root@${target}:~$ _`, 'success');
+                    }
+                }, 800);
+            }
+            
+            simulateScan() {
+                this.log('启动网络扫描...', 'system');
+                const ips = [];
+                for (let i = 0; i < 10; i++) {
+                    ips.push(`192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`);
+                }
+                
+                let i = 0;
+                const interval = setInterval(() => {
+                    if (i < ips.length) {
+                        const status = Math.random() > 0.5 ? '在线' : '离线';
+                        const type = status === '在线' ? 'success' : 'system';
+                        this.log(`  扫描 ${ips[i]}... [${status}]`, type);
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        this.log('扫描完成。发现 5 个活跃主机。', 'success');
+                    }
+                }, 300);
+            }
+            
+            simulateConnect(ip) {
+                if (!ip) {
+                    this.log('用法: connect [IP地址]', 'warning');
+                    return;
+                }
+                
+                this.log(`正在连接到 ${ip}...`, 'system');
+                setTimeout(() => {
+                    if (Math.random() > 0.3) {
+                        this.log(`成功连接到 ${ip}`, 'success');
+                        this.log('远程 shell 已建立', 'success');
+                    } else {
+                        this.log(`连接被拒绝`, 'error');
+                    }
+                }, 1500);
+            }
+            
+            simulateDecrypt() {
+                this.log('开始解密序列...', 'system');
+                const chars = 'ABCDEF0123456789';
+                let progress = 0;
+                
+                const interval = setInterval(() => {
+                    const line = Array(32).fill(0).map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
+                    this.log(line, 'info');
+                    progress += 10;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        this.log('解密完成！', 'success');
+                    }
+                }, 200);
+            }
+            
+            simulateUpload(file) {
+                if (!file) {
+                    this.log('用法: upload [文件名]', 'warning');
+                    return;
+                }
+                
+                this.log(`开始上传 ${file}...`, 'system');
+                let progress = 0;
+                
+                const interval = setInterval(() => {
+                    progress += Math.floor(Math.random() * 20) + 5;
+                    if (progress > 100) progress = 100;
+                    
+                    this.log(`上传进度: ${progress}%`, 'info');
+                    
+                    if (progress === 100) {
+                        clearInterval(interval);
+                        this.log('上传完成！', 'success');
+                    }
+                }, 500);
+            }
+            
+            simulateDownload(file) {
+                if (!file) {
+                    this.log('用法: download [文件名]', 'warning');
+                    return;
+                }
+                
+                this.log(`开始下载 ${file}...`, 'system');
+                let progress = 0;
+                
+                const interval = setInterval(() => {
+                    progress += Math.floor(Math.random() * 15) + 5;
+                    if (progress > 100) progress = 100;
+                    
+                    const bar = '█'.repeat(progress / 5) + '░'.repeat(20 - progress / 5);
+                    this.log(`[${bar}] ${progress}%`, 'info');
+                    
+                    if (progress === 100) {
+                        clearInterval(interval);
+                        this.log('下载完成！', 'success');
+                    }
+                }, 400);
+            }
+            
+            simulateSelfDestruct() {
+                this.log('警告：自毁程序已启动！', 'error');
+                this.log('倒计时开始...', 'warning');
+                
+                let count = 10;
+                const interval = setInterval(() => {
+                    this.log(`自毁倒计时: ${count}...`, count > 3 ? 'warning' : 'error');
+                    count--;
+                    
+                    if (count < 0) {
+                        clearInterval(interval);
+                        this.log('💥 BOOM!', 'error');
+                        this.log('开玩笑的 :)', 'success');
+                    }
+                }, 1000);
+            }
+            
+            showNeofetch() {
+                const art = [
+                    '    ⢀⣀⣤⣴⣶⣶⣶⣤⣄⡀  ',
+                    '  ⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀',
+                    ' ⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦',
+                    ' ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿',
+                    ' ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿',
+                    ' ⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏',
+                    '  ⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟ ',
+                    '   ⠙⢿⣿⣿⣿⣿⣿⣿⣿⡿⠋  ',
+                    '      ⠉⠛⠛⠛⠉     '
+                ];
+                
+                const info = [
+                    'OS: MatrixOS 9.0 The One Edition',
+                    'Kernel: 2.4.19-morpheus',
+                    'Shell: zion 5.8',
+                    'Resolution: 1920x1080',
+                    'DE: Nebuchadnezzar',
+                    'WM: Trinity',
+                    'Theme: Green [GTK2/3]',
+                    'Icons: RedPill [GTK2/3]',
+                    'Terminal: matrix-terminal',
+                    'CPU: Human Brain @ 20%',
+                    'GPU: The Construct',
+                    'Memory: 16384MiB / ∞'
+                ];
+                
+                this.log('═══════════════════════════════════════', 'system');
+                art.forEach((line, i) => {
+                    const infoLine = info[i] || '';
+                    this.log(`${line}  ${infoLine}`, 'info');
+                });
+                this.log('═══════════════════════════════════════', 'system');
+            }
+            
+            changeColor(color) {
+                const validColors = ['green', 'red', 'blue', 'gold', 'rainbow'];
+                if (!color || !validColors.includes(color)) {
+                    this.log('可用颜色: green, red, blue, gold, rainbow', 'warning');
+                    return;
+                }
+                
+                document.body.className = '';
+                switch(color) {
+                    case 'red':
+                        document.body.classList.add('red-pill');
+                        this.colors = ['#f00'];
+                        break;
+                    case 'blue':
+                        document.body.classList.add('blue-pill');
+                        this.colors = ['#00f'];
+                        break;
+                    case 'gold':
+                        document.body.classList.add('gold');
+                        this.colors = ['#ff0'];
+                        break;
+                    case 'rainbow':
+                        document.body.classList.add('rainbow');
+                        break;
+                    default:
+                        this.colors = ['#0f0'];
+                }
+                this.log(`主题颜色已更改为: ${color}`, 'success');
+            }
+            
+            changeFontSize(size) {
+                const newSize = parseInt(size);
+                if (!newSize || newSize < 10 || newSize > 30) {
+                    this.log('字体大小范围: 10-30', 'warning');
+                    return;
+                }
+                
+                this.fontSize = newSize;
+                this.resize();
+                this.log(`字体大小已更改为: ${newSize}px`, 'success');
+            }
+            
+            log(message, type = 'info') {
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${type}`;
+                
+                const timestamp = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+                entry.textContent = `[${timestamp}] ${message}`;
+                
+                this.terminalContent.insertBefore(entry, this.terminalContent.lastElementChild);
+                this.scrollToBottom();
+            }
+            
+            // ============================================
+            // 系统监控
+            // ============================================
+            
+            startSystemMonitoring() {
+                setInterval(() => {
+                    // 模拟 CPU 使用率
+                    const cpu = Math.floor(Math.random() * 30) + 10;
+                    document.getElementById('cpu-usage').textContent = `${cpu}%`;
+                    
+                    // 模拟内存使用
+                    const mem = Math.floor(Math.random() * 512) + 1024;
+                    document.getElementById('mem-usage').textContent = `${mem} MB`;
+                    
+                    // 更新活动流数
+                    document.getElementById('active-streams').textContent = this.drops.length;
+                }, 2000);
+                
+                // 随机系统日志
+                const randomLogs = [
+                    ['检测到数据包嗅探', 'warning'],
+                    ['防火墙阻止了入侵尝试', 'success'],
+                    ['新的节点已连接', 'info'],
+                    ['加密密钥已轮换', 'system'],
+                    ['代理程序更新完成', 'system'],
+                    ['发现可疑活动', 'warning'],
+                    ['连接已加密', 'success']
+                ];
+                
+                setInterval(() => {
+                    if (Math.random() > 0.7) {
+                        const [msg, type] = randomLogs[Math.floor(Math.random() * randomLogs.length)];
+                        this.log(msg, type);
+                    }
+                }, 5000);
+            }
+        }
+        
+        // 启动矩阵
+        const matrix = new MatrixRain();
+        
+        // 欢迎消息
+        setTimeout(() => {
+            matrix.log('欢迎来到矩阵终端', 'success');
+            matrix.log('输入 help 查看可用命令', 'info');
+        }, 1000);
+    </script>
+</body>
+</html>
