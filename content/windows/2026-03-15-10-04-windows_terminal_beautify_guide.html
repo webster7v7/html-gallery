@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Terminal 终极美化指南 | Windows Terminal Customization Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Inter', sans-serif;
+                background: #0d1117;
+                color: #c9d1d9;
+            }
+            code, pre, .mono {
+                font-family: 'JetBrains Mono', monospace;
+            }
+        }
+        @layer components {
+            .gradient-text {
+                background: linear-gradient(135deg, #58a6ff 0%, #a371f7 50%, #f778ba 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .glass-panel {
+                background: rgba(22, 27, 34, 0.8);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(48, 54, 61, 0.8);
+            }
+            .terminal-window {
+                background: #161b22;
+                border-radius: 12px;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(48, 54, 61, 0.8);
+                overflow: hidden;
+            }
+            .terminal-header {
+                background: #21262d;
+                padding: 12px 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                border-bottom: 1px solid #30363d;
+            }
+            .terminal-dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+            }
+            .terminal-dot.red { background: #ff5f56; }
+            .terminal-dot.yellow { background: #ffbd2e; }
+            .terminal-dot.green { background: #27c93f; }
+            .terminal-body {
+                padding: 20px;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+            .command-line {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 4px 0;
+            }
+            .prompt {
+                color: #58a6ff;
+                font-weight: bold;
+            }
+            .command {
+                color: #e6edf3;
+            }
+            .output {
+                color: #7d8590;
+                margin-left: 20px;
+            }
+            .step-card {
+                transition: all 0.3s ease;
+                border-left: 3px solid transparent;
+            }
+            .step-card:hover {
+                border-left-color: #58a6ff;
+                transform: translateX(4px);
+            }
+            .copy-btn {
+                opacity: 0;
+                transition: opacity 0.2s;
+            }
+            .code-block:hover .copy-btn {
+                opacity: 1;
+            }
+            .theme-preview {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .theme-preview:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 40px rgba(88, 166, 255, 0.15);
+            }
+            .glow-effect {
+                position: relative;
+            }
+            .glow-effect::before {
+                content: '';
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                background: linear-gradient(45deg, #58a6ff, #a371f7, #f778ba, #58a6ff);
+                border-radius: inherit;
+                z-index: -1;
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            .glow-effect:hover::before {
+                opacity: 0.5;
+                filter: blur(8px);
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen">
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-pink-900/20"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="relative max-w-5xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm mb-6">
+                <i class="fas fa-terminal"></i>
+                <span>Windows 11/10 通用</span>
+            </div>
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight">
+                <span class="gradient-text">Windows Terminal</span>
+                <br>
+                <span class="text-white">终极美化指南</span>
+            </h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                从 0 到 1 打造高颜值、高效率的终端环境。集成 Oh My Posh 主题引擎、Nerd Fonts 图标字体、
+                亚克力特效与智能补全，让你的命令行焕然一新。
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="document.getElementById('quick-start').scrollIntoView({behavior: 'smooth'})" 
+                        class="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold transition-all hover:scale-105 flex items-center gap-2">
+                    <i class="fas fa-rocket"></i>
+                    快速开始
+                </button>
+                <button onclick="document.getElementById('themes-showcase').scrollIntoView({behavior: 'smooth'})" 
+                        class="px-8 py-4 glass-panel hover:bg-gray-800 text-white rounded-xl font-semibold transition-all flex items-center gap-2">
+                    <i class="fas fa-palette"></i>
+                    浏览主题
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Preview Section -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-dot red"></div>
+                    <div class="terminal-dot yellow"></div>
+                    <div class="terminal-dot green"></div>
+                    <span class="ml-4 text-sm text-gray-400 mono">PowerShell 7.4</span>
+                </div>
+                <div class="terminal-body mono">
+                    <div class="command-line">
+                        <span class="prompt">❯</span>
+                        <span class="command">cd ~/projects/awesome-app</span>
+                    </div>
+                    <div class="command-line">
+                        <span style="color: #ff7b72;">➜</span>
+                        <span style="color: #ffa657;">awesome-app</span>
+                        <span style="color: #7ee787;">git:(</span><span style="color: #ff7b72;">main</span><span style="color: #7ee787;">)</span>
+                        <span style="color: #d2a8ff;">✗</span>
+                        <span class="command ml-2">ls -la</span>
+                    </div>
+                    <div class="output mt-2">
+                        <div class="grid grid-cols-4 gap-4 text-xs sm:text-sm">
+                            <span style="color: #58a6ff;">drwxr-xr-x</span>
+                            <span>webster7v7</span>
+                            <span>staff</span>
+                            <span style="color: #7d8590;">📁 src/</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-4 text-xs sm:text-sm mt-1">
+                            <span style="color: #58a6ff;">-rw-r--r--</span>
+                            <span>webster7v7</span>
+                            <span>staff</span>
+                            <span style="color: #7d8590;">📄 README.md</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-4 text-xs sm:text-sm mt-1">
+                            <span style="color: #58a6ff;">-rw-r--r--</span>
+                            <span>webster7v7</span>
+                            <span>staff</span>
+                            <span style="color: #7ee787;">⚙️ package.json</span>
+                        </div>
+                    </div>
+                    <div class="command-line mt-4">
+                        <span style="color: #ff7b72;">➜</span>
+                        <span style="color: #ffa657;">awesome-app</span>
+                        <span style="color: #7ee787;">git:(</span><span style="color: #ff7b72;">main</span><span style="color: #7ee787;">)</span>
+                        <span style="color: #d2a8ff;">✗</span>
+                        <span class="command ml-2 animate-pulse">_</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section id="quick-start" class="py-20 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">快速开始</h2>
+                <p class="text-gray-400">三步完成基础美化，全程不超过 5 分钟</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Step 1 -->
+                <div class="step-card glass-panel rounded-2xl p-8 glow-effect">
+                    <div class="flex items-start gap-6">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-xl font-bold border border-blue-500/30">
+                            1
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-3 text-white">安装 Oh My Posh</h3>
+                            <p class="text-gray-400 mb-4">使用 winget 一键安装主题引擎（推荐），或手动下载安装</p>
+
+                            <div class="code-block relative bg-black/50 rounded-lg p-4 border border-gray-800">
+                                <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded text-xs text-gray-300 transition-all">
+                                    <i class="fas fa-copy mr-1"></i>复制
+                                </button>
+                                <code class="mono text-sm text-green-400">winget install JanDeDobbeleer.OhMyPosh</code>
+                            </div>
+
+                            <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+                                <i class="fas fa-info-circle"></i>
+                                <span>安装后重启终端以加载环境变量</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card glass-panel rounded-2xl p-8 glow-effect">
+                    <div class="flex items-start gap-6">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center text-xl font-bold border border-purple-500/30">
+                            2
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-3 text-white">安装 Nerd Font 字体</h3>
+                            <p class="text-gray-400 mb-4">解决图标显示为方框或乱码问题，推荐 MesloLGM 或 JetBrainsMono</p>
+
+                            <div class="code-block relative bg-black/50 rounded-lg p-4 border border-gray-800 mb-4">
+                                <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded text-xs text-gray-300 transition-all">
+                                    <i class="fas fa-copy mr-1"></i>复制
+                                </button>
+                                <code class="mono text-sm text-green-400">oh-my-posh font install Meslo</code>
+                            </div>
+
+                            <div class="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
+                                <div class="flex items-start gap-3">
+                                    <i class="fas fa-lightbulb text-yellow-500 mt-1"></i>
+                                    <div class="text-sm text-gray-300">
+                                        <strong class="text-yellow-500">手动安装备选：</strong>
+                                        访问 <a href="https://www.nerdfonts.com/font-downloads" target="_blank" class="text-blue-400 hover:underline">nerdfonts.com</a> 
+                                        下载 FiraCode 或 Cascadia Code，解压后右键安装所有 .ttf 文件
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card glass-panel rounded-2xl p-8 glow-effect">
+                    <div class="flex items-start gap-6">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-pink-600/20 text-pink-400 flex items-center justify-center text-xl font-bold border border-pink-500/30">
+                            3
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-3 text-white">配置 PowerShell 配置文件</h3>
+                            <p class="text-gray-400 mb-4">创建或编辑配置文件，让 Oh My Posh 每次自动加载</p>
+
+                            <div class="space-y-3">
+                                <div class="code-block relative bg-black/50 rounded-lg p-4 border border-gray-800">
+                                    <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded text-xs text-gray-300 transition-all">
+                                        <i class="fas fa-copy mr-1"></i>复制
+                                    </button>
+                                    <code class="mono text-sm text-blue-400"># 创建配置文件（如果不存在）</code><br>
+                                    <code class="mono text-sm text-green-400">if (!(Test-Path -Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }</code><br><br>
+                                    <code class="mono text-sm text-blue-400"># 用记事本编辑</code><br>
+                                    <code class="mono text-sm text-green-400">notepad $PROFILE</code>
+                                </div>
+
+                                <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
+                                    <p class="text-sm text-gray-400 mb-2">在打开的记事本中添加以下内容：</p>
+                                    <div class="code-block relative">
+                                        <button onclick="copyCode(this)" class="copy-btn absolute -top-2 right-0 px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-xs text-gray-300 transition-all">
+                                            <i class="fas fa-copy mr-1"></i>复制
+                                        </button>
+                                        <code class="mono text-sm text-green-400">oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\jandedobbeleer.omp.json" | Invoke-Expression</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Windows Terminal Settings -->
+    <section class="py-20 px-4 bg-gray-900/30">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Windows Terminal 设置</h2>
+                <p class="text-gray-400">字体、背景、透明度等视觉优化</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Font Settings -->
+                <div class="glass-panel rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center text-blue-400">
+                            <i class="fas fa-font"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">字体设置</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">必须设置为已安装的 Nerd Font，否则图标显示为方框</p>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-black/30 rounded-lg">
+                            <span class="text-sm text-gray-300">字体名称</span>
+                            <code class="mono text-xs text-green-400">MesloLGM Nerd Font</code>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/30 rounded-lg">
+                            <span class="text-sm text-gray-300">字体大小</span>
+                            <span class="text-sm text-gray-400">12-14px 推荐</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20 text-sm text-blue-300">
+                        <i class="fas fa-route mr-2"></i>
+                        设置路径：设置 → 配置文件 → 默认值 → 外观 → 字体
+                    </div>
+                </div>
+
+                <!-- Appearance Settings -->
+                <div class="glass-panel rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-600/20 flex items-center justify-center text-purple-400">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">外观特效</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="font-medium text-gray-200">亚克力效果</div>
+                                <div class="text-xs text-gray-500">Acrylic 毛玻璃背景</div>
+                            </div>
+                            <div class="relative inline-block w-12 h-6 bg-gray-700 rounded-full cursor-pointer" onclick="this.classList.toggle('bg-green-600'); this.querySelector('div').classList.toggle('translate-x-6')">
+                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="font-medium text-gray-200">背景图片</div>
+                                <div class="text-xs text-gray-500">支持 JPG/PNG/GIF</div>
+                            </div>
+                            <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-xs transition-colors">
+                                选择文件
+                            </button>
+                        </div>
+
+                        <div class="p-3 bg-gray-800/50 rounded-lg">
+                            <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                <span>不透明度</span>
+                                <span>30%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full w-[30%] bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JSON Config -->
+            <div class="mt-8 glass-panel rounded-2xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-code text-yellow-500"></i>
+                    settings.json 配置示例
+                </h3>
+                <div class="code-block relative bg-black/50 rounded-lg p-4 border border-gray-800 overflow-x-auto">
+                    <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded text-xs text-gray-300 transition-all">
+                        <i class="fas fa-copy mr-1"></i>复制
+                    </button>
+                    <pre class="mono text-sm text-gray-300"><code>{
+  "profiles": {
+    "defaults": {
+      "font": {
+        "face": "MesloLGM Nerd Font",
+        "size": 12
+      },
+      "useAcrylic": true,
+      "acrylicOpacity": 0.3,
+      "backgroundImage": "C:/Users/YourName/Pictures/terminal-bg.jpg",
+      "backgroundImageOpacity": 0.2,
+      "colorScheme": "Campbell"
+    }
+  }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Themes Showcase -->
+    <section id="themes-showcase" class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">热门主题推荐</h2>
+                <p class="text-gray-400">执行 <code class="bg-gray-800 px-2 py-1 rounded text-green-400">Get-PoshThemes</code> 查看完整列表</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Theme 1 -->
+                <div class="theme-preview glass-panel rounded-xl p-6 border border-gray-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg">Powerlevel10k</h3>
+                        <span class="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">热门</span>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 mb-4 mono text-xs">
+                        <div class="text-blue-400">➜ ~</div>
+                        <div class="text-green-400">❯</div>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">经典 Powerline 风格，信息密度高，适合开发者</p>
+                    <div class="code-block relative">
+                        <code class="mono text-xs text-gray-500">powerlevel10k_rainbow</code>
+                    </div>
+                </div>
+
+                <!-- Theme 2 -->
+                <div class="theme-preview glass-panel rounded-xl p-6 border border-gray-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg">Atomic</h3>
+                        <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded">简洁</span>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 mb-4 mono text-xs">
+                        <div class="text-purple-400">~ ❯</div>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">极简主义设计，清爽干净，适合轻度使用</p>
+                    <div class="code-block relative">
+                        <code class="mono text-xs text-gray-500">atomic</code>
+                    </div>
+                </div>
+
+                <!-- Theme 3 -->
+                <div class="theme-preview glass-panel rounded-xl p-6 border border-gray-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg">Catppuccin</h3>
+                        <span class="px-2 py-1 bg-pink-500/20 text-pink-400 text-xs rounded">暖色</span>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 mb-4 mono text-xs">
+                        <div class="text-pink-400">➜ <span class="text-blue-400">~</span> <span class="text-green-400">❯</span></div>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">柔和的粉彩配色，护眼舒适，长时间使用不累</p>
+                    <div class="code-block relative">
+                        <code class="mono text-xs text-gray-500">catppuccin</code>
+                    </div>
+                </div>
+
+                <!-- Theme 4 -->
+                <div class="theme-preview glass-panel rounded-xl p-6 border border-gray-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg">Kali</h3>
+                        <span class="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">黑客风</span>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 mb-4 mono text-xs">
+                        <div class="text-green-500">root@kali:~#</div>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">Kali Linux 风格，绿色黑客主题，极客必备</p>
+                    <div class="code-block relative">
+                        <code class="mono text-xs text-gray-500">kali</code>
+                    </div>
+                </div>
+
+                <!-- Theme 5 -->
+                <div class="theme-preview glass-panel rounded-xl p-6 border border-gray-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg">Material</h3>
+                        <span class="px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs rounded">现代</span>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 mb-4 mono text-xs">
+                        <div class="text-cyan-400">➜ <span class="text-yellow-400">~</span></div>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">Material Design 设计语言，现代感强</p>
+                    <div class="code-block relative">
+                        <code class="mono text-xs text-gray-500">material</code>
+                    </div>
+                </div>
+
+                <!-- Theme 6 -->
+                <div class="theme-preview glass-panel rounded-xl p-6 border border-gray-800">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg">Star</h3>
+                        <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded">个性</span>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 mb-4 mono text-xs">
+                        <div class="text-yellow-400">★ ~ ❯</div>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">星形符号装饰，独特个性，与众不同</p>
+                    <div class="code-block relative">
+                        <code class="mono text-xs text-gray-500">star</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="https://ohmyposh.dev/docs/themes" target="_blank" 
+                   class="inline-flex items-center gap-2 px-6 py-3 glass-panel hover:bg-gray-800 rounded-xl transition-all text-gray-300 hover:text-white">
+                    <i class="fas fa-external-link-alt"></i>
+                    查看完整主题库 (200+)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Features -->
+    <section class="py-20 px-4 bg-gray-900/30">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">进阶功能</h2>
+                <p class="text-gray-400">提升效率的必备插件与配置</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Terminal Icons -->
+                <div class="glass-panel rounded-xl p-6 hover:border-blue-500/50 transition-colors">
+                    <div class="w-12 h-12 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-2xl mb-4">
+                        <i class="fas fa-icons"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Terminal-Icons</h3>
+                    <p class="text-sm text-gray-400 mb-4">为文件和文件夹添加彩色图标，ls 命令更直观</p>
+                    <div class="code-block relative bg-black/50 rounded p-3">
+                        <button onclick="copyCode(this)" class="copy-btn absolute top-2 right-2 text-xs text-gray-500 hover:text-white">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <code class="mono text-xs text-green-400 block">Install-Module Terminal-Icons</code>
+                        <code class="mono text-xs text-blue-400 block mt-1">Import-Module Terminal-Icons</code>
+                    </div>
+                </div>
+
+                <!-- PSReadLine -->
+                <div class="glass-panel rounded-xl p-6 hover:border-purple-500/50 transition-colors">
+                    <div class="w-12 h-12 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center text-2xl mb-4">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">PSReadLine</h3>
+                    <p class="text-sm text-gray-400 mb-4">语法高亮、智能提示、历史搜索，类似 Fish/Zsh</p>
+                    <div class="code-block relative bg-black/50 rounded p-3">
+                        <button onclick="copyCode(this)" class="copy-btn absolute top-2 right-2 text-xs text-gray-500 hover:text-white">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <code class="mono text-xs text-green-400 block">Install-Module PSReadLine</code>
+                        <code class="mono text-xs text-blue-400 block mt-1">Set-PSReadLineOption -PredictionSource History</code>
+                    </div>
+                </div>
+
+                <!-- Posh-Git -->
+                <div class="glass-panel rounded-xl p-6 hover:border-green-500/50 transition-colors">
+                    <div class="w-12 h-12 rounded-xl bg-green-600/20 text-green-400 flex items-center justify-center text-2xl mb-4">
+                        <i class="fab fa-git-alt"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Posh-Git</h3>
+                    <p class="text-sm text-gray-400 mb-4">Git 状态显示与命令补全，分支信息一目了然</p>
+                    <div class="code-block relative bg-black/50 rounded p-3">
+                        <button onclick="copyCode(this)" class="copy-btn absolute top-2 right-2 text-xs text-gray-500 hover:text-white">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <code class="mono text-xs text-green-400 block">Install-Module posh-git</code>
+                        <code class="mono text-xs text-blue-400 block mt-1">Import-Module posh-git</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Profile Example -->
+            <div class="mt-12 glass-panel rounded-2xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-file-code text-yellow-500"></i>
+                    完整配置文件示例 ($PROFILE)
+                </h3>
+                <div class="code-block relative bg-black/50 rounded-lg p-4 border border-gray-800 overflow-x-auto">
+                    <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded text-xs text-gray-300 transition-all">
+                        <i class="fas fa-copy mr-1"></i>复制全部
+                    </button>
+                    <pre class="mono text-sm text-gray-300"><code># Oh My Posh 主题初始化
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\powerlevel10k_rainbow.omp.json" | Invoke-Expression
+
+# 导入模块
+Import-Module Terminal-Icons
+Import-Module posh-git
+Import-Module PSReadLine
+
+# PSReadLine 配置
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle ListView
+Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+# 别名设置
+Set-Alias -Name ll -Value Get-ChildItem
+Set-Alias -Name g -Value git
+
+# 欢迎语
+Write-Host "🚀 PowerShell 已加载完成！" -ForegroundColor Green</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">常见问题</h2>
+                <p class="text-gray-400">遇到问题？这里有解决方案</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="glass-panel rounded-xl p-6 cursor-pointer hover:bg-gray-800/50 transition-colors" onclick="this.querySelector('.answer').classList.toggle('hidden')">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-semibold text-lg flex items-center gap-3">
+                            <i class="fas fa-question-circle text-yellow-500"></i>
+                            图标显示为方框或乱码？
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-500"></i>
+                    </div>
+                    <div class="answer hidden mt-4 text-gray-400 pl-8">
+                        <p class="mb-2">原因：未安装 Nerd Font 或终端字体设置不正确。</p>
+                        <ul class="list-disc list-inside space-y-1 text-sm">
+                            <li>确认已安装 MesloLGM Nerd Font 等字体</li>
+                            <li>Windows Terminal 设置中必须选择该字体</li>
+                            <li>VS Code 需单独设置 terminal.integrated.fontFamily</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-xl p-6 cursor-pointer hover:bg-gray-800/50 transition-colors" onclick="this.querySelector('.answer').classList.toggle('hidden')">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-semibold text-lg flex items-center gap-3">
+                            <i class="fas fa-question-circle text-yellow-500"></i>
+                            提示 "无法加载配置文件"？
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-500"></i>
+                    </div>
+                    <div class="answer hidden mt-4 text-gray-400 pl-8">
+                        <p class="mb-2">执行策略限制导致无法运行脚本。</p>
+                        <div class="code-block relative bg-black/50 rounded p-3 mt-2">
+                            <code class="mono text-sm text-green-400">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-xl p-6 cursor-pointer hover:bg-gray-800/50 transition-colors" onclick="this.querySelector('.answer').classList.toggle('hidden')">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-semibold text-lg flex items-center gap-3">
+                            <i class="fas fa-question-circle text-yellow-500"></i>
+                            终端启动变慢？
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-500"></i>
+                    </div>
+                    <div class="answer hidden mt-4 text-gray-400 pl-8">
+                        <p class="mb-2">Oh My Posh 可能因网络或配置导致延迟。</p>
+                        <ul class="list-disc list-inside space-y-1 text-sm">
+                            <li>使用本地主题文件而非远程 URL</li>
+                            <li>禁用不必要的模块导入</li>
+                            <li>更新到最新版本：winget upgrade JanDeDobbeleer.OhMyPosh</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-xl p-6 cursor-pointer hover:bg-gray-800/50 transition-colors" onclick="this.querySelector('.answer').classList.toggle('hidden')">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-semibold text-lg flex items-center gap-3">
+                            <i class="fas fa-question-circle text-yellow-500"></i>
+                            CMD 也能用 Oh My Posh 吗？
+                        </h3>
+                        <i class="fas fa-chevron-down text-gray-500"></i>
+                    </div>
+                    <div class="answer hidden mt-4 text-gray-400 pl-8">
+                        <p class="mb-2">可以，需要安装 Clink 工具。</p>
+                        <div class="code-block relative bg-black/50 rounded p-3 mt-2">
+                            <code class="mono text-sm text-green-400">winget install clink</code><br>
+                            <code class="mono text-sm text-blue-400"># 在 clink 目录创建 oh-my-posh.lua</code><br>
+                            <code class="mono text-sm text-green-400">load(io.popen('oh-my-posh init cmd'):read("*a"))()</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-gray-800">
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="flex justify-center gap-6 mb-6">
+                <a href="https://ohmyposh.dev/" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-book mr-2"></i>官方文档
+                </a>
+                <a href="https://github.com/JanDeDobbeleer/oh-my-posh" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-github mr-2"></i>GitHub
+                </a>
+                <a href="https://www.nerdfonts.com/" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-font mr-2"></i>Nerd Fonts
+                </a>
+            </div>
+            <p class="text-gray-600 text-sm">
+                Windows Terminal 美化指南 · 基于 Oh My Posh 与社区最佳实践
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(btn) {
+            const codeBlock = btn.parentElement.querySelector('code') || btn.parentElement.querySelector('pre');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check mr-1"></i>已复制';
+                btn.classList.add('text-green-400');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('text-green-400');
+                }, 2000);
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
