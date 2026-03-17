@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嵌入式系统 · 零基础入门指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        primary: '#0ea5e9',
+                        secondary: '#6366f1',
+                        accent: '#f59e0b',
+                        dark: '#0f172a',
+                        darker: '#020617',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #0ea5e9, 0 0 10px #0ea5e9' },
+                            '100%': { boxShadow: '0 0 20px #0ea5e9, 0 0 30px #0ea5e9' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e293b 100%);
+            color: #e2e8f0;
+        }
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .code-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #0ea5e9 0%, #6366f1 100%);
+        }
+        .chip {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+        }
+        .timeline-line {
+            background: linear-gradient(180deg, #0ea5e9 0%, #6366f1 100%);
+        }
+        .hover-card {
+            transition: all 0.3s ease;
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.2);
+        }
+        .circuit-pattern {
+            background-image: radial-gradient(circle at 2px 2px, rgba(14, 165, 233, 0.15) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen font-sans">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 circuit-pattern opacity-30"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark/50 to-darker"></div>
+
+        <!-- Animated Background Elements -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 animate-float">
+                <i class="fas fa-microchip text-primary"></i>
+                <span class="text-sm font-medium text-slate-300">零基础入门指南</span>
+            </div>
+
+            <h1 class="text-6xl md:text-8xl font-bold mb-6 tracking-tight">
+                <span class="gradient-text">嵌入式系统</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-slate-400 mb-8 max-w-3xl mx-auto leading-relaxed">
+                藏在万物之中的「迷你大脑」<br>
+                <span class="text-primary font-medium">专为特定使命而生的专用计算机</span>
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <div class="glass px-6 py-3 rounded-xl flex items-center gap-3">
+                    <i class="fas fa-car text-primary"></i>
+                    <span class="text-sm">智能汽车</span>
+                </div>
+                <div class="glass px-6 py-3 rounded-xl flex items-center gap-3">
+                    <i class="fas fa-mobile-alt text-secondary"></i>
+                    <span class="text-sm">消费电子</span>
+                </div>
+                <div class="glass px-6 py-3 rounded-xl flex items-center gap-3">
+                    <i class="fas fa-industry text-accent"></i>
+                    <span class="text-sm">工业控制</span>
+                </div>
+                <div class="glass px-6 py-3 rounded-xl flex items-center gap-3">
+                    <i class="fas fa-heartbeat text-rose-400"></i>
+                    <span class="text-sm">医疗设备</span>
+                </div>
+            </div>
+
+            <button onclick="document.getElementById('definition').scrollIntoView({behavior: 'smooth'})" 
+                    class="group px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-full font-semibold text-white shadow-lg hover:shadow-primary/50 transition-all duration-300 flex items-center gap-2 mx-auto">
+                开始探索
+                <i class="fas fa-arrow-down group-hover:translate-y-1 transition-transform"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Definition Section -->
+    <section id="definition" class="py-24 relative">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6">
+                        <span class="gradient-text">一句话理解</span>
+                    </h2>
+                    <div class="glass rounded-2xl p-8 mb-6">
+                        <p class="text-lg leading-relaxed text-slate-300">
+                            你的<span class="text-primary font-semibold">手机</span>、<span class="text-secondary font-semibold">智能手表</span>、<span class="text-accent font-semibold">扫地机器人</span>、<span class="text-rose-400 font-semibold">汽车ABS刹车系统</span>、<span class="text-emerald-400 font-semibold">微波炉</span>、<span class="text-purple-400 font-semibold">蓝牙耳机</span>……里面都藏着一个嵌入式系统。
+                        </p>
+                    </div>
+                    <div class="bg-gradient-to-r from-primary/10 to-secondary/10 border-l-4 border-primary p-6 rounded-r-xl">
+                        <p class="text-xl font-medium text-white">
+                            它不像电脑那样什么都能干，而是<span class="text-primary">专为特定功能设计的专用计算机</span>。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="glass rounded-2xl p-8 relative z-10">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="chip rounded-xl p-6 text-center hover-card cursor-pointer">
+                                <i class="fas fa-washing-machine text-3xl text-primary mb-3"></i>
+                                <p class="text-sm font-medium">智能洗衣机</p>
+                                <p class="text-xs text-slate-400 mt-1">控制洗涤程序</p>
+                            </div>
+                            <div class="chip rounded-xl p-6 text-center hover-card cursor-pointer">
+                                <i class="fas fa-robot text-3xl text-secondary mb-3"></i>
+                                <p class="text-sm font-medium">扫地机器人</p>
+                                <p class="text-xs text-slate-400 mt-1">路径规划+避障</p>
+                            </div>
+                            <div class="chip rounded-xl p-6 text-center hover-card cursor-pointer">
+                                <i class="fas fa-car-battery text-3xl text-accent mb-3"></i>
+                                <p class="text-sm font-medium">汽车ECU</p>
+                                <p class="text-xs text-slate-400 mt-1">发动机控制</p>
+                            </div>
+                            <div class="chip rounded-xl p-6 text-center hover-card cursor-pointer">
+                                <i class="fas fa-heartbeat text-3xl text-rose-400 mb-3"></i>
+                                <p class="text-sm font-medium">血糖仪</p>
+                                <p class="text-xs text-slate-400 mt-1">精准测量+显示</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -inset-4 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-3xl blur-2xl -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features -->
+    <section class="py-24 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-16">
+                <span class="gradient-text">三大核心特点</span>
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass rounded-2xl p-8 hover-card relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-primary/50 flex items-center justify-center mb-6">
+                        <i class="fas fa-bullseye text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">专用性</h3>
+                    <p class="text-slate-400 mb-4">只干一件事，不跑其他软件</p>
+                    <div class="bg-dark/50 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300"><i class="fas fa-lightbulb text-primary mr-2"></i>洗衣机只控制洗涤程序，不能刷抖音</p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass rounded-2xl p-8 hover-card relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-2xl group-hover:bg-secondary/20 transition-all"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary to-secondary/50 flex items-center justify-center mb-6">
+                        <i class="fas fa-battery-three-quarters text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">资源受限</h3>
+                    <p class="text-slate-400 mb-4">CPU慢、内存小、功耗低</p>
+                    <div class="bg-dark/50 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300"><i class="fas fa-lightbulb text-secondary mr-2"></i>智能手环电池能用一周，手机一天就没电</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass rounded-2xl p-8 hover-card relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-2xl group-hover:bg-accent/20 transition-all"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent to-accent/50 flex items-center justify-center mb-6">
+                        <i class="fas fa-bolt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">实时响应</h3>
+                    <p class="text-slate-400 mb-4">必须在规定时间内完成任务</p>
+                    <div class="bg-dark/50 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300"><i class="fas fa-lightbulb text-accent mr-2"></i>汽车安全气囊必须在碰撞瞬间弹出</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Path Timeline -->
+    <section class="py-24 relative">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-16">
+                <span class="gradient-text">零基础学习路线</span>
+                <span class="block text-lg font-normal text-slate-400 mt-2">三个阶段，从入门到进阶</span>
+            </h2>
+
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 timeline-line rounded-full transform md:-translate-x-1/2"></div>
+
+                <!-- Phase 1 -->
+                <div class="relative mb-16 md:mb-24">
+                    <div class="md:flex items-center">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
+                            <div class="glass rounded-2xl p-6 inline-block text-left md:text-right w-full md:w-auto hover-card">
+                                <span class="inline-block px-3 py-1 rounded-full bg-primary/20 text-primary text-sm font-semibold mb-3">第一阶段</span>
+                                <h3 class="text-2xl font-bold mb-3">打基础</h3>
+                                <p class="text-slate-400 mb-4">2-3周 · 理论根基</p>
+                                <ul class="space-y-2 text-sm">
+                                    <li class="flex items-center md:justify-end gap-2">
+                                        <span class="text-slate-300"><strong>C语言</strong>：精通指针、结构体、位操作</span>
+                                        <i class="fas fa-code text-primary"></i>
+                                    </li>
+                                    <li class="flex items-center md:justify-end gap-2">
+                                        <span class="text-slate-300"><strong>电路基础</strong>：认识电阻电容，看懂GPIO</span>
+                                        <i class="fas fa-microchip text-primary"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="absolute left-6 md:left-1/2 w-5 h-5 rounded-full bg-primary border-4 border-dark transform md:-translate-x-1/2 z-10 shadow-lg shadow-primary/50"></div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block">
+                            <div class="code-block p-4 text-sm">
+                                <div class="flex items-center gap-2 mb-2 text-slate-500">
+                                    <i class="fas fa-terminal text-xs"></i>
+                                    <span class="text-xs">基础代码示例</span>
+                                </div>
+                                <pre class="text-green-400 overflow-x-auto"><code>// GPIO控制LED
+#define LED_PIN 13
+
+void setup() {
+    pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+    digitalWrite(LED_PIN, HIGH);
+    delay(1000);
+    digitalWrite(LED_PIN, LOW);
+    delay(1000);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="relative mb-16 md:mb-24">
+                    <div class="md:flex items-center">
+                        <div class="md:w-1/2 md:pr-12 hidden md:block">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="chip rounded-lg p-3 text-center">
+                                    <i class="fas fa-lightbulb text-primary text-xl mb-1"></i>
+                                    <p class="text-xs">点亮LED</p>
+                                </div>
+                                <div class="chip rounded-lg p-3 text-center">
+                                    <i class="fas fa-hand-pointer text-secondary text-xl mb-1"></i>
+                                    <p class="text-xs">按键控制</p>
+                                </div>
+                                <div class="chip rounded-lg p-3 text-center">
+                                    <i class="fas fa-thermometer-half text-accent text-xl mb-1"></i>
+                                    <p class="text-xs">传感器读取</p>
+                                </div>
+                                <div class="chip rounded-lg p-3 text-center">
+                                    <i class="fas fa-cog text-emerald-400 text-xl mb-1"></i>
+                                    <p class="text-xs">电机控制</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute left-6 md:left-1/2 w-5 h-5 rounded-full bg-secondary border-4 border-dark transform md:-translate-x-1/2 z-10 shadow-lg shadow-secondary/50"></div>
+                        <div class="md:w-1/2 md:pl-12 mb-6 md:mb-0">
+                            <div class="glass rounded-2xl p-6 hover-card">
+                                <span class="inline-block px-3 py-1 rounded-full bg-secondary/20 text-secondary text-sm font-semibold mb-3">第二阶段</span>
+                                <h3 class="text-2xl font-bold mb-3">玩开发板</h3>
+                                <p class="text-slate-400 mb-4">1-2个月 · 实战上手</p>
+                                <div class="bg-gradient-to-r from-secondary/10 to-transparent border-l-2 border-secondary p-3 rounded-r-lg mb-3">
+                                    <p class="text-sm text-slate-300"><strong>推荐：</strong>STM32开发板（正点原子/野火）</p>
+                                    <p class="text-xs text-slate-400 mt-1">资料全、社区大、适合新手</p>
+                                </div>
+                                <ul class="space-y-1 text-sm text-slate-400">
+                                    <li><i class="fas fa-check text-secondary mr-2"></i>学习通信协议：UART、I2C、SPI</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="relative">
+                    <div class="md:flex items-center">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
+                            <div class="glass rounded-2xl p-6 inline-block text-left md:text-right w-full md:w-auto hover-card">
+                                <span class="inline-block px-3 py-1 rounded-full bg-accent/20 text-accent text-sm font-semibold mb-3">第三阶段</span>
+                                <h3 class="text-2xl font-bold mb-3">进阶</h3>
+                                <p class="text-slate-400 mb-4">可选 · 职业发展</p>
+                                <div class="space-y-3">
+                                    <div class="bg-dark/50 rounded-lg p-3 border border-slate-700">
+                                        <p class="text-sm font-medium text-white">RTOS实时操作系统</p>
+                                        <p class="text-xs text-slate-400">FreeRTOS（轻量、工业界最常用）</p>
+                                    </div>
+                                    <div class="bg-dark/50 rounded-lg p-3 border border-slate-700">
+                                        <p class="text-sm font-medium text-white">嵌入式Linux</p>
+                                        <p class="text-xs text-slate-400">适合复杂应用（智能家居、工业网关）</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute left-6 md:left-1/2 w-5 h-5 rounded-full bg-accent border-4 border-dark transform md:-translate-x-1/2 z-10 shadow-lg shadow-accent/50"></div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block">
+                            <div class="glass rounded-xl p-4">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
+                                        <i class="fas fa-layer-group text-accent"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-sm">技术栈扩展</p>
+                                        <p class="text-xs text-slate-400">驱动开发 → 系统移植 → 应用开发</p>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-slate-800 rounded-full h-2">
+                                    <div class="progress-bar h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-2 text-right">职业工程师路径</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="py-24 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-4">
+                <span class="gradient-text">新手装备清单</span>
+            </h2>
+            <p class="text-center text-slate-400 mb-16">工欲善其事，必先利其器</p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Tool 1 -->
+                <div class="glass rounded-2xl p-6 hover-card group">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-primary/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-microchip text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-2">开发板</h4>
+                    <p class="text-primary font-semibold mb-2">STM32F103/F407</p>
+                    <p class="text-sm text-slate-400 mb-4">100-300元，性价比之王</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs px-2 py-1 rounded bg-primary/10 text-primary">ARM Cortex</span>
+                        <span class="text-xs px-2 py-1 rounded bg-primary/10 text-primary">72MHz</span>
+                    </div>
+                </div>
+
+                <!-- Tool 2 -->
+                <div class="glass rounded-2xl p-6 hover-card group">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-secondary to-secondary/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-laptop-code text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-2">软件IDE</h4>
+                    <p class="text-secondary font-semibold mb-2">Keil / STM32CubeIDE</p>
+                    <p class="text-sm text-slate-400 mb-4">免费，写代码编译下载一体</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs px-2 py-1 rounded bg-secondary/10 text-secondary">C/C++</span>
+                        <span class="text-xs px-2 py-1 rounded bg-secondary/10 text-secondary">调试</span>
+                    </div>
+                </div>
+
+                <!-- Tool 3 -->
+                <div class="glass rounded-2xl p-6 hover-card group">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-accent to-accent/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-usb text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-2">调试器</h4>
+                    <p class="text-accent font-semibold mb-2">ST-Link V2</p>
+                    <p class="text-sm text-slate-400 mb-4">20-50元，程序烧录必备</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs px-2 py-1 rounded bg-accent/10 text-accent">SWD</span>
+                        <span class="text-xs px-2 py-1 rounded bg-accent/10 text-accent">JTAG</span>
+                    </div>
+                </div>
+
+                <!-- Tool 4 -->
+                <div class="glass rounded-2xl p-6 hover-card group">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-500/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-tools text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-lg font-bold mb-2">辅助工具</h4>
+                    <p class="text-emerald-400 font-semibold mb-2">万用表+杜邦线</p>
+                    <p class="text-sm text-slate-400 mb-4">接电路、测电压、排故障</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs px-2 py-1 rounded bg-emerald-500/10 text-emerald-400">测量</span>
+                        <span class="text-xs px-2 py-1 rounded bg-emerald-500/10 text-emerald-400">连接</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Fields -->
+    <section class="py-24">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-16">
+                <span class="gradient-text">应用领域全景</span>
+            </h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Consumer Electronics -->
+                <div class="glass rounded-2xl p-6 hover-card relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-xl"></div>
+                    <div class="relative">
+                        <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-mobile-alt text-primary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">消费电子</h3>
+                        <ul class="space-y-2 text-sm text-slate-400">
+                            <li><i class="fas fa-circle text-[6px] text-primary mr-2"></i>智能手表、TWS耳机</li>
+                            <li><i class="fas fa-circle text-[6px] text-primary mr-2"></i>扫地机器人、智能音箱</li>
+                            <li><i class="fas fa-circle text-[6px] text-primary mr-2"></i>游戏手柄、无人机</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Automotive -->
+                <div class="glass rounded-2xl p-6 hover-card relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/10 rounded-full blur-xl"></div>
+                    <div class="relative">
+                        <div class="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-secondary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">汽车电子</h3>
+                        <ul class="space-y-2 text-sm text-slate-400">
+                            <li><i class="fas fa-circle text-[6px] text-secondary mr-2"></i>ECU发动机控制</li>
+                            <li><i class="fas fa-circle text-[6px] text-secondary mr-2"></i>ABS刹车系统</li>
+                            <li><i class="fas fa-circle text-[6px] text-secondary mr-2"></i>自动驾驶辅助</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Industrial -->
+                <div class="glass rounded-2xl p-6 hover-card relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-accent/10 rounded-full blur-xl"></div>
+                    <div class="relative">
+                        <div class="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-industry text-accent text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">工业控制</h3>
+                        <ul class="space-y-2 text-sm text-slate-400">
+                            <li><i class="fas fa-circle text-[6px] text-accent mr-2"></i>PLC控制器</li>
+                            <li><i class="fas fa-circle text-[6px] text-accent mr-2"></i>工业机械臂</li>
+                            <li><i class="fas fa-circle text-[6px] text-accent mr-2"></i>传感器采集系统</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Medical -->
+                <div class="glass rounded-2xl p-6 hover-card relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-rose-500/10 rounded-full blur-xl"></div>
+                    <div class="relative">
+                        <div class="w-12 h-12 rounded-xl bg-rose-500/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-heartbeat text-rose-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">医疗设备</h3>
+                        <ul class="space-y-2 text-sm text-slate-400">
+                            <li><i class="fas fa-circle text-[6px] text-rose-400 mr-2"></i>血糖仪、血压计</li>
+                            <li><i class="fas fa-circle text-[6px] text-rose-400 mr-2"></i>心电图机</li>
+                            <li><i class="fas fa-circle text-[6px] text-rose-400 mr-2"></i>呼吸机、输液泵</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- IoT -->
+                <div class="glass rounded-2xl p-6 hover-card relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl"></div>
+                    <div class="relative">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-network-wired text-emerald-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">物联网</h3>
+                        <ul class="space-y-2 text-sm text-slate-400">
+                            <li><i class="fas fa-circle text-[6px] text-emerald-400 mr-2"></i>智能家居中控</li>
+                            <li><i class="fas fa-circle text-[6px] text-emerald-400 mr-2"></i>农业环境监测</li>
+                            <li><i class="fas fa-circle text-[6px] text-emerald-400 mr-2"></i>共享单车锁控</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Summary Card -->
+                <div class="glass rounded-2xl p-6 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30">
+                    <div class="h-full flex flex-col justify-center">
+                        <div class="text-center">
+                            <div class="text-5xl font-bold gradient-text mb-2">无处不在</div>
+                            <p class="text-slate-400 text-sm">从太空站到电动牙刷<br>嵌入式系统驱动着现代世界</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Section -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"></div>
+        <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <div class="glass rounded-3xl p-8 md:p-12 text-center border border-primary/20">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-8 animate-glow">
+                    <i class="fas fa-rocket text-3xl text-white"></i>
+                </div>
+
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                    <span class="gradient-text">一句话总结</span>
+                </h2>
+
+                <div class="bg-dark/50 rounded-2xl p-6 md:p-8 border border-slate-700 mb-8">
+                    <p class="text-xl md:text-2xl font-medium text-white leading-relaxed">
+                        嵌入式 = <span class="text-primary">硬件</span> + <span class="text-secondary">C语言</span> + <span class="text-accent">专一功能</span>
+                    </p>
+                    <div class="mt-4 text-slate-400">
+                        先买块STM32开发板，点亮第一颗LED灯，你就入门了50%
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4 text-sm">
+                    <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
+                        <i class="fas fa-check-circle"></i>
+                        <span>立即开始</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary">
+                        <i class="fas fa-book"></i>
+                        <span>系统学习</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>项目实战</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <i class="fas fa-microchip text-primary"></i>
+                <span class="font-semibold">嵌入式系统入门指南</span>
+            </div>
+            <p class="text-slate-500 text-sm">零基础小白 · 从入门到精通</p>
+            <div class="mt-6 text-xs text-slate-600">
+                参考来源：正点原子、野火电子、CSDN技术社区、知乎专栏
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards
+        document.querySelectorAll('.hover-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
