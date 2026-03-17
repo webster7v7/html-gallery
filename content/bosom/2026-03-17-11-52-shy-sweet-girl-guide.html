@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>害羞甜妹 · 温柔攻略手册</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Noto Sans SC', sans-serif;
+                background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 50%, #fff5ee 100%);
+            }
+            .serif {
+                font-family: 'Noto Serif SC', serif;
+            }
+        }
+        @layer components {
+            .glass-card {
+                background: rgba(255, 255, 255, 0.85);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 182, 193, 0.3);
+                box-shadow: 0 8px 32px rgba(255, 105, 180, 0.1);
+            }
+            .gradient-text {
+                background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .heart-beat {
+                animation: heartbeat 2s ease-in-out infinite;
+            }
+            @keyframes heartbeat {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+            }
+            .float {
+                animation: float 6s ease-in-out infinite;
+            }
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-20px); }
+            }
+            .shimmer {
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+                background-size: 200% 100%;
+                animation: shimmer 3s infinite;
+            }
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+            .blur-in {
+                animation: blurIn 1s ease-out forwards;
+                opacity: 0;
+                filter: blur(10px);
+            }
+            @keyframes blurIn {
+                to {
+                    opacity: 1;
+                    filter: blur(0);
+                }
+            }
+            .quote-card {
+                position: relative;
+                overflow: hidden;
+            }
+            .quote-card::before {
+                content: '"';
+                position: absolute;
+                top: -20px;
+                left: 10px;
+                font-size: 120px;
+                color: rgba(255, 182, 193, 0.2);
+                font-family: 'Noto Serif SC', serif;
+                line-height: 1;
+            }
+            .tip-number {
+                background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: 700;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen text-gray-800 overflow-x-hidden">
+    <!-- Floating Background Elements -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute top-20 left-10 w-32 h-32 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 float" style="animation-delay: 0s;"></div>
+        <div class="absolute top-40 right-20 w-48 h-48 bg-rose-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 float" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-20 left-1/3 w-40 h-40 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 float" style="animation-delay: 4s;"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-12">
+
+        <!-- Header -->
+        <header class="text-center mb-16 blur-in" style="animation-delay: 0.1s;">
+            <div class="inline-block mb-4">
+                <span class="text-6xl heart-beat inline-block">🎀</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold serif gradient-text mb-4 leading-tight">
+                害羞甜妹<br>温柔攻略手册
+            </h1>
+            <p class="text-lg text-gray-600 italic max-w-2xl mx-auto leading-relaxed">
+                「用最温柔的方式，说最色的话」<br>
+                <span class="text-pink-500">让她在极致羞耻中感受被完全占有的安全感</span>
+            </p>
+            <div class="mt-6 flex justify-center gap-2">
+                <span class="px-4 py-1 bg-pink-100 text-pink-600 rounded-full text-sm">反差杀</span>
+                <span class="px-4 py-1 bg-rose-100 text-rose-600 rounded-full text-sm">温柔占有欲</span>
+                <span class="px-4 py-1 bg-purple-100 text-purple-600 rounded-full text-sm">细节控</span>
+            </div>
+        </header>
+
+        <!-- Core Features Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-3">
+                <span class="w-8 h-8 bg-gradient-to-br from-pink-400 to-rose-500 rounded-lg flex items-center justify-center text-white text-sm">01</span>
+                核心特点 · 致命组合
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Feature 1 -->
+                <div class="glass-card rounded-2xl p-6 blur-in" style="animation-delay: 0.2s;">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-pink-300 to-rose-400 rounded-xl flex items-center justify-center text-2xl shadow-lg">
+                            😳
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">反差杀 + 温柔占有欲</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                平时温柔体贴，突然变得有点坏。不是粗暴羞辱，而是<span class="text-pink-600 font-medium">带着宠溺的轻微霸道</span>。
+                                "只有我知道你其实很骚"的私密感，最容易让她腿软。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card rounded-2xl p-6 blur-in" style="animation-delay: 0.3s;">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-300 to-pink-400 rounded-xl flex items-center justify-center text-2xl shadow-lg">
+                            🎨
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">细节 + 画面感 + 缓慢推进</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                从"今天穿的裙子好可爱"开始，慢慢转向"裙子下面是不是已经湿了？"
+                                <span class="text-pink-600 font-medium">节奏要像前戏一样缓慢</span>，让她自己脑补画面。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card rounded-2xl p-6 blur-in" style="animation-delay: 0.4s;">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-rose-300 to-orange-300 rounded-xl flex items-center justify-center text-2xl shadow-lg">
+                            💕
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">夸她"坏"但说"只有我懂你"</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                "宝贝，你明明这么乖，怎么下面却在流水啊？"这种<span class="text-pink-600 font-medium">温柔版"坏"</span>，
+                                她们反而会瞬间高潮感爆棚。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-card rounded-2xl p-6 blur-in" style="animation-delay: 0.5s;">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-400 rounded-xl flex items-center justify-center text-2xl shadow-lg">
+                            💬
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">让她自己说出口</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">
+                                "宝贝，告诉我，你现在是不是在偷偷夹腿？"最劲爆的不是你说得多色，
+                                而是<span class="text-pink-600 font-medium">引导她自己承认</span>。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top 10 Phrases Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-3">
+                <span class="w-8 h-8 bg-gradient-to-br from-pink-400 to-rose-500 rounded-lg flex items-center justify-center text-white text-sm">02</span>
+                Top 10 话术 · 直接复制可用
+            </h2>
+
+            <div class="space-y-4">
+                <!-- Phrase 1 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in" style="animation-delay: 0.6s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">01</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1">
+                            "宝贝今天穿这么乖的裙子，是不是故意想让我偷偷把手伸进去啊？嗯？脸红了就别否认，我已经闻到你甜甜的味道了~"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phrase 2 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in" style="animation-delay: 0.7s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">02</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1">
+                            "乖，摸摸看自己现在有多湿……告诉我手指上是不是黏黏的？嗯？别害羞，说给哥哥听。"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phrase 3 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in" style="animation-delay: 0.8s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">03</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1">
+                            "我好想现在就把你按在床上，亲到你哭着求我停……可是你明明最喜欢被我亲到腿软，对不对？小坏蛋。"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phrase 4 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in" style="animation-delay: 0.9s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">04</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1">
+                            "宝贝你知道吗？你越害羞我就越想欺负你……想看你一边说'不要'一边把腿张得更开的样子。"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phrase 5 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in" style="animation-delay: 1.0s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">05</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1">
+                            "今天上课的时候有没有偷偷想我？有没有夹着腿幻想哥哥的手指在里面搅？嗯？说实话，不然晚上罚你不准高潮。"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phrase 6 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in" style="animation-delay: 1.1s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">06</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1">
+                            "好乖哦，脸红成这样还敢回我消息……是不是下面已经痒得受不了了？哥哥帮你止痒好不好？"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phrase 7 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in" style="animation-delay: 1.2s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">07</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1">
+                            "宝贝，你的声音好软，我光听着就硬了……现在把手放进去，慢慢动，边动边叫我的名字，好吗？"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phrase 8 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in" style="animation-delay: 1.3s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">08</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1">
+                            "你这么可爱，怎么下面却这么贪吃……吸得哥哥手指都不想拔出来了，坏女孩。"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phrase 9 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in" style="animation-delay: 1.4s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">09</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1">
+                            "乖，把内裤脱下来拍张照给我……不准遮，哥哥想看你害羞又湿透的样子，最可爱了。"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Phrase 10 -->
+                <div class="glass-card rounded-2xl p-6 quote-card blur-in border-2 border-pink-200" style="animation-delay: 1.5s;">
+                    <div class="flex gap-4">
+                        <span class="tip-number text-3xl serif">10</span>
+                        <p class="text-gray-700 leading-relaxed flex-1 pt-1 font-medium">
+                            "宝贝你知道我最喜欢你哪一点吗？就是你明明这么害羞，却一被我撩就忍不住流水……只有我能看到这样的你，对不对？我的小甜心。"
+                        </p>
+                    </div>
+                    <div class="mt-3 text-right">
+                        <span class="text-pink-500 text-sm">✨ 绝杀技</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-3">
+                <span class="w-8 h-8 bg-gradient-to-br from-pink-400 to-rose-500 rounded-lg flex items-center justify-center text-white text-sm">03</span>
+                使用小Tips · 让效果翻倍
+            </h2>
+
+            <div class="glass-card rounded-2xl p-8 blur-in" style="animation-delay: 1.6s;">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-pink-400 rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">1</span>
+                            <p class="text-gray-700 text-sm"><span class="font-bold text-pink-600">多用问句 + 引导她回答</span> — 她一回答，羞耻值就指数级上升</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-pink-400 rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">2</span>
+                            <p class="text-gray-700 text-sm"><span class="font-bold text-pink-600">语气永远温柔+低沉+宠溺</span> — 想象在耳边轻声说</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-pink-400 rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">3</span>
+                            <p class="text-gray-700 text-sm"><span class="font-bold text-pink-600">每隔几句就夸她可爱/乖</span> — 让她觉得被爱，而不是被羞辱</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-rose-400 rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">4</span>
+                            <p class="text-gray-700 text-sm"><span class="font-bold text-rose-600">节奏先慢后快</span> — 前半段甜甜撩，后半段突然变坏</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-rose-400 rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">5</span>
+                            <p class="text-gray-700 text-sm"><span class="font-bold text-rose-600">如果她回"讨厌""不要看"</span> — 立刻回"越说不要我越想看……宝贝最可爱了"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl border border-pink-100">
+                    <p class="text-center text-gray-700 italic text-sm">
+                        💡 <span class="font-medium">核心心法：</span>害羞甜妹一旦被点燃，通常会从"呜呜不要"直接变成"哥哥……再深一点……"，反差越大，高潮越猛。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Warning/Footer -->
+        <footer class="text-center py-8 blur-in" style="animation-delay: 1.8s;">
+            <div class="glass-card rounded-2xl p-6 inline-block max-w-2xl">
+                <p class="text-gray-500 text-xs leading-relaxed">
+                    <span class="text-pink-500">⚠️ 温馨提示：</span><br>
+                    本内容仅供成年情侣间增进感情交流参考，请确保双方自愿、平等、尊重的前提下使用。<br>
+                    真正的亲密关系建立在相互尊重与理解之上，沟通永远是最好的前戏。
+                </p>
+                <div class="mt-4 flex justify-center gap-2 text-2xl">
+                    <span>🌸</span>
+                    <span>💕</span>
+                    <span>🌸</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    entry.target.classList.add('blur-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Add hover effect to quote cards
+        document.querySelectorAll('.quote-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

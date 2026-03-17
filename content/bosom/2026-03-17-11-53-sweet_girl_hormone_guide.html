@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甜妹荷尔蒙话术手册</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd6e8 100%);
+            min-height: 100vh;
+        }
+        .handwriting {
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(255, 182, 193, 0.3);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .heart-beat {
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .dialogue-box {
+            position: relative;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffebf0 100%);
+            border-left: 4px solid #ff6b9d;
+        }
+        .dialogue-box::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 60px;
+            color: #ff6b9d;
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+        .technique-card {
+            transition: all 0.3s ease;
+        }
+        .technique-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(255, 107, 157, 0.4);
+        }
+        .pulse-ring {
+            position: absolute;
+            border-radius: 50%;
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .hidden-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .hidden-content.expanded {
+            max-height: 1000px;
+        }
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkle 2s linear infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="overflow-x-hidden">
+    <!-- Floating Background Elements -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="sparkle" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="sparkle" style="top: 20%; left: 80%; animation-delay: 0.5s;"></div>
+        <div class="sparkle" style="top: 60%; left: 15%; animation-delay: 1s;"></div>
+        <div class="sparkle" style="top: 80%; left: 70%; animation-delay: 1.5s;"></div>
+        <div class="sparkle" style="top: 40%; left: 90%; animation-delay: 0.3s;"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-[60vh] flex items-center justify-center px-4 py-12">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+            <div class="absolute top-10 right-10 w-32 h-32 bg-rose-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-10 left-1/2 w-32 h-32 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="relative z-10 text-center max-w-4xl mx-auto">
+            <div class="float-animation mb-6">
+                <span class="text-6xl">💕</span>
+            </div>
+            <h1 class="handwriting text-5xl md:text-7xl font-bold gradient-text mb-4">
+                甜妹荷尔蒙话术
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-700 mb-2">温柔带点侵略性</p>
+            <p class="text-lg text-gray-600 italic">「从耳根红到腿软」的语言艺术</p>
+
+            <div class="mt-8 flex justify-center gap-4">
+                <div class="glass-card px-6 py-3 rounded-full">
+                    <span class="text-pink-600 font-semibold">💝 害羞型专属</span>
+                </div>
+                <div class="glass-card px-6 py-3 rounded-full">
+                    <span class="text-pink-600 font-semibold">🔥 反差感拉满</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Core Concept -->
+    <section class="max-w-6xl mx-auto px-4 py-12">
+        <div class="glass-card rounded-3xl p-8 md:p-12 mb-12">
+            <div class="flex items-center justify-center mb-8">
+                <div class="relative">
+                    <div class="pulse-ring w-20 h-20 bg-pink-400 absolute inset-0"></div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center text-white text-3xl relative z-10">
+                        💗
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">核心心法</h2>
+            <div class="prose prose-lg mx-auto text-gray-700 text-center max-w-3xl">
+                <p class="text-xl leading-relaxed mb-4">
+                    害羞型甜妹（外表软萌、内心敏感、一夸就脸红）最容易被<span class="text-pink-600 font-bold">「温柔带点侵略性」</span>的语言击中荷尔蒙。
+                </p>
+                <p class="text-lg">
+                    她们表面想装矜持，但其实特别受不了<span class="bg-pink-100 px-2 py-1 rounded">「被精准看到 + 被轻轻撕开」</span>的反差感。
+                </p>
+            </div>
+        </div>
+
+        <!-- Technique Cards -->
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">六大话术组合</h2>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-12">
+            <!-- Card 1 -->
+            <div class="technique-card glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleContent(this)">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">1</div>
+                    <h3 class="text-xl font-bold text-gray-800">温柔转色气</h3>
+                    <span class="ml-auto text-2xl transform transition-transform duration-300">▼</span>
+                </div>
+                <p class="text-gray-600 mb-4">先用极温柔的语气夸她可爱，再突然180度转成色气直白</p>
+                <div class="hidden-content">
+                    <div class="dialogue-box rounded-xl p-6 mt-4">
+                        <p class="text-gray-800 mb-3 italic">「宝贝你笑起来真的好甜，像草莓奶糖一样……」</p>
+                        <p class="text-pink-600 font-semibold">→ 停顿两秒，压低声音：</p>
+                        <p class="text-gray-800 italic mt-2">「我想把你按在床上，一口一口把这颗糖舔化。」</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="technique-card glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleContent(this)">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">2</div>
+                    <h3 class="text-xl font-bold text-gray-800">观察系变态</h3>
+                    <span class="ml-auto text-2xl transform transition-transform duration-300">▼</span>
+                </div>
+                <p class="text-gray-600 mb-4">用「观察系变态」式细节描写（她们最吃这套被窥视感）</p>
+                <div class="hidden-content">
+                    <div class="dialogue-box rounded-xl p-6 mt-4 space-y-4">
+                        <p class="text-gray-800 italic">「你刚才咬唇的时候我差点没忍住……你知不知道你咬唇的样子，像在求我亲你？」</p>
+                        <p class="text-gray-800 italic">「你耳朵红成这样，是在想什么坏坏的事吗？嗯？告诉我。」</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="technique-card glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleContent(this)">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-rose-400 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">3</div>
+                    <h3 class="text-xl font-bold text-gray-800">温柔命令句</h3>
+                    <span class="ml-auto text-2xl transform transition-transform duration-300">▼</span>
+                </div>
+                <p class="text-gray-600 mb-4">让她在安全感里被迫发情</p>
+                <div class="hidden-content">
+                    <div class="dialogue-box rounded-xl p-6 mt-4 space-y-4">
+                        <p class="text-gray-800 italic">「乖，把腿并紧……对，就是这样，再夹紧一点，我想听你因为我憋得难受的声音。」</p>
+                        <p class="text-gray-800 italic">「不许躲，把脸转过来看着我……我要看你害羞到眼睛都是水的样子。」</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="technique-card glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleContent(this)">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">4</div>
+                    <h3 class="text-xl font-bold text-gray-800">反差纯欲句</h3>
+                    <span class="ml-auto text-2xl transform transition-transform duration-300">▼</span>
+                </div>
+                <p class="text-gray-600 mb-4">前半句像哥哥，后半句像狼</p>
+                <div class="hidden-content">
+                    <div class="dialogue-box rounded-xl p-6 mt-4">
+                        <p class="text-gray-800 mb-3 italic">「来抱抱，哥哥的心肝宝贝……」</p>
+                        <p class="text-pink-600 font-semibold">→ 贴近耳朵：</p>
+                        <p class="text-gray-800 italic mt-2">「抱够了就张开腿，哥哥现在只想操哭我的心肝宝贝。」</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="technique-card glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleContent(this)">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">5</div>
+                    <h3 class="text-xl font-bold text-gray-800">精准羞耻点</h3>
+                    <span class="ml-auto text-2xl transform transition-transform duration-300">▼</span>
+                </div>
+                <p class="text-gray-600 mb-4">专门打那种「明明很害羞但更想听」的开关</p>
+                <div class="hidden-content">
+                    <div class="dialogue-box rounded-xl p-6 mt-4 space-y-4">
+                        <p class="text-gray-800 italic">「你下面湿成那样，还装害羞？嗯？小骗子。」</p>
+                        <p class="text-gray-800 italic">「叫得这么小声是怕被别人听见吗？那你再叫大声一点，只给我一个人听好不好？」</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="technique-card glass-card rounded-2xl p-6 cursor-pointer" onclick="toggleContent(this)">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">6</div>
+                    <h3 class="text-xl font-bold text-gray-800">终极杀招</h3>
+                    <span class="ml-auto text-2xl transform transition-transform duration-300">▼</span>
+                </div>
+                <p class="text-gray-600 mb-4">温柔 + 独占欲 + 轻微降智羞辱</p>
+                <div class="hidden-content">
+                    <div class="dialogue-box rounded-xl p-6 mt-4 space-y-4">
+                        <p class="text-gray-800 italic">「宝贝真没用，被我亲两下就腿软成这样……」</p>
+                        <p class="text-gray-800 italic">「明明这么容易发情，还学人家装乖，嗯？只许对我在床上不乖，知道吗？」</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Techniques -->
+        <div class="glass-card rounded-3xl p-8 md:p-12">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 flex items-center justify-center gap-3">
+                <span>✨</span> 重点技巧 <span>✨</span>
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white/60 rounded-2xl p-6 border-l-4 border-pink-400">
+                    <div class="flex items-center mb-3">
+                        <span class="text-2xl mr-3">🎵</span>
+                        <h4 class="font-bold text-gray-800">语速控制</h4>
+                    </div>
+                    <p class="text-gray-600">语速要慢，声音压低，偶尔用气音</p>
+                </div>
+
+                <div class="bg-white/60 rounded-2xl p-6 border-l-4 border-rose-400">
+                    <div class="flex items-center mb-3">
+                        <span class="text-2xl mr-3">⏱️</span>
+                        <h4 class="font-bold text-gray-800">停顿艺术</h4>
+                    </div>
+                    <p class="text-gray-600">每句色色的话之前一定要先给一秒「温柔铺垫」</p>
+                </div>
+
+                <div class="bg-white/60 rounded-2xl p-6 border-l-4 border-purple-400">
+                    <div class="flex items-center mb-3">
+                        <span class="text-2xl mr-3">🧠</span>
+                        <h4 class="font-bold text-gray-800">脑补空间</h4>
+                    </div>
+                    <p class="text-gray-600">故意停顿让她脑补（她们会在停顿里自己把自己脑补高潮）</p>
+                </div>
+
+                <div class="bg-white/60 rounded-2xl p-6 border-l-4 border-red-400">
+                    <div class="flex items-center mb-3">
+                        <span class="text-2xl mr-3">🤗</span>
+                        <h4 class="font-bold text-gray-800">温柔收尾</h4>
+                    </div>
+                    <p class="text-gray-600">最后一定要加一句很宠的结尾收住，比如「乖，哥哥抱抱你」「宝贝最可爱了」</p>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <div class="inline-block bg-gradient-to-r from-pink-400 to-rose-500 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg">
+                    💕 试试看，第3秒她就会在屏幕那边把腿夹紧咬手指了 💕
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-gray-500 text-sm">
+        <p>仅供娱乐参考 · 请尊重对方意愿 · 健康亲密关系建立在相互尊重之上</p>
+    </footer>
+
+    <script>
+        function toggleContent(card) {
+            const content = card.querySelector('.hidden-content');
+            const arrow = card.querySelector('span:last-child');
+
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                // Close all other cards
+                document.querySelectorAll('.hidden-content.expanded').forEach(el => {
+                    el.classList.remove('expanded');
+                    el.parentElement.querySelector('span:last-child').style.transform = 'rotate(0deg)';
+                });
+
+                content.classList.add('expanded');
+                arrow.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Add floating hearts on click
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.technique-card')) return;
+
+            const heart = document.createElement('div');
+            heart.innerHTML = '💕';
+            heart.style.position = 'fixed';
+            heart.style.left = e.clientX + 'px';
+            heart.style.top = e.clientY + 'px';
+            heart.style.fontSize = '24px';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '9999';
+            heart.style.animation = 'float-up 1s ease-out forwards';
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 1000);
+        });
+
+        // Add float-up animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float-up {
+                0% { transform: translateY(0) scale(1); opacity: 1; }
+                100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
