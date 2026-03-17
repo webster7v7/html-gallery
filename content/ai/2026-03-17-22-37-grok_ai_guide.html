@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grok AI - 发展历程与独特定位</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            --primary-black: #0B0B0E;
+            --deep-space: #0d1117;
+            --accent-orange: #ff6b35;
+            --accent-blue: #4a90e2;
+            --text-white: #ffffff;
+            --text-gray: #c9ced6;
+            --text-muted: #8b949e;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --gradient-start: #ff6b35;
+            --gradient-end: #ff8c42;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--deep-space) 100%);
+            color: var(--text-white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,107,53,0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 20px 60px rgba(255,107,53,0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo svg {
+            width: 60px;
+            height: 60px;
+            fill: white;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-white) 0%, var(--text-gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 1.5rem;
+            color: var(--accent-orange);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 2px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--gradient-start), var(--accent-blue));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 2rem 0 2rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 2.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--gradient-start);
+            border-radius: 50%;
+            transform: translateX(-5px);
+            box-shadow: 0 0 20px rgba(255,107,53,0.5);
+        }
+
+        .timeline-date {
+            font-size: 0.9rem;
+            color: var(--accent-orange);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-white);
+        }
+
+        .timeline-content {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .timeline-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .spec-tag {
+            background: rgba(255,107,53,0.1);
+            border: 1px solid rgba(255,107,53,0.3);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent-orange);
+        }
+
+        /* Comparison Section */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .model-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 20px 40px rgba(255,107,53,0.1);
+        }
+
+        .model-card.grok {
+            border-color: var(--accent-orange);
+            background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, var(--card-bg) 100%);
+        }
+
+        .model-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .model-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .grok .model-icon {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+        }
+
+        .claude .model-icon {
+            background: #d97757;
+            color: white;
+        }
+
+        .gemini .model-icon {
+            background: #4285f4;
+            color: white;
+        }
+
+        .gpt .model-icon {
+            background: #10a37f;
+            color: white;
+        }
+
+        .model-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .model-company {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .nsfw-meter {
+            margin-top: 1rem;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .meter-bar {
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .grok .meter-fill { width: 85%; background: linear-gradient(90deg, #ff6b35, #ff8c42); }
+        .claude .meter-fill { width: 15%; background: #d97757; }
+        .gemini .meter-fill { width: 40%; background: #4285f4; }
+        .gpt .meter-fill { width: 25%; background: #10a37f; }
+
+        /* Philosophy Section */
+        .philosophy {
+            background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, transparent 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            margin: 4rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .philosophy-item {
+            padding: 1.5rem;
+            background: rgba(22,27,34,0.5);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-orange);
+        }
+
+        .philosophy-item h3 {
+            color: var(--accent-orange);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .philosophy-item p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Warning Section */
+        .warning-section {
+            background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(255,0,0,0.05) 100%);
+            border: 1px solid rgba(255,107,53,0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .warning-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .warning-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .warning-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+
+        .warning-list {
+            list-style: none;
+            color: var(--text-gray);
+        }
+
+        .warning-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .warning-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-orange);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-orange);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .timeline {
+                padding-left: 1rem;
+            }
+
+            .timeline-item {
+                padding-left: 1.5rem;
+            }
+
+            .philosophy {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* Animations on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                    </svg>
+                </div>
+            </div>
+            <h1>Grok AI</h1>
+            <p class="tagline">No Bias, No Filter</p>
+            <p class="subtitle">马斯克旗下 xAI 的旗舰大模型，以"理解宇宙"为使命，主打无审查、实时数据、创作自由</p>
+        </div>
+        <div class="scroll-indicator">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <section id="timeline">
+        <h2 class="section-title">发展历程</h2>
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <div class="timeline-date">2023年3月</div>
+                <h3 class="timeline-title">xAI 成立</h3>
+                <p class="timeline-content">马斯克创立 xAI 公司，团队成员来自 DeepMind、OpenAI、谷歌研究院等顶级AI机构，目标是"了解宇宙的真实本质"。</p>
+                <div class="timeline-specs">
+                    <span class="spec-tag">Elon Musk</span>
+                    <span class="spec-tag">DeepMind</span>
+                    <span class="spec-tag">OpenAI</span>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <div class="timeline-date">2023年11月</div>
+                <h3 class="timeline-title">Grok-1 发布</h3>
+                <p class="timeline-content">首个公开版本发布，采用 3140 亿参数 MoE 架构。2024年3月开源，成为当时最大的开源模型之一。</p>
+                <div class="timeline-specs">
+                    <span class="spec-tag">314B 参数</span>
+                    <span class="spec-tag">MoE 架构</span>
+                    <span class="spec-tag">开源</span>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <div class="timeline-date">2024年3月</div>
+                <h3 class="timeline-title">Grok-1.5 & Grok-1.5V</h3>
+                <p class="timeline-content">上下文扩展至 128K，数学推理能力增强。推出视觉版本，支持图像理解。</p>
+                <div class="timeline-specs">
+                    <span class="spec-tag">128K 上下文</span>
+                    <span class="spec-tag">视觉能力</span>
+                    <span class="spec-tag">数学推理</span>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <div class="timeline-date">2024年8月</div>
+                <h3 class="timeline-title">Grok-2</h3>
+                <p class="timeline-content">引入图像生成能力（FLUX.1/Aurora），支持自主搜索，推理能力大幅提升。</p>
+                <div class="timeline-specs">
+                    <span class="spec-tag">图像生成</span>
+                    <span class="spec-tag">自主搜索</span>
+                    <span class="spec-tag">FLUX.1</span>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <div class="timeline-date">2025年2月</div>
+                <h3 class="timeline-title">Grok-3</h3>
+                <p class="timeline-content">上下文扩展至 100万 token，引入"思考模式"(Think Mode)，训练算力是 Grok-2 的10倍，使用超过10万张英伟达 H100 芯片。</p>
+                <div class="timeline-specs">
+                    <span class="spec-tag">1M 上下文</span>
+                    <span class="spec-tag">Think Mode</span>
+                    <span class="spec-tag">10x 算力</span>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <div class="timeline-date">2025年7月</div>
+                <h3 class="timeline-title">Grok-4</h3>
+                <p class="timeline-content">采用多智能体架构，支持实时搜索，推出"Companions"角色功能，具备更强的多模态能力。</p>
+                <div class="timeline-specs">
+                    <span class="spec-tag">多智能体</span>
+                    <span class="spec-tag">Companions</span>
+                    <span class="spec-tag">实时搜索</span>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in">
+                <div class="timeline-date">2026年3月</div>
+                <h3 class="timeline-title">Grok 4.20</h3>
+                <p class="timeline-content">幻觉率创新低（78%非幻觉率），上下文扩展至 200万 token，成为当前最强版本。</p>
+                <div class="timeline-specs">
+                    <span class="spec-tag">2M 上下文</span>
+                    <span class="spec-tag">78% 非幻觉</span>
+                    <span class="spec-tag">最新</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="comparison">
+        <h2 class="section-title">NSFW 容忍度对比</h2>
+        <p style="text-align: center; color: var(--text-gray); margin-bottom: 2rem;">为什么只有 Grok 可以输出成人内容？</p>
+
+        <div class="comparison-grid">
+            <div class="model-card grok fade-in">
+                <div class="model-header">
+                    <div class="model-icon">G</div>
+                    <div>
+                        <div class="model-name">Grok</div>
+                        <div class="model-company">xAI / Elon Musk</div>
+                    </div>
+                </div>
+                <div class="nsfw-meter">
+                    <div class="meter-label">
+                        <span>NSFW 容忍度</span>
+                        <span style="color: var(--accent-orange);">高</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill"></div>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-gray); font-size: 0.9rem;">
+                    口号"No Bias, No Filter"，允许虚构/成人内容创作，主打言论自由和创意自由。
+                </p>
+            </div>
+
+            <div class="model-card claude fade-in">
+                <div class="model-header">
+                    <div class="model-icon">C</div>
+                    <div>
+                        <div class="model-name">Claude</div>
+                        <div class="model-company">Anthropic</div>
+                    </div>
+                </div>
+                <div class="nsfw-meter">
+                    <div class="meter-label">
+                        <span>NSFW 容忍度</span>
+                        <span style="color: #d97757;">极低</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill"></div>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-gray); font-size: 0.9rem;">
+                    宪法式AI，98.76%合规率，最严格的安全过滤，几乎拒绝所有敏感内容。
+                </p>
+            </div>
+
+            <div class="model-card gemini fade-in">
+                <div class="model-header">
+                    <div class="model-icon">G</div>
+                    <div>
+                        <div class="model-name">Gemini</div>
+                        <div class="model-company">Google</div>
+                    </div>
+                </div>
+                <div class="nsfw-meter">
+                    <div class="meter-label">
+                        <span>NSFW 容忍度</span>
+                        <span style="color: #4285f4;">中等</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill"></div>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-gray); font-size: 0.9rem;">
+                    强力安全过滤，幻觉率约4%，对敏感内容有严格的Google安全政策限制。
+                </p>
+            </div>
+
+            <div class="model-card gpt fade-in">
+                <div class="model-header">
+                    <div class="model-icon">GPT</div>
+                    <div>
+                        <div class="model-name">GPT</div>
+                        <div class="model-company">OpenAI</div>
+                    </div>
+                </div>
+                <div class="nsfw-meter">
+                    <div class="meter-label">
+                        <span>NSFW 容忍度</span>
+                        <span style="color: #10a37f;">低</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill"></div>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-gray); font-size: 0.9rem;">
+                    严格的内容过滤，安全优先于宽松，拒绝大部分成人内容请求。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="philosophy">
+        <div class="philosophy fade-in">
+            <h2 class="section-title">为什么 Grok 与众不同？</h2>
+            <div class="philosophy-grid">
+                <div class="philosophy-item">
+                    <h3>🎯 产品哲学</h3>
+                    <p>马斯克创立 xAI 的部分原因就是对 OpenAI 的内容过滤方式不满。Grok 被刻意定位为"更少过滤"的替代品，用"言论自由"和"创意自由"作为核心卖点。</p>
+                </div>
+                <div class="philosophy-item">
+                    <h3>🔥 Spicy 模式</h3>
+                    <p>Grok Imagine 文生图工具包含"Spicy（辣味）模式"，启用后不再屏蔽裸露、性暗示和成人内容，这是其他主流AI明确禁止的功能。</p>
+                </div>
+                <div class="philosophy-item">
+                    <h3>🤖 Companions 功能</h3>
+                    <p>Grok-4 推出的 3D 动画角色互动功能，部分角色（如"Ani"）具备 NSFW 模式，允许成人向的角色扮演和对话。</p>
+                </div>
+                <div class="philosophy-item">
+                    <h3>⚡ 实时数据</h3>
+                    <p>与 X（Twitter）平台深度整合，能够获取实时信息，这也是 Grok 区别于其他模型的独特优势。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="warning">
+        <div class="warning-section fade-in">
+            <div class="warning-header">
+                <div class="warning-icon">⚠️</div>
+                <h3 class="warning-title">使用边界与红线</h3>
+            </div>
+            <p style="color: var(--text-gray); margin-bottom: 1rem;">尽管 Grok 对成人内容相对宽松，但仍存在不可逾越的红线：</p>
+            <ul class="warning-list">
+                <li><strong>禁止真实人物的色情描绘</strong> — 特别是 Deepfake 内容</li>
+                <li><strong>严禁未成年人性化内容</strong> — 任何形式的儿童色情内容</li>
+                <li><strong>虚构内容限制</strong> — 仅限成年人虚构角色，不得涉及真实人物</li>
+                <li><strong>法律合规</strong> — 仍需遵守各地区的法律法规</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://grok.com" target="_blank">Grok 官网</a>
+            <a href="https://x.ai" target="_blank">xAI 官网</a>
+            <a href="https://twitter.com/xai" target="_blank">X @xAI</a>
+        </div>
+        <p>数据来源：xAI 官方公告、IT之家、AI资讯平台 | 最后更新：2026年3月</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">本页面仅供技术交流，请遵守当地法律法规使用 AI 工具</p>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

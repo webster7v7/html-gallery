@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>带宽战争：YouTube vs 哔哩哔哩 基础设施深度解析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #FF0000 0%, #FF6B6B 50%, #CC0000 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bilibili-gradient {
+            background: linear-gradient(135deg, #FB7299 0%, #FC9BAD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .fiber-line {
+            background: linear-gradient(90deg, transparent, #00D9FF, #00D9FF, transparent);
+            height: 2px;
+            animation: flow 3s linear infinite;
+        }
+
+        @keyframes flow {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .comparison-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .tech-grid {
+            background-image: 
+                linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .cost-bar {
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .network-node {
+            transition: all 0.3s ease;
+        }
+
+        .network-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-slate-950 text-white overflow-x-hidden">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center tech-grid overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 opacity-90"></div>
+
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-red-600/10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="relative z-10 container mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
+                <i data-lucide="activity" class="w-4 h-4 text-cyan-400"></i>
+                <span class="text-sm text-cyan-400 tracking-wider uppercase">Infrastructure Deep Dive</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
+                <span class="gradient-text">带宽战争</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed">
+                为什么 YouTube 可以<span class="text-cyan-400 font-semibold">自建基础设施</span>，
+                <br class="hidden md:block">
+                而哔哩哔哩必须<span class="text-pink-400 font-semibold">依赖第三方 CDN</span>？
+            </p>
+
+            <!-- Platform Icons -->
+            <div class="flex justify-center items-center gap-8 md:gap-16 mb-16">
+                <div class="text-center group cursor-pointer">
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center mb-3 shadow-2xl shadow-red-900/50 group-hover:scale-110 transition-transform">
+                        <i data-lucide="play" class="w-10 h-10 md:w-12 md:h-12 text-white fill-white"></i>
+                    </div>
+                    <span class="text-lg font-bold text-white">YouTube</span>
+                    <div class="text-xs text-slate-500 mt-1">Google 生态</div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-px bg-gradient-to-r from-red-500 via-slate-500 to-pink-500 mb-2"></div>
+                    <span class="text-2xl font-bold text-slate-600">VS</span>
+                    <div class="w-16 h-px bg-gradient-to-r from-pink-500 via-slate-500 to-red-500 mt-2"></div>
+                </div>
+
+                <div class="text-center group cursor-pointer">
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center mb-3 shadow-2xl shadow-pink-900/50 group-hover:scale-110 transition-transform">
+                        <span class="text-3xl md:text-4xl font-black text-white">B</span>
+                    </div>
+                    <span class="text-lg font-bold text-white">哔哩哔哩</span>
+                    <div class="text-xs text-slate-500 mt-1">独立平台</div>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <div class="animate-bounce">
+                    <i data-lucide="chevron-down" class="w-8 h-8 text-slate-500"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Contrast Section -->
+    <section class="py-20 bg-slate-900 relative">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 scroll-reveal">
+                核心差异 <span class="text-slate-500">|</span> 一目了然
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- YouTube Card -->
+                <div class="comparison-card glass-card rounded-3xl p-8 relative overflow-hidden scroll-reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
+
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                            <i data-lucide="server" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold gradient-text">YouTube</h3>
+                            <p class="text-slate-400 text-sm">Google 全球基础设施</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold text-white">自建基础设施</span>
+                                <p class="text-sm text-slate-400 mt-1">暗光纤租赁 + 边缘节点部署</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold text-white">Google Global Cache</span>
+                                <p class="text-sm text-slate-400 mt-1">运营商机房直连，内网传输</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold text-white">对等互联 (Peering)</span>
+                                <p class="text-sm text-slate-400 mt-1">与全球运营商免费交换流量</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-white/10">
+                        <div class="flex justify-between items-end">
+                            <span class="text-slate-400 text-sm">带宽成本占比</span>
+                            <span class="text-3xl font-bold text-green-400">~15%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-2 mt-2">
+                            <div class="cost-bar bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full" style="width: 15%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bilibili Card -->
+                <div class="comparison-card glass-card rounded-3xl p-8 relative overflow-hidden scroll-reveal" style="transition-delay: 0.2s;">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
+
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
+                            <i data-lucide="cloud" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold bilibili-gradient">哔哩哔哩</h3>
+                            <p class="text-slate-400 text-sm">混合云 + 第三方 CDN</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="x-circle" class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold text-white">依赖第三方 CDN</span>
+                                <p class="text-sm text-slate-400 mt-1">腾讯云 / 阿里云 / 华为云</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="x-circle" class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold text-white">运营商带宽采购</span>
+                                <p class="text-sm text-slate-400 mt-1">无对等互联，全额付费</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="x-circle" class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0"></i>
+                            <div>
+                                <span class="font-semibold text-white">自建 CDN 成本极高</span>
+                                <p class="text-sm text-slate-400 mt-1">BGP 带宽单价昂贵，ROI 低</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-white/10">
+                        <div class="flex justify-between items-end">
+                            <span class="text-slate-400 text-sm">带宽成本占比</span>
+                            <span class="text-3xl font-bold text-red-400">50-60%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-2 mt-2">
+                            <div class="cost-bar bg-gradient-to-r from-red-400 to-red-600 h-2 rounded-full" style="width: 60%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Architecture -->
+    <section class="py-20 bg-slate-950 tech-grid">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 scroll-reveal">
+                技术架构 <span class="text-slate-500">|</span> 流量路径解析
+            </h2>
+            <p class="text-center text-slate-400 mb-16 max-w-2xl mx-auto scroll-reveal">
+                从用户点击播放按钮到视频画面出现，数据流经了完全不同的基础设施
+            </p>
+
+            <!-- YouTube Architecture -->
+            <div class="max-w-5xl mx-auto mb-16 scroll-reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center">
+                        <i data-lucide="play" class="w-5 h-5 text-white fill-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">YouTube 流量路径</h3>
+                    <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold">低成本</span>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 md:p-8">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <!-- User -->
+                        <div class="network-node w-24 text-center">
+                            <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-cyan-400 flex items-center justify-center mx-auto mb-2">
+                                <i data-lucide="user" class="w-7 h-7 text-cyan-400"></i>
+                            </div>
+                            <span class="text-xs text-slate-400">用户</span>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div class="hidden md:block flex-1 h-px bg-gradient-to-r from-cyan-400 to-blue-500 relative">
+                            <div class="absolute -top-1.5 right-0 w-3 h-3 border-t-2 border-r-2 border-blue-500 rotate-45"></div>
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-slate-500 whitespace-nowrap">本地 ISP</span>
+                        </div>
+                        <div class="md:hidden h-8 w-px bg-gradient-to-b from-cyan-400 to-blue-500"></div>
+
+                        <!-- GGC Node -->
+                        <div class="network-node w-32 text-center">
+                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 border border-blue-400 flex items-center justify-center mx-auto mb-2 shadow-lg shadow-blue-500/30">
+                                <i data-lucide="hard-drive" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-blue-400">GGC 边缘节点</span>
+                            <span class="text-xs text-slate-500 block">运营商机房</span>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div class="hidden md:block flex-1 h-px bg-gradient-to-r from-blue-500 to-purple-500 relative">
+                            <div class="absolute -top-1.5 right-0 w-3 h-3 border-t-2 border-r-2 border-purple-500 rotate-45"></div>
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-green-400 whitespace-nowrap">免费对等互联</span>
+                        </div>
+                        <div class="md:hidden h-8 w-px bg-gradient-to-b from-blue-500 to-purple-500"></div>
+
+                        <!-- Google Backbone -->
+                        <div class="network-node w-32 text-center">
+                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 border border-purple-400 flex items-center justify-center mx-auto mb-2 shadow-lg shadow-purple-500/30">
+                                <i data-lucide="globe" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-purple-400">Google 骨干网</span>
+                            <span class="text-xs text-slate-500 block">暗光纤</span>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div class="hidden md:block flex-1 h-px bg-gradient-to-r from-purple-500 to-red-500 relative">
+                            <div class="absolute -top-1.5 right-0 w-3 h-3 border-t-2 border-r-2 border-red-500 rotate-45"></div>
+                        </div>
+                        <div class="md:hidden h-8 w-px bg-gradient-to-b from-purple-500 to-red-500"></div>
+
+                        <!-- Origin -->
+                        <div class="network-node w-24 text-center">
+                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center mx-auto mb-2">
+                                <i data-lucide="database" class="w-7 h-7 text-white"></i>
+                            </div>
+                            <span class="text-xs text-slate-400">源站</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl">
+                        <div class="flex items-center gap-2 text-green-400 mb-2">
+                            <i data-lucide="check-circle" class="w-5 h-5"></i>
+                            <span class="font-semibold">成本优势</span>
+                        </div>
+                        <p class="text-sm text-slate-300">
+                            视频流量通过 <span class="text-cyan-400 font-semibold">Google Global Cache</span> 缓存到运营商本地，
+                            后续传输完全在 Google 内网完成，<span class="text-green-400">无需支付带宽费用</span>。
+                            Google 与运营商对等互联，双方互惠互利。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bilibili Architecture -->
+            <div class="max-w-5xl mx-auto scroll-reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-lg bg-pink-500 flex items-center justify-center">
+                        <span class="text-xl font-black text-white">B</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">哔哩哔哩 流量路径</h3>
+                    <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-semibold">高成本</span>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 md:p-8">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <!-- User -->
+                        <div class="network-node w-24 text-center">
+                            <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-cyan-400 flex items-center justify-center mx-auto mb-2">
+                                <i data-lucide="user" class="w-7 h-7 text-cyan-400"></i>
+                            </div>
+                            <span class="text-xs text-slate-400">用户</span>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div class="hidden md:block flex-1 h-px bg-gradient-to-r from-cyan-400 to-orange-500 relative">
+                            <div class="absolute -top-1.5 right-0 w-3 h-3 border-t-2 border-r-2 border-orange-500 rotate-45"></div>
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-slate-500 whitespace-nowrap">本地 ISP</span>
+                        </div>
+                        <div class="md:hidden h-8 w-px bg-gradient-to-b from-cyan-400 to-orange-500"></div>
+
+                        <!-- CDN Node -->
+                        <div class="network-node w-32 text-center">
+                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 border border-orange-400 flex items-center justify-center mx-auto mb-2 shadow-lg shadow-orange-500/30">
+                                <i data-lucide="cloud-cog" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-orange-400">腾讯云 CDN</span>
+                            <span class="text-xs text-slate-500 block">边缘节点</span>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div class="hidden md:block flex-1 h-px bg-gradient-to-r from-orange-500 to-yellow-500 relative">
+                            <div class="absolute -top-1.5 right-0 w-3 h-3 border-t-2 border-r-2 border-yellow-500 rotate-45"></div>
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-red-400 whitespace-nowrap">付费带宽</span>
+                        </div>
+                        <div class="md:hidden h-8 w-px bg-gradient-to-b from-orange-500 to-yellow-500"></div>
+
+                        <!-- Operator Backbone -->
+                        <div class="network-node w-32 text-center">
+                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-yellow-600 to-yellow-800 border border-yellow-400 flex items-center justify-center mx-auto mb-2 shadow-lg shadow-yellow-500/30">
+                                <i data-lucide="building-2" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-yellow-400">运营商骨干网</span>
+                            <span class="text-xs text-slate-500 block">电信/联通/移动</span>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div class="hidden md:block flex-1 h-px bg-gradient-to-r from-yellow-500 to-pink-500 relative">
+                            <div class="absolute -top-1.5 right-0 w-3 h-3 border-t-2 border-r-2 border-pink-500 rotate-45"></div>
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-red-400 whitespace-nowrap">高额结算</span>
+                        </div>
+                        <div class="md:hidden h-8 w-px bg-gradient-to-b from-yellow-500 to-pink-500"></div>
+
+                        <!-- Bilibili Origin -->
+                        <div class="network-node w-24 text-center">
+                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-pink-700 flex items-center justify-center mx-auto mb-2">
+                                <i data-lucide="tv" class="w-7 h-7 text-white"></i>
+                            </div>
+                            <span class="text-xs text-slate-400">B站源站</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
+                        <div class="flex items-center gap-2 text-red-400 mb-2">
+                            <i data-lucide="alert-circle" class="w-5 h-5"></i>
+                            <span class="font-semibold">成本困境</span>
+                        </div>
+                        <p class="text-sm text-slate-300">
+                            B站依赖 <span class="text-orange-400 font-semibold">腾讯云/阿里云 CDN</span>，
+                            云服务商需向三大运营商采购 BGP 带宽，<span class="text-red-400">无对等互联机制</span>。
+                            带宽成本占 CDN 总成本 50-60%，远高于 YouTube 的 15%。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dark Fiber & Peering Section -->
+    <section class="py-20 bg-slate-900 relative overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="fiber-line absolute top-1/4 w-full"></div>
+            <div class="fiber-line absolute top-2/4 w-full" style="animation-delay: 1s;"></div>
+            <div class="fiber-line absolute top-3/4 w-full" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 scroll-reveal">
+                    YouTube 的秘密武器
+                </h2>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Dark Fiber -->
+                    <div class="glass-card rounded-2xl p-6 scroll-reveal">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center">
+                                <i data-lucide="fiber-optic" class="w-6 h-6 text-cyan-400"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-cyan-400">暗光纤战略</h3>
+                        </div>
+
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Google 自 <span class="text-white font-semibold">2009 年</span> 起成为全球最大暗光纤持有者。
+                            暗光纤是运营商铺设但未启用的光纤资源，Google 以极低价格批量租赁。
+                        </p>
+
+                        <div class="bg-slate-950/50 rounded-xl p-4 border border-white/5">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-slate-500">传统带宽成本</span>
+                                <span class="text-xs text-red-400">$$$$$</span>
+                            </div>
+                            <div class="w-full bg-slate-800 rounded-full h-1.5 mb-3">
+                                <div class="bg-red-500 h-1.5 rounded-full" style="width: 90%"></div>
+                            </div>
+
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-slate-500">暗光纤租赁成本</span>
+                                <span class="text-xs text-green-400">$$</span>
+                            </div>
+                            <div class="w-full bg-slate-800 rounded-full h-1.5">
+                                <div class="bg-green-500 h-1.5 rounded-full" style="width: 20%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Peering -->
+                    <div class="glass-card rounded-2xl p-6 scroll-reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center">
+                                <i data-lucide="handshake" class="w-6 h-6 text-purple-400"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-purple-400">对等互联</h3>
+                        </div>
+
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Google 与全球运营商建立 <span class="text-white font-semibold">Peering 协议</span>，
+                            在运营商机房部署 GGC 服务器，实现流量本地交换。
+                        </p>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 p-3 bg-slate-950/50 rounded-lg border border-white/5">
+                                <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                                <span class="text-sm text-slate-300">运营商节省国际出口带宽</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-950/50 rounded-lg border border-white/5">
+                                <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                                <span class="text-sm text-slate-300">Google 无需支付带宽费用</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-950/50 rounded-lg border border-white/5">
+                                <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                                <span class="text-sm text-slate-300">用户获得更低延迟体验</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- China Market Reality -->
+    <section class="py-20 bg-slate-950">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 scroll-reveal">
+                中国市场的结构性困境
+            </h2>
+            <p class="text-center text-slate-400 mb-12 max-w-2xl mx-auto scroll-reveal">
+                为什么哔哩哔哩无法复制 YouTube 的模式？
+            </p>
+
+            <div class="max-w-4xl mx-auto space-y-6">
+                <!-- Problem 1 -->
+                <div class="glass-card rounded-2xl p-6 md:p-8 scroll-reveal">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="shield-x" class="w-8 h-8 text-red-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2">运营商垄断，无对等互联</h3>
+                            <p class="text-slate-300 leading-relaxed mb-4">
+                                中国运营商（电信/联通/移动）垄断骨干网资源，<span class="text-red-400">不存在与 CDN 厂商的对等互联机制</span>。
+                                所有流量必须按带宽使用量全额付费，无法像 Google 那样通过 Peering 协议"免费"交换流量。
+                            </p>
+                            <div class="flex gap-4 text-sm">
+                                <div class="px-4 py-2 bg-slate-900 rounded-lg border border-white/10">
+                                    <span class="text-slate-500">美国模式</span>
+                                    <span class="text-green-400 ml-2">对等互联 ↔ 互惠互利</span>
+                                </div>
+                                <div class="px-4 py-2 bg-slate-900 rounded-lg border border-white/10">
+                                    <span class="text-slate-500">中国模式</span>
+                                    <span class="text-red-400 ml-2">全额采购 → 成本高昂</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Problem 2 -->
+                <div class="glass-card rounded-2xl p-6 md:p-8 scroll-reveal">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="w-16 h-16 rounded-2xl bg-orange-500/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="trending-up" class="w-8 h-8 text-orange-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2">BGP 带宽单价极高</h3>
+                            <p class="text-slate-300 leading-relaxed mb-4">
+                                蓝汛 CEO 王松曾指出："在中国 CDN 企业生存非常难，最核心的问题是<span class="text-orange-400">带宽成本太高</span>。
+                                CDN 服务中 50-60% 的成本是带宽成本，而对于 Akamai 来说这个比例是 15%。"
+                            </p>
+                            <div class="bg-slate-900 rounded-xl p-4 border border-white/10">
+                                <div class="grid grid-cols-3 gap-4 text-center">
+                                    <div>
+                                        <div class="text-2xl font-bold text-red-400">50-60%</div>
+                                        <div class="text-xs text-slate-500 mt-1">中国 CDN 带宽成本占比</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-2xl font-bold text-green-400">~15%</div>
+                                        <div class="text-xs text-slate-500 mt-1">Akamai 带宽成本占比</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-2xl font-bold text-cyan-400">4x</div>
+                                        <div class="text-xs text-slate-500 mt-1">成本差距倍数</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Problem 3 -->
+                <div class="glass-card rounded-2xl p-6 md:p-8 scroll-reveal">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="w-16 h-16 rounded-2xl bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="calculator" class="w-8 h-8 text-yellow-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-2">自建 CDN 经济门槛极高</h3>
+                            <p class="text-slate-300 leading-relaxed mb-4">
+                                自建 CDN 需要投入服务器、存储、网络设备，以及向三大运营商采购 BGP 带宽。
+                                对于 B站 这样的平台，全国范围的网络覆盖需求意味着<span class="text-yellow-400">巨大的固定资产投入和运营成本</span>，
+                                ROI（投资回报率）远低于采购第三方 CDN 服务。
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-slate-900 rounded-full text-xs text-slate-400 border border-white/10">服务器采购</span>
+                                <span class="px-3 py-1 bg-slate-900 rounded-full text-xs text-slate-400 border border-white/10">机房租赁</span>
+                                <span class="px-3 py-1 bg-slate-900 rounded-full text-xs text-slate-400 border border-white/10">BGP 带宽采购</span>
+                                <span class="px-3 py-1 bg-slate-900 rounded-full text-xs text-slate-400 border border-white/10">运维团队</span>
+                                <span class="px-3 py-1 bg-slate-900 rounded-full text-xs text-red-400 border border-red-500/20">ROI 极低</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quality Comparison -->
+    <section class="py-20 bg-slate-900">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 scroll-reveal">
+                画质与成本策略对比
+            </h2>
+
+            <div class="max-w-5xl mx-auto overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="pb-4 text-slate-400 font-medium">维度</th>
+                            <th class="pb-4 text-red-400 font-bold">YouTube</th>
+                            <th class="pb-4 text-pink-400 font-bold">哔哩哔哩</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 text-slate-300">带宽成本压力</td>
+                            <td class="py-4 text-green-400">极低（自有基础设施）</td>
+                            <td class="py-4 text-red-400">极高（按量付费给第三方）</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 text-slate-300">码率策略</td>
+                            <td class="py-4 text-green-400">可承受高码率 4K/8K</td>
+                            <td class="py-4 text-orange-400">需优化压缩降低带宽消耗</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 text-slate-300">默认清晰度</td>
+                            <td class="py-4 text-green-400">用户自主选择，默认较高</td>
+                            <td class="py-4 text-orange-400">根据用户类型动态调整</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 text-slate-300">成本优化手段</td>
+                            <td class="py-4 text-slate-500">-</td>
+                            <td class="py-4 text-red-400">
+                                未登录用户低清晰度 / 投屏限制 720p / 识别黑产阻断
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 text-slate-300">突发流量应对</td>
+                            <td class="py-4 text-green-400">内网弹性扩容，成本可控</td>
+                            <td class="py-4 text-orange-400">依赖 CDN 厂商，成本敏感</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="max-w-3xl mx-auto mt-12 p-6 bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl border border-white/10 scroll-reveal">
+                <div class="flex items-start gap-4">
+                    <i data-lucide="lightbulb" class="w-6 h-6 text-yellow-400 flex-shrink-0 mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键洞察</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            YouTube 的高画质并非单纯因为技术先进，而是因为其<span class="text-cyan-400">带宽成本结构完全不同</span>。
+                            当带宽成本仅占 15% 时，平台可以慷慨地提供高码率视频；而当带宽成本占 50-60% 时，
+                            每一个 GB 的流量都直接影响利润，迫使平台必须在画质与成本之间寻找平衡点。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="py-20 bg-slate-950 tech-grid">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 scroll-reveal">总结</h2>
+
+            <div class="max-w-3xl mx-auto glass-card rounded-3xl p-8 md:p-12 scroll-reveal">
+                <p class="text-lg md:text-xl text-slate-300 leading-relaxed mb-8">
+                    <span class="text-red-400 font-bold">YouTube 能自建带宽的本质</span>，
+                    是 Google 通过<span class="text-cyan-400">暗光纤租赁 + 对等互联协议</span>，
+                    将视频流量"下沉"到运营商边缘，绕过了传统带宽计费模式。
+                </p>
+
+                <div class="w-full h-px bg-gradient-to-r from-transparent via-slate-600 to-transparent my-8"></div>
+
+                <p class="text-lg md:text-xl text-slate-300 leading-relaxed">
+                    <span class="text-pink-400 font-bold">哔哩哔哩无法自建的核心原因</span>，
+                    是中国<span class="text-red-400">运营商垄断 + 缺乏对等互联机制</span>，
+                    导致自建 CDN 的带宽采购成本极高，远不如采购第三方 CDN 服务经济。
+                    这是中国视频平台普遍面临的<span class="text-orange-400">结构性困境</span>，
+                    也是 B站长期亏损的重要成本因素之一。
+                </p>
+            </div>
+
+            <div class="mt-16 text-slate-500 text-sm">
+                <p>数据来源：公开财报、行业访谈、技术文档</p>
+                <p class="mt-2">© 2026 带宽战争深度解析</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Cost bar animation on scroll
+        const costBars = document.querySelectorAll('.cost-bar');
+        const barObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.style.width;
+                }
+            });
+        }, { threshold: 0.5 });
+
+        costBars.forEach(bar => barObserver.observe(bar));
+    </script>
+</body>
+</html>
