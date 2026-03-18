@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广西沙姜种植肥料管理指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #0d3320 100%);
+            color: #e8f5e9;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, rgba(46, 125, 50, 0.3) 0%, transparent 100%);
+            border-bottom: 2px solid #4caf50;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #81c784;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #a5d6a7;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .timeline-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-title {
+            font-size: 1.8em;
+            color: #81c784;
+            margin-bottom: 25px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #4caf50 0%, #81c784 50%, #2e7d32 100%);
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border-left: 4px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.2);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 25px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #4caf50;
+            border: 3px solid #1b5e20;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .timeline-item.preparation {
+            border-color: #ff9800;
+        }
+
+        .timeline-item.planting {
+            border-color: #2196f3;
+        }
+
+        .timeline-item.growth {
+            border-color: #9c27b0;
+        }
+
+        .timeline-item.bulking {
+            border-color: #4caf50;
+        }
+
+        .phase-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .preparation .phase-badge { background: rgba(255, 152, 0, 0.2); color: #ffb74d; }
+        .planting .phase-badge { background: rgba(33, 150, 243, 0.2); color: #64b5f6; }
+        .growth .phase-badge { background: rgba(156, 39, 176, 0.2); color: #ba68c8; }
+        .bulking .phase-badge { background: rgba(76, 175, 80, 0.2); color: #81c784; }
+
+        .phase-title {
+            font-size: 1.4em;
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .material-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .material-name {
+            font-size: 1.2em;
+            color: #ffd54f;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .material-icon {
+            font-size: 1.3em;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #a5d6a7;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #fff;
+            text-align: right;
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .highlight {
+            color: #ffd54f;
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background: rgba(255, 152, 0, 0.15);
+            border: 1px solid rgba(255, 152, 0, 0.4);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .warning-title {
+            color: #ffb74d;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.2) 0%, rgba(27, 94, 32, 0.2) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid rgba(76, 175, 80, 0.4);
+        }
+
+        .summary-title {
+            font-size: 1.6em;
+            color: #81c784;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .summary-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            color: #81c784;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .material-tag {
+            display: inline-block;
+            background: rgba(76, 175, 80, 0.2);
+            color: #a5d6a7;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.95em;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .logic-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .logic-title {
+            font-size: 1.3em;
+            color: #81c784;
+            margin-bottom: 15px;
+        }
+
+        .logic-list {
+            list-style: none;
+        }
+
+        .logic-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #c8e6c9;
+        }
+
+        .logic-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #81c784;
+            opacity: 0.7;
+            font-size: 0.9em;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .timeline {
+                padding-left: 30px;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌿 广西沙姜种植肥料管理指南</h1>
+            <p class="subtitle">四者配合时序方案 · 精准施肥全流程</p>
+        </header>
+
+        <div class="timeline-container">
+            <h2 class="timeline-title">
+                <span>📅</span>
+                完整时间轴方案
+            </h2>
+
+            <div class="timeline">
+                <!-- 阶段1：种植前准备 -->
+                <div class="timeline-item preparation">
+                    <span class="phase-badge">种植前30天</span>
+                    <h3 class="phase-title">土壤消毒与调理</h3>
+
+                    <div class="material-card">
+                        <div class="material-name">
+                            <span class="material-icon">🪨</span>
+                            生石灰 (CaO)
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">用量</span>
+                            <span class="detail-value highlight">50-75kg/亩</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">用法</span>
+                            <span class="detail-value">均匀撒施 → 深翻20-30cm → 晒垡7-10天</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">目的</span>
+                            <span class="detail-value">消毒杀菌、调节酸性、补钙改土</span>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-title">⚠️ 关键提醒</div>
+                        <p>必须与种植间隔<span class="highlight">20天以上</span>，否则碱性环境会烧根，并降低后续多菌灵药效。</p>
+                    </div>
+                </div>
+
+                <!-- 阶段2：种植时 -->
+                <div class="timeline-item planting">
+                    <span class="phase-badge">种植前1-2天 & 当天</span>
+                    <h3 class="phase-title">种姜处理与基肥施用</h3>
+
+                    <div class="material-card">
+                        <div class="material-name">
+                            <span class="material-icon">🧪</span>
+                            多菌灵 50%
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">浓度</span>
+                            <span class="detail-value highlight">500倍液（50%可湿性粉剂）</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">用法</span>
+                            <span class="detail-value">种姜浸泡20分钟 → 捞出晾干 → 播种</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">目的</span>
+                            <span class="detail-value">预防姜瘟病、根腐病等真菌性病害</span>
+                        </div>
+                    </div>
+
+                    <div class="material-card">
+                        <div class="material-name">
+                            <span class="material-icon">💩</span>
+                            腐熟农家肥（羊粪）
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">用量</span>
+                            <span class="detail-value highlight">1500-2000kg/亩</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">用法</span>
+                            <span class="detail-value">开种植沟 → 沟底铺5cm羊粪 → 放种姜 → 覆土</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">目的</span>
+                            <span class="detail-value">长效基肥，提供有机质+缓释氮磷钾，改良土壤结构</span>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-title">⚠️ 关键提醒</div>
+                        <p>羊粪必须<span class="highlight">充分腐熟</span>（堆沤2-3个月，无臭味、颜色深褐），生粪会烧根、招地老虎。多菌灵药液只用一次，浸泡后倒掉，不可重复使用。</p>
+                    </div>
+                </div>
+
+                <!-- 阶段3：生长期 -->
+                <div class="timeline-item growth">
+                    <span class="phase-badge">5-9月生长期</span>
+                    <h3 class="phase-title">营养生长期管理</h3>
+
+                    <div class="material-card" style="background: rgba(156, 39, 176, 0.1);">
+                        <div class="material-name" style="color: #ba68c8;">
+                            <span class="material-icon">🌱</span>
+                            管理要点
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">施肥</span>
+                            <span class="detail-value">无需追加化肥，依靠基肥（羊粪）持续供肥</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">水分</span>
+                            <span class="detail-value">保持土壤湿润，忌积水</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">培土</span>
+                            <span class="detail-value">8-9月小培沟，促进根系发育</span>
+                        </div>
+                    </div>
+
+                    <div class="warning-box" style="background: rgba(156, 39, 176, 0.15); border-color: rgba(156, 39, 176, 0.4);">
+                        <div class="warning-title" style="color: #ba68c8;">💡 为什么前期不用复合肥？</div>
+                        <p>沙姜前期（出苗-长叶）对氮需求中等，<span class="highlight">羊粪中的缓释氮已够用</span>。前期施复合肥（尤其高钾）浪费，且氮过多易徒长。前期根系弱，化肥易烧根，有机肥更安全。</p>
+                    </div>
+                </div>
+
+                <!-- 阶段4：膨大期 -->
+                <div class="timeline-item bulking">
+                    <span class="phase-badge">10月后膨大期</span>
+                    <h3 class="phase-title">块茎膨大期关键追肥</h3>
+
+                    <div class="material-card">
+                        <div class="material-name">
+                            <span class="material-icon">⚡</span>
+                            硫酸钾复合肥 15-10-20
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">配比特点</span>
+                            <span class="detail-value highlight">高钾型（K₂O≥20%）</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">用量</span>
+                            <span class="detail-value highlight">30-50kg/亩</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">用法</span>
+                            <span class="detail-value">大培沟时沟施 → 覆土 → 浇水</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">目的</span>
+                            <span class="detail-value">高钾促进块茎膨大、提高产量和品质，积累干物质</span>
+                        </div>
+                    </div>
+
+                    <div class="warning-box" style="background: rgba(76, 175, 80, 0.15); border-color: rgba(76, 175, 80, 0.4);">
+                        <div class="warning-title" style="color: #81c784;">🎯 为什么选15-10-20？</div>
+                        <p>沙姜是根茎类作物，<span class="highlight">秋分后进入块茎膨大期，需钾量激增</span>。15-10-20的高钾配比（20%）正好匹配需求，比均衡型15-15-15产量更高、品质更好。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 总结对比 -->
+        <div class="summary-section">
+            <h2 class="summary-title">📊 前后阶段对比总结</h2>
+
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>🌱 前期（种植-9月）</h3>
+                    <p style="color: #a5d6a7; margin-bottom: 15px; font-size: 0.9em;">3种材料 · 养根护苗</p>
+                    <div>
+                        <span class="material-tag">🪨 生石灰</span>
+                        <span class="material-tag">🧪 多菌灵50%</span>
+                        <span class="material-tag">💩 腐熟羊粪</span>
+                    </div>
+                    <p style="margin-top: 15px; color: #c8e6c9; font-size: 0.9em;">
+                        核心逻辑：消毒安全 + 长效缓释<br>
+                        无需复合肥，羊粪养分足够
+                    </p>
+                </div>
+
+                <div class="summary-card">
+                    <h3>🎯 后期（10月后）</h3>
+                    <p style="color: #a5d6a7; margin-bottom: 15px; font-size: 0.9em;">1种材料 · 促产提质</p>
+                    <div>
+                        <span class="material-tag pulse">⚡ 15-10-20</span>
+                    </div>
+                    <p style="margin-top: 15px; color: #c8e6c9; font-size: 0.9em;">
+                        核心逻辑：高钾攻膨<br>
+                        块茎产量形成关键期，钾决定一切
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 关键逻辑 -->
+        <div class="logic-section">
+            <h3 class="logic-title">🧠 方案设计核心逻辑</h3>
+            <ul class="logic-list">
+                <li><strong>时序错开：</strong>生石灰最早（整地前），多菌灵紧跟（种前），羊粪打底（种植时），15-10-20压轴（膨大期），四者各司其职</li>
+                <li><strong>酸碱隔离：</strong>生石灰与多菌灵间隔20天以上，避免碱性环境降低杀菌药效</li>
+                <li><strong>有机先行：</strong>前期只用腐熟有机肥，安全缓释，避免化肥烧根</li>
+                <li><strong>高钾后置：</strong>钾肥留到膨大期集中使用，效率最高，不浪费</li>
+                <li><strong>精简高效：</strong>前期3种+后期1种，共4种材料，简单省钱，专业种植节奏</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>广西沙姜种植技术指南 | 基于作物生长规律与土壤科学</p>
+            <p style="margin-top: 10px; font-size: 0.8em;">🌿 愿每一份耕耘都有丰收的回报</p>
+        </footer>
+    </div>
+</body>
+</html>
