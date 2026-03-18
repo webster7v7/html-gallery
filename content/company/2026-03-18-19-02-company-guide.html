@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0基础开公司全流程指南 - 创业避坑与2027年机遇</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.8;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-1);
+            color: white;
+            padding: 140px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .hero-tag {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-top: -2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gradient-1);
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 24px;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+
+        .timeline-step {
+            display: inline-block;
+            background: var(--gradient-1);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* Warning Boxes */
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid var(--warning);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .danger-box {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 4px solid var(--danger);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 4px solid var(--success);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .box-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        /* Term Cards */
+        .term-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary);
+        }
+
+        .term-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .term-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Comparison Table */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .compare-table th {
+            background: var(--gradient-1);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .compare-table td {
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .compare-table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        /* Progress Bar */
+        .progress-item {
+            margin-bottom: 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 5px;
+            transition: width 1s ease;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-primary { background: #dbeafe; color: var(--primary); }
+        .badge-success { background: #d1fae5; color: var(--success); }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        .badge-danger { background: #fee2e2; color: var(--danger); }
+
+        /* Feature List */
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .tab.active {
+            background: var(--gradient-1);
+            color: white;
+        }
+
+        /* Quote */
+        .quote {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .quote::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--primary);
+            opacity: 0.3;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+
+        .quote-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-dark);
+            padding-left: 40px;
+        }
+
+        .quote-author {
+            text-align: right;
+            color: var(--text-light);
+            margin-top: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            color: white;
+            padding: 60px 20px 30px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .timeline {
+                padding-left: 30px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .navbar { display: none; }
+            .hero { padding-top: 40px; }
+            .card { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🏢 创业指南2025</div>
+            <ul class="nav-links">
+                <li><a href="#process">注册流程</a></li>
+                <li><a href="#risks">风险规避</a></li>
+                <li><a href="#terms">名词解释</a></li>
+                <li><a href="#graduate">毕业生建议</a></li>
+                <li><a href="#future">未来10年</a></li>
+                <li><a href="#business">业务选择</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>0基础开公司全流程指南</h1>
+            <p class="subtitle">从零到一，规避所有坑，把握2027年机遇</p>
+            <p class="subtitle">专为网络营销与直播电商专业大学生打造</p>
+            <div class="hero-tags">
+                <span class="hero-tag">📋 注册全流程</span>
+                <span class="hero-tag">⚠️ 风险规避</span>
+                <span class="hero-tag">💼 运营管理</span>
+                <span class="hero-tag">🚀 未来趋势</span>
+                <span class="hero-tag">💰 赚钱方向</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第一部分：开公司全流程 -->
+    <section class="section" id="process">
+        <div class="container">
+            <h2 class="section-title">🏢 0基础开公司全流程</h2>
+            <p class="section-subtitle">手把手教你从零开始注册一家公司</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-step">第1步</span>
+                    <h3 class="timeline-title">确定公司类型</h3>
+                    <p>根据业务需求选择合适的公司类型：</p>
+                    <ul class="feature-list" style="margin-top: 15px;">
+                        <li><strong>有限责任公司：</strong>最常见的类型，股东以出资额为限承担责任，适合大多数创业者</li>
+                        <li><strong>股份有限公司：</strong>适合规模较大、有上市计划的企业</li>
+                        <li><strong>个人独资企业：</strong>一人投资经营，承担无限责任</li>
+                        <li><strong>合伙企业：</strong>两个以上合伙人共同出资</li>
+                        <li><strong>个体工商户：</strong>适合小本经营，注册简单但无限责任</li>
+                    </ul>
+                    <div class="warning-box" style="margin-top: 15px;">
+                        <div class="box-title">⚠️ 避坑提醒</div>
+                        <p>不要盲目选择"一人有限公司"，虽然听起来方便，但如果不能证明公司财产独立于个人财产，股东要对公司债务承担连带责任！</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-step">第2步</span>
+                    <h3 class="timeline-title">公司名称核准</h3>
+                    <p>公司名称结构：<strong>行政区划 + 字号 + 行业 + 组织形式</strong></p>
+                    <p style="margin-top: 10px;">例如：深圳市（行政区划）+ 星辰（字号）+ 网络科技（行业）+ 有限公司（组织形式）</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 实用技巧</div>
+                        <ul class="feature-list">
+                            <li>准备3-5个备选名称，避免重名被拒</li>
+                            <li>字号不要太常见（如"中华""国际"等需要特批）</li>
+                            <li>可通过"国家企业信用信息公示系统"查询是否已被注册</li>
+                            <li>建议同时注册商标，保护品牌</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-step">第3步</span>
+                    <h3 class="timeline-title">确定注册资本</h3>
+                    <p>注册资本实行<strong>认缴制</strong>，但2024年7月1日起新《公司法》规定需在<strong>5年内</strong>实缴到位。</p>
+                    <div class="warning-box" style="margin-top: 15px;">
+                        <div class="box-title">⚠️ 2024新公司法重点</div>
+                        <p><strong>认缴≠不缴！</strong>虽然注册时不需要立即实缴，但必须在公司成立后5年内缴足。如果到期未缴足，股东要承担违约责任，可能面临罚款。</p>
+                    </div>
+                    <div class="stats-grid" style="margin-top: 20px;">
+                        <div class="stat-card">
+                            <div class="stat-number">10-100万</div>
+                            <div class="stat-label">一般服务类公司建议</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">100-500万</div>
+                            <div class="stat-label">电商/科技类公司建议</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">≤5年</div>
+                            <div class="stat-label">新公司法实缴期限</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-step">第4步</span>
+                    <h3 class="timeline-title">确定经营范围</h3>
+                    <p>经营范围决定你能做什么业务，一定要仔细填写。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 电商/直播公司推荐经营范围</div>
+                        <p>互联网销售（除销售需要许可的商品）；个人互联网直播服务；摄像及视频制作服务；市场营销策划；品牌管理；数字内容制作服务（不含出版发行）；网络技术服务；软件开发；信息技术咨询服务；广告设计、代理；广告发布；供应链管理服务；国内贸易代理；货物进出口；技术进出口</p>
+                    </div>
+                    <div class="warning-box" style="margin-top: 15px;">
+                        <div class="box-title">⚠️ 重要提醒</div>
+                        <p>如果涉及特殊行业（如食品、药品、教育培训等），需要额外申请许可证。涉及"进出口"业务一定要写上，否则无法报关！</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-step">第5步</span>
+                    <h3 class="timeline-title">准备注册地址</h3>
+                    <p>注册地址必须是<strong>商用或商住两用</strong>性质，纯住宅地址一般不能注册公司。</p>
+                    <div class="grid-3" style="margin-top: 20px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">🏢</div>
+                                <div class="card-title">实际办公地址</div>
+                            </div>
+                            <p>租赁写字楼或商铺，适合有实体办公需求的企业。需要提供租赁合同和房产证复印件。</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">🏠</div>
+                                <div class="card-title">挂靠地址/园区</div>
+                            </div>
+                            <p>使用创业园区、孵化器或商务秘书公司的地址，成本低（每年1000-5000元），适合初创企业。</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">🏛️</div>
+                                <div class="card-title">集群注册</div>
+                            </div>
+                            <p>部分地区允许多家企业使用同一地址注册，政府提供的免费或低成本注册地址。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-step">第6步</span>
+                    <h3 class="timeline-title">工商登记注册</h3>
+                    <p>准备材料，提交工商登记：</p>
+                    <ul class="feature-list" style="margin-top: 15px;">
+                        <li>公司章程</li>
+                        <li>股东会决议</li>
+                        <li>法定代表人、董事、监事任职文件</li>
+                        <li>股东身份证明</li>
+                        <li>注册地址证明</li>
+                        <li>公司名称预先核准通知书</li>
+                    </ul>
+                    <div class="success-box" style="margin-top: 15px;">
+                        <div class="box-title">✅ 现在超方便</div>
+                        <p>大部分地区已实现全程电子化，可通过当地"政务服务网"在线提交，1-3个工作日即可拿到营业执照，无需跑腿！</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-step">第7步</span>
+                    <h3 class="timeline-title">刻章备案</h3>
+                    <p>拿到营业执照后，需要刻制以下印章（现在很多地区免费）：</p>
+                    <div class="grid-4" style="margin-top: 20px;">
+                        <div class="card" style="text-align: center; padding: 20px;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">🔴</div>
+                            <div style="font-weight: 700;">公章</div>
+                            <div style="font-size: 0.85rem; color: var(--text-light);">对外正式文件</div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 20px;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">🔷</div>
+                            <div style="font-weight: 700;">财务章</div>
+                            <div style="font-size: 0.85rem; color: var(--text-light);">银行事务/发票</div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 20px;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">🟨</div>
+                            <div style="font-weight: 700;">法人章</div>
+                            <div style="font-size: 0.85rem; color: var(--text-light);">法定代表人印鉴</div>
+                        </div>
+                        <div class="card" style="text-align: center; padding: 20px;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">🟩</div>
+                            <div style="font-weight: 700;">发票章</div>
+                            <div style="font-size: 0.85rem; color: var(--text-light);">开具发票专用</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-step">第8步</span>
+                    <h3 class="timeline-title">银行开户</h3>
+                    <p>开立基本户（对公账户），用于公司日常资金收付。</p>
+                    <div class="warning-box" style="margin-top: 15px;">
+                        <div class="box-title">⚠️ 开户避坑指南</div>
+                        <ul class="feature-list">
+                            <li>不同银行收费差异大，年费从免费到2000元不等，多比较</li>
+                            <li>部分银行要求存款余额，问清楚再开户</li>
+                            <li>现在严查"空壳公司"，银行会上门核查办公地址</li>
+                            <li>准备：营业执照、公章、法人身份证、公司章程、租房合同</li>
+                            <li>一般需要预约，整个流程约1-2周</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-step">第9步</span>
+                    <h3 class="timeline-title">税务登记</h3>
+                    <p>领取营业执照后<strong>30天内</strong>必须办理税务登记，逾期可能罚款！</p>
+                    <div class="grid-2" style="margin-top: 20px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);">🧾</div>
+                                <div class="card-title">一般纳税人</div>
+                            </div>
+                            <p>• 年应税销售额超过500万强制认定<br>
+                            • 可以开增值税专用发票<br>
+                            • 进项税可以抵扣<br>
+                            • 适合规模较大、有进项抵扣需求的企业<br>
+                            • 税率：13%（货物）、9%（建筑）、6%（服务）</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon" style="background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);">📄</div>
+                                <div class="card-title">小规模纳税人</div>
+                            </div>
+                            <p>• 年销售额500万以下<br>
+                            • 只能开增值税普通发票（或代开专票）<br>
+                            • 征收率：3%（目前优惠期减按1%）<br>
+                            • 月销售额10万以下免征增值税<br>
+                            • 适合初创小微企业</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-step">第10步</span>
+                    <h3 class="timeline-title">社保公积金开户</h3>
+                    <p>如果有员工，需要办理社保和公积金开户。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 2024年新规</div>
+                        <p>根据《社会保险基金监督举报工作管理办法》，社保挂靠属于违法行为！企业必须真实用工、真实缴纳社保。初创期可考虑灵活用工平台降低成本，但要确保合规。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第二部分：风险规避 -->
+    <section class="section" style="background: white;" id="risks">
+        <div class="container">
+            <h2 class="section-title">⚠️ 创业风险规避与避坑指南</h2>
+            <p class="section-subtitle">这些坑已经让无数创业者血本无归，一定要避开！</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);">💸</div>
+                        <div class="card-title">注册资本陷阱</div>
+                    </div>
+                    <div class="danger-box">
+                        <div class="box-title">❌ 常见错误</div>
+                        <p>注册资本填1000万，觉得"有面子"，结果负债后需要承担1000万的责任</p>
+                    </div>
+                    <div class="success-box">
+                        <div class="box-title">✅ 正确做法</div>
+                        <p>根据实际经营需要和承担能力填写，初创企业建议10-100万。记住：注册资本越大，责任越大！</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">🤝</div>
+                        <div class="card-title">合伙人股权纠纷</div>
+                    </div>
+                    <div class="danger-box">
+                        <div class="box-title">❌ 常见错误</div>
+                        <p>股权均分（50%:50%）、没有退出机制、没有明确分工、口头约定</p>
+                    </div>
+                    <div class="success-box">
+                        <div class="box-title">✅ 正确做法</div>
+                        <p>必须有一个实际控制人（占股67%以上有一票否决权，51%以上相对控股）；签订股东协议，明确退出机制、竞业限制、分工；股权与贡献挂钩</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">📋</div>
+                        <div class="card-title">财务税务风险</div>
+                    </div>
+                    <div class="danger-box">
+                        <div class="box-title">❌ 高危行为</div>
+                        <p>买发票、虚开发票、公私账不分、长期零申报、账外经营</p>
+                    </div>
+                    <div class="success-box">
+                        <div class="box-title">✅ 合规要点</div>
+                        <p>即使零收入也要申报；公私账严格分离；保存好所有票据；按时记账报税（可找代理记账，每月200-500元）；金税四期下，一切尽在掌握，不要侥幸！</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #e9d5ff 0%, #c4b5fd 100%);">⚖️</div>
+                        <div class="card-title">合同法律风险</div>
+                    </div>
+                    <div class="danger-box">
+                        <div class="box-title">❌ 常见错误</div>
+                        <p>用网上模板不修改、不审查对方资质、口头约定、不保留证据</p>
+                    </div>
+                    <div class="success-box">
+                        <div class="box-title">✅ 正确做法</div>
+                        <p>重要合同请律师审核；明确违约责任；保留所有沟通记录；大额交易先做背景调查；使用电子合同要符合《电子签名法》</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);">🔒</div>
+                        <div class="card-title">知识产权风险</div>
+                    </div>
+                    <div class="danger-box">
+                        <div class="box-title">❌ 高危行为</div>
+                        <p>使用盗版软件、字体、图片；商标被抢注；侵犯他人专利</p>
+                    </div>
+                    <div class="success-box">
+                        <div class="box-title">✅ 保护策略</div>
+                        <p>创业之初就注册商标（约300元/类）；使用开源或商用授权的字体、图片；核心技术创新申请专利；定期检查是否被侵权</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">👥</div>
+                        <div class="card-title">劳动用工风险</div>
+                    </div>
+                    <div class="danger-box">
+                        <div class="box-title">❌ 常见错误</div>
+                        <p>不签劳动合同、试用期不缴社保、违法辞退员工、不支付加班费</p>
+                    </div>
+                    <div class="success-box">
+                        <div class="box-title">✅ 合规用工</div>
+                        <p>入职30天内签合同；试用期也要缴社保；制定员工手册并让员工签字；辞退要有合法理由和补偿；保留考勤记录</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 40px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                <div class="card-header">
+                    <div class="card-icon" style="background: white;">📊</div>
+                    <div class="card-title" style="font-size: 1.4rem;">创业公司倒闭的10大原因（避雷清单）</div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>现金流断裂</span>
+                                <span>45%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>没有市场需求</span>
+                                <span>42%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 42%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>团队问题</span>
+                                <span>23%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 23%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>竞争不过</span>
+                                <span>19%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 19%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>定价/成本问题</span>
+                                <span>18%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 18%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>产品体验差</span>
+                                <span>17%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 17%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>缺乏商业模式</span>
+                                <span>17%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 17%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>营销不力</span>
+                                <span>14%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 14%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>忽视客户</span>
+                                <span>14%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 14%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>时机不对</span>
+                                <span>13%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 13%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 第三部分：公司运营管理 -->
+    <section class="section" id="operation">
+        <div class="container">
+            <h2 class="section-title">💼 公司运营管理核心要点</h2>
+            <p class="section-subtitle">公司注册只是开始，活下来才是硬道理</p>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-1);">📊</div>
+                        <div class="card-title">财务管理</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>建立完善的财务制度</li>
+                        <li>每月定期财务分析</li>
+                        <li>严格控制现金流</li>
+                        <li>预留3-6个月运营资金</li>
+                        <li>定期成本核算</li>
+                        <li>做好税务筹划</li>
+                    </ul>
+                    <div class="warning-box" style="margin-top: 15px;">
+                        <div class="box-title">⚠️ 生命线</div>
+                        <p>现金流比利润更重要！很多公司账面盈利却因现金流断裂倒闭。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-2);">👥</div>
+                        <div class="card-title">团队管理</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>招对人比培养人更重要</li>
+                        <li>建立明确的KPI体系</li>
+                        <li>扁平化管理，提高效率</li>
+                        <li>股权激励留住核心人才</li>
+                        <li>定期团建和文化建设</li>
+                        <li>建立人才梯队</li>
+                    </ul>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 黄金法则</div>
+                        <p>宁愿花2倍工资招1个优秀的人，也不要花1倍工资招2个平庸的人。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-3);">🎯</div>
+                        <div class="card-title">市场营销</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>精准定位目标客户</li>
+                        <li>数据驱动的营销策略</li>
+                        <li>内容营销+社交媒体</li>
+                        <li>建立私域流量池</li>
+                        <li>持续优化转化率</li>
+                        <li>重视口碑和复购</li>
+                    </ul>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 2025趋势</div>
+                        <p>短视频+直播是标配，AI+营销是趋势，私域流量是护城河。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-4);">⚙️</div>
+                        <div class="card-title">产品/服务</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>MVP（最小可行产品）起步</li>
+                        <li>快速迭代，小步快跑</li>
+                        <li>用户体验至上</li>
+                        <li>建立产品护城河</li>
+                        <li>差异化竞争</li>
+                        <li>持续收集用户反馈</li>
+                    </ul>
+                    <div class="success-box" style="margin-top: 15px;">
+                        <div class="box-title">✅ 核心公式</div>
+                        <p>PMF（产品市场契合度）是生死线，没有PMF就盲目扩张必死。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-5);">🤝</div>
+                        <div class="card-title">客户管理</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>建立客户档案系统</li>
+                        <li>定期客户回访</li>
+                        <li>处理投诉要快速</li>
+                        <li>维护好大客户关系</li>
+                        <li>提高客户终身价值</li>
+                        <li>建立会员体系</li>
+                    </ul>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 数据说话</div>
+                        <p>获取一个新客户的成本是维护老客户的5-25倍。</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📈</div>
+                        <div class="card-title">数据运营</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>建立数据指标体系</li>
+                        <li>数据驱动决策</li>
+                        <li>每周/月数据分析会</li>
+                        <li>A/B测试优化</li>
+                        <li>竞品数据监控</li>
+                        <li>行业趋势分析</li>
+                    </ul>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 必备工具</div>
+                        <p>神策数据、GrowingIO、友盟+、百度统计、Google Analytics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第四部分：专有名词解释 -->
+    <section class="section" style="background: white;" id="terms">
+        <div class="container">
+            <h2 class="section-title">📚 公司相关专有名词解释</h2>
+            <p class="section-subtitle">搞懂这些术语，不再被忽悠</p>
+
+            <div class="grid-3">
+                <div class="term-card">
+                    <div class="term-title">注册资本</div>
+                    <div class="term-desc">公司在登记机关登记的全体股东认缴的出资总额。2024年新《公司法》规定需在成立后5年内实缴。不是越多越好，越大意味着承担的责任越大。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">认缴制 / 实缴制</div>
+                    <div class="term-desc">认缴制：注册时无需立即缴纳全部资本，承诺在一定期限内缴足即可。实缴制：注册时必须实际缴纳全部或部分资本。现在实行认缴制，但5年内必须实缴。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">法定代表人</div>
+                    <div class="term-desc">依法代表公司行使民事权利、履行民事义务的主要负责人（通常由董事长、执行董事或经理担任）。要对公司行为承担法律责任，不是随便当的。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">股东 / 董事 / 监事</div>
+                    <div class="term-desc">股东：公司出资人，享有分红权和表决权。董事：执行公司事务，对股东会负责。监事：监督董事和高级管理人员，不能兼任董事或高管。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">公司章程</div>
+                    <div class="term-desc">公司的"宪法"，规定公司组织形式、经营范围、股东权利义务等重要事项。注册时必须提交，对公司、股东、董事、监事、高管均有约束力。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">一般纳税人 / 小规模纳税人</div>
+                    <div class="term-desc">增值税纳税人的两种类型。一般纳税人：年销售额超500万或自愿登记，税率13%/9%/6%，可抵扣进项税。小规模纳税人：征收率3%（优惠期1%），不能抵扣。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">公户 / 私户</div>
+                    <div class="term-desc">公户：公司对公账户，用于收付经营款项，受监管。私户：个人账户。金税四期下，公私账严格分离，私户收公款属于违法行为。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">代理记账</div>
+                    <div class="term-desc">委托专业机构代为记账、报税。适合没有专职会计的小微企业，费用约200-500元/月。选择时要查验对方的《代理记账许可证》。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">零申报</div>
+                    <div class="term-desc">公司当期没有应税收入或税额为零时进行的申报。即使无业务也要按时零申报，否则会被列入异常名录，影响征信。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">金税四期</div>
+                    <div class="term-desc">国家税收征管系统的升级版本，实现税务、银行、工商、社保等多部门数据共享。对企业资金流动监控更严，偷税漏税几乎不可能。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">ICP许可证 / ICP备案</div>
+                    <div class="term-desc">ICP备案：所有网站必须做的备案（免费）。ICP许可证：经营性网站需要办理的许可证（如电商平台），非经营性只需备案。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">EIN / VAT / GST</div>
+                    <div class="term-desc">EIN：美国雇主识别号，相当于美国公司的"身份证"。VAT：欧盟增值税。GST：商品服务税（澳大利亚、印度等）。跨境电商必备知识。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">股权架构</div>
+                    <div class="term-desc">公司股权的分配结构。常见有：一元股权（按出资比例）、AB股（同股不同权）、期权池（预留员工激励）。好的架构能吸引投资、留住人才。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">对赌协议</div>
+                    <div class="term-desc">投资方与融资方对未来不确定情况的约定。通常约定业绩目标，未达成时融资方需补偿投资方。签署时要谨慎评估自身能力。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">竞业限制</div>
+                    <div class="term-desc">公司要求员工离职后一定期限内不得从事同类业务的约定。期限不超过2年，公司需支付补偿金（通常为原工资的30%-50%）。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">五险一金</div>
+                    <div class="term-desc">五险：养老、医疗、失业、工伤、生育保险。一金：住房公积金。企业必须为员工缴纳，社保挂靠违法。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">汇算清缴</div>
+                    <div class="term-desc">每年1-5月对上一年度的企业所得税进行汇总计算、清缴税款。多退少补，企业必须按时完成。</div>
+                </div>
+
+                <div class="term-card">
+                    <div class="term-title">企业年报</div>
+                    <div class="term-desc">每年1月1日至6月30日，企业需通过国家企业信用信息公示系统报送上一年度报告并公示。逾期不报会被列入经营异常名录。</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第五部分：2027毕业生建议 -->
+    <section class="section" id="graduate">
+        <div class="container">
+            <h2 class="section-title">🎓 2027网络营销与直播电商专业毕业生指南</h2>
+            <p class="section-subtitle">站在时代风口，如何选择你的人生路径</p>
+
+            <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <div class="card-header">
+                    <div class="card-icon" style="background: white; color: #667eea; font-size: 1.8rem;">🎓</div>
+                    <div class="card-title" style="color: white; font-size: 1.5rem;">专业优势分析</div>
+                </div>
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">作为2027年毕业的网络营销与直播电商专业学生，你正处于中国数字经济发展的黄金时期。你的专业优势包括：</p>
+                <div class="grid-3">
+                    <div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📱</div>
+                        <div style="font-weight: 700; margin-bottom: 10px;">时代红利</div>
+                        <div style="font-size: 0.95rem; opacity: 0.9;">直播电商市场规模预计2027年突破5万亿，行业人才缺口超千万</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🛠️</div>
+                        <div style="font-weight: 700; margin-bottom: 10px;">技能复合</div>
+                        <div style="font-size: 0.95rem; opacity: 0.9;">营销+内容+运营+数据的复合型人才，市场稀缺</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🚀</div>
+                        <div style="font-weight: 700; margin-bottom: 10px;">创业友好</div>
+                        <div style="font-size: 0.95rem; opacity: 0.9;">低门槛启动，一人公司也能年入百万</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 40px;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-1);">💼</div>
+                        <div class="card-title">先就业，积累经验</div>
+                    </div>
+                    <div class="success-box">
+                        <div class="box-title">✅ 适合人群</div>
+                        <p>资源有限、人脉不多、风险承受能力低、需要稳定收入的毕业生</p>
+                    </div>
+                    <h4 style="margin: 20px 0 10px;">推荐去向：</h4>
+                    <ul class="feature-list">
+                        <li><strong>MCN机构：</strong>学习专业运营，积累主播资源</li>
+                        <li><strong>品牌方电商部：</strong>了解供应链和品牌打法</li>
+                        <li><strong>电商平台：</strong>抖音、快手、淘宝、小红书等</li>
+                        <li><strong>4A广告公司：</strong>提升专业营销能力</li>
+                        <li><strong>新锐品牌：</strong>全程参与从0到1</li>
+                    </ul>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 建议工作年限</div>
+                        <p>至少2-3年，最好积累以下资源：供应链资源、主播/达人资源、投放经验、成功案例</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-2);">🚀</div>
+                        <div class="card-title">直接创业，抓住风口</div>
+                    </div>
+                    <div class="warning-box">
+                        <div class="box-title">⚠️ 适合人群</div>
+                        <p>有资金支持、有独特资源、有创业合伙人、有强烈创业冲动、能承受失败</p>
+                    </div>
+                    <h4 style="margin: 20px 0 10px;">2027年轻创业方向：</h4>
+                    <ul class="feature-list">
+                        <li><strong>个人IP孵化：</strong>做垂类博主，知识付费+带货</li>
+                        <li><strong>代运营服务：</strong>帮传统企业做直播转型</li>
+                        <li><strong>小众品牌：</strong>从细分市场切入，DTC模式</li>
+                        <li><strong>跨境直播：</strong>TikTok Shop、Temu等新平台</li>
+                        <li><strong>AI+内容：</strong>AIGC工具提升内容生产效率</li>
+                    </ul>
+                    <div class="danger-box" style="margin-top: 15px;">
+                        <div class="box-title">❗ 创业前必问</div>
+                        <p>你的核心优势是什么？启动资金能撑多久？有合伙人吗？如果失败怎么办？</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 40px;">
+                <div class="card-header">
+                    <div class="card-icon" style="background: var(--gradient-3);">⚖️</div>
+                    <div class="card-title">决策框架：我应该创业吗？</div>
+                </div>
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">评估维度</th>
+                            <th style="width: 40%;">适合创业 ✅</th>
+                            <th style="width: 40%;">建议先就业 💼</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>资金储备</strong></td>
+                            <td>能支撑6-12个月无收入生活 + 项目启动资金</td>
+                            <td>需要每月收入支付房租/生活费</td>
+                        </tr>
+                        <tr>
+                            <td><strong>行业资源</strong></td>
+                            <td>有供应链/客户/渠道/团队资源</td>
+                            <td>资源有限，需要积累</td>
+                        </tr>
+                        <tr>
+                            <td><strong>核心技能</strong></td>
+                            <td>有独特技能或专利，难以被复制</td>
+                            <td>通用技能，需要更多打磨</td>
+                        </tr>
+                        <tr>
+                            <td><strong>团队情况</strong></td>
+                            <td>有互补的合伙人，不是单打独斗</td>
+                            <td>一个人，需要找合伙人</td>
+                        </tr>
+                        <tr>
+                            <td><strong>家庭支持</strong></td>
+                            <td>家人理解并支持，能承担失败风险</td>
+                            <td>家庭经济压力较大</td>
+                        </tr>
+                        <tr>
+                            <td><strong>心态准备</strong></td>
+                            <td>能接受2-3年低收入甚至亏损</td>
+                            <td>希望尽快有稳定收入</td>
+                        </tr>
+                        <tr>
+                            <td><strong>项目验证</strong></td>
+                            <td>已有MVP验证，有早期客户/收入</td>
+                            <td>只有想法，未经验证</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="quote">
+                <div class="quote-text">创业不是一场豪赌，而是一次精心策划的冒险。2027年的你，拥有我们这一代人所没有的时代红利——AI工具让一人公司成为可能，直播电商让普通人一夜成名。但无论选择就业还是创业，持续学习和快速迭代才是唯一的护城河。</div>
+                <div class="quote-author">—— 给2027届毕业生的建议</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 第六部分：中国未来10年发展格局 -->
+    <section class="section" style="background: white;" id="future">
+        <div class="container">
+            <h2 class="section-title">🔮 中国未来10年发展格局（2025-2035）</h2>
+            <p class="section-subtitle">看懂趋势，才能顺势而为</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);">🌏</div>
+                        <div class="card-title">宏观经济趋势</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>GDP增速放缓至3-4%：</strong>从高速增长转向高质量发展</li>
+                        <li><strong>人口负增长持续：</strong>老龄化加剧，劳动力成本上升</li>
+                        <li><strong>消费成为主引擎：</strong>内需驱动型经济成型</li>
+                        <li><strong>城市化率超70%：</strong>人口进一步向城市群集中</li>
+                        <li><strong>双循环格局：</strong>以内循环为主体，国内国际双循环</li>
+                        <li><strong>碳中和目标：</strong>2030碳达峰、2060碳中和</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);">💡</div>
+                        <div class="card-title">技术革命浪潮</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>AI全面渗透：</strong>生成式AI重构所有行业，效率提升10倍</li>
+                        <li><strong>新能源革命：</strong>电动车普及率超60%，储能技术突破</li>
+                        <li><strong>生物科技：</strong>基因编辑、细胞治疗进入临床应用</li>
+                        <li><strong>商业航天：</strong>太空旅游、卫星互联网成为可能</li>
+                        <li><strong>量子计算：</strong>特定领域实现量子霸权</li>
+                        <li><strong>6G通信：</strong>2030年前后商用，万物智联</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);">🏛️</div>
+                        <div class="card-title">政策导向</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>共同富裕：</strong>收入分配改革，扩大中等收入群体</li>
+                        <li><strong>数据要素市场化：</strong>数据成为第五大生产要素</li>
+                        <li><strong>专精特新：</strong>扶持制造业"小巨人"企业</li>
+                        <li><strong>乡村振兴：</strong>数字农业、农产品上行</li>
+                        <li><strong>健康中国：</strong>医疗健康产业15万亿规模</li>
+                        <li><strong>教育双减后：</strong>职业教育、素质教育兴起</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);">⚔️</div>
+                        <div class="card-title">国际格局</div>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>中美博弈常态化：</strong>科技脱钩与竞争并存</li>
+                        <li><strong>产业链重构：</strong>部分产业转移东南亚、印度</li>
+                        <li><strong>一带一路深化：</strong>中亚、中东、非洲新机遇</li>
+                        <li><strong>RCEP红利释放：</strong>亚太贸易一体化</li>
+                        <li><strong>数字贸易规则：</strong>跨境电商新规范</li>
+                        <li><strong>人民币国际化：</strong>跨境结算占比提升</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 40px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white;">
+                <div class="card-header">
+                    <div class="card-icon" style="background: white; color: #0f172a;">📊</div>
+                    <div class="card-title" style="color: white;">未来10年，这些行业会爆发</div>
+                </div>
+                <div class="grid-3">
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; color: #60a5fa;">🤖 AI与数字化</div>
+                        <ul style="list-style: none; font-size: 0.95rem; line-height: 2;">
+                            <li>• AI应用与Agent开发</li>
+                            <li>• 企业数字化转型服务</li>
+                            <li>• 智能驾驶</li>
+                            <li>• 智能制造</li>
+                            <li>• 数据服务与标注</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; color: #34d399;">⚡ 新能源</div>
+                        <ul style="list-style: none; font-size: 0.95rem; line-height: 2;">
+                            <li>• 新能源汽车产业链</li>
+                            <li>• 储能与氢能</li>
+                            <li>• 充电桩运营</li>
+                            <li>• 光伏与风电</li>
+                            <li>• 碳交易服务</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; color: #fbbf24;">🏥 大健康</div>
+                        <ul style="list-style: none; font-size: 0.95rem; line-height: 2;">
+                            <li>• 银发经济/养老服务</li>
+                            <li>• 精准医疗/基因检测</li>
+                            <li>• 健康管理与预防</li>
+                            <li>• 心理健康服务</li>
+                            <li>• 医疗AI与远程医疗</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; color: #f87171;">🛒 新消费</div>
+                        <ul style="list-style: none; font-size: 0.95rem; line-height: 2;">
+                            <li>• 宠物经济</li>
+                            <li>• 国潮品牌</li>
+                            <li>• 预制菜/方便食品</li>
+                            <li>• 功能性食品</li>
+                            <li>• 体验式消费</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; color: #a78bfa;">🌾 现代农业</div>
+                        <ul style="list-style: none; font-size: 0.95rem; line-height: 2;">
+                            <li>• 智慧农业</li>
+                            <li>• 农产品品牌化</li>
+                            <li>• 冷链物流</li>
+                            <li>• 农业科技</li>
+                            <li>• 乡村文旅</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; color: #22d3ee;">🚀 前沿科技</div>
+                        <ul style="list-style: none; font-size: 0.95rem; line-height: 2;">
+                            <li>• 商业航天</li>
+                            <li>• 人形机器人</li>
+                            <li>• 脑机接口</li>
+                            <li>• 合成生物学</li>
+                            <li>• 元宇宙/VR/AR</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第七部分：未来10年赚钱方向 -->
+    <section class="section" id="money">
+        <div class="container">
+            <h2 class="section-title">💰 未来10年，做什么最赚钱？</h2>
+            <p class="section-subtitle">普通人也能把握的10大财富机遇</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-1);">1️⃣</div>
+                        <div class="card-title">AI赋能的所有行业</div>
+                    </div>
+                    <p>不是做AI，而是用AI。未来不属于AI公司，而属于善用AI的人。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 赚钱模式</div>
+                        <ul class="feature-list">
+                            <li>AI+内容创作：用AI批量生产短视频、图文</li>
+                            <li>AI+设计：AI辅助平面设计、建筑设计</li>
+                            <li>AI+客服：智能客服系统部署</li>
+                            <li>AI+教育：个性化AI家教</li>
+                            <li>AI培训：教传统企业用AI提效</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-2);">2️⃣</div>
+                        <div class="card-title">银发经济（养老产业）</div>
+                    </div>
+                    <p>中国60岁以上人口已超2.8亿，2035年将超4亿。这是确定性的巨大市场。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 赚钱模式</div>
+                        <ul class="feature-list">
+                            <li>居家养老服务</li>
+                            <li>老年保健品/器械</li>
+                            <li>老年旅游/研学</li>
+                            <li>老年教育/兴趣培训</li>
+                            <li>适老化改造</li>
+                            <li>临终关怀服务</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-3);">3️⃣</div>
+                        <div class="card-title">宠物经济</div>
+                    </div>
+                    <p>宠物市场年增速15%+，年轻人"丁宠"（养宠不养娃）趋势明显。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 赚钱模式</div>
+                        <ul class="feature-list">
+                            <li>宠物食品/用品电商</li>
+                            <li>宠物医疗/保险</li>
+                            <li>宠物美容/寄养</li>
+                            <li>宠物殡葬</li>
+                            <li>宠物培训/社交</li>
+                            <li>宠物内容/IP</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-4);">4️⃣</div>
+                        <div class="card-title">跨境出海</div>
+                    </div>
+                    <p>国内太卷，出海寻找增量。中国制造+全球流量=新机会。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 赚钱模式</div>
+                        <ul class="feature-list">
+                            <li>TikTok Shop/直播带货</li>
+                            <li>Amazon/Temu/SHEIN供货</li>
+                            <li>独立站+DTC品牌</li>
+                            <li>海外社媒运营服务</li>
+                            <li>跨境物流/海外仓</li>
+                            <li>出海企业营销服务</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: var(--gradient-5);">5️⃣</div>
+                        <div class="card-title">情绪价值/疗愈经济</div>
+                    </div>
+                    <p>高压社会下，人们愿意为情绪价值买单。悦己消费、疗愈需求爆发。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 赚钱模式</div>
+                        <ul class="feature-list">
+                            <li>冥想/正念培训</li>
+                            <li>心理咨询/陪伴</li>
+                            <li>解压玩具/产品</li>
+                            <li>疗愈旅行/ Retreat</li>
+                            <li>助眠产品/服务</li>
+                            <li>身心灵课程</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);">6️⃣</div>
+                        <div class="card-title">单身经济</div>
+                    </div>
+                    <p>中国单身人口超2.4亿，一人食、一人住、一人游成为常态。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 赚钱模式</div>
+                        <ul class="feature-list">
+                            <li>小包装食品/预制菜</li>
+                            <li>迷你家电</li>
+                            <li>单身公寓/合租平台</li>
+                            <li>一人旅行/社交</li>
+                            <li>宠物陪伴</li>
+                            <li>AI伴侣/虚拟恋人</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);">7️⃣</div>
+                        <div class="card-title">新能源相关</div>
+                    </div>
+                    <p>电动车渗透率持续提升，充电桩、储能、二手车都有机会。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 赚钱模式</div>
+                        <ul class="feature-list">
+                            <li>充电桩运营</li>
+                            <li>新能源车二手交易</li>
+                            <li>电池回收/梯次利用</li>
+                            <li>新能源车险/金融</li>
+                            <li>光伏安装/运维</li>
+                            <li>碳资产管理</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%);">8️⃣</div>
+                        <div class="card-title">大健康/功能性食品</div>
+                    </div>
+                    <p>从"治已病"到"治未病"，保健品年轻化、食品功能化是趋势。</p>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 赚钱模式</div>
+                        <ul class="feature-list">
+                            <li>益生菌/酵素/膳食纤维</li>
+                            <li>代餐/控卡食品</li>
+                            <li>睡眠/护肝/护眼产品</li>
+                            <li>运动营养补剂</li>
+                            <li>功能性饮料</li>
+                            <li>健康检测服务</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 40px;">
+                <div class="card-header">
+                    <div class="card-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);">9️⃣ & 🔟</div>
+                    <div class="card-title">企业服务与职业教育</div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <h4 style="margin-bottom: 15px; color: var(--primary);">企业服务（B2B）</h4>
+                        <p style="margin-bottom: 15px;">经济下行期，企业更需要降本增效的服务。</p>
+                        <ul class="feature-list">
+                            <li>企业数字化转型服务</li>
+                            <li>SaaS工具销售/实施</li>
+                            <li>财税/法务外包</li>
+                            <li>人力资源外包</li>
+                            <li>营销代运营</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 15px; color: var(--primary);">职业教育/技能培训</h4>
+                        <p style="margin-bottom: 15px;">就业压力大，人们愿意花钱学技能。</p>
+                        <ul class="feature-list">
+                            <li>AI工具培训</li>
+                            <li>短视频/直播培训</li>
+                            <li>编程/数据分析</li>
+                            <li>职业技能认证</li>
+                            <li>考公/考证培训</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第八部分：业务选择对比 -->
+    <section class="section" style="background: white;" id="business">
+        <div class="container">
+            <h2 class="section-title">🌐 业务方向选择：跨境电商 vs 国内业务 vs 国际业务</h2>
+            <p class="section-subtitle">2027年，你的主战场在哪里？</p>
+
+            <table class="compare-table" style="margin-bottom: 40px;">
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">维度</th>
+                        <th style="width: 28%;">🇨🇳 国内业务</th>
+                        <th style="width: 28%;">🌏 跨境电商</th>
+                        <th style="width: 29%;">🌍 国际业务（非跨境）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>市场特点</strong></td>
+                        <td>市场大但竞争激烈，流量成本高，内卷严重</td>
+                        <td>增量市场，TikTok等红利期，但政策风险大</td>
+                        <td>门槛高，客单价高，品牌溢价空间大</td>
+                    </tr>
+                    <tr>
+                        <td><strong>启动资金</strong></td>
+                        <td>相对较低，可从一件代发做起</td>
+                        <td>中等，需要备货、海外仓、广告费</td>
+                        <td>较高，需要海外团队或渠道建设</td>
+                    </tr>
+                    <tr>
+                        <td><strong>语言要求</strong></td>
+                        <td>中文即可</td>
+                        <td>基础英语+目标市场语言更佳</td>
+                        <td>流利的英语或目标市场语言</td>
+                    </tr>
+                    <tr>
+                        <td><strong>合规难度</strong></td>
+                        <td>相对简单，熟悉的法律环境</td>
+                        <td>复杂，需了解VAT/GST、产品认证、平台规则</td>
+                        <td>最复杂，涉及多国法律、税务、关务</td>
+                    </tr>
+                    <tr>
+                        <td><strong>利润空间</strong></td>
+                        <td>薄利多销，价格战激烈</td>
+                        <td>中等，汇率波动影响大</td>
+                        <td>较高，品牌溢价能力强</td>
+                    </tr>
+                    <tr>
+                        <td><strong>回款周期</strong></td>
+                        <td>快，平台T+7到T+30</td>
+                        <td>慢，Amazon 14天，其他平台可能更长</td>
+                        <td>最慢，账期30-90天常见</td>
+                    </tr>
+                    <tr>
+                        <td><strong>风险因素</strong></td>
+                        <td>平台政策变化、同质化竞争</td>
+                        <td>平台封号、汇率波动、物流风险、关税</td>
+                        <td>地缘政治、汇率风险、文化差异</td>
+                    </tr>
+                    <tr>
+                        <td><strong>适合人群</strong></td>
+                        <td>新手、资源有限、熟悉国内消费者</td>
+                        <td>有一定资金、敢冒险、学习能力强</td>
+                        <td>有外贸经验、资金雄厚、长期主义</td>
+                    </tr>
+                    <tr>
+                        <td><strong>推荐指数</strong></td>
+                        <td><span class="badge badge-warning">⭐⭐⭐</span>（适合练手）</td>
+                        <td><span class="badge badge-success">⭐⭐⭐⭐⭐</span>（强烈推荐）</td>
+                        <td><span class="badge badge-primary">⭐⭐⭐⭐</span>（进阶选择）</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="grid-3">
+                <div class="card" style="border-top: 5px solid #ef4444;">
+                    <div class="card-header">
+                        <div class="card-title" style="color: #ef4444;">🇨🇳 国内业务建议</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="box-title">适合场景</div>
+                        <p>• 初次创业试水<br>• 有国内供应链优势<br>• 对国外市场不了解</p>
+                    </div>
+                    <h4 style="margin: 20px 0 10px;">推荐平台：</h4>
+                    <ul class="feature-list">
+                        <li>抖音电商（兴趣电商红利）</li>
+                        <li>小红书（种草+转化）</li>
+                        <li>视频号（私域+公域结合）</li>
+                        <li>拼多多（下沉市场）</li>
+                    </ul>
+                    <div class="warning-box" style="margin-top: 15px;">
+                        <div class="box-title">⚠️ 注意</div>
+                        <p>国内电商已进入存量竞争，需要有独特优势才能生存。建议从细分市场切入，做小而美。</p>
+                    </div>
+                </div>
+
+                <div class="card" style="border-top: 5px solid #10b981;">
+                    <div class="card-header">
+                        <div class="card-title" style="color: #10b981;">🌏 跨境电商建议</div>
+                    </div>
+                    <div class="success-box">
+                        <div class="box-title">适合场景（强烈推荐）</div>
+                        <p>• 2027年最大红利市场<br>• 专业对口（网络营销+直播）<br>• 愿意快速学习</p>
+                    </div>
+                    <h4 style="margin: 20px 0 10px;">推荐平台：</h4>
+                    <ul class="feature-list">
+                        <li><strong>TikTok Shop：</strong>直播电商出海，复制抖音经验</li>
+                        <li><strong>Temu：</strong>拼多多海外版，全托管模式</li>
+                        <li><strong>Shein：</strong>快时尚，学习其供应链</li>
+                        <li><strong>Amazon：</strong> still the king，但门槛提高</li>
+                        <li><strong>Shopee/Lazada：</strong>东南亚市场</li>
+                    </ul>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="box-title">💡 2027机会点</div>
+                        <p>TikTok Shop美国/欧洲/拉美全面开放，会讲英语的主播和内容创作者极度稀缺！</p>
+                    </div>
+                </div>
+
+                <div class="card" style="border-top: 5px solid #3b82f6;">
+                    <div class="card-header">
+                        <div class="card-title" style="color: #3b82f6;">🌍 国际业务建议</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="box-title">适合场景</div>
+                        <p>• 有外贸背景<br>• 资金雄厚<br>• 想做品牌出海而非卖货</p>
+                    </div>
+                    <h4 style="margin: 20px 0 10px;">推荐方向：</h4>
+                    <ul class="feature-list">
+                        <li><strong>DTC独立站：</strong>Shopify+Facebook/Google广告</li>
+                        <li><strong>海外本土电商：</strong>收购或搭建海外团队</li>
+                        <li><strong>海外线下：</strong>进入Costco、Walmart等</li>
+                        <li><strong>B2B外贸：</strong>阿里国际站+海外展会</li>
+                    </ul>
+                    <div class="warning-box" style="margin-top: 15px;">
+                        <div class="box-title">⚠️ 门槛较高</div>
+                        <p>需要海外团队、合规能力、品牌建设投入。建议先做跨境，积累后再转国际业务。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <div class="card-header">
+                    <div class="card-icon" style="background: white; color: #667eea; font-size: 1.8rem;">🎯</div>
+                    <div class="card-title" style="color: white; font-size: 1.4rem;">给2027届毕业生的终极建议</div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <h4 style="margin-bottom: 15px; color: #fde047;">如果你是风险厌恶型</h4>
+                        <ul style="list-style: none; line-height: 2;">
+                            <li>1️⃣ 毕业后进入头部MCN或品牌方，学习2-3年</li>
+                            <li>2️⃣ 积累：主播资源、供应链资源、投放经验</li>
+                            <li>3️⃣ 存钱：攒够10-20万启动资金</li>
+                            <li>4️⃣ 找合伙人：技术/供应链/资金互补</li>
+                            <li>5️⃣ 时机成熟：2029-2030年出来创业</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 15px; color: #fde047;">如果你是风险偏好型</h4>
+                        <ul style="list-style: none; line-height: 2;">
+                            <li>1️⃣ 立刻入局TikTok Shop，学习海外直播</li>
+                            <li>2️⃣ 做个人IP：英语+专业知识，成为跨境KOL</li>
+                            <li>3️⃣ 轻资产起步：代运营、联盟营销、无货源</li>
+                            <li>4️⃣ 快速迭代：小步快跑，积累第一桶金</li>
+                            <li>5️⃣ 规模化：验证模式后，组建团队放大</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.15); border-radius: 12px; text-align: center;">
+                    <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px;">核心公式</div>
+                    <div style="font-size: 1.1rem;">🎓 专业优势（营销+直播）+ 🌏 时代红利（跨境出海）+ 🤖 AI工具（效率×10）= 💰 2027年最强创业组合</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div style="font-size: 2rem; margin-bottom: 20px;">🏢</div>
+            <h3 style="margin-bottom: 15px;">0基础开公司全流程指南</h3>
+            <p style="opacity: 0.8; max-width: 600px; margin: 0 auto 30px;">
+                本指南专为网络营销与直播电商专业大学生打造，涵盖公司注册、风险规避、未来趋势、业务选择等全方位内容。
+                创业有风险，入行需谨慎。祝你创业成功！
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;">
+                <span class="badge badge-primary">公司注册</span>
+                <span class="badge badge-success">风险规避</span>
+                <span class="badge badge-warning">2027毕业生</span>
+                <span class="badge badge-primary">跨境电商</span>
+                <span class="badge badge-success">未来10年</span>
+            </div>
+            <p style="opacity: 0.6; font-size: 0.9rem;">
+                免责声明：本指南仅供参考，具体操作请咨询专业律师、会计师。<br>
+                © 2025 创业指南 | 愿每一个梦想都能落地生根
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
+            }
+        });
+
+        // Animate progress bars on scroll
+        const progressBars = document.querySelectorAll('.progress-fill');
+        const animateProgress = () => {
+            progressBars.forEach(bar => {
+                const rect = bar.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    bar.style.width = bar.style.width || bar.parentElement.previousElementSibling.children[1].textContent;
+                }
+            });
+        };
+        window.addEventListener('scroll', animateProgress);
+        animateProgress();
+    </script>
+</body>
+</html>

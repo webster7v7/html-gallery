@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>未来五年AI展望 | 2026-2030智能革命</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-ai: linear-gradient(135deg, #667eea 0%, #f093fb 50%, #f5576c 100%);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-ai);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: move 20s linear infinite;
+        }
+
+        .hero-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(99, 102, 241, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: var(--white);
+            z-index: 1;
+            max-width: 1000px;
+            padding: 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 50%, #c4b5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: var(--white);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 30px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--white);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--white);
+            opacity: 0.8;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+        }
+
+        /* Overview Section */
+        .overview {
+            background: var(--white);
+        }
+
+        .timeline-roadmap {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .timeline-roadmap::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-1);
+            border-radius: 2px;
+            z-index: 0;
+        }
+
+        .roadmap-item {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .roadmap-year {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 0 auto 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .roadmap-content {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .roadmap-content h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .roadmap-content p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Small Thing Section */
+        .small-thing {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .small-thing::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .small-thing .section-header h2,
+        .small-thing .section-header p {
+            color: white;
+        }
+
+        .scenario-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .scenario-visual {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .phone-mockup {
+            background: #000;
+            border-radius: 30px;
+            padding: 10px;
+            max-width: 300px;
+            margin: 0 auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .phone-screen {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 9/19;
+        }
+
+        .phone-notch {
+            height: 25px;
+            background: #000;
+            border-radius: 0 0 15px 15px;
+            margin: 0 auto;
+            width: 120px;
+        }
+
+        .ai-chat {
+            padding: 1rem;
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .chat-message.ai {
+            flex-direction: row;
+        }
+
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .chat-message.ai .chat-avatar {
+            background: var(--gradient-1);
+        }
+
+        .chat-message.user .chat-avatar {
+            background: var(--gradient-3);
+        }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            max-width: 180px;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--gradient-1);
+        }
+
+        .scenario-content h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .scenario-content p {
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+        }
+
+        /* Ordinary People Section */
+        .ordinary-people {
+            background: var(--bg-light);
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .impact-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .impact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .impact-card-header {
+            padding: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impact-card:nth-child(1) .impact-card-header {
+            background: var(--gradient-1);
+        }
+
+        .impact-card:nth-child(2) .impact-card-header {
+            background: var(--gradient-2);
+        }
+
+        .impact-card:nth-child(3) .impact-card-header {
+            background: var(--gradient-3);
+        }
+
+        .impact-card:nth-child(4) .impact-card-header {
+            background: var(--gradient-4);
+        }
+
+        .impact-card:nth-child(5) .impact-card-header {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .impact-card:nth-child(6) .impact-card-header {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: var(--text-dark);
+        }
+
+        .impact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .impact-card-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .impact-card-body {
+            padding: 1.5rem 2rem;
+        }
+
+        .impact-card-body ul {
+            list-style: none;
+        }
+
+        .impact-card-body li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .impact-card-body li:last-child {
+            border-bottom: none;
+        }
+
+        .impact-card-body li::before {
+            content: '→';
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Students Section */
+        .students {
+            background: var(--white);
+        }
+
+        .student-focus {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .student-image {
+            position: relative;
+        }
+
+        .student-image-main {
+            background: var(--gradient-1);
+            border-radius: 24px;
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floating-badge {
+            position: absolute;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .floating-badge.badge-1 {
+            top: 20px;
+            right: -20px;
+            animation: float-badge 3s ease-in-out infinite;
+        }
+
+        .floating-badge.badge-2 {
+            bottom: 40px;
+            left: -20px;
+            animation: float-badge 3s ease-in-out infinite 0.5s;
+        }
+
+        .floating-badge.badge-3 {
+            bottom: -20px;
+            right: 40px;
+            animation: float-badge 3s ease-in-out infinite 1s;
+        }
+
+        @keyframes float-badge {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .student-content h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .student-content > p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .opportunity-list {
+            list-style: none;
+        }
+
+        .opportunity-list li {
+            padding: 1rem 0;
+            padding-left: 3rem;
+            position: relative;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .opportunity-list li:last-child {
+            border-bottom: none;
+        }
+
+        .opportunity-number {
+            position: absolute;
+            left: 0;
+            top: 1rem;
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-1);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .opportunity-list h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .opportunity-list p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .skills-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 24px;
+            padding: 3rem;
+        }
+
+        .skills-section h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-tag {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Society Section */
+        .society {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .society .section-header h2,
+        .society .section-header p {
+            color: white;
+        }
+
+        .society-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .society-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .society-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .society-card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .society-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .society-card p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .transformation-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .transformation-section h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 3rem;
+        }
+
+        .transformation-flow {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .flow-item {
+            text-align: center;
+            max-width: 200px;
+        }
+
+        .flow-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 1rem;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            opacity: 0.5;
+        }
+
+        .flow-item h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-item p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Future Vision */
+        .future-vision {
+            background: var(--white);
+        }
+
+        .vision-quote {
+            background: var(--gradient-1);
+            color: white;
+            border-radius: 24px;
+            padding: 4rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .vision-quote::before {
+            content: '"';
+            font-size: 8rem;
+            position: absolute;
+            top: -20px;
+            left: 40px;
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+
+        .vision-quote p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .vision-quote cite {
+            display: block;
+            margin-top: 2rem;
+            font-style: normal;
+            opacity: 0.9;
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .action-card {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .action-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .action-card:nth-child(1) .action-icon { background: var(--gradient-1); }
+        .action-card:nth-child(2) .action-icon { background: var(--gradient-3); }
+        .action-card:nth-child(3) .action-icon { background: var(--gradient-4); }
+
+        .action-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .action-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            color: var(--white);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            border: none;
+            font-size: 1.25rem;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .scenario-container,
+            .student-focus {
+                grid-template-columns: 1fr;
+            }
+
+            .society-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.75rem;
+            }
+
+            .timeline-roadmap::before {
+                display: none;
+            }
+
+            .roadmap-item {
+                min-width: 100%;
+            }
+
+            .society-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .transformation-flow {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .vision-quote {
+                padding: 2rem;
+            }
+
+            .vision-quote p {
+                font-size: 1.1rem;
+            }
+
+            .floating-badge {
+                position: relative;
+                top: auto;
+                right: auto;
+                bottom: auto;
+                left: auto;
+                margin: 0.5rem;
+                display: inline-flex;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🤖 AI未来五年</div>
+            <ul class="nav-links">
+                <li><a href="#overview">发展全景</a></li>
+                <li><a href="#small-thing">日常细节</a></li>
+                <li><a href="#ordinary">普通人</a></li>
+                <li><a href="#students">大学生</a></li>
+                <li><a href="#society">社会变革</a></li>
+                <li><a href="#vision">未来愿景</a></li>
+            </ul>
+            <button class="mobile-menu-btn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-particles">
+            <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+            <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+            <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+            <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+            <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+            <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+            <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
+            <div class="particle" style="left: 90%; animation-delay: 4.5s;"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">2026-2030 人工智能发展预测</div>
+            <h1>未来五年<br>智能革命将至</h1>
+            <p class="hero-subtitle">从AGI到端侧智能，从数字劳动力到人智协作</p>
+            <p>探索AI如何深刻改变每一个人的生活、学习与工作方式，以及我们如何准备迎接这个新时代</p>
+            <div class="hero-buttons">
+                <a href="#overview" class="btn btn-primary">探索未来趋势</a>
+                <a href="#small-thing" class="btn btn-secondary">看看日常变化</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="overview">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-icon" style="background: var(--gradient-1);">📈</div>
+                <h2>未来五年AI发展全景</h2>
+                <p>从2026到2030年，人工智能将迎来从量变到质变的跨越式发展，以下是关键里程碑预测</p>
+            </div>
+
+            <div class="timeline-roadmap fade-in">
+                <div class="roadmap-item">
+                    <div class="roadmap-year">2026</div>
+                    <div class="roadmap-content">
+                        <h4>端侧AI爆发</h4>
+                        <p>手机、汽车、可穿戴设备全面AI化，离线大模型成为标配</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-year">2027</div>
+                    <div class="roadmap-content">
+                        <h4>AGI临界点</h4>
+                        <p>通用人工智能临近，AI推理能力接近人类水平</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-year">2028</div>
+                    <div class="roadmap-content">
+                        <h4>零门槛开发</h4>
+                        <p>AutoML全链路自动化，人人可开发AI应用</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-year">2029</div>
+                    <div class="roadmap-content">
+                        <h4>量子突破</h4>
+                        <p>量子-经典混合计算成熟，AI效率千倍提升</p>
+                    </div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-year">2030</div>
+                    <div class="roadmap-content">
+                        <h4>人机共生</h4>
+                        <p>AI深度融入社会，全球监管框架统一</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid fade-in">
+                <div class="stat-card">
+                    <div class="stat-number">70%</div>
+                    <div class="stat-label">企业将建立"AI+人类"协作模式</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">AI医疗影像诊断准确率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10亿</div>
+                    <div class="stat-label">劳动力需要AI技能再培训</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1.2万亿</div>
+                    <div class="stat-label">中国端侧AI市场规模(元)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Small Thing Section -->
+    <section id="small-thing" class="small-thing">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-icon" style="background: rgba(255,255,255,0.2);">📱</div>
+                <h2>具体到一件小事</h2>
+                <p>想象2030年的一个普通早晨，你的手机AI助手如何改变你的日常生活</p>
+            </div>
+
+            <div class="scenario-container fade-in">
+                <div class="scenario-visual">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="phone-notch"></div>
+                            <div class="ai-chat">
+                                <div class="chat-message ai">
+                                    <div class="chat-avatar">🤖</div>
+                                    <div class="chat-bubble">早上好！根据您的睡眠数据，建议今天多喝水。已为您预订了8:30的滴滴，避开拥堵路段。</div>
+                                </div>
+                                <div class="chat-message user">
+                                    <div class="chat-avatar">👤</div>
+                                    <div class="chat-bubble">今天有什么重要安排？</div>
+                                </div>
+                                <div class="chat-message ai">
+                                    <div class="chat-avatar">🤖</div>
+                                    <div class="chat-bubble">10点项目汇报，已生成PPT大纲。下午3点体检，报告已提前分析，各项指标正常。</div>
+                                </div>
+                                <div class="chat-message ai">
+                                    <div class="chat-avatar">🤖</div>
+                                    <div class="chat-bubble">妈妈发来消息，已帮您回复并提醒周末回家吃饭。冰箱牛奶快过期，已加入购物清单。</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="scenario-content">
+                    <h3>你的专属AI生活管家</h3>
+                    <p>这不是科幻电影，而是2026-2030年间将普及的"端侧AI个人助手"。它运行在你的手机上，无需联网就能理解你的习惯、预测你的需求、主动为你服务。</p>
+                    <ul class="feature-list">
+                        <li><strong>全天候健康监测</strong> - 通过可穿戴设备实时分析身体数据，提前预警健康风险</li>
+                        <li><strong>智能日程管理</strong> - 自动安排最优路线，预判交通拥堵，生成会议材料</li>
+                        <li><strong>情感关系维护</strong> - 记住亲友重要日期，智能回复消息，提醒你维系关系</li>
+                        <li><strong>生活物资管理</strong> - 监控家中物品存量，自动下单补货，规划最优预算</li>
+                        <li><strong>个性化学习推荐</strong> - 根据你的兴趣和职业发展，推送最适合的学习内容</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ordinary People Section -->
+    <section id="ordinary" class="ordinary-people">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-icon" style="background: var(--gradient-3);">👨‍👩‍👧‍👦</div>
+                <h2>与普通人的关联</h2>
+                <p>AI不再是科技公司的专利，它将渗透到每个人生活的方方面面，带来机遇与挑战</p>
+            </div>
+
+            <div class="impact-grid fade-in">
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <div class="impact-icon">💼</div>
+                        <h3>工作方式变革</h3>
+                    </div>
+                    <div class="impact-card-body">
+                        <ul>
+                            <li>重复性工作自动化，每天节省2-3小时</li>
+                            <li>AI辅助决策成为标配，工作效率提升3倍</li>
+                            <li>远程协作更加智能，跨时区工作无缝衔接</li>
+                            <li>新兴职业涌现：AI训练师、提示词工程师</li>
+                            <li>传统岗位转型：会计、文员、客服需学习AI工具</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <div class="impact-icon">🏥</div>
+                        <h3>医疗健康升级</h3>
+                    </div>
+                    <div class="impact-card-body">
+                        <ul>
+                            <li>AI辅助诊断，癌症早期发现率提升至90%</li>
+                            <li>个性化用药方案，减少药物副作用</li>
+                            <li>家庭医生AI助手，24小时健康咨询</li>
+                            <li>慢病管理自动化，血糖血压智能监控</li>
+                            <li>新药研发周期从10年缩短至30天</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <div class="impact-icon">🎓</div>
+                        <h3>终身学习革命</h3>
+                    </div>
+                    <div class="impact-card-body">
+                        <ul>
+                            <li>AI私人教师，一对一因材施教</li>
+                            <li>语言学习突破，实时翻译消除障碍</li>
+                            <li>职业技能按需学习，证书快速获取</li>
+                            <li>知识获取成本趋近于零</li>
+                            <li>学习时间碎片化，通勤也能进步</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <div class="impact-icon">🏠</div>
+                        <h3>家庭生活智能化</h3>
+                    </div>
+                    <div class="impact-card-body">
+                        <ul>
+                            <li>智能家居真正"懂你"，自动调节环境</li>
+                            <li>AI看护老人和儿童，安全更有保障</li>
+                            <li>个性化娱乐推荐，告别选择困难</li>
+                            <li>家庭财务AI规划，理财建议量身定制</li>
+                            <li>家务机器人普及，解放双手</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <div class="impact-icon">🛒</div>
+                        <h3>消费体验重塑</h3>
+                    </div>
+                    <div class="impact-card-body">
+                        <ul>
+                            <li>AI购物助手，比价砍价自动完成</li>
+                            <li>虚拟试衣间，线上购物不再踩雷</li>
+                            <li>个性化推荐精准度达到90%以上</li>
+                            <li>智能客服即时解决99%的问题</li>
+                            <li>消费决策更理性，冲动消费减少</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-card-header">
+                        <div class="impact-icon">⚠️</div>
+                        <h3>需要警惕的风险</h3>
+                    </div>
+                    <div class="impact-card-body">
+                        <ul>
+                            <li>深度伪造技术可能威胁信息安全</li>
+                            <li>算法偏见可能导致不公平待遇</li>
+                            <li>过度依赖AI可能削弱思考能力</li>
+                            <li>隐私数据如何保护成为关键问题</li>
+                            <li>数字鸿沟可能加剧社会不平等</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Students Section -->
+    <section id="students" class="students">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-icon" style="background: var(--gradient-2);">🎓</div>
+                <h2>与大学生的关系</h2>
+                <p>作为数字原住民，大学生将是AI时代的首批深度体验者和创造者</p>
+            </div>
+
+            <div class="student-focus fade-in">
+                <div class="student-image">
+                    <div class="student-image-main">
+                        🎓
+                        <div class="floating-badge badge-1">
+                            <span>💡</span> AI导师24h在线
+                        </div>
+                        <div class="floating-badge badge-2">
+                            <span>🚀</span> 创业门槛降低
+                        </div>
+                        <div class="floating-badge badge-3">
+                            <span>🌐</span> 全球协作无障碍
+                        </div>
+                    </div>
+                </div>
+                <div class="student-content">
+                    <h3>大学生的AI机遇</h3>
+                    <p>未来五年，AI将彻底改变高等教育和大学生的发展路径。掌握AI工具，意味着拥有超能力；理解AI原理，意味着把握未来。</p>
+                    <ul class="opportunity-list">
+                        <li>
+                            <span class="opportunity-number">1</span>
+                            <h4>学习效率指数级提升</h4>
+                            <p>AI助教帮你梳理知识点、解答疑问、生成复习资料，学习效率提升3-5倍，释放时间发展兴趣</p>
+                        </li>
+                        <li>
+                            <span class="opportunity-number">2</span>
+                            <h4>科研创新门槛降低</h4>
+                            <p>AI辅助编程、数据分析、论文写作，本科生也能参与前沿科研项目，发表论文不再是梦</p>
+                        </li>
+                        <li>
+                            <span class="opportunity-number">3</span>
+                            <h4>就业市场重新洗牌</h4>
+                            <p>"AI+专业"成为核心竞争力，懂AI的医学生、律师、设计师将大幅领先同龄人</p>
+                        </li>
+                        <li>
+                            <span class="opportunity-number">4</span>
+                            <h4>创业成本大幅下降</h4>
+                            <p>AI承担开发、设计、客服等工作，几个人就能做出以前需要几十人的产品</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="skills-section fade-in">
+                <h3>💪 大学生需要掌握的AI核心技能</h3>
+                <div class="skills-grid">
+                    <div class="skill-tag">提示词工程</div>
+                    <div class="skill-tag">AI工具链使用</div>
+                    <div class="skill-tag">数据分析思维</div>
+                    <div class="skill-tag">AI伦理认知</div>
+                    <div class="skill-tag">跨界整合能力</div>
+                    <div class="skill-tag">批判性思维</div>
+                    <div class="skill-tag">持续学习力</div>
+                    <div class="skill-tag">人际协作能力</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Society Section -->
+    <section id="society" class="society">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-icon" style="background: rgba(255,255,255,0.2);">🌍</div>
+                <h2>与社会每一个人的关系</h2>
+                <p>AI不仅是技术革命，更是社会重构的力量，它将重新定义工作、教育、医疗和人际关系</p>
+            </div>
+
+            <div class="society-grid fade-in">
+                <div class="society-card">
+                    <div class="society-card-icon">⚖️</div>
+                    <h4>社会公平</h4>
+                    <p>AI技术可能加剧或缩小贫富差距。一方面，掌握AI技能的人获得更高收入；另一方面，AI教育普及让更多人获得优质学习资源。政府需要建立全民AI素养教育体系。</p>
+                </div>
+                <div class="society-card">
+                    <div class="society-card-icon">🏛️</div>
+                    <h4>劳动力市场</h4>
+                    <p>未来五年，预计10亿劳动力需要再技能培训。从"人指挥机器"转向"人指导机器"，创造性、情感性、复杂决策能力成为核心竞争力。</p>
+                </div>
+                <div class="society-card">
+                    <div class="society-card-icon">📚</div>
+                    <h4>教育体系</h4>
+                    <p>教育将从知识传授转向能力培养。记忆和重复训练让位于批判性思维、创造力和人机协作能力。终身学习成为必需，而非选择。</p>
+                </div>
+                <div class="society-card">
+                    <div class="society-card-icon">🏥</div>
+                    <h4>医疗资源</h4>
+                    <p>AI让优质医疗资源下沉到基层。偏远地区也能享受专家级诊断，缓解医疗资源不均衡问题。同时，数据隐私和算法透明度需要严格监管。</p>
+                </div>
+                <div class="society-card">
+                    <div class="society-card-icon">🤝</div>
+                    <h4>人际关系</h4>
+                    <p>AI陪伴可能改变人类的情感需求模式。虚拟伴侣、AI朋友出现，人际关系的定义将被重新审视。如何在AI便利与真实连接间平衡是关键。</p>
+                </div>
+                <div class="society-card">
+                    <div class="society-card-icon">🌱</div>
+                    <h4>可持续发展</h4>
+                    <p>AI助力碳中和目标实现。智能电网优化能源分配，AI预测模型帮助应对气候变化。但AI本身的能耗问题也需要技术创新来解决。</p>
+                </div>
+            </div>
+
+            <div class="transformation-section fade-in">
+                <h3>从"人适应技术"到"技术服务人"的转变</h3>
+                <div class="transformation-flow">
+                    <div class="flow-item">
+                        <div class="flow-icon">👨‍💻</div>
+                        <h4>学习技术</h4>
+                        <p>过去：人需要学习复杂的软件操作</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-item">
+                        <div class="flow-icon">💬</div>
+                        <h4>自然交互</h4>
+                        <p>现在：用自然语言与AI对话</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-item">
+                        <div class="flow-icon">🤖</div>
+                        <h4>主动服务</h4>
+                        <p>未来：AI预判需求主动提供服务</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-item">
+                        <div class="flow-icon">🧠</div>
+                        <h4>人机共生</h4>
+                        <p>2030：人与AI无缝协作共创价值</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Vision -->
+    <section id="vision" class="future-vision">
+        <div class="container">
+            <div class="vision-quote fade-in">
+                <p>AI的潜力远超想象，但驾驭它的智慧才是未来真正的竞争力。技术本身没有善恶，关键在于使用技术的人。未来五年，我们将见证人类历史上最深刻的生产力变革，而你，可以成为这场变革的参与者和塑造者。</p>
+                <cite>— 献给每一个关心未来的你</cite>
+            </div>
+
+            <div class="section-header fade-in">
+                <div class="section-icon" style="background: var(--gradient-4);">🚀</div>
+                <h2>你可以做的准备</h2>
+                <p>未来已来，行动就在当下</p>
+            </div>
+
+            <div class="action-cards fade-in">
+                <div class="action-card">
+                    <div class="action-icon">📖</div>
+                    <h4>保持学习</h4>
+                    <p>每周投入时间了解AI最新进展，尝试使用新工具。关注AI领域的权威媒体和开源社区。</p>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">🛠️</div>
+                    <h4>动手实践</h4>
+                    <p>选择1-2个AI工具深度使用，将其融入日常工作学习。实践是最好的学习方式。</p>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">💭</div>
+                    <h4>批判思考</h4>
+                    <p>不盲从AI输出，培养辨别信息真伪的能力。思考AI的局限性和伦理边界。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>关于本页</h4>
+                <p style="color: #94a3b8; line-height: 1.8;">基于2025年最新行业报告和专家预测整理，旨在帮助每个人理解AI发展趋势，做好未来准备。</p>
+            </div>
+            <div class="footer-section">
+                <h4>关键数据来源</h4>
+                <ul>
+                    <li><a href="#">中国AIoT产业研究报告 2025</a></li>
+                    <li><a href="#">BCG人工智能报告</a></li>
+                    <li><a href="#">工信部AI发展指导意见</a></li>
+                    <li><a href="#">MIT Technology Review</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>延伸阅读</h4>
+                <ul>
+                    <li><a href="#">人工智能伦理白皮书</a></li>
+                    <li><a href="#">AGI发展时间线</a></li>
+                    <li><a href="#">AI职业技能指南</a></li>
+                    <li><a href="#">端侧AI技术解析</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>重要提醒</h4>
+                <p style="color: #94a3b8; line-height: 1.8;">技术预测存在不确定性，本页面内容仅供参考。保持开放心态，拥抱变化，但也要保持独立思考。</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 AI未来展望 | 探索科技，预见未来</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.boxShadow = 'var(--shadow)';
+            }
+        });
+
+        // Back to top button visibility
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Fade in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        fadeElements.forEach(el => observer.observe(el));
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CET 四六级完全指南 | 大学英语考试百科</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .timeline-line {
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .section-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .score-ring {
+            background: conic-gradient(#667eea 0deg, #764ba2 180deg, #e5e7eb 180deg);
+        }
+
+        .nav-dot {
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: #667eea;
+            transform: scale(1.5);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        .word-count-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .exam-structure-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen overflow-x-hidden">
+
+    <!-- 固定导航点 -->
+    <div class="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 hidden lg:flex flex-col gap-3">
+        <div class="nav-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer" onclick="scrollToSection('naming')"></div>
+        <div class="nav-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer" onclick="scrollToSection('history')"></div>
+        <div class="nav-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer" onclick="scrollToSection('requirements')"></div>
+        <div class="nav-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer" onclick="scrollToSection('structure')"></div>
+        <div class="nav-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer" onclick="scrollToSection('vocabulary')"></div>
+        <div class="nav-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer" onclick="scrollToSection('pass')"></div>
+        <div class="nav-dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer" onclick="scrollToSection('info')"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 floating"></div>
+            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 floating" style="animation-delay: 2s"></div>
+            <div class="absolute top-40 left-1/3 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 floating" style="animation-delay: 4s"></div>
+        </div>
+
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="inline-block mb-4 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-sm font-medium text-indigo-600 shadow-lg">
+                <i class="fas fa-graduation-cap mr-2"></i>全国大学英语考试
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tight">
+                <span class="gradient-text">CET</span>
+                <span class="text-gray-800">四六级</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+                从1986到2025，解读中国大学生最重要的英语能力认证体系
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <div class="glass-card px-6 py-3 rounded-2xl shadow-lg">
+                    <span class="text-2xl font-bold text-indigo-600">4200+</span>
+                    <span class="text-gray-500 text-sm block">四级词汇</span>
+                </div>
+                <div class="glass-card px-6 py-3 rounded-2xl shadow-lg">
+                    <span class="text-2xl font-bold text-purple-600">5500+</span>
+                    <span class="text-gray-500 text-sm block">六级词汇</span>
+                </div>
+                <div class="glass-card px-6 py-3 rounded-2xl shadow-lg">
+                    <span class="text-2xl font-bold text-indigo-600">710</span>
+                    <span class="text-gray-500 text-sm block">满分制</span>
+                </div>
+                <div class="glass-card px-6 py-3 rounded-2xl shadow-lg">
+                    <span class="text-2xl font-bold text-purple-600">425</span>
+                    <span class="text-gray-500 text-sm block">通过线</span>
+                </div>
+            </div>
+            <button onclick="scrollToSection('naming')" class="group bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
+                开始探索
+                <i class="fas fa-arrow-down ml-2 group-hover:translate-y-1 transition-transform"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- 命名由来 Section -->
+    <section id="naming" class="py-20 section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">为什么叫<span class="gradient-text">"四六级"</span>？</h2>
+                <p class="text-gray-600 text-lg">源自教育部《大学英语教学大纲》的六级体系</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 等级卡片 -->
+                    <div class="glass-card rounded-3xl p-6 hover-lift border-l-4 border-gray-400">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-3xl font-black text-gray-400">01</span>
+                            <i class="fas fa-school text-gray-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">一级</h3>
+                        <p class="text-gray-600">高中毕业水平</p>
+                    </div>
+
+                    <div class="glass-card rounded-3xl p-6 hover-lift border-l-4 border-gray-400">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-3xl font-black text-gray-400">02</span>
+                            <i class="fas fa-user-graduate text-gray-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">二级</h3>
+                        <p class="text-gray-600">大专入学水平</p>
+                    </div>
+
+                    <div class="glass-card rounded-3xl p-6 hover-lift border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-3xl font-black text-yellow-600">03</span>
+                            <i class="fas fa-certificate text-yellow-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">三级</h3>
+                        <p class="text-gray-600">大专毕业水平<br><span class="text-sm text-yellow-600">大专生起点</span></p>
+                    </div>
+
+                    <div class="glass-card rounded-3xl p-6 hover-lift border-l-4 border-indigo-600 transform scale-105 shadow-2xl bg-gradient-to-br from-indigo-50 to-purple-50">
+                        <div class="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">核心</div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-3xl font-black text-indigo-600">04</span>
+                            <i class="fas fa-star text-indigo-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-indigo-900 mb-2">四级 CET-4</h3>
+                        <p class="text-indigo-700 font-medium">本科毕业水平<br><span class="text-sm">本科生起点</span></p>
+                    </div>
+
+                    <div class="glass-card rounded-3xl p-6 hover-lift border-l-4 border-purple-400">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-3xl font-black text-purple-500">05</span>
+                            <i class="fas fa-book-open text-purple-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">五级</h3>
+                        <p class="text-gray-600">研究生入学水平</p>
+                    </div>
+
+                    <div class="glass-card rounded-3xl p-6 hover-lift border-l-4 border-purple-600 transform scale-105 shadow-2xl bg-gradient-to-br from-purple-50 to-pink-50">
+                        <div class="absolute -top-3 -right-3 bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full">进阶</div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-3xl font-black text-purple-600">06</span>
+                            <i class="fas fa-crown text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-purple-900 mb-2">六级 CET-6</h3>
+                        <p class="text-purple-700 font-medium">研究生毕业水平<br><span class="text-sm">需四级≥425分</span></p>
+                    </div>
+                </div>
+
+                <div class="mt-12 glass-card rounded-2xl p-8 text-center">
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                        <strong>核心逻辑：</strong>本科生入学默认为三级，毕业需达到四级；研究生入学默认为五级，毕业需达到六级。
+                        因此本科生考<strong class="text-indigo-600">四级</strong>，研究生考<strong class="text-purple-600">六级</strong>。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 发展历程 Timeline -->
+    <section id="history" class="py-20 bg-white/50 section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">发展历程</h2>
+                <p class="text-gray-600 text-lg">从石油学院校内测试到全国性标准化考试</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto relative">
+                <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 timeline-line rounded-full"></div>
+
+                <div class="space-y-12">
+                    <!-- 1984 -->
+                    <div class="relative flex items-center justify-between">
+                        <div class="w-5/12 text-right pr-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-indigo-600 mb-2">1984年</h3>
+                                <p class="text-gray-700">起源于华东石油学院（现中国石油大学）校内英语水平测试</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-indigo-600 rounded-full border-4 border-white shadow-lg z-10"></div>
+                        <div class="w-5/12 pl-8"></div>
+                    </div>
+
+                    <!-- 1986 -->
+                    <div class="relative flex items-center justify-between">
+                        <div class="w-5/12 pr-8"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-purple-600 rounded-full border-4 border-white shadow-lg z-10"></div>
+                        <div class="w-5/12 text-left pl-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-purple-600 mb-2">1986年</h3>
+                                <p class="text-gray-700">教育部组织第一次大学英语四级试验考试</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1987 -->
+                    <div class="relative flex items-center justify-between">
+                        <div class="w-5/12 text-right pr-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-indigo-600 mb-2">1987年</h3>
+                                <p class="text-gray-700">四级考试正式实施，每年6月和12月各举行一次</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-indigo-600 rounded-full border-4 border-white shadow-lg z-10"></div>
+                        <div class="w-5/12 pl-8"></div>
+                    </div>
+
+                    <!-- 1989 -->
+                    <div class="relative flex items-center justify-between">
+                        <div class="w-5/12 pr-8"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-purple-600 rounded-full border-4 border-white shadow-lg z-10"></div>
+                        <div class="w-5/12 text-left pl-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-purple-600 mb-2">1989年</h3>
+                                <p class="text-gray-700">增设六级考试，四六级体系正式形成</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1999 -->
+                    <div class="relative flex items-center justify-between">
+                        <div class="w-5/12 text-right pr-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-indigo-600 mb-2">1999年</h3>
+                                <p class="text-gray-700">增设口语考试（CET-SET），四级80分或六级75分可报考</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-indigo-600 rounded-full border-4 border-white shadow-lg z-10"></div>
+                        <div class="w-5/12 pl-8"></div>
+                    </div>
+
+                    <!-- 2005 -->
+                    <div class="relative flex items-center justify-between">
+                        <div class="w-5/12 pr-8"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-red-500 rounded-full border-4 border-white shadow-lg z-10 pulse-ring"></div>
+                        <div class="w-5/12 text-left pl-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift border-2 border-red-200">
+                                <h3 class="text-xl font-bold text-red-600 mb-2">2005年 · 重大改革</h3>
+                                <p class="text-gray-700">百分制改710分制，不设及格线，改发成绩单取代合格证书</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2006 -->
+                    <div class="relative flex items-center justify-between">
+                        <div class="w-5/12 text-right pr-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-indigo-600 mb-2">2006年</h3>
+                                <p class="text-gray-700">仅限在校大学生报考，不再对社会考生开放</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-indigo-600 rounded-full border-4 border-white shadow-lg z-10"></div>
+                        <div class="w-5/12 pl-8"></div>
+                    </div>
+
+                    <!-- 2012-2013 -->
+                    <div class="relative flex items-center justify-between">
+                        <div class="w-5/12 pr-8"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-purple-600 rounded-full border-4 border-white shadow-lg z-10"></div>
+                        <div class="w-5/12 text-left pl-8">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-purple-600 mb-2">2012-2013年</h3>
+                                <p class="text-gray-700">实行"多题多卷"模式，取消完形填空，翻译改为整段翻译</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 报考条件 -->
+    <section id="requirements" class="py-20 section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">报考条件</h2>
+                <p class="text-gray-600 text-lg">2025年最新报考资格要求</p>
+            </div>
+
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 四级报考 -->
+                <div class="glass-card rounded-3xl p-8 hover-lift">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mr-4">
+                            CET-4
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">四级报考</h3>
+                            <p class="text-gray-500">College English Test Band 4</p>
+                        </div>
+                    </div>
+
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">全日制在校生</strong>
+                                <p class="text-gray-600 text-sm">普通高等院校本科、专科在校生或在籍研究生</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">修完四级课程</strong>
+                                <p class="text-gray-600 text-sm">部分学校要求修完大学英语四级课程</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">社会考生限制</strong>
+                                <p class="text-gray-600 text-sm">已毕业或社会人员无法报考（教育部明确规定）</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+                        <p class="text-sm text-blue-800">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            特殊渠道：部分省份（如四川）允许通过小自考考籍获取报考资格
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 六级报考 -->
+                <div class="glass-card rounded-3xl p-8 hover-lift border-2 border-purple-200">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mr-4">
+                            CET-6
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">六级报考</h3>
+                            <p class="text-gray-500">College English Test Band 6</p>
+                        </div>
+                    </div>
+
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-star text-yellow-500 mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">四级成绩≥425分</strong>
+                                <p class="text-gray-600 text-sm">必须提供四级成绩单，且分数达到425分以上</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">在校生身份</strong>
+                                <p class="text-gray-600 text-sm">与四级相同，仅限全日制在校生</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-exclamation-triangle text-orange-500 mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">不能同时报考</strong>
+                                <p class="text-gray-600 text-sm">四级和六级笔试不能同时报考</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="mt-6 p-4 bg-purple-50 rounded-xl border border-purple-200">
+                        <p class="text-sm text-purple-800">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            建议：四级成绩500分以上再报考六级，通过率更高
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 限制条件 -->
+            <div class="max-w-4xl mx-auto mt-8 glass-card rounded-2xl p-6 border-l-4 border-red-500">
+                <h4 class="text-lg font-bold text-gray-800 mb-3">
+                    <i class="fas fa-ban text-red-500 mr-2"></i>限制与禁止
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-times text-red-500 mr-2"></i>
+                        <span class="text-gray-700">无故缺考取消下次资格</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-times text-red-500 mr-2"></i>
+                        <span class="text-gray-700">违纪者禁考</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-orange-500 mr-2"></i>
+                        <span class="text-gray-700">考位有限，先报先得</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 考试结构 -->
+    <section id="structure" class="py-20 bg-white/50 section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">考试结构</h2>
+                <p class="text-gray-600 text-lg">710分制详细分布</p>
+            </div>
+
+            <!-- 切换按钮 -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-200 p-1 rounded-full inline-flex">
+                    <button onclick="switchExam('cet4')" id="btn-cet4" class="tab-btn active px-8 py-3 rounded-full font-semibold transition-all">
+                        四级 CET-4
+                    </button>
+                    <button onclick="switchExam('cet6')" id="btn-cet6" class="tab-btn px-8 py-3 rounded-full font-semibold transition-all text-gray-600">
+                        六级 CET-6
+                    </button>
+                </div>
+            </div>
+
+            <!-- 四级内容 -->
+            <div id="content-cet4" class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 分数分布 -->
+                    <div class="glass-card rounded-3xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">分值分布</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
+                                <div class="flex items-center">
+                                    <i class="fas fa-headphones text-blue-600 text-xl mr-3"></i>
+                                    <span class="font-semibold text-gray-700">听力理解</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-blue-600">248.5</span>
+                                    <span class="text-gray-500 text-sm block">35%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl">
+                                <div class="flex items-center">
+                                    <i class="fas fa-book-open text-green-600 text-xl mr-3"></i>
+                                    <span class="font-semibold text-gray-700">阅读理解</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-green-600">248.5</span>
+                                    <span class="text-gray-500 text-sm block">35%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-purple-50 rounded-xl">
+                                <div class="flex items-center">
+                                    <i class="fas fa-pen text-purple-600 text-xl mr-3"></i>
+                                    <span class="font-semibold text-gray-700">写作</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-purple-600">106.5</span>
+                                    <span class="text-gray-500 text-sm block">15%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-orange-50 rounded-xl">
+                                <div class="flex items-center">
+                                    <i class="fas fa-language text-orange-600 text-xl mr-3"></i>
+                                    <span class="font-semibold text-gray-700">翻译</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-orange-600">106.5</span>
+                                    <span class="text-gray-500 text-sm block">15%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 bg-gray-100 rounded-xl text-center">
+                            <span class="text-gray-600">总分</span>
+                            <span class="text-4xl font-black text-gray-800 ml-3">710</span>
+                        </div>
+                    </div>
+
+                    <!-- 题型详情 -->
+                    <div class="space-y-4">
+                        <div class="exam-structure-card rounded-2xl p-6 hover-lift">
+                            <h4 class="text-lg font-bold text-blue-700 mb-3">
+                                <i class="fas fa-headphones mr-2"></i>听力理解（25分钟）
+                            </h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>• 短篇新闻（3段，7题）</li>
+                                <li>• 长对话（2篇，8题）</li>
+                                <li>• 听力篇章（3篇，10题）</li>
+                            </ul>
+                        </div>
+
+                        <div class="exam-structure-card rounded-2xl p-6 hover-lift">
+                            <h4 class="text-lg font-bold text-green-700 mb-3">
+                                <i class="fas fa-book-open mr-2"></i>阅读理解（40分钟）
+                            </h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>• 词汇理解（选词填空，1篇）</li>
+                                <li>• 长篇阅读（匹配题，1篇）</li>
+                                <li>• 仔细阅读（选择题，2篇）</li>
+                            </ul>
+                        </div>
+
+                        <div class="exam-structure-card rounded-2xl p-6 hover-lift">
+                            <h4 class="text-lg font-bold text-purple-700 mb-3">
+                                <i class="fas fa-pen mr-2"></i>写作（30分钟）
+                            </h4>
+                            <p class="text-sm text-gray-600">短文写作，120-180词</p>
+                        </div>
+
+                        <div class="exam-structure-card rounded-2xl p-6 hover-lift">
+                            <h4 class="text-lg font-bold text-orange-700 mb-3">
+                                <i class="fas fa-language mr-2"></i>翻译（30分钟）
+                            </h4>
+                            <p class="text-sm text-gray-600">汉译英段落翻译，140-160个汉字</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 glass-card rounded-2xl p-6 text-center">
+                    <p class="text-gray-700">
+                        <i class="fas fa-clock text-indigo-600 mr-2"></i>
+                        <strong>考试时间：</strong>9:00-11:20（125分钟）
+                    </p>
+                </div>
+            </div>
+
+            <!-- 六级内容（默认隐藏） -->
+            <div id="content-cet6" class="max-w-6xl mx-auto hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="glass-card rounded-3xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">分值分布</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
+                                <div class="flex items-center">
+                                    <i class="fas fa-headphones text-blue-600 text-xl mr-3"></i>
+                                    <span class="font-semibold text-gray-700">听力理解</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-blue-600">248.5</span>
+                                    <span class="text-gray-500 text-sm block">35%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl">
+                                <div class="flex items-center">
+                                    <i class="fas fa-book-open text-green-600 text-xl mr-3"></i>
+                                    <span class="font-semibold text-gray-700">阅读理解</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-green-600">248.5</span>
+                                    <span class="text-gray-500 text-sm block">35%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-purple-50 rounded-xl">
+                                <div class="flex items-center">
+                                    <i class="fas fa-pen text-purple-600 text-xl mr-3"></i>
+                                    <span class="font-semibold text-gray-700">写作</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-purple-600">106.5</span>
+                                    <span class="text-gray-500 text-sm block">15%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-orange-50 rounded-xl">
+                                <div class="flex items-center">
+                                    <i class="fas fa-language text-orange-600 text-xl mr-3"></i>
+                                    <span class="font-semibold text-gray-700">翻译</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-orange-600">106.5</span>
+                                    <span class="text-gray-500 text-sm block">15%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 bg-gray-100 rounded-xl text-center">
+                            <span class="text-gray-600">总分</span>
+                            <span class="text-4xl font-black text-gray-800 ml-3">710</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="exam-structure-card rounded-2xl p-6 hover-lift">
+                            <h4 class="text-lg font-bold text-blue-700 mb-3">
+                                <i class="fas fa-headphones mr-2"></i>听力理解（30分钟）
+                            </h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>• 长对话（2篇，8题）</li>
+                                <li>• 听力篇章（2篇，7题）</li>
+                                <li>• 讲话/报道/讲座（3篇，10题）</li>
+                            </ul>
+                        </div>
+
+                        <div class="exam-structure-card rounded-2xl p-6 hover-lift">
+                            <h4 class="text-lg font-bold text-green-700 mb-3">
+                                <i class="fas fa-book-open mr-2"></i>阅读理解（40分钟）
+                            </h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>• 词汇理解（选词填空，1篇）</li>
+                                <li>• 长篇阅读（匹配题，1篇）</li>
+                                <li>• 仔细阅读（选择题，2篇）</li>
+                            </ul>
+                        </div>
+
+                        <div class="exam-structure-card rounded-2xl p-6 hover-lift">
+                            <h4 class="text-lg font-bold text-purple-700 mb-3">
+                                <i class="fas fa-pen mr-2"></i>写作（30分钟）
+                            </h4>
+                            <p class="text-sm text-gray-600">短文写作，150-200词</p>
+                        </div>
+
+                        <div class="exam-structure-card rounded-2xl p-6 hover-lift">
+                            <h4 class="text-lg font-bold text-orange-700 mb-3">
+                                <i class="fas fa-language mr-2"></i>翻译（30分钟）
+                            </h4>
+                            <p class="text-sm text-gray-600">汉译英段落翻译，180-200个汉字</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 glass-card rounded-2xl p-6 text-center">
+                    <p class="text-gray-700">
+                        <i class="fas fa-clock text-purple-600 mr-2"></i>
+                        <strong>考试时间：</strong>15:00-17:25（130分钟）
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 词汇量对比 -->
+    <section id="vocabulary" class="py-20 section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">词汇量要求</h2>
+                <p class="text-gray-600 text-lg">从高中到研究生的词汇进阶之路</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="glass-card rounded-3xl p-8 mb-8">
+                    <div class="space-y-8">
+                        <!-- 高中 -->
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="font-semibold text-gray-700">高中毕业</span>
+                                <span class="text-2xl font-bold text-gray-500">3500词</span>
+                            </div>
+                            <div class="h-4 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-gray-400 rounded-full" style="width: 50%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 四级 -->
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="font-semibold text-indigo-700">四级要求</span>
+                                <span class="text-3xl font-bold text-indigo-600">4200词</span>
+                            </div>
+                            <div class="h-6 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="word-count-bar h-full rounded-full relative" style="width: 60%">
+                                    <span class="absolute right-2 top-1/2 transform -translate-y-1/2 text-white text-xs font-bold">大纲要求</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-2">建议掌握4500词，含高频词+专业倾向词汇</p>
+                        </div>
+
+                        <!-- 六级 -->
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="font-semibold text-purple-700">六级要求</span>
+                                <span class="text-3xl font-bold text-purple-600">5500词</span>
+                            </div>
+                            <div class="h-6 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full relative" style="width: 78%">
+                                    <span class="absolute right-2 top-1/2 transform -translate-y-1/2 text-white text-xs font-bold">大纲要求</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-2">建议掌握6000词，阅读允许3%生词量</p>
+                        </div>
+
+                        <!-- 考研 -->
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="font-semibold text-pink-700">考研英语</span>
+                                <span class="text-2xl font-bold text-pink-600">5500-6000词</span>
+                            </div>
+                            <div class="h-4 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-pink-400 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 雅思托福 -->
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="font-semibold text-orange-700">雅思/托福</span>
+                                <span class="text-2xl font-bold text-orange-600">8000+词</span>
+                            </div>
+                            <div class="h-4 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-orange-400 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card rounded-2xl p-6 text-center hover-lift">
+                        <i class="fas fa-layer-group text-indigo-500 text-3xl mb-3"></i>
+                        <h4 class="font-bold text-gray-800 mb-2">基础高频词</h4>
+                        <p class="text-sm text-gray-600">覆盖80%考试内容，优先掌握</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 text-center hover-lift">
+                        <i class="fas fa-flask text-purple-500 text-3xl mb-3"></i>
+                        <h4 class="font-bold text-gray-800 mb-2">专业倾向词</h4>
+                        <p class="text-sm text-gray-600">科技、经济、文化领域词汇</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 text-center hover-lift">
+                        <i class="fas fa-brain text-pink-500 text-3xl mb-3"></i>
+                        <h4 class="font-bold text-gray-800 mb-2">推测能力</h4>
+                        <p class="text-sm text-gray-600">阅读允许3%生词，考查上下文推测</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 及格条件 -->
+    <section id="pass" class="py-20 bg-white/50 section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">及格与通过标准</h2>
+                <p class="text-gray-600 text-lg">理解710分制与425分门槛</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 分数体系 -->
+                    <div class="glass-card rounded-3xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">计分体制</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
+                                <span class="font-semibold text-gray-700">满分</span>
+                                <span class="text-3xl font-black text-indigo-600">710分</span>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
+                                <span class="font-semibold text-gray-700">成绩单最低分</span>
+                                <span class="text-3xl font-black text-green-600">220分</span>
+                            </div>
+                            <div class="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border-2 border-orange-300">
+                                <span class="font-semibold text-gray-700">社会默认通过线</span>
+                                <span class="text-3xl font-black text-orange-600">425分</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-blue-50 rounded-xl">
+                            <p class="text-sm text-blue-800">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                <strong>重要：</strong>官方不设及格线，220分以上即发放成绩单。但<strong>425分</strong>是报考六级的硬性门槛，也是用人单位的普遍标准。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 应用场景 -->
+                    <div class="glass-card rounded-3xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">425分的实际意义</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start p-4 bg-white rounded-xl shadow-sm">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fas fa-arrow-up text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">报考六级</h4>
+                                    <p class="text-sm text-gray-600">四级≥425分是报考六级的硬性条件</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start p-4 bg-white rounded-xl shadow-sm">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fas fa-briefcase text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">求职门槛</h4>
+                                    <p class="text-sm text-gray-600">多数企业将425分视为英语能力合格线</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start p-4 bg-white rounded-xl shadow-sm">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fas fa-graduation-cap text-green-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">保研要求</h4>
+                                    <p class="text-sm text-gray-600">通常要求四级500+或六级425+</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start p-4 bg-white rounded-xl shadow-sm">
+                                <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fas fa-certificate text-yellow-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">学位证</h4>
+                                    <p class="text-sm text-gray-600">部分高校仍与四级挂钩（政策已明令禁止，但执行不一）</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分数计算器 -->
+                <div class="mt-8 glass-card rounded-3xl p-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-calculator text-indigo-600 mr-2"></i>成绩参考
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center p-4 bg-red-50 rounded-xl">
+                            <div class="text-2xl font-bold text-red-600">220-424</div>
+                            <div class="text-sm text-gray-600">未通过（有成绩单）</div>
+                        </div>
+                        <div class="text-center p-4 bg-green-50 rounded-xl border-2 border-green-400">
+                            <div class="text-2xl font-bold text-green-600">425-499</div>
+                            <div class="text-sm text-gray-600">通过（可报六级）</div>
+                        </div>
+                        <div class="text-center p-4 bg-blue-50 rounded-xl">
+                            <div class="text-2xl font-bold text-blue-600">500-599</div>
+                            <div class="text-sm text-gray-600">良好（保研优势）</div>
+                        </div>
+                        <div class="text-center p-4 bg-purple-50 rounded-xl">
+                            <div class="text-2xl font-bold text-purple-600">600-710</div>
+                            <div class="text-sm text-gray-600">优秀（竞争力强）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 其他信息 -->
+    <section id="info" class="py-20 section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">其他重要信息</h2>
+            </div>
+
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 报名 -->
+                <div class="glass-card rounded-2xl p-6 hover-lift">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-edit text-indigo-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">报名与费用</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><strong>网站：</strong>https://cet-bm.neea.edu.cn</li>
+                        <li><strong>笔试：</strong>约36元/人次</li>
+                        <li><strong>口试：</strong>约50元/人次</li>
+                        <li><strong>时间：</strong>每年3月、9月报名</li>
+                    </ul>
+                </div>
+
+                <!-- 考试时间 -->
+                <div class="glass-card rounded-2xl p-6 hover-lift">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-calendar-alt text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">考试安排</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><strong>笔试：</strong>每年6月、12月</li>
+                        <li><strong>口试：</strong>每年5月、11月</li>
+                        <li><strong>查分：</strong>考后约60个工作日</li>
+                        <li><strong>成绩单：</strong>提供电子版</li>
+                    </ul>
+                </div>
+
+                <!-- 口语 -->
+                <div class="glass-card rounded-2xl p-6 hover-lift">
+                    <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-comments text-pink-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">口语考试</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>计算机化视频面试</li>
+                        <li>自我介绍、朗读、问答</li>
+                        <li>小组讨论环节</li>
+                        <li>成绩分为优秀、良好、合格</li>
+                    </ul>
+                </div>
+
+                <!-- 与专四专八区别 -->
+                <div class="glass-card rounded-2xl p-6 hover-lift">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-not-equal text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">与TEM区别</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><strong>CET：</strong>非英语专业</li>
+                        <li><strong>TEM：</strong>英语专业</li>
+                        <li>专四第4学期考，专八第8学期考</li>
+                        <li>CET6达600分可报专八（部分院校）</li>
+                    </ul>
+                </div>
+
+                <!-- 未来趋势 -->
+                <div class="glass-card rounded-2xl p-6 hover-lift">
+                    <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-rocket text-orange-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">未来趋势</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>国家英语能力等级考试（NETS）</li>
+                        <li>计划分9个等级取代现行四六级</li>
+                        <li>目前四六级仍是主流标准</li>
+                        <li>改革时间尚未确定</li>
+                    </ul>
+                </div>
+
+                <!-- 备考建议 -->
+                <div class="glass-card rounded-2xl p-6 hover-lift border-2 border-indigo-200">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-lightbulb text-indigo-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">备考建议</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>听力坚持每天精听30分钟</li>
+                        <li>阅读积累高频词汇</li>
+                        <li>写作背诵模板+高级句型</li>
+                        <li>翻译关注中国文化类话题</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-gradient-to-r from-indigo-900 to-purple-900 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold mb-4">CET 四六级完全指南</h3>
+            <p class="text-indigo-200 mb-6">数据来源：教育部考试中心、全国大学英语四六级考试委员会</p>
+            <div class="flex justify-center gap-4 text-sm text-indigo-300">
+                <span>© 2025 四六级百科</span>
+                <span>·</span>
+                <span>仅供学习参考</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动显示动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    updateNavDot(entry.target.id);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-reveal').forEach(section => {
+            observer.observe(section);
+        });
+
+        // 导航点更新
+        function updateNavDot(sectionId) {
+            document.querySelectorAll('.nav-dot').forEach(dot => {
+                dot.classList.remove('active');
+            });
+            const dots = document.querySelectorAll('.nav-dot');
+            const sections = ['hero', 'naming', 'history', 'requirements', 'structure', 'vocabulary', 'pass', 'info'];
+            const index = sections.indexOf(sectionId);
+            if (index !== -1 && dots[index]) {
+                dots[index].classList.add('active');
+            }
+        }
+
+        // 平滑滚动
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 考试切换
+        function switchExam(type) {
+            const btn4 = document.getElementById('btn-cet4');
+            const btn6 = document.getElementById('btn-cet6');
+            const content4 = document.getElementById('content-cet4');
+            const content6 = document.getElementById('content-cet6');
+
+            if (type === 'cet4') {
+                btn4.classList.add('active');
+                btn4.classList.remove('text-gray-600');
+                btn6.classList.remove('active');
+                btn6.classList.add('text-gray-600');
+                content4.classList.remove('hidden');
+                content6.classList.add('hidden');
+            } else {
+                btn6.classList.add('active');
+                btn6.classList.remove('text-gray-600');
+                btn4.classList.remove('active');
+                btn4.classList.add('text-gray-600');
+                content6.classList.remove('hidden');
+                content4.classList.add('hidden');
+            }
+        }
+
+        // 初始化第一个导航点
+        updateNavDot('hero');
+    </script>
+</body>
+</html>

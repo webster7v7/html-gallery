@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大学百科 - 中国高等教育完全指南</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-1);
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: var(--white);
+            z-index: 1;
+            max-width: 900px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--white);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--white);
+            opacity: 0.8;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+        }
+
+        /* Classification Section */
+        .classification {
+            background: var(--white);
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .class-card {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .class-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .class-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .class-card li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .class-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .tier-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .tier-985 { background: #fef3c7; color: #d97706; }
+        .tier-211 { background: #dbeafe; color: #2563eb; }
+        .tier-double { background: #d1fae5; color: #059669; }
+
+        /* Terminology Section */
+        .terminology {
+            background: var(--bg-light);
+        }
+
+        .term-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .term-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+
+        .term-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .term-card h4 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .term-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Timeline Section */
+        .history {
+            background: var(--white);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            width: 50%;
+            padding: 0 3rem;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+        }
+
+        .timeline-content {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 16px;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid var(--bg-light);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid var(--bg-light);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 20px;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -10px;
+        }
+
+        .timeline-date {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Admission Rules Section */
+        .admission {
+            background: var(--bg-light);
+        }
+
+        .rule-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .rule-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background: var(--white);
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--text-light);
+        }
+
+        .rule-tab.active,
+        .rule-tab:hover {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .rule-content {
+            display: none;
+        }
+
+        .rule-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .rule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .rule-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .rule-card .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rule-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .rule-card ul {
+            list-style: none;
+        }
+
+        .rule-card li {
+            padding: 0.5rem 0;
+            color: var(--text-light);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .rule-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        /* Application Guide */
+        .application {
+            background: var(--white);
+        }
+
+        .guide-steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .step-card {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-light);
+            border-radius: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .step-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .tip-card.warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .tip-card.success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .tip-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .tip-card ul {
+            list-style: none;
+            position: relative;
+        }
+
+        .tip-card li {
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+
+        .tip-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+        }
+
+        /* Additional Info */
+        .additional {
+            background: var(--bg-light);
+        }
+
+        .info-accordion {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .accordion-item {
+            background: var(--white);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .accordion-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .accordion-header:hover {
+            background: var(--bg-light);
+        }
+
+        .accordion-header h4 {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+        .accordion-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-body {
+            max-height: 500px;
+        }
+
+        .accordion-content {
+            padding: 0 1.5rem 1.5rem;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            color: var(--white);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            border: none;
+            font-size: 1.25rem;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.75rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding-left: 60px;
+                padding-right: 0;
+                text-align: left !important;
+            }
+
+            .timeline-dot {
+                left: 10px !important;
+                right: auto !important;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content::after,
+            .timeline-item:nth-child(even) .timeline-content::after {
+                left: -10px;
+                right: auto;
+                border-right: 10px solid var(--bg-light);
+                border-left: none;
+            }
+
+            .guide-steps {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .step-card {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .navbar,
+            .back-to-top,
+            .scroll-indicator {
+                display: none;
+            }
+
+            section {
+                padding: 2rem 1rem;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 3rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">📚 大学百科</div>
+            <ul class="nav-links">
+                <li><a href="#classification">大学分类</a></li>
+                <li><a href="#terminology">名词解释</a></li>
+                <li><a href="#history">发展历程</a></li>
+                <li><a href="#admission">招生规则</a></li>
+                <li><a href="#application">志愿填报</a></li>
+                <li><a href="#additional">更多信息</a></li>
+            </ul>
+            <button class="mobile-menu-btn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>中国高等教育完全指南</h1>
+            <p>全面了解大学分类、招生规则、志愿填报策略，助你规划精彩人生</p>
+            <div class="hero-buttons">
+                <a href="#classification" class="btn btn-primary">开始探索</a>
+                <a href="#application" class="btn btn-secondary">志愿填报</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        </div>
+    </section>
+
+    <!-- Classification Section -->
+    <section id="classification" class="classification">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-1);">🏛️</div>
+                <h2>大学分类体系</h2>
+                <p>中国高等教育机构按照多种维度进行分类，了解这些分类有助于选择适合自己的院校</p>
+            </div>
+
+            <div class="class-grid">
+                <div class="class-card">
+                    <h3>📌 按办学层次分类</h3>
+                    <ul>
+                        <li><strong>本科院校</strong>：提供学士学位教育，学制4-5年</li>
+                        <li><strong>高职高专</strong>：高等职业教育，学制2-3年，培养技术技能人才</li>
+                        <li><strong>成人高校</strong>：面向社会成人开展继续教育</li>
+                        <li><strong>网络学院</strong>：开展现代远程高等教育</li>
+                    </ul>
+                </div>
+
+                <div class="class-card">
+                    <h3>📌 按学科类型分类</h3>
+                    <ul>
+                        <li><strong>综合性大学</strong>：学科门类齐全，文理并重</li>
+                        <li><strong>理工类院校</strong>：侧重工程技术与自然科学</li>
+                        <li><strong>师范类院校</strong>：以培养教师为主要目标</li>
+                        <li><strong>医药类院校</strong>：医学、药学等专业为主</li>
+                        <li><strong>财经类院校</strong>：经济、管理、金融等专业</li>
+                        <li><strong>艺术类院校</strong>：音乐、美术、戏剧等专业</li>
+                    </ul>
+                </div>
+
+                <div class="class-card">
+                    <h3>📌 按主管部门分类</h3>
+                    <ul>
+                        <li><strong>教育部直属</strong>：全国重点高校，如清华、北大</li>
+                        <li><strong>中央部委直属</strong>：工信部、国家民委等主管</li>
+                        <li><strong>省属高校</strong>：由各省市自治区管理</li>
+                        <li><strong>市属高校</strong>：由地级市管理</li>
+                        <li><strong>民办高校</strong>：社会力量举办，需经教育部批准</li>
+                    </ul>
+                </div>
+
+                <div class="class-card">
+                    <h3>⭐ 重点大学标签</h3>
+                    <ul>
+                        <li><span class="tier-badge tier-985">985工程</span>1998年启动，39所顶尖高校</li>
+                        <li><span class="tier-badge tier-211">211工程</span>面向21世纪，112所高校</li>
+                        <li><span class="tier-badge tier-double">双一流</span>世界一流大学和一流学科建设</li>
+                        <li><strong>省重点/部省合建</strong>：地方高水平大学</li>
+                        <li><strong>中西部高校基础能力建设</strong>：支持中西部高校发展</li>
+                    </ul>
+                </div>
+
+                <div class="class-card">
+                    <h3>📌 按录取批次分类</h3>
+                    <ul>
+                        <li><strong>本科一批（一本）</strong>：重点本科院校</li>
+                        <li><strong>本科二批（二本）</strong>：普通本科院校</li>
+                        <li><strong>本科三批（已合并）</strong>：独立学院和民办本科</li>
+                        <li><strong>专科批</strong>：高职高专院校</li>
+                        <li><strong>提前批</strong>：军事、公安、艺术、体育等特殊类型</li>
+                    </ul>
+                </div>
+
+                <div class="class-card">
+                    <h3>📌 特殊类型院校</h3>
+                    <ul>
+                        <li><strong>军事院校</strong>：国防科技大学等，需政审体检</li>
+                        <li><strong>公安院校</strong>：培养人民警察，需体能测试</li>
+                        <li><strong>外交学院</strong>：培养外交人才</li>
+                        <li><strong>国际关系学院</strong>：国家安全相关领域</li>
+                        <li><strong>中外合作办学</strong>：与国外高校合作办学项目</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminology Section -->
+    <section id="terminology" class="terminology">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-2);">📖</div>
+                <h2>专有名词解释</h2>
+                <p>理解这些关键术语是规划大学生涯的第一步</p>
+            </div>
+
+            <div class="term-grid">
+                <div class="term-card">
+                    <h4>全日制</h4>
+                    <p>学生全天在校学习，是高等教育的基本形式。包括全日制本科、全日制研究生等，与非全日制（在职、函授等）相对。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>本科</h4>
+                    <p>高等教育的基本组成部分，学制通常为4年（医学、建筑学等5年）。毕业后授予学士学位，包括学士、双学士等层次。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>专科（高职）</h4>
+                    <p>高等教育的专科层次，学制2-3年，不授予学位，只颁发毕业证书。侧重职业技能培养，毕业生可专升本继续深造。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>211工程</h4>
+                    <p>1995年启动，面向21世纪重点建设100所左右高等学校和一批重点学科。共112所高校，代表了当时中国高等教育的最高水平。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>985工程</h4>
+                    <p>1998年5月提出，重点支持部分高校创建世界一流大学。共39所高校，这些学校是中国高等教育的顶尖力量。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>双一流</h4>
+                    <p>2017年启动，即"世界一流大学和一流学科建设"。分为一流大学建设高校（A类36所、B类6所）和一流学科建设高校（95所）。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>C9联盟</h4>
+                    <p>中国首个顶尖大学间的高校联盟，2009年成立，包括北大、清华、复旦、上交大、浙大、南大、中科大、哈工大、西交大9所高校。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>自主招生</h4>
+                    <p>高校自主选拔录取改革试点工作，2020年起被"强基计划"取代。强基计划聚焦基础学科，选拔培养有志于服务国家重大战略需求的学生。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>统招</h4>
+                    <p>统一招生考试的简称，指通过全国普通高等学校招生统一考试（高考）进行的招生，是最主要的招生方式。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>调档线/投档线</h4>
+                    <p>高校在招生时，省招办按照一定比例（通常100%-120%）向高校投放考生档案的最低分数线。达到此线才有机会被录取。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>专业级差</h4>
+                    <p>高校在录取考生第一专业志愿和非第一专业志愿时的分数差额。如某校专业级差为3-1-0-0，表示第一与第二专业志愿分差3分。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>平行志愿</h4>
+                    <p>高考志愿的一种投档模式，考生可填报多个并列志愿，按照"分数优先、遵循志愿"的原则投档。大大降低了高分落榜风险。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>征集志愿</h4>
+                    <p>某批次录取结束后，针对未完成招生计划的院校和专业，省招办组织的补充填报志愿。是未被录取考生的重要机会。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>独立学院</h4>
+                    <p>普通本科高校按新机制、新模式举办的本科层次二级学院。2020年起要求转设为独立设置的民办本科高校或终止办学。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>专升本</h4>
+                    <p>专科层次学生升入本科层次阶段学习的选拔考试。有统招专升本（含金量最高）、自考专升本、成考专升本等多种形式。</p>
+                </div>
+
+                <div class="term-card">
+                    <h4>学分制</h4>
+                    <p>以学分作为计算学生学习量的单位，学生修满学分即可毕业的教学管理制度。弹性学制、选课制是其主要特点。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history" class="history">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-3);">📜</div>
+                <h2>中国大学发展历程</h2>
+                <p>从京师大学堂到世界一流大学，见证中国高等教育的百年变迁</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1898年</div>
+                        <h4>京师大学堂成立</h4>
+                        <p>中国近代第一所国立综合性大学，北京大学前身，标志着中国近代国立高等教育的开端。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1912年</div>
+                        <h4>更名为北京大学</h4>
+                        <p>辛亥革命后，京师大学堂更名为北京大学。随后清华学堂（1911）、南开大学等相继建立。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1952年</div>
+                        <h4>院系大调整</h4>
+                        <p>仿照苏联模式，进行大规模院系调整，建立专门的工科、医科、师范等院校，综合性大学被拆分。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1977年</div>
+                        <h4>恢复高考制度</h4>
+                        <p>中断了11年的高考制度恢复，570万考生走进考场，成为中国教育史上的重要转折点。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1990年代</div>
+                        <h4>211/985工程启动</h4>
+                        <p>1995年启动211工程，1998年启动985工程，重点建设一批高水平大学和学科。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">1999年</div>
+                        <h4>高校扩招开始</h4>
+                        <p>高等教育从精英化向大众化转型，高校招生规模迅速扩大，毛入学率持续提高。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2006年</div>
+                        <h4>新的《义务教育法》</h4>
+                        <p>确立了义务教育经费保障机制，同时高等教育进入质量提升阶段。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2014年</div>
+                        <h4>考试招生制度改革</h4>
+                        <p>国务院发布《关于深化考试招生制度改革的实施意见》，启动新高考改革。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2017年</div>
+                        <h4>双一流建设启动</h4>
+                        <p>公布首批"双一流"建设高校及学科名单，标志着中国高等教育进入新的发展阶段。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2020年</div>
+                        <h4>强基计划启动</h4>
+                        <p>取代自主招生，聚焦国家重大战略需求，选拔培养基础学科拔尖创新人才。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2022年</div>
+                        <h4>第二轮双一流公布</h4>
+                        <p>不再区分一流大学建设高校和一流学科建设高校，更加突出学科建设导向。</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admission Rules Section -->
+    <section id="admission" class="admission">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-4);">📝</div>
+                <h2>大学招生规则</h2>
+                <p>了解招生政策，把握机会，科学规划升学路径</p>
+            </div>
+
+            <div class="rule-tabs">
+                <div class="rule-tab active" data-tab="gaokao">普通高考</div>
+                <div class="rule-tab" data-tab="special">特殊类型</div>
+                <div class="rule-tab" data-tab="art">艺术类</div>
+                <div class="rule-tab" data-tab="sports">体育类</div>
+            </div>
+
+            <!-- 普通高考 -->
+            <div id="gaokao" class="rule-content active">
+                <div class="rule-grid">
+                    <div class="rule-card">
+                        <div class="icon" style="background: #dbeafe; color: #2563eb;">📋</div>
+                        <h4>报名资格</h4>
+                        <ul>
+                            <li>遵守中华人民共和国宪法和法律</li>
+                            <li>高级中等教育学校毕业或具有同等学力</li>
+                            <li>身体状况符合相关要求</li>
+                            <li>符合各省具体报名条件</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #fef3c7; color: #d97706;">📊</div>
+                        <h4>考试科目</h4>
+                        <ul>
+                            <li><strong>传统高考</strong>：语数外+文综/理综</li>
+                            <li><strong>新高考3+3</strong>：语数外+任选3科</li>
+                            <li><strong>新高考3+1+2</strong>：语数外+物理/历史+任选2科</li>
+                            <li>部分省份采用等级赋分制</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #d1fae5; color: #059669;">🎯</div>
+                        <h4>录取原则</h4>
+                        <ul>
+                            <li>公平竞争、公正选拔、公开透明</li>
+                            <li>德智体美劳全面考核、综合评价</li>
+                            <li>按考生成绩和志愿择优录取</li>
+                            <li>不得降低标准指名录取考生</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #fce7f3; color: #db2777;">📈</div>
+                        <h4>投档模式</h4>
+                        <ul>
+                            <li><strong>平行志愿</strong>：分数优先、遵循志愿</li>
+                            <li><strong>顺序志愿</strong>：志愿优先、遵循分数</li>
+                            <li>一次投档，原则上不退档</li>
+                            <li>征集志愿补充录取</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 特殊类型 -->
+            <div id="special" class="rule-content">
+                <div class="rule-grid">
+                    <div class="rule-card">
+                        <div class="icon" style="background: #e0e7ff; color: #4f46e5;">🔬</div>
+                        <h4>强基计划</h4>
+                        <ul>
+                            <li>聚焦基础学科和国家重大需求</li>
+                            <li>高考成绩占85%，校考占15%</li>
+                            <li>小班化、导师制、本硕博衔接</li>
+                            <li>39所顶尖高校招生</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #fef9c3; color: #ca8a04;">🏆</div>
+                        <h4>综合评价</h4>
+                        <ul>
+                            <li>高考成绩+校测+综合素质评价</li>
+                            <li>适用于部分省属高校</li>
+                            <li>侧重考查综合素质和创新能力</li>
+                            <li>通常在提前批或特殊批次录取</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #dcfce7; color: #16a34a;">⭐</div>
+                        <h4>保送生</h4>
+                        <ul>
+                            <li>中学生学科奥林匹克竞赛国家集训队成员</li>
+                            <li>部分外国语中学推荐优秀学生</li>
+                            <li>公安英烈子女、退役运动员</li>
+                            <li>无需参加高考，直接录取</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #fce7f3; color: #be185d;">🎖️</div>
+                        <h4>专项计划</h4>
+                        <ul>
+                            <li><strong>国家专项</strong>：定向招收贫困地区学生</li>
+                            <li><strong>高校专项</strong>：面向农村和贫困地区</li>
+                            <li><strong>地方专项</strong>：各省市实施区域招生</li>
+                            <li>降分录取，单独批次</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 艺术类 -->
+            <div id="art" class="rule-content">
+                <div class="rule-grid">
+                    <div class="rule-card">
+                        <div class="icon" style="background: #ede9fe; color: #7c3aed;">🎨</div>
+                        <h4>专业考试</h4>
+                        <ul>
+                            <li><strong>省统考</strong>：各省统一组织的专业考试</li>
+                            <li><strong>校考</strong>：高校单独组织的专业考试</li>
+                            <li>省统考合格是参加校考的前提</li>
+                            <li>部分专业取消校考，采用统考成绩</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #cffafe; color: #0891b2;">🎭</div>
+                        <h4>录取方式</h4>
+                        <ul>
+                            <li><strong>文过专排</strong>：文化过线，按专业排名</li>
+                            <li><strong>专过文排</strong>：专业过线，按文化排名</li>
+                            <li><strong>综合分</strong>：文化与专业按比例折算</li>
+                            <li>不同专业类别要求不同</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #fce7f3; color: #db2777;">🎬</div>
+                        <h4>艺术类别</h4>
+                        <ul>
+                            <li>美术学类、设计学类</li>
+                            <li>音乐与舞蹈学类</li>
+                            <li>戏剧与影视学类</li>
+                            <li>艺术学理论类</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #fef3c7; color: #d97706;">📋</div>
+                        <h4>注意事项</h4>
+                        <ul>
+                            <li>提前了解目标院校的录取规则</li>
+                            <li>注意统考和校考的时间安排</li>
+                            <li>部分专业有身高、视力等要求</li>
+                            <li>文化课成绩要求逐年提高</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 体育类 -->
+            <div id="sports" class="rule-content">
+                <div class="rule-grid">
+                    <div class="rule-card">
+                        <div class="icon" style="background: #dcfce7; color: #16a34a;">⚽</div>
+                        <h4>体育统考</h4>
+                        <ul>
+                            <li>各省组织的体育专业考试</li>
+                            <li>包括身体素质测试和专项测试</li>
+                            <li>身体素质：100米、铅球、立定跳远、800米</li>
+                            <li>专项：篮球、足球、田径等</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #dbeafe; color: #2563eb;">🏃</div>
+                        <h4>体育单招</h4>
+                        <ul>
+                            <li>运动训练、武术与民族传统体育专业</li>
+                            <li>文化考试+体育专项考试</li>
+                            <li>由国家体育总局组织</li>
+                            <li>单独划线，单独录取</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #fef3c7; color: #d97706;">🏅</div>
+                        <h4>高水平运动队</h4>
+                        <ul>
+                            <li>高校招收高水平运动员</li>
+                            <li>需要国家一级及以上运动员证书</li>
+                            <li>高考成绩要求相对降低</li>
+                            <li>2024年起政策收紧，要求提高</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <div class="icon" style="background: #fce7f3; color: #be185d;">⚠️</div>
+                        <h4>重要提醒</h4>
+                        <ul>
+                            <li>体育类专业对身高、视力有要求</li>
+                            <li>注意区分体育教育与社会体育</li>
+                            <li>体育单招与普通高考不能兼报</li>
+                            <li>提前了解目标院校招生简章</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Guide -->
+    <section id="application" class="application">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-1);">🎯</div>
+                <h2>志愿填报指南</h2>
+                <p>科学填报志愿，最大化利用每一分，圆梦理想大学</p>
+            </div>
+
+            <div class="guide-steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4>了解自我</h4>
+                    <p>评估自己的兴趣爱好、性格特点、学科优势、职业倾向，明确发展方向</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4>收集信息</h4>
+                    <p>研究目标院校和专业，了解招生计划、录取分数、就业情况、学费等</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4>定位排名</h4>
+                    <p>根据高考成绩和全省排名，参考往年数据，确定可报考的院校范围</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h4>科学填报</h4>
+                    <p>遵循"冲稳保垫"原则，合理搭配志愿，确保有学上且不留遗憾</p>
+                </div>
+            </div>
+
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>💡 填报策略</h4>
+                    <ul>
+                        <li>冲：往年录取排名略高于自己的院校</li>
+                        <li>稳：往年录取排名与自己相当的院校</li>
+                        <li>保：往年录取排名低于自己的院校</li>
+                        <li>垫：确保能录取的保底院校</li>
+                        <li>拉开梯度，避免扎堆</li>
+                    </ul>
+                </div>
+
+                <div class="tip-card warning">
+                    <h4>⚠️ 常见误区</h4>
+                    <ul>
+                        <li>只看分数不看排名</li>
+                        <li>全部填报同一层次院校</li>
+                        <li>盲目追求热门专业</li>
+                        <li>忽视招生章程中的特殊要求</li>
+                        <li>不服从专业调剂</li>
+                    </ul>
+                </div>
+
+                <div class="tip-card success">
+                    <h4>✅ 注意事项</h4>
+                    <ul>
+                        <li>仔细阅读招生章程，注意体检、单科成绩等限制</li>
+                        <li>了解专业内涵，不要只看专业名称</li>
+                        <li>考虑地域因素，平衡院校层次与城市</li>
+                        <li>服从调剂要谨慎，不服从可能退档</li>
+                        <li>保存好登录密码，按时完成填报</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Info -->
+    <section id="additional" class="additional">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-2);">📚</div>
+                <h2>更多相关信息</h2>
+                <p>深入了解大学生活的方方面面</p>
+            </div>
+
+            <div class="info-accordion">
+                <div class="accordion-item active">
+                    <div class="accordion-header">
+                        <h4>🏫 大学学位制度</h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <p><strong>学士学位</strong>：本科毕业后授予，包括哲学、经济学、法学、教育学、文学、历史学、理学、工学、农学、医学、管理学、艺术学等12个学科门类。</p>
+                            <p><strong>硕士学位</strong>：研究生阶段，学制2-3年，分为学术型硕士和专业型硕士。</p>
+                            <p><strong>博士学位</strong>：最高学位，学制3-4年，需要完成高水平科研成果并通过论文答辩。</p>
+                            <p><strong>名誉博士学位</strong>：授予国内外卓越学者或著名社会活动家。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h4>💰 学费与奖助学金</h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <p><strong>学费标准</strong>：公办本科一般4000-6000元/年，艺术类、软件工程等专业较高；民办本科15000-30000元/年；专科5000-8000元/年。</p>
+                            <p><strong>国家奖学金</strong>：8000元/年，奖励特别优秀的学生。</p>
+                            <p><strong>国家励志奖学金</strong>：5000元/年，奖励资助品学兼优的家庭经济困难学生。</p>
+                            <p><strong>国家助学金</strong>：平均3300元/年，资助家庭经济困难学生。</p>
+                            <p><strong>助学贷款</strong>：本专科生最高12000元/年，研究生最高16000元/年，在校期间免息。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h4>📖 大学生涯规划</h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <p><strong>大一</strong>：适应大学生活，打好基础课程，明确发展方向，参加社团活动。</p>
+                            <p><strong>大二</strong>：深入学习专业课程，考取相关证书，参与科研项目或竞赛。</p>
+                            <p><strong>大三</strong>：确定毕业去向（就业/考研/出国），实习实践，准备相关考试。</p>
+                            <p><strong>大四</strong>：完成毕业论文/设计，求职或继续深造，做好角色转换准备。</p>
+                            <p><strong>终身学习</strong>：培养自主学习能力，保持好奇心，持续自我提升。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h4>🌐 出国留学</h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <p><strong>本科留学</strong>：直接申请国外大学，需准备语言成绩（雅思/托福）、SAT/ACT等。</p>
+                            <p><strong>交换项目</strong>：通过学校合作项目短期出国学习，学分可转换。</p>
+                            <p><strong>研究生留学</strong>：申请国外硕士或博士，需GPA、语言成绩、GRE/GMAT、推荐信等。</p>
+                            <p><strong>中外合作办学</strong>：2+2、3+1等模式，国内学习后赴国外完成学业。</p>
+                            <p><strong>奖学金</strong>：CSC国家公派、 fulbright、各大学奖学金等多种资助渠道。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h4>💼 就业与考研</h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <p><strong>考研</strong>：全国硕士研究生统一招生考试，一般在每年12月。可跨专业报考，需提前准备。</p>
+                            <p><strong>保研</strong>：推荐优秀应届本科毕业生免试攻读硕士学位，需成绩优异、科研能力强。</p>
+                            <p><strong>公务员考试</strong>：国考（11-12月）、省考（3-4月）、选调生等，竞争激烈。</p>
+                            <p><strong>事业单位</strong>：教师、医生等，相对稳定，需要通过相应考试。</p>
+                            <p><strong>企业就业</strong>：秋招（9-11月）、春招（3-5月）是主要招聘季，提前准备简历和面试。</p>
+                            <p><strong>创业</strong>：国家支持大学生创业，有创业贷款、孵化器等政策支持。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h4>🏠 大学生活贴士</h4>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <p><strong>住宿</strong>：大部分高校提供学生宿舍，一般为4-6人间，住宿费1000-1500元/年。</p>
+                            <p><strong>食堂</strong>：高校食堂价格低廉，一般10-15元可吃饱吃好。</p>
+                            <p><strong>图书馆</strong>：充分利用图书馆资源，是学习和自习的好去处。</p>
+                            <p><strong>社团</strong>：丰富多彩的社团活动，可以发展兴趣、结交朋友。</p>
+                            <p><strong>心理健康</strong>：关注心理健康，遇到问题及时寻求帮助，高校都有心理咨询中心。</p>
+                            <p><strong>人际关系</strong>：学会与室友、同学相处，建立良好的人际关系网络。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>快速导航</h4>
+                <ul>
+                    <li><a href="#classification">大学分类</a></li>
+                    <li><a href="#terminology">名词解释</a></li>
+                    <li><a href="#history">发展历程</a></li>
+                    <li><a href="#admission">招生规则</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>实用资源</h4>
+                <ul>
+                    <li><a href="#application">志愿填报</a></li>
+                    <li><a href="#additional">更多信息</a></li>
+                    <li><a href="https://www.neea.edu.cn/" target="_blank">教育部考试中心</a></li>
+                    <li><a href="https://gaokao.chsi.com.cn/" target="_blank">阳光高考</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>相关链接</h4>
+                <ul>
+                    <li><a href="http://www.moe.gov.cn/" target="_blank">教育部官网</a></li>
+                    <li><a href="https://www.chsi.com.cn/" target="_blank">学信网</a></li>
+                    <li><a href="https://www.cdgdc.edu.cn/" target="_blank">学位网</a></li>
+                    <li><a href="https://yz.chsi.com.cn/" target="_blank">研招网</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>关于本站</h4>
+                <ul>
+                    <li>本站仅供学习交流使用</li>
+                    <li>内容仅供参考，请以官方发布为准</li>
+                    <li>祝愿每位考生金榜题名</li>
+                    <li>前程似锦，未来可期</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 大学百科 | 中国高等教育完全指南 | 祝君金榜题名</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        // 标签切换功能
+        document.querySelectorAll('.rule-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有active类
+                document.querySelectorAll('.rule-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.rule-content').forEach(c => c.classList.remove('active'));
+                
+                // 添加active类到当前标签
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // 手风琴功能
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const item = this.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // 关闭所有
+                document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
+                
+                // 如果当前不是active，则打开
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // 返回顶部按钮显示/隐藏
+        const backToTopBtn = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        // 导航栏滚动效果
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // 平滑滚动（为所有锚点链接）
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 移动端菜单切换（简化版）
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.right = '0';
+                navLinks.style.background = 'white';
+                navLinks.style.padding = '1rem';
+                navLinks.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+            }
+        });
+
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全国大学英语四六级考试 (CET) 完全指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a5fb4;
+            --primary-light: #3584e4;
+            --primary-dark: #0d3b7a;
+            --secondary: #e66100;
+            --accent: #26a269;
+            --bg-light: #f6f8fc;
+            --text-dark: #1c1c1c;
+            --text-gray: #5e5e5e;
+            --border: #d0d5dd;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        /* Header */
+        header {
+            background: var(--gradient-1);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        header .cet-badge {
+            display: inline-flex;
+            gap: 20px;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 18px 25px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: var(--bg-light);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Section Styles */
+        section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+        }
+
+        section h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        section h2 .icon {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        section h3 {
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            margin: 30px 0 15px;
+        }
+
+        section p {
+            color: var(--text-gray);
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Hero Cards */
+        .hero-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .hero-card.cet4 { border-top-color: #667eea; }
+        .hero-card.cet6 { border-top-color: #f5576c; }
+        .hero-card.info { border-top-color: #26a269; }
+
+        .hero-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .hero-card .score {
+            font-size: 3rem;
+            font-weight: bold;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-card.cet6 .score {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .hero-card ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .hero-card li {
+            padding: 8px 0;
+            color: var(--text-gray);
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .hero-card li:last-child {
+            border-bottom: none;
+        }
+
+        .hero-card li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gradient-1);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 35px;
+            padding: 25px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .timeline-item:hover {
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 30px;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .timeline-item .year {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item h4 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .info-box {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-box h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .info-box ul {
+            list-style: none;
+        }
+
+        .info-box li {
+            padding: 5px 0;
+            color: var(--text-gray);
+        }
+
+        .info-box li::before {
+            content: '•';
+            color: var(--primary-light);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        /* Score Distribution */
+        .score-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .score-item {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .score-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .score-item .part {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .score-item .percent {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .score-item .points {
+            color: var(--text-gray);
+            margin-top: 5px;
+        }
+
+        /* Vocabulary Section */
+        .vocab-compare {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .vocab-card {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .vocab-card.cet4 { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); }
+        .vocab-card.cet6 { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); }
+
+        .vocab-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .vocab-card .word-count {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .vocab-card.cet6 .word-count {
+            color: #db2777;
+        }
+
+        .vocab-card p {
+            margin-top: 10px;
+            color: var(--text-gray);
+        }
+
+        /* Tips Section */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .tip-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .tip-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .tip-card .number {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .tip-card h4 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        /* Exam Schedule */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .schedule-table th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .schedule-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 5px solid var(--secondary);
+            padding: 25px;
+            border-radius: 0 12px 12px 0;
+            margin: 25px 0;
+        }
+
+        .highlight-box strong {
+            color: var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header .cet-badge {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .badge {
+                font-size: 1.2rem;
+                padding: 10px 20px;
+            }
+
+            section {
+                padding: 25px;
+            }
+
+            .vocab-compare {
+                grid-template-columns: 1fr;
+            }
+
+            nav a {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>全国大学英语四六级考试</h1>
+        <p class="subtitle">College English Test (CET) 完全指南</p>
+        <div class="cet-badge">
+            <span class="badge">CET-4</span>
+            <span class="badge">CET-6</span>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#intro">什么是四六级</a></li>
+            <li><a href="#origin">名称由来</a></li>
+            <li><a href="#history">发展历程</a></li>
+            <li><a href="#requirements">报考条件</a></li>
+            <li><a href="#score">及格分数</a></li>
+            <li><a href="#content">考试内容</a></li>
+            <li><a href="#vocabulary">词汇要求</a></li>
+            <li><a href="#tips">备考建议</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- 什么是四六级 -->
+        <section id="intro">
+            <h2><span class="icon">📚</span>什么是英语四六级？</h2>
+            <p>
+                全国大学英语四、六级考试（College English Test，简称CET）是由<strong>教育部主办</strong>，教育部教育考试院主持和实施的大规模标准化考试，是全国性的教学考试。其目的是促进我国大学英语教学工作，对大学生的英语能力进行客观、准确的测量，为提高我国大学英语课程的教学质量提供服务。
+            </p>
+            <p>
+                考试分为<strong>四级（CET-4）</strong>和<strong>六级（CET-6）</strong>两个级别，每年各举行两次。自1987年开始实施以来，四、六级考试已走过了近四十年的历程，成为我国参与度最广、影响力最大的英语考试之一。
+            </p>
+            
+            <div class="highlight-box">
+                <strong>💡 核心要点：</strong>四六级考试是专为大学生设计的英语水平测试，考试合格者将获得成绩单，成绩被广泛应用于毕业、就业、考研等多个领域。
+            </div>
+
+            <div class="hero-cards">
+                <div class="hero-card cet4">
+                    <h3>🏆 大学英语四级 CET-4</h3>
+                    <div class="score">710</div>
+                    <p>满分分值</p>
+                    <ul>
+                        <li>基础英语水平测试</li>
+                        <li>相当于高中优秀毕业生水平</li>
+                        <li>大多数高校的毕业要求</li>
+                        <li>考研、求职的基础门槛</li>
+                    </ul>
+                </div>
+                <div class="hero-card cet6">
+                    <h3>🎯 大学英语六级 CET-6</h3>
+                    <div class="score">710</div>
+                    <p>满分分值</p>
+                    <ul>
+                        <li>较高英语水平测试</li>
+                        <li>相当于大学英语高级水平</li>
+                        <li>需要通过四级方可报考</li>
+                        <li>研究生、外企的竞争优势</li>
+                    </ul>
+                </div>
+                <div class="hero-card info">
+                    <h3>📋 考试基本信息</h3>
+                    <ul>
+                        <li>考试时间：每年6月和12月</li>
+                        <li>考试形式：笔试 + 口试（可选）</li>
+                        <li>笔试时长：四级140分钟，六级145分钟</li>
+                        <li>报考对象：全日制在校大学生</li>
+                        <li>成绩有效期：永久有效</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 为什么叫四六级 -->
+        <section id="origin">
+            <h2><span class="icon">🤔</span>为什么叫"四六级"？</h2>
+            <p>
+                "四六级"这个名称来源于<strong>大学英语教学大纲的分级体系</strong>。1985年和1986年，国家教委分别制定了理工科和文理科的《大学英语教学大纲》，将大学英语课程分为<strong>6个级别</strong>（Band 1-6），每个级别对应一个学期的正式大学英语学习。
+            </p>
+            
+            <h3>📊 大学英语分级体系</h3>
+            <div class="info-grid">
+                <div class="info-box">
+                    <h4>1-2级（Band 1-2）</h4>
+                    <ul>
+                        <li>大学一年级学习内容</li>
+                        <li>基础英语知识巩固</li>
+                        <li>从高中到大学的过渡</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>3-4级（Band 3-4）⭐</h4>
+                    <ul>
+                        <li>大学二年级学习内容</li>
+                        <li>1-4级为必修课</li>
+                        <li>四级对应第4级水平</li>
+                        <li>基础阶段教学终点</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>5-6级（Band 5-6）⭐</h4>
+                    <ul>
+                        <li>大学三年级及以上</li>
+                        <li>5-6级为选修课</li>
+                        <li>六级对应第6级水平</li>
+                        <li>提高阶段教学</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>专业英语</h4>
+                    <ul>
+                        <li>各专业领域英语</li>
+                        <li>应用型英语课程</li>
+                        <li>服务于专业学习</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>🎯 总结：</strong>四级（CET-4）对应完成大学英语第4级课程的水平，六级（CET-6）对应完成大学英语第6级课程的水平。这种命名方式直观地反映了考试的难度等级和对应的学习阶段。
+            </div>
+        </section>
+
+        <!-- 发展历程 -->
+        <section id="history">
+            <h2><span class="icon">📜</span>四六级发展历程</h2>
+            <p>自1987年首次实施以来，大学英语四六级考试经历了多次重大改革和完善，见证了中国英语教育的发展历程。</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="year">1982年</span>
+                    <h4>教学改革启动</h4>
+                    <p>国家教委在武汉召开高等院校公共英语课教学经验交流会，决定制定新的大学英语教学大纲，标志着大学英语教学改革拉开序幕。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">1986年</span>
+                    <h4>首次四级试验考试</h4>
+                    <p>开始筹备大学英语四、六级考试，并在华东石油学院（今中国石油大学）进行首次四级试验考试。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">1987年</span>
+                    <h4>四级考试正式实施</h4>
+                    <p>9月，第一次全国大学英语四级考试（CET-4）正式实施。考试采用百分制，60分及格，85分以上为优秀。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">1989年</span>
+                    <h4>六级考试启动</h4>
+                    <p>1月，增设英语六级考试（CET-6），标志着四六级考试体系正式全面启用。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">1990年</span>
+                    <h4>作文单独成卷</h4>
+                    <p>为保证作文考试的有效性，试卷分为客观题和主观题两部分，最后30分钟专门用于写作文，作文开始设立最低分数线。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">1996年</span>
+                    <h4>启用新题型</h4>
+                    <p>增加填空、听写、复合式听写、英译汉翻译和简短回答问题等新题型，丰富考试形式。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">1999年</span>
+                    <h4>口语考试启动</h4>
+                    <p>5月起，开始实施大学英语四、六级口语考试（CET-SET），标志着考试可以对考生的听、说、读、写能力进行全面考查。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2005年</span>
+                    <h4>710分制改革</h4>
+                    <p>改为满分710分的计分体制，不设及格线；成绩报导方式由合格证书改为成绩报告单，总分和单项分一同公布。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2007年</span>
+                    <h4>限制社会考生</h4>
+                    <p>1月起，所有社会考生（非在校生）不能参加四六级考试，考试仅限全日制在校大学生报考。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2008年</span>
+                    <h4>机考试点</h4>
+                    <p>首次采用上机考试形式，全国50所高校作为第一批试点院校。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2016年</span>
+                    <h4>听力改革</h4>
+                    <p>6月起，对听力试题进行局部调整，取消短对话和短文听写，增加讲座/讲话内容，提高对听力理解能力的考查。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">至今</span>
+                    <h4>持续发展</h4>
+                    <p>四六级考试仍在不断优化和完善，每年服务数百万考生，是我国最具影响力的英语水平考试之一。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 报考条件 -->
+        <section id="requirements">
+            <h2><span class="icon">✅</span>报考条件</h2>
+            
+            <h3>👥 基本报考对象</h3>
+            <div class="info-grid">
+                <div class="info-box">
+                    <h4>全日制普通高等院校</h4>
+                    <ul>
+                        <li>本科在校生</li>
+                        <li>专科在校生</li>
+                        <li>研究生（硕士、博士）</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>成人高等教育院校</h4>
+                    <ul>
+                        <li>成人高校本科在校生</li>
+                        <li>成人高校专科在校生</li>
+                        <li>全日制助学班学生</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>📋 具体报考要求</h3>
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>考试级别</th>
+                        <th>报考条件</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>CET-4（四级）</strong></td>
+                        <td>修完大学英语四级课程的全日制在校生</td>
+                        <td>部分高校要求通过英语A/B级后方可报考</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CET-6（六级）</strong></td>
+                        <td>CET-4成绩≥425分且修完大学英语六级课程</td>
+                        <td>需提供四级成绩单号进行资格审核</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CET-SET4（四级口试）</strong></td>
+                        <td>完成当次CET-4笔试报名</td>
+                        <td>不单独接受口试报名</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CET-SET6（六级口试）</strong></td>
+                        <td>完成当次CET-6笔试报名</td>
+                        <td>不单独接受口试报名</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <strong>⚠️ 重要提醒：</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>四六级<strong>不可兼报</strong>，每次只能报考一个级别</li>
+                    <li>部分高校对无故缺考者，将暂停下一次报考资格</li>
+                    <li>社会考生（已毕业人员）不能报考四六级</li>
+                    <li>报名采取"先报先得"原则，考位有限</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 及格条件 -->
+        <section id="score">
+            <h2><span class="icon">🎯</span>及格条件与成绩计算</h2>
+            
+            <h3>📊 分数体系</h3>
+            <div class="hero-cards">
+                <div class="hero-card cet4">
+                    <h3>总分设置</h3>
+                    <div class="score">710</div>
+                    <p>满分分值</p>
+                </div>
+                <div class="hero-card cet6">
+                    <h3>通过标准</h3>
+                    <div class="score">425</div>
+                    <p>分及以上算通过</p>
+                </div>
+                <div class="hero-card info">
+                    <h3>最低成绩</h3>
+                    <div class="score">220</div>
+                    <p>分以下不发放成绩单</p>
+                </div>
+            </div>
+
+            <h3>📝 分值分布（四级/六级相同）</h3>
+            <div class="score-chart">
+                <div class="score-item">
+                    <div class="part">写作</div>
+                    <div class="percent">15%</div>
+                    <div class="points">106.5分</div>
+                </div>
+                <div class="score-item">
+                    <div class="part">听力理解</div>
+                    <div class="percent">35%</div>
+                    <div class="points">248.5分</div>
+                </div>
+                <div class="score-item">
+                    <div class="part">阅读理解</div>
+                    <div class="percent">35%</div>
+                    <div class="points">248.5分</div>
+                </div>
+                <div class="score-item">
+                    <div class="part">翻译</div>
+                    <div class="percent">15%</div>
+                    <div class="points">106.5分</div>
+                </div>
+            </div>
+
+            <h3>📜 成绩报告</h3>
+            <p>考试结束后，考生将获得<strong>成绩报告单</strong>，包含以下内容：</p>
+            <ul style="margin-left: 20px; color: var(--text-gray);">
+                <li>总分（0-710分）</li>
+                <li>听力单项分</li>
+                <li>阅读单项分</li>
+                <li>写作和翻译单项分（合并报告）</li>
+                <li>口语成绩（如报考口试，分A/B/C/D四个等级）</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>💡 成绩使用：</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li><strong>毕业：</strong>许多高校将四级作为学士学位授予条件</li>
+                    <li><strong>考研：</strong>部分院校要求四级425分以上方可报考</li>
+                    <li><strong>保研：</strong>通常要求六级425分以上</li>
+                    <li><strong>就业：</strong>众多企事业单位将四六级作为招聘门槛</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 考试内容 -->
+        <section id="content">
+            <h2><span class="icon">📝</span>考试范围与内容</h2>
+            
+            <h3>⏰ 考试时间安排</h3>
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>考试级别</th>
+                        <th>时间</th>
+                        <th>时长</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="2">每年6月/12月</td>
+                        <td>四级笔试（CET-4）</td>
+                        <td>上午 9:00-11:20</td>
+                        <td>140分钟</td>
+                    </tr>
+                    <tr>
+                        <td>六级笔试（CET-6）</td>
+                        <td>下午 15:00-17:25</td>
+                        <td>145分钟</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">每年5月/11月</td>
+                        <td>四级口试（CET-SET4）</td>
+                        <td rowspan="2">8:30-17:45<br>（分场次）</td>
+                        <td rowspan="2">每场30分钟</td>
+                    </tr>
+                    <tr>
+                        <td>六级口试（CET-SET6）</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>📋 笔试考试流程</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="year">8:40/14:40</span>
+                    <h4>考生入场</h4>
+                    <p>携带准考证、身份证、学生证进入考场，调试耳机。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">9:00/15:00</span>
+                    <h4>考试开始 - 写作（30分钟）</h4>
+                    <p>下发第一张答题卡，开始作文考试。期间不得打开试题册。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">9:40/15:40</span>
+                    <h4>听力考试（25/30分钟）</h4>
+                    <p>打开试题册，进行听力测试。听力录音播放完毕后，立即回收答题卡1。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">10:05/16:10</span>
+                    <h4>阅读理解（40分钟）</h4>
+                    <p>下发答题卡2，进行阅读理解部分，包括选词填空、长篇阅读、仔细阅读。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">10:45/16:50</span>
+                    <h4>翻译（30分钟）</h4>
+                    <p>进行汉译英段落翻译。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">11:20/17:25</span>
+                    <h4>考试结束</h4>
+                    <p>回收答题卡2和试题册，考生离场。</p>
+                </div>
+            </div>
+
+            <h3>📖 各部分详细说明</h3>
+            <div class="info-grid">
+                <div class="info-box">
+                    <h4>🎧 听力理解（35%）</h4>
+                    <ul>
+                        <li><strong>四级：</strong>短篇新闻、长对话、听力篇章</li>
+                        <li><strong>六级：</strong>长对话、听力篇章、讲座/讲话</li>
+                        <li>题型均为单项选择题</li>
+                        <li>录音只播放一遍</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>📄 阅读理解（35%）</h4>
+                    <ul>
+                        <li><strong>选词填空：</strong>10题，每题3.55分</li>
+                        <li><strong>长篇阅读：</strong>10题，每题7.1分（匹配题）</li>
+                        <li><strong>仔细阅读：</strong>10题，每题14.2分（2篇）</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>✍️ 写作（15%）</h4>
+                    <ul>
+                        <li>短文写作，30分钟</li>
+                        <li>字数要求：120-180词（四级）/150-200词（六级）</li>
+                        <li>体裁：议论文、说明文、应用文等</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>🌐 翻译（15%）</h4>
+                    <ul>
+                        <li>汉译英段落翻译</li>
+                        <li>内容涉及中国历史、文化、经济、社会发展等</li>
+                        <li>字数：140-160个汉字</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 词汇要求 -->
+        <section id="vocabulary">
+            <h2><span class="icon">📖</span>单词词汇量要求</h2>
+            
+            <div class="vocab-compare">
+                <div class="vocab-card cet4">
+                    <h4>📝 大学英语四级</h4>
+                    <div class="word-count">4500</div>
+                    <p>要求掌握词汇量（约）</p>
+                    <ul style="text-align: left; margin-top: 20px; color: var(--text-gray);">
+                        <li>基础词汇：2500个左右</li>
+                        <li>拓展词汇：2000个左右</li>
+                        <li>常用词组：700个左右</li>
+                    </ul>
+                </div>
+                <div class="vocab-card cet6">
+                    <h4>🎯 大学英语六级</h4>
+                    <div class="word-count">5500+</div>
+                    <p>要求掌握词汇量（约）</p>
+                    <ul style="text-align: left; margin-top: 20px; color: var(--text-gray);">
+                        <li>包含四级全部词汇</li>
+                        <li>高级词汇：1000+个</li>
+                        <li>学术词汇增加</li>
+                        <li>词义辨析要求更高</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>📊 各级别词汇量对比</h3>
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>考试/等级</th>
+                        <th>词汇量要求</th>
+                        <th>水平描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>中考英语</td>
+                        <td>约1,600词</td>
+                        <td>基础入门</td>
+                    </tr>
+                    <tr>
+                        <td>高考英语</td>
+                        <td>约3,500词</td>
+                        <td>高中毕业水平</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CET-4（四级）</strong></td>
+                        <td><strong>约4,500词</strong></td>
+                        <td>大学本科基础</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CET-6（六级）</strong></td>
+                        <td><strong>约5,500词</strong></td>
+                        <td>大学本科高级</td>
+                    </tr>
+                    <tr>
+                        <td>考研英语</td>
+                        <td>约5,500词</td>
+                        <td>研究生入学水平</td>
+                    </tr>
+                    <tr>
+                        <td>TEM-4（专四）</td>
+                        <td>约8,000词</td>
+                        <td>英语专业基础</td>
+                    </tr>
+                    <tr>
+                        <td>TEM-8（专八）</td>
+                        <td>约13,000词</td>
+                        <td>英语专业高级</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <strong>💡 词汇学习建议：</strong>四级词汇是英语学习的基础，建议考生在掌握四级词汇的基础上，通过词根词缀、同义词反义词、语境记忆等方法，逐步扩展至六级词汇量。
+            </div>
+        </section>
+
+        <!-- 备考建议 -->
+        <section id="tips">
+            <h2><span class="icon">💡</span>备考建议与技巧</h2>
+            
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="number">1</div>
+                    <h4>制定学习计划</h4>
+                    <p>根据考试时间倒推，制定2-3个月的备考计划。建议每天学习时间不少于1.5小时，合理分配到词汇、听力、阅读、写作、翻译各模块。</p>
+                </div>
+                <div class="tip-card">
+                    <div class="number">2</div>
+                    <h4>坚持词汇积累</h4>
+                    <p>使用零散时间背单词，每次15-20分钟。推荐使用"看"而不是"背"的方法，通过多次重复加深记忆。结合真题语境记忆效果更佳。</p>
+                </div>
+                <div class="tip-card">
+                    <div class="number">3</div>
+                    <h4>听力每日训练</h4>
+                    <p>听力是提分关键。建议每天坚持听英语材料30分钟，可以使用VOA、BBC或历年真题。精听与泛听结合，提高对不同口音的适应能力。</p>
+                </div>
+                <div class="tip-card">
+                    <div class="number">4</div>
+                    <h4>阅读技巧掌握</h4>
+                    <p>学会快速浏览（skimming）和精读（scanning）技巧。先读题目再读文章，带着问题找答案。注意同义替换，这是出题的常见套路。</p>
+                </div>
+                <div class="tip-card">
+                    <div class="number">5</div>
+                    <h4>写作模板积累</h4>
+                    <p>背诵优秀范文和常用句型，积累写作素材。注意文章结构（开头-主体-结尾），考前多练习几篇，控制时间在30分钟以内。</p>
+                </div>
+                <div class="tip-card">
+                    <div class="number">6</div>
+                    <h4>真题模拟演练</h4>
+                    <p>考前至少完成5-8套真题，严格按照考试时间模拟。分析错题原因，总结解题规律。真题是最好的复习材料。</p>
+                </div>
+            </div>
+
+            <h3>📚 推荐学习资源</h3>
+            <div class="info-grid">
+                <div class="info-box">
+                    <h4>官方资料</h4>
+                    <ul>
+                        <li>全国大学英语四六级考试大纲</li>
+                        <li>历年真题及官方解析</li>
+                        <li>CET官网：cet.neea.edu.cn</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>词汇书籍</h4>
+                    <ul>
+                        <li>四级/六级词汇词根+联想记忆法</li>
+                        <li>四级/六级词汇乱序版</li>
+                        <li>高频词汇手册</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>听力材料</h4>
+                    <ul>
+                        <li>VOA Special English</li>
+                        <li>VOA Standard English</li>
+                        <li>BBC Learning English</li>
+                        <li>历年真题听力</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h4>阅读材料</h4>
+                    <ul>
+                        <li>《经济学人》</li>
+                        <li>《纽约时报》</li>
+                        <li>《新闻周刊》</li>
+                        <li>英文原版书籍</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>🎯 最后提醒：</strong>四六级考试不仅是知识的测试，更是心态和策略的考验。考前保证充足睡眠，带齐证件和文具，合理分配答题时间，相信自己的努力一定会有回报！
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2024 全国大学英语四六级考试指南 | 信息仅供参考，请以官方最新通知为准</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">数据来源：中国教育考试网、教育部教育考试院</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add active state to navigation based on scroll position
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.color = '';
+                link.style.borderBottomColor = '';
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.color = 'var(--primary)';
+                    link.style.borderBottomColor = 'var(--primary)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
