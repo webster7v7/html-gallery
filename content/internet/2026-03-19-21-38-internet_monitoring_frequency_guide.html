@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互联网舆情监测频率选择指南 | Internet Monitoring Frequency Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .frequency-card {
+            transition: all 0.3s ease;
+        }
+        .frequency-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #ec4899);
+        }
+        .hover-lift {
+            transition: transform 0.2s ease;
+        }
+        .hover-lift:hover {
+            transform: translateX(10px);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="text-gray-100">
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%233b82f6%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+
+        <div class="container mx-auto px-6 py-16 relative z-10">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-blue-400 pulse-dot"></span>
+                    <span class="text-sm text-blue-300 font-medium">专业舆情监测指南</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    <span class="gradient-text">互联网舆情监测</span>
+                </h1>
+                <h2 class="text-3xl md:text-4xl font-light text-gray-300 mb-6">
+                    频率选择决策指南
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                    每日、每周、每月该如何选择？基于行业标准的科学决策框架
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decision Framework -->
+    <div class="container mx-auto px-6 py-12">
+        <div class="glass-card rounded-3xl p-8 mb-16">
+            <h3 class="text-2xl font-bold mb-8 flex items-center gap-3">
+                <i class="fas fa-sitemap text-blue-400"></i>
+                频率选择决策框架
+            </h3>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Real-time -->
+                <div class="frequency-card bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-2xl p-6 border border-red-500/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-4xl font-bold text-red-400">实时</span>
+                        <i class="fas fa-bolt text-red-400 text-2xl"></i>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-red-400 mt-1"></i>
+                            <span class="text-gray-300">重大危机事件监测</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-red-400 mt-1"></i>
+                            <span class="text-gray-300">敏感时期监控</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-red-400 mt-1"></i>
+                            <span class="text-gray-300">重要活动期间</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-red-500/20">
+                        <span class="text-xs text-red-300 font-medium">响应时效：10分钟内预警</span>
+                    </div>
+                </div>
+
+                <!-- Daily -->
+                <div class="frequency-card bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-2xl p-6 border border-blue-500/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-4xl font-bold text-blue-400">日报</span>
+                        <i class="fas fa-sun text-blue-400 text-2xl"></i>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span class="text-gray-300">品牌声誉管理</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span class="text-gray-300">日常运营监控</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span class="text-gray-300">敏感行业（金融/政务）</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-blue-500/20">
+                        <span class="text-xs text-blue-300 font-medium">响应时效：当日汇总，次日提交</span>
+                    </div>
+                </div>
+
+                <!-- Weekly -->
+                <div class="frequency-card bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-500/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-4xl font-bold text-purple-400">周报</span>
+                        <i class="fas fa-calendar-week text-purple-400 text-2xl"></i>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-purple-400 mt-1"></i>
+                            <span class="text-gray-300">常规品牌维护</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-purple-400 mt-1"></i>
+                            <span class="text-gray-300">趋势观察分析</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-purple-400 mt-1"></i>
+                            <span class="text-gray-300">非敏感行业</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-purple-500/20">
+                        <span class="text-xs text-purple-300 font-medium">响应时效：每周一提交上周数据</span>
+                    </div>
+                </div>
+
+                <!-- Monthly -->
+                <div class="frequency-card bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-2xl p-6 border border-emerald-500/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-4xl font-bold text-emerald-400">月报</span>
+                        <i class="fas fa-calendar-alt text-emerald-400 text-2xl"></i>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                            <span class="text-gray-300">战略决策支持</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                            <span class="text-gray-300">深度分析报告</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-emerald-400 mt-1"></i>
+                            <span class="text-gray-300">长期规划制定</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-emerald-500/20">
+                        <span class="text-xs text-emerald-300 font-medium">响应时效：月初提交上月分析</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Content -->
+        <div class="grid lg:grid-cols-2 gap-8 mb-16">
+            <!-- Daily Section -->
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center">
+                        <i class="fas fa-sun text-blue-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">每日收集</h3>
+                        <p class="text-blue-300 text-sm">Daily Monitoring</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-200">适用场景</h4>
+                    <ul class="space-y-2">
+                        <li class="hover-lift flex items-start gap-3 text-gray-300">
+                            <i class="fas fa-shield-alt text-blue-400 mt-1"></i>
+                            <span>监测<strong class="text-white">品牌负面信息</strong>、<strong class="text-white">竞品动态</strong>、<strong class="text-white">客户投诉</strong></span>
+                        </li>
+                        <li class="hover-lift flex items-start gap-3 text-gray-300">
+                            <i class="fas fa-exclamation-triangle text-blue-400 mt-1"></i>
+                            <span>行业敏感：<span class="bg-blue-500/20 px-2 py-0.5 rounded text-blue-200">银行</span>、<span class="bg-blue-500/20 px-2 py-0.5 rounded text-blue-200">政务</span>、<span class="bg-blue-500/20 px-2 py-0.5 rounded text-blue-200">上市公司</span>、<span class="bg-blue-500/20 px-2 py-0.5 rounded text-blue-200">快消品</span></span>
+                        </li>
+                        <li class="hover-lift flex items-start gap-3 text-gray-300">
+                            <i class="fas fa-fire text-blue-400 mt-1"></i>
+                            <span>处于<strong class="text-white">危机高发期</strong>或<strong class="text-white">重大活动期间</strong></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-blue-500/5 rounded-xl p-4 border border-blue-500/10">
+                    <h4 class="text-sm font-semibold text-blue-300 mb-2">日报内容构成</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-blue-500/10 rounded-full text-xs text-blue-200">当日热点摘录</span>
+                        <span class="px-3 py-1 bg-blue-500/10 rounded-full text-xs text-blue-200">情感分析</span>
+                        <span class="px-3 py-1 bg-blue-500/10 rounded-full text-xs text-blue-200">重点事件聚焦</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Section -->
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center">
+                        <i class="fas fa-calendar-week text-purple-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">每周收集</h3>
+                        <p class="text-purple-300 text-sm">Weekly Monitoring</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-200">适用场景</h4>
+                    <ul class="space-y-2">
+                        <li class="hover-lift flex items-start gap-3 text-gray-300">
+                            <i class="fas fa-chart-line text-purple-400 mt-1"></i>
+                            <span><strong class="text-white">常规品牌维护</strong>、长期趋势观察</span>
+                        </li>
+                        <li class="hover-lift flex items-start gap-3 text-gray-300">
+                            <i class="fas fa-industry text-purple-400 mt-1"></i>
+                            <span>监测<strong class="text-white">行业动态</strong>、<strong class="text-white">政策变化</strong></span>
+                        </li>
+                        <li class="hover-lift flex items-start gap-3 text-gray-300">
+                            <i class="fas fa-coins text-purple-400 mt-1"></i>
+                            <span>资源有限，不需要实时响应的场景</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-purple-500/5 rounded-xl p-4 border border-purple-500/10">
+                    <h4 class="text-sm font-semibold text-purple-300 mb-2">周报内容构成</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-purple-500/10 rounded-full text-xs text-purple-200">整体声量统计</span>
+                        <span class="px-3 py-1 bg-purple-500/10 rounded-full text-xs text-purple-200">话题分析</span>
+                        <span class="px-3 py-1 bg-purple-500/10 rounded-full text-xs text-purple-200">竞品对比</span>
+                        <span class="px-3 py-1 bg-purple-500/10 rounded-full text-xs text-purple-200">下周建议</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Section -->
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-emerald-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">每月收集</h3>
+                        <p class="text-emerald-300 text-sm">Monthly Monitoring</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-200">适用场景</h4>
+                    <ul class="space-y-2">
+                        <li class="hover-lift flex items-start gap-3 text-gray-300">
+                            <i class="fas fa-chess text-emerald-400 mt-1"></i>
+                            <span><strong class="text-white">战略复盘</strong>、深度风险评估</span>
+                        </li>
+                        <li class="hover-lift flex items-start gap-3 text-gray-300">
+                            <i class="fas fa-project-diagram text-emerald-400 mt-1"></i>
+                            <span>分析<strong class="text-white">传播规律</strong>、<strong class="text-white">舆情生态</strong></span>
+                        </li>
+                        <li class="hover-lift flex items-start gap-3 text-gray-300">
+                            <i class="fas fa-users text-emerald-400 mt-1"></i>
+                            <span>向高层汇报、制定下阶段策略</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-emerald-500/5 rounded-xl p-4 border border-emerald-500/10">
+                    <h4 class="text-sm font-semibold text-emerald-300 mb-2">月报内容构成</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-emerald-500/10 rounded-full text-xs text-emerald-200">多维数据统计</span>
+                        <span class="px-3 py-1 bg-emerald-500/10 rounded-full text-xs text-emerald-200">传播规律分析</span>
+                        <span class="px-3 py-1 bg-emerald-500/10 rounded-full text-xs text-emerald-200">趋势研判</span>
+                        <span class="px-3 py-1 bg-emerald-500/10 rounded-full text-xs text-emerald-200">管理建议</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Decision -->
+            <div class="glass-card rounded-3xl p-8 border-2 border-amber-500/30">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center">
+                        <i class="fas fa-lightbulb text-amber-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">快速决策表</h3>
+                        <p class="text-amber-300 text-sm">Quick Decision Matrix</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-red-500/10 rounded-lg border border-red-500/20">
+                        <span class="text-gray-300">刚爆发负面新闻/危机事件</span>
+                        <span class="px-3 py-1 bg-red-500/20 rounded-full text-xs font-bold text-red-300">实时监测</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                        <span class="text-gray-300">金融/政务/上市公司</span>
+                        <span class="px-3 py-1 bg-blue-500/20 rounded-full text-xs font-bold text-blue-300">日报 mandatory</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                        <span class="text-gray-300">一般企业品牌维护</span>
+                        <span class="px-3 py-1 bg-purple-500/20 rounded-full text-xs font-bold text-purple-300">周报足够</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                        <span class="text-gray-300">战略复盘/年度规划</span>
+                        <span class="px-3 py-1 bg-emerald-500/20 rounded-full text-xs font-bold text-emerald-300">月报/季报</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-500/10 rounded-lg border border-gray-500/20">
+                        <span class="text-gray-300">预算有限但需全面覆盖</span>
+                        <span class="px-3 py-1 bg-gray-500/20 rounded-full text-xs font-bold text-gray-300">周报+实时预警</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layered System -->
+        <div class="glass-card rounded-3xl p-8 mb-16">
+            <h3 class="text-2xl font-bold mb-8 flex items-center gap-3">
+                <i class="fas fa-layer-group text-indigo-400"></i>
+                推荐组合方案：分层监测机制
+            </h3>
+
+            <div class="relative">
+                <!-- Timeline -->
+                <div class="absolute left-8 top-0 bottom-0 w-1 timeline-line rounded-full"></div>
+
+                <div class="space-y-8">
+                    <!-- Real-time -->
+                    <div class="flex items-start gap-6 relative">
+                        <div class="w-16 h-16 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center z-10 shrink-0">
+                            <i class="fas fa-bolt text-red-400 text-xl"></i>
+                        </div>
+                        <div class="flex-1 pt-2">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h4 class="text-xl font-bold text-white">实时预警</h4>
+                                <span class="px-2 py-0.5 bg-red-500/20 rounded text-xs text-red-300">自动监测</span>
+                            </div>
+                            <p class="text-gray-400 mb-2">危机事件监测 · 敏感词预警 · 突发舆情拦截</p>
+                            <div class="flex items-center gap-2 text-sm">
+                                <i class="fas fa-clock text-red-400"></i>
+                                <span class="text-red-300">10分钟内响应</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily -->
+                    <div class="flex items-start gap-6 relative">
+                        <div class="w-16 h-16 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center z-10 shrink-0">
+                            <i class="fas fa-sun text-blue-400 text-xl"></i>
+                        </div>
+                        <div class="flex-1 pt-2">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h4 class="text-xl font-bold text-white">日报</h4>
+                                <span class="px-2 py-0.5 bg-blue-500/20 rounded text-xs text-blue-300">每日</span>
+                            </div>
+                            <p class="text-gray-400 mb-2">日常动态汇总 · 热点追踪 · 快速响应</p>
+                            <div class="flex items-center gap-2 text-sm">
+                                <i class="fas fa-clock text-blue-400"></i>
+                                <span class="text-blue-300">当日处理</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weekly -->
+                    <div class="flex items-start gap-6 relative">
+                        <div class="w-16 h-16 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center z-10 shrink-0">
+                            <i class="fas fa-calendar-week text-purple-400 text-xl"></i>
+                        </div>
+                        <div class="flex-1 pt-2">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h4 class="text-xl font-bold text-white">周报</h4>
+                                <span class="px-2 py-0.5 bg-purple-500/20 rounded text-xs text-purple-300">每周</span>
+                            </div>
+                            <p class="text-gray-400 mb-2">趋势评估 · 声誉分析 · 竞品对比</p>
+                            <div class="flex items-center gap-2 text-sm">
+                                <i class="fas fa-clock text-purple-400"></i>
+                                <span class="text-purple-300">周度调整</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly -->
+                    <div class="flex items-start gap-6 relative">
+                        <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center z-10 shrink-0">
+                            <i class="fas fa-calendar-alt text-emerald-400 text-xl"></i>
+                        </div>
+                        <div class="flex-1 pt-2">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h4 class="text-xl font-bold text-white">月报</h4>
+                                <span class="px-2 py-0.5 bg-emerald-500/20 rounded text-xs text-emerald-300">每月</span>
+                            </div>
+                            <p class="text-gray-400 mb-2">战略决策 · 深度分析 · 长期规划</p>
+                            <div class="flex items-center gap-2 text-sm">
+                                <i class="fas fa-clock text-emerald-400"></i>
+                                <span class="text-emerald-300">月度复盘</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 p-4 bg-amber-500/10 rounded-xl border border-amber-500/20">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-exclamation-circle text-amber-400 text-xl mt-0.5"></i>
+                    <div>
+                        <h4 class="font-semibold text-amber-300 mb-1">核心原则</h4>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            频率不是越高越好，关键是<strong class="text-white">匹配你的响应能力</strong>——如果日报发现问题但无法当日处理，周报可能更实际。
+                            危机事件应启动<strong class="text-white">实时监测</strong>并输出专项报告，不受日报/周报限制。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Principles -->
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="glass-card rounded-2xl p-6 text-center">
+                <div class="w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-bullseye text-blue-400 text-2xl"></i>
+                </div>
+                <h4 class="text-lg font-bold text-white mb-2">目标导向</h4>
+                <p class="text-gray-400 text-sm">根据监测目标的重要性和行业特性选择频率</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 text-center">
+                <div class="w-14 h-14 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-tachometer-alt text-purple-400 text-2xl"></i>
+                </div>
+                <h4 class="text-lg font-bold text-white mb-2">响应匹配</h4>
+                <p class="text-gray-400 text-sm">监测频率必须与团队的实际响应能力相匹配</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 text-center">
+                <div class="w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-sync-alt text-emerald-400 text-2xl"></i>
+                </div>
+                <h4 class="text-lg font-bold text-white mb-2">动态调整</h4>
+                <p class="text-gray-400 text-sm">根据危机等级和特殊时期灵活调整监测频率</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-16 text-center text-gray-500 text-sm">
+            <p>基于行业标准与最佳实践整理 | 数据来源：专业舆情监测平台</p>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add intersection observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.frequency-card, .glass-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
