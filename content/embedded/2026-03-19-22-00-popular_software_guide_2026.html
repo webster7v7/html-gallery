@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026最受欢迎软件推荐指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .category-badge {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(167, 139, 250, 0.2) 100%);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .software-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .software-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(96, 165, 250, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -15px rgba(96, 165, 250, 0.2);
+        }
+
+        .tag-popular {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+        }
+
+        .tag-free {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .tag-enterprise {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        }
+
+        .tag-beginner {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .glow-effect {
+            position: relative;
+        }
+
+        .glow-effect::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glow-effect:hover::before {
+            opacity: 0.5;
+            filter: blur(10px);
+        }
+
+        .icon-box {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(167, 139, 250, 0.2) 100%);
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.9) 100%);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(96, 165, 250, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(167, 139, 250, 0.5); }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="text-white">
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden py-20 px-4">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 float-animation">
+                <i class="fas fa-fire text-orange-400"></i>
+                <span class="text-sm font-medium text-gray-300">2026 最新版</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                <span class="gradient-text">最受欢迎软件</span>
+                <br>
+                <span class="text-white">推荐指南</span>
+            </h1>
+
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+                每个领域最主流、最受欢迎的软件推荐，小白友好，一句话讲清特点
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4 text-sm">
+                <span class="px-4 py-2 rounded-full glass-card text-blue-300">
+                    <i class="fas fa-check-circle mr-2"></i>行业标杆
+                </span>
+                <span class="px-4 py-2 rounded-full glass-card text-green-300">
+                    <i class="fas fa-heart mr-2"></i>小白首选
+                </span>
+                <span class="px-4 py-2 rounded-full glass-card text-purple-300">
+                    <i class="fas fa-star mr-2"></i>企业主流
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 pb-20 space-y-12">
+
+        <!-- CAD Section -->
+        <section class="glass-card rounded-3xl p-8 md:p-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 rounded-2xl icon-box flex items-center justify-center">
+                    <i class="fas fa-drafting-compass text-3xl text-blue-400"></i>
+                </div>
+                <div>
+                    <span class="category-badge px-3 py-1 rounded-full text-xs font-semibold text-blue-300 mb-2 inline-block">工程设计</span>
+                    <h2 class="text-3xl font-bold">CAD（计算机辅助设计）</h2>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- AutoCAD -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">AutoCAD</h3>
+                        <span class="tag-popular px-3 py-1 rounded-full text-xs font-bold text-white">行业标杆</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">2D 画图（最通用）</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-globe text-blue-400 mt-1"></i>
+                            <span>全球最火，建筑、机械、电气通用</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-graduation-cap text-green-400 mt-1"></i>
+                            <span>小白入门首选，教程最多</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- SolidWorks -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">SolidWorks</h3>
+                        <span class="tag-enterprise px-3 py-1 rounded-full text-xs font-bold text-white">3D机械</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">3D 机械设计（最受欢迎）</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-industry text-indigo-400 mt-1"></i>
+                            <span>机械行业占有率最高</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-smile text-yellow-400 mt-1"></i>
+                            <span>界面友好，容易上手</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- CAXA/中望 -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">CAXA / 中望CAD</h3>
+                        <span class="tag-free px-3 py-1 rounded-full text-xs font-bold text-white">国产替代</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">免费/便宜</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-language text-red-400 mt-1"></i>
+                            <span>中文界面，兼容AutoCAD</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-building text-blue-400 mt-1"></i>
+                            <span>学校、工厂常用</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Embedded Section -->
+        <section class="glass-card rounded-3xl p-8 md:p-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 rounded-2xl icon-box flex items-center justify-center">
+                    <i class="fas fa-microchip text-3xl text-purple-400"></i>
+                </div>
+                <div>
+                    <span class="category-badge px-3 py-1 rounded-full text-xs font-semibold text-purple-300 mb-2 inline-block">硬件开发</span>
+                    <h2 class="text-3xl font-bold">嵌入式（单片机/智能硬件开发）</h2>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Keil MDK -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-bold text-white">Keil MDK</h3>
+                        <span class="tag-popular px-3 py-1 rounded-full text-xs font-bold text-white">标配</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">编程开发（必备）</p>
+                    <p class="text-sm text-gray-300">STM32/51单片机标配，老而稳，芯片支持最全，企业/教学主流</p>
+                </div>
+
+                <!-- VS Code -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-bold text-white">VS Code + 插件</h3>
+                        <span class="tag-free px-3 py-1 rounded-full text-xs font-bold text-white">新趋势</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">编程开发（免费）</p>
+                    <p class="text-sm text-gray-300">现在最火的免费方案，替代Keil，开源免费</p>
+                </div>
+
+                <!-- STM32CubeMX -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-bold text-white">STM32CubeMX</h3>
+                        <span class="tag-beginner px-3 py-1 rounded-full text-xs font-bold text-white">小白神器</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">芯片配置工具</p>
+                    <p class="text-sm text-gray-300">STM32专用，图形化点一点生成代码</p>
+                </div>
+
+                <!-- Proteus -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-bold text-white">Proteus</h3>
+                        <span class="tag-enterprise px-3 py-1 rounded-full text-xs font-bold text-white">仿真</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">电路仿真（学习用）</p>
+                    <p class="text-sm text-gray-300">可以在电脑上模拟单片机+电路运行</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PCB Section -->
+        <section class="glass-card rounded-3xl p-8 md:p-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 rounded-2xl icon-box flex items-center justify-center">
+                    <i class="fas fa-project-diagram text-3xl text-green-400"></i>
+                </div>
+                <div>
+                    <span class="category-badge px-3 py-1 rounded-full text-xs font-semibold text-green-300 mb-2 inline-block">电路设计</span>
+                    <h2 class="text-3xl font-bold">电子电路（PCB/原理图设计）</h2>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Altium Designer -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">Altium Designer</h3>
+                        <span class="tag-popular px-3 py-1 rounded-full text-xs font-bold text-white">行业主流</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">最受欢迎</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-building text-blue-400 mt-1"></i>
+                            <span>国内企业/学生最常用</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-pencil-ruler text-purple-400 mt-1"></i>
+                            <span>画PCB神器</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 立创EDA -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">立创EDA</h3>
+                        <span class="tag-free px-3 py-1 rounded-full text-xs font-bold text-white">免费国产</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">小白/学生首选</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-gift text-green-400 mt-1"></i>
+                            <span>完全免费，云端+本地</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-database text-yellow-400 mt-1"></i>
+                            <span>自带元件库</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Multisim -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">Multisim</h3>
+                        <span class="tag-beginner px-3 py-1 rounded-full text-xs font-bold text-white">仿真</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">教学/实验</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-graduation-cap text-indigo-400 mt-1"></i>
+                            <span>电路仿真标杆</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-university text-blue-400 mt-1"></i>
+                            <span>学校必教</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Analysis Section -->
+        <section class="glass-card rounded-3xl p-8 md:p-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 rounded-2xl icon-box flex items-center justify-center">
+                    <i class="fas fa-chart-line text-3xl text-pink-400"></i>
+                </div>
+                <div>
+                    <span class="category-badge px-3 py-1 rounded-full text-xs font-semibold text-pink-300 mb-2 inline-block">数据处理</span>
+                    <h2 class="text-3xl font-bold">数据分析</h2>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Excel -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-bold text-white">Excel / WPS</h3>
+                        <span class="tag-popular px-3 py-1 rounded-full text-xs font-bold text-white">必学</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">小白入门</p>
+                    <p class="text-sm text-gray-300">所有人第一个数据分析工具</p>
+                </div>
+
+                <!-- Power BI -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-bold text-white">Power BI</h3>
+                        <span class="tag-enterprise px-3 py-1 rounded-full text-xs font-bold text-white">微软</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">企业BI可视化（最火）</p>
+                    <p class="text-sm text-gray-300">简单拖拽做报表，和Excel无缝</p>
+                </div>
+
+                <!-- Tableau -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-bold text-white">Tableau</h3>
+                        <span class="tag-enterprise px-3 py-1 rounded-full text-xs font-bold text-white">大厂</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">可视化最强</p>
+                    <p class="text-sm text-gray-300">可视化效果最强，大厂常用</p>
+                </div>
+
+                <!-- Python -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-bold text-white">Python</h3>
+                        <span class="tag-free px-3 py-1 rounded-full text-xs font-bold text-white">进阶</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">代码工具</p>
+                    <p class="text-sm text-gray-300">数据分析第一语言</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Industrial Engineering Section -->
+        <section class="glass-card rounded-3xl p-8 md:p-12">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-16 h-16 rounded-2xl icon-box flex items-center justify-center">
+                    <i class="fas fa-industry text-3xl text-orange-400"></i>
+                </div>
+                <div>
+                    <span class="category-badge px-3 py-1 rounded-full text-xs font-semibold text-orange-300 mb-2 inline-block">生产优化</span>
+                    <h2 class="text-3xl font-bold">工业工程（IE/生产优化）</h2>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Plant Simulation -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">Plant Simulation</h3>
+                        <span class="tag-popular px-3 py-1 rounded-full text-xs font-bold text-white">西门子</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">流程/生产线仿真</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-cogs text-orange-400 mt-1"></i>
+                            <span>工厂物流、产线仿真标杆</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- APS -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">鼎捷 / 金蝶 APS</h3>
+                        <span class="tag-enterprise px-3 py-1 rounded-full text-xs font-bold text-white">排产</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">排产/计划</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-calendar-alt text-blue-400 mt-1"></i>
+                            <span>国内制造业最常用排产软件</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Visio -->
+                <div class="software-card rounded-2xl p-6 glow-effect">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">Visio</h3>
+                        <span class="tag-beginner px-3 py-1 rounded-full text-xs font-bold text-white">IE必备</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">基础办公/图表</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-sitemap text-purple-400 mt-1"></i>
+                            <span>画流程图、价值流图</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Summary -->
+        <section class="summary-card rounded-3xl p-8 md:p-12 pulse-glow">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-4">
+                    <i class="fas fa-lightbulb text-yellow-400 mr-3"></i>
+                    小白一句话总结
+                </h2>
+                <p class="text-gray-400">记这个就行，快速上手不迷茫</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="bg-white/5 rounded-xl p-4 border border-blue-500/30">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-drafting-compass text-blue-400"></i>
+                        <span class="font-bold text-blue-300">CAD</span>
+                    </div>
+                    <p class="text-sm text-gray-300">AutoCAD（2D）<br>SolidWorks（3D）</p>
+                </div>
+
+                <div class="bg-white/5 rounded-xl p-4 border border-purple-500/30">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-microchip text-purple-400"></i>
+                        <span class="font-bold text-purple-300">嵌入式</span>
+                    </div>
+                    <p class="text-sm text-gray-300">Keil / VS Code</p>
+                </div>
+
+                <div class="bg-white/5 rounded-xl p-4 border border-green-500/30">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-project-diagram text-green-400"></i>
+                        <span class="font-bold text-green-300">电子电路</span>
+                    </div>
+                    <p class="text-sm text-gray-300">Altium Designer<br>立创EDA</p>
+                </div>
+
+                <div class="bg-white/5 rounded-xl p-4 border border-pink-500/30">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-chart-line text-pink-400"></i>
+                        <span class="font-bold text-pink-300">数据分析</span>
+                    </div>
+                    <p class="text-sm text-gray-300">Excel → Power BI → Python</p>
+                </div>
+
+                <div class="bg-white/5 rounded-xl p-4 border border-orange-500/30">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-industry text-orange-400"></i>
+                        <span class="font-bold text-orange-300">工业工程</span>
+                    </div>
+                    <p class="text-sm text-gray-300">Plant Simulation + Visio</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-6xl mx-auto px-4 py-12 text-center">
+        <div class="glass-card rounded-2xl p-6 inline-block">
+            <p class="text-gray-400 text-sm">
+                <i class="fas fa-robot mr-2 text-blue-400"></i>
+                内容整理自豆包AI生成 | 2026年3月最新版
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
