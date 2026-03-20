@@ -1,0 +1,826 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 最火 Arch 系发行版指南 | Arch Linux Distros Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        arch: {
+                            blue: '#1793D1',
+                            dark: '#0F1419',
+                            gray: '#1A1D23',
+                            light: '#2A2E37',
+                            accent: '#38BDF8',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0F1419 0%, #1A1D23 50%, #0F1419 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(26, 29, 35, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+        }
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(23, 147, 209, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #38BDF8 0%, #1793D1 50%, #0EA5E9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .tag-new {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+        }
+        .tag-hot {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
+        .tag-recommend {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+        .distro-icon {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.3));
+        }
+        .hero-grid {
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(23, 147, 209, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.1) 0%, transparent 50%);
+        }
+        .steam-stats {
+            background: linear-gradient(135deg, rgba(15, 20, 25, 0.9), rgba(26, 29, 35, 0.9));
+        }
+        .choice-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .choice-card:hover {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: #38BDF8;
+        }
+        .choice-card.selected {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #38BDF8;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #1793D1, #38BDF8);
+            transition: width 1s ease-out;
+        }
+        .floating-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 8s ease-in-out infinite;
+        }
+        .orb-1 { width: 300px; height: 300px; background: #1793D1; top: 10%; left: 10%; animation-delay: 0s; }
+        .orb-2 { width: 200px; height: 200px; background: #38BDF8; top: 60%; right: 10%; animation-delay: 2s; }
+        .orb-3 { width: 150px; height: 150px; background: #0EA5E9; bottom: 20%; left: 30%; animation-delay: 4s; }
+    </style>
+</head>
+<body class="text-gray-100 antialiased overflow-x-hidden">
+    
+    <!-- Floating Background Orbs -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-card border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="text-3xl">𐌐</div>
+                    <span class="font-bold text-xl tracking-tight">Arch<span class="text-arch-accent">Guide</span> 2026</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#ranking" class="hover:text-arch-accent transition-colors">热度排行</a>
+                    <a href="#distros" class="hover:text-arch-accent transition-colors">发行版详解</a>
+                    <a href="#steam" class="hover:text-arch-accent transition-colors">游戏数据</a>
+                    <a href="#chooser" class="hover:text-arch-accent transition-colors">智能推荐</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 hero-grid">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-arch-light border border-arch-accent/30 text-sm mb-6 animate-slide-up">
+                <span class="w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
+                2026 年 3 月最新数据
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-slide-up" style="animation-delay: 0.1s">
+                <span class="gradient-text">Arch 系发行版</span><br>
+                <span class="text-white">完全指南</span>
+            </h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 animate-slide-up" style="animation-delay: 0.2s">
+                从新手友好的 Manjaro 到性能怪兽 CachyOS，<br>
+                找到最适合你的 Arch Linux 发行版
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 animate-slide-up" style="animation-delay: 0.3s">
+                <a href="#chooser" class="px-8 py-4 bg-arch-blue hover:bg-blue-600 rounded-xl font-semibold transition-all transform hover:scale-105 shadow-lg shadow-blue-500/25">
+                    🎯 帮我挑选发行版
+                </a>
+                <a href="#ranking" class="px-8 py-4 glass-card rounded-xl font-semibold hover:bg-gray-800 transition-all">
+                    📊 查看热度排行
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="py-12 border-y border-gray-800 bg-arch-dark/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-3xl font-bold text-arch-accent">7+</div>
+                    <div class="text-sm text-gray-400 mt-1">主流发行版</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-green-400">13.97%</div>
+                    <div class="text-sm text-gray-400 mt-1">Steam Linux 市场占比</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-yellow-400">#1</div>
+                    <div class="text-sm text-gray-400 mt-1">CachyOS DistroWatch 热度</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-purple-400">AUR</div>
+                    <div class="text-sm text-gray-400 mt-1">最大软件仓库生态</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ranking Section -->
+    <section id="ranking" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">2026 年热度排行榜</h2>
+                <p class="text-gray-400">基于 DistroWatch、社区活跃度与 Steam 数据统计</p>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Rank 1: CachyOS -->
+                <div class="glass-card rounded-2xl p-6 flex items-center gap-6 hover:scale-[1.02] transition-all">
+                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-2xl font-bold text-black">1</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3 mb-1">
+                            <h3 class="text-2xl font-bold">CachyOS</h3>
+                            <span class="tag-new text-xs px-3 py-1 rounded-full font-semibold">2026 黑马 🔥</span>
+                            <span class="tag-hot text-xs px-3 py-1 rounded-full font-semibold">性能之王</span>
+                        </div>
+                        <p class="text-gray-400">内核深度优化、CPU 针对性构建、游戏性能爆炸</p>
+                        <div class="flex gap-2 mt-3">
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">KDE Plasma</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">GNOME</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">游戏优化</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">Wayland</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-3xl font-bold text-arch-accent">98%</div>
+                        <div class="text-xs text-gray-500">推荐度</div>
+                    </div>
+                </div>
+
+                <!-- Rank 2: Manjaro -->
+                <div class="glass-card rounded-2xl p-6 flex items-center gap-6 hover:scale-[1.02] transition-all">
+                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center text-2xl font-bold text-black">2</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3 mb-1">
+                            <h3 class="text-2xl font-bold">Manjaro</h3>
+                            <span class="tag-recommend text-xs px-3 py-1 rounded-full font-semibold">新手首选 ⭐</span>
+                            <span class="bg-blue-500 text-xs px-3 py-1 rounded-full font-semibold">长期霸主</span>
+                        </div>
+                        <p class="text-gray-400">图形安装、开箱即用、稳定可靠、中文支持好</p>
+                        <div class="flex gap-2 mt-3">
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">XFCE</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">KDE</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">GNOME</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">Pamac</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-3xl font-bold text-green-400">95%</div>
+                        <div class="text-xs text-gray-500">用户满意度</div>
+                    </div>
+                </div>
+
+                <!-- Rank 3: EndeavourOS -->
+                <div class="glass-card rounded-2xl p-6 flex items-center gap-6 hover:scale-[1.02] transition-all">
+                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-orange-300 to-orange-500 flex items-center justify-center text-2xl font-bold text-black">3</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3 mb-1">
+                            <h3 class="text-2xl font-bold">EndeavourOS</h3>
+                            <span class="bg-purple-500 text-xs px-3 py-1 rounded-full font-semibold">纯净 Arch</span>
+                            <span class="bg-green-500 text-xs px-3 py-1 rounded-full font-semibold">📈 持续上升</span>
+                        </div>
+                        <p class="text-gray-400">最接近原生 Arch、图形安装器、社区极活跃</p>
+                        <div class="flex gap-2 mt-3">
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">KDE Plasma 6</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">Hyprland</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">Sway</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">i3</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-3xl font-bold text-purple-400">92%</div>
+                        <div class="text-xs text-gray-500">社区活跃度</div>
+                    </div>
+                </div>
+
+                <!-- Rank 4: Garuda -->
+                <div class="glass-card rounded-2xl p-6 flex items-center gap-6 hover:scale-[1.02] transition-all">
+                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-2xl font-bold text-white">4</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3 mb-1">
+                            <h3 class="text-2xl font-bold">Garuda Linux</h3>
+                            <span class="bg-pink-500 text-xs px-3 py-1 rounded-full font-semibold">颜值担当 ✨</span>
+                            <span class="bg-red-500 text-xs px-3 py-1 rounded-full font-semibold">游戏向</span>
+                        </div>
+                        <p class="text-gray-400">界面超华丽、Btrfs 快照、一键恢复、游戏预配置</p>
+                        <div class="flex gap-2 mt-3">
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">KDE</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">GNOME</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">Wayfire</span>
+                            <span class="px-3 py-1 bg-gray-800 rounded-full text-xs">Chaotic-AUR</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-3xl font-bold text-pink-400">88%</div>
+                        <div class="text-xs text-gray-500">视觉效果</div>
+                    </div>
+                </div>
+
+                <!-- Rank 5-7 -->
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="glass-card rounded-xl p-5 hover:scale-[1.02] transition-all">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center font-bold">5</span>
+                            <h4 class="text-lg font-bold">pearOS</h4>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">高仿 macOS 界面，基于 KDE Plasma 6</p>
+                        <span class="text-xs bg-blue-900/50 text-blue-300 px-2 py-1 rounded">macOS 风格</span>
+                    </div>
+                    <div class="glass-card rounded-xl p-5 hover:scale-[1.02] transition-all">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center font-bold">6</span>
+                            <h4 class="text-lg font-bold">ArcoLinux</h4>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">教育导向，分阶段学习 Arch，高度自定义</p>
+                        <span class="text-xs bg-green-900/50 text-green-300 px-2 py-1 rounded">学习首选</span>
+                    </div>
+                    <div class="glass-card rounded-xl p-5 hover:scale-[1.02] transition-all">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center font-bold">7</span>
+                            <h4 class="text-lg font-bold">BlackArch</h4>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">安全渗透测试，2800+ 工具预装</p>
+                        <span class="text-xs bg-red-900/50 text-red-300 px-2 py-1 rounded">网络安全</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Steam Stats Section -->
+    <section id="steam" class="py-20 steam-stats">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                        <span class="gradient-text">Steam 游戏数据</span><br>
+                        Arch 系已超越 Debian 系
+                    </h2>
+                    <p class="text-gray-400 mb-8">
+                        根据 2025 年 1 月 Steam 硬件调查，Arch 系发行版在 Linux 游戏市场占据主导地位，
+                        成为 Steam 平台上 Linux 游戏玩家的首选。
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Arch Linux（原生）</span>
+                                <span class="text-arch-accent">8.73%</span>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="progress-bar h-full rounded-full" style="width: 87.3%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Manjaro</span>
+                                <span class="text-green-400">2.62%</span>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="progress-bar h-full rounded-full" style="width: 26.2%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>EndeavourOS</span>
+                                <span class="text-purple-400">2.62%</span>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="progress-bar h-full rounded-full" style="width: 26.2%"></div>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-gray-700">
+                            <div class="flex justify-between text-lg font-bold mb-2">
+                                <span class="text-white">Arch 系合计</span>
+                                <span class="text-yellow-400">13.97%</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-500">
+                                <span>Debian 系合计</span>
+                                <span>12.23%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="glass-card rounded-2xl p-8 text-center">
+                        <div class="text-6xl mb-4">🎮</div>
+                        <div class="text-4xl font-bold text-arch-accent mb-2">13.97%</div>
+                        <div class="text-gray-400 mb-6">Arch 系在 Steam Linux 市场占比</div>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="bg-gray-800/50 rounded-lg p-3">
+                                <div class="text-arch-accent font-bold">8.73%</div>
+                                <div class="text-gray-500">Arch 原生</div>
+                            </div>
+                            <div class="bg-gray-800/50 rounded-lg p-3">
+                                <div class="text-green-400 font-bold">5.24%</div>
+                                <div class="text-gray-500">衍生版</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Distros -->
+    <section id="distros" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">发行版详解</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Manjaro -->
+                <div class="glass-card rounded-2xl p-6 group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center text-2xl">🌿</div>
+                        <div>
+                            <h3 class="text-xl font-bold">Manjaro</h3>
+                            <p class="text-xs text-green-400">新手首选 · 最稳</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Arch 懒人版，图形安装、自带驱动、开箱即用。XFCE/KDE/GNOME 三选一。</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-green-400">✓</span>
+                            <span>图形化安装器</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-green-400">✓</span>
+                            <span>Pamac 图形包管理</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-green-400">✓</span>
+                            <span>测试后推送更新（更稳）</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-green-900/30 text-green-400 text-xs rounded">稳定</span>
+                        <span class="px-2 py-1 bg-blue-900/30 text-blue-400 text-xs rounded">简单</span>
+                    </div>
+                </div>
+
+                <!-- EndeavourOS -->
+                <div class="glass-card rounded-2xl p-6 group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl">🚀</div>
+                        <div>
+                            <h3 class="text-xl font-bold">EndeavourOS</h3>
+                            <p class="text-xs text-purple-400">最接近原生 Arch</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">极简安装，装完几乎空白，纯 Arch 体验。社区极活跃，文档丰富。</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-purple-400">✓</span>
+                            <span>Calamares 图形安装器</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-purple-400">✓</span>
+                            <span>直接使用 Arch 官方源</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-purple-400">✓</span>
+                            <span>10+ 桌面环境可选</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-purple-900/30 text-purple-400 text-xs rounded">纯净</span>
+                        <span class="px-2 py-1 bg-yellow-900/30 text-yellow-400 text-xs rounded">灵活</span>
+                    </div>
+                </div>
+
+                <!-- CachyOS -->
+                <div class="glass-card rounded-2xl p-6 group border-yellow-500/30">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center text-2xl">⚡</div>
+                        <div>
+                            <h3 class="text-xl font-bold">CachyOS</h3>
+                            <p class="text-xs text-yellow-400">2026 黑马 · 性能爆炸</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">DistroWatch 热度第一。内核深度优化、CPU 针对性构建、游戏性能极致。</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-yellow-400">✓</span>
+                            <span>内核深度优化</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-yellow-400">✓</span>
+                            <span>x86-64-v3/v4 针对性构建</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-yellow-400">✓</span>
+                            <span>掌机版本（Steam Deck）</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-yellow-900/30 text-yellow-400 text-xs rounded">性能</span>
+                        <span class="px-2 py-1 bg-red-900/30 text-red-400 text-xs rounded">游戏</span>
+                    </div>
+                </div>
+
+                <!-- Garuda -->
+                <div class="glass-card rounded-2xl p-6 group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center text-2xl">🐉</div>
+                        <div>
+                            <h3 class="text-xl font-bold">Garuda Linux</h3>
+                            <p class="text-xs text-pink-400">颜值担当 · 特效拉满</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">界面超华丽、动画多、深色主题。Btrfs 快照、一键恢复、游戏优化。</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-pink-400">✓</span>
+                            <span>KDE/GNOME/Wayfire 多版本</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-pink-400">✓</span>
+                            <span>Chaotic-AUR 预编译库</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-pink-400">✓</span>
+                            <span>升级前自动创建快照</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-pink-900/30 text-pink-400 text-xs rounded">颜值</span>
+                        <span class="px-2 py-1 bg-purple-900/30 text-purple-400 text-xs rounded">游戏</span>
+                    </div>
+                </div>
+
+                <!-- pearOS -->
+                <div class="glass-card rounded-2xl p-6 group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl">🍐</div>
+                        <div>
+                            <h3 class="text-xl font-bold">pearOS</h3>
+                            <p class="text-xs text-blue-400">仿 macOS 最强</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">基于 Arch + KDE Plasma 6，高仿 macOS：Dock、顶栏、图标、风格。</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-blue-400">✓</span>
+                            <span>macOS 风格 Dock</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-blue-400">✓</span>
+                            <span>顶部菜单栏</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-blue-400">✓</span>
+                            <span>精致图标主题</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-blue-900/30 text-blue-400 text-xs rounded">macOS</span>
+                        <span class="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded">美观</span>
+                    </div>
+                </div>
+
+                <!-- ArcoLinux -->
+                <div class="glass-card rounded-2xl p-6 group">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-2xl">📚</div>
+                        <div>
+                            <h3 class="text-xl font-bold">ArcoLinux</h3>
+                            <p class="text-xs text-indigo-400">Arch 学习 · 高度自定义</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">教育导向，分版本：完整版、桌面版、自建版。教程极多，适合学 Arch。</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-indigo-400">✓</span>
+                            <span>ArcoLinux（完整）</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-indigo-400">✓</span>
+                            <span>ArcoLinuxD（桌面）</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-indigo-400">✓</span>
+                            <span>ArcoLinuxB（自建）</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-indigo-900/30 text-indigo-400 text-xs rounded">教育</span>
+                        <span class="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded">自定义</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Chooser -->
+    <section id="chooser" class="py-20 bg-gradient-to-b from-arch-dark to-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">🎯 一句话速选</h2>
+                <p class="text-gray-400">根据你的需求，快速找到最适合的发行版</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8">
+                <div class="grid gap-4">
+                    <div class="choice-card rounded-xl p-4 border border-gray-700 flex items-center gap-4" onclick="selectOption(this, 'manjaro')">
+                        <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-xl">🌱</div>
+                        <div class="flex-grow">
+                            <div class="font-semibold">新手、稳定、简单</div>
+                            <div class="text-sm text-gray-400">不想折腾，想开箱即用</div>
+                        </div>
+                        <div class="text-green-400 font-bold">Manjaro →</div>
+                    </div>
+
+                    <div class="choice-card rounded-xl p-4 border border-gray-700 flex items-center gap-4" onclick="selectOption(this, 'endeavour')">
+                        <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-xl">🔧</div>
+                        <div class="flex-grow">
+                            <div class="font-semibold">接近原生 Arch、极简</div>
+                            <div class="text-sm text-gray-400">想玩原生 Arch 但不想手动分区</div>
+                        </div>
+                        <div class="text-purple-400 font-bold">EndeavourOS →</div>
+                    </div>
+
+                    <div class="choice-card rounded-xl p-4 border border-gray-700 flex items-center gap-4" onclick="selectOption(this, 'cachyos')">
+                        <div class="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center text-xl">⚡</div>
+                        <div class="flex-grow">
+                            <div class="font-semibold">游戏、性能、速度</div>
+                            <div class="text-sm text-gray-400">追求极致性能，玩 3A 游戏</div>
+                        </div>
+                        <div class="text-yellow-400 font-bold">CachyOS →</div>
+                    </div>
+
+                    <div class="choice-card rounded-xl p-4 border border-gray-700 flex items-center gap-4" onclick="selectOption(this, 'garuda')">
+                        <div class="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center text-xl">✨</div>
+                        <div class="flex-grow">
+                            <div class="font-semibold">颜值高、酷炫、游戏</div>
+                            <div class="text-sm text-gray-400">喜欢华丽桌面，颜值党</div>
+                        </div>
+                        <div class="text-pink-400 font-bold">Garuda →</div>
+                    </div>
+
+                    <div class="choice-card rounded-xl p-4 border border-gray-700 flex items-center gap-4" onclick="selectOption(this, 'pearos')">
+                        <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-xl">🍎</div>
+                        <div class="flex-grow">
+                            <div class="font-semibold">仿 macOS、好看</div>
+                            <div class="text-sm text-gray-400">喜欢 Mac 界面，不想买 Mac</div>
+                        </div>
+                        <div class="text-blue-400 font-bold">pearOS →</div>
+                    </div>
+                </div>
+
+                <div id="result" class="mt-6 p-6 rounded-xl bg-arch-light border border-arch-accent/30 hidden">
+                    <div class="flex items-start gap-4">
+                        <div id="result-icon" class="text-4xl"></div>
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">推荐选择</div>
+                            <div id="result-title" class="text-2xl font-bold mb-2"></div>
+                            <div id="result-desc" class="text-gray-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">发行版对比表</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="py-4 px-4">发行版</th>
+                            <th class="py-4 px-4">安装难度</th>
+                            <th class="py-4 px-4">适合人群</th>
+                            <th class="py-4 px-4">桌面环境</th>
+                            <th class="py-4 px-4">特色功能</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-gray-800 hover:bg-gray-800/30">
+                            <td class="py-4 px-4 font-semibold text-green-400">Manjaro</td>
+                            <td class="py-4 px-4">⭐ 简单</td>
+                            <td class="py-4 px-4">新手 / 日常用户</td>
+                            <td class="py-4 px-4">XFCE / KDE / GNOME</td>
+                            <td class="py-4 px-4">图形安装、Pamac、稳定性优化</td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-gray-800/30">
+                            <td class="py-4 px-4 font-semibold text-purple-400">EndeavourOS</td>
+                            <td class="py-4 px-4">⭐⭐ 中等</td>
+                            <td class="py-4 px-4">进阶用户 / 学习者</td>
+                            <td class="py-4 px-4">KDE / GNOME / Hyprland / i3</td>
+                            <td class="py-4 px-4">纯净 Arch、社区活跃、灵活</td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-gray-800/30">
+                            <td class="py-4 px-4 font-semibold text-yellow-400">CachyOS</td>
+                            <td class="py-4 px-4">⭐⭐ 中等</td>
+                            <td class="py-4 px-4">极客 / 游戏玩家</td>
+                            <td class="py-4 px-4">KDE / GNOME / XFCE</td>
+                            <td class="py-4 px-4">性能优化、内核调优、掌机支持</td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-gray-800/30">
+                            <td class="py-4 px-4 font-semibold text-pink-400">Garuda</td>
+                            <td class="py-4 px-4">⭐ 简单</td>
+                            <td class="py-4 px-4">颜值党 / 游戏玩家</td>
+                            <td class="py-4 px-4">KDE / GNOME / Wayfire</td>
+                            <td class="py-4 px-4">Btrfs 快照、Chaotic-AUR、华丽效果</td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-gray-800/30">
+                            <td class="py-4 px-4 font-semibold text-blue-400">pearOS</td>
+                            <td class="py-4 px-4">⭐ 简单</td>
+                            <td class="py-4 px-4">macOS 迁移用户</td>
+                            <td class="py-4 px-4">KDE Plasma 6（仿 macOS）</td>
+                            <td class="py-4 px-4">macOS 风格界面、Dock、顶栏</td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-gray-800/30">
+                            <td class="py-4 px-4 font-semibold text-indigo-400">ArcoLinux</td>
+                            <td class="py-4 px-4">⭐⭐⭐ 困难</td>
+                            <td class="py-4 px-4">Arch 学习者</td>
+                            <td class="py-4 px-4">多版本可选</td>
+                            <td class="py-4 px-4">教育导向、分阶段学习、高度自定义</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/30">
+                            <td class="py-4 px-4 font-semibold text-red-400">BlackArch</td>
+                            <td class="py-4 px-4">⭐⭐⭐ 困难</td>
+                            <td class="py-4 px-4">安全研究员</td>
+                            <td class="py-4 px-4">Fluxbox / Awesome / 命令行</td>
+                            <td class="py-4 px-4">2800+ 安全工具、渗透测试</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="text-4xl mb-4">𐌐</div>
+            <p class="text-gray-500 mb-4">2026 Arch Linux 发行版指南</p>
+            <p class="text-xs text-gray-600">
+                数据更新时间：2026 年 3 月 | 来源：DistroWatch、Steam 硬件调查、社区统计
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const distroInfo = {
+            manjaro: {
+                icon: '🌿',
+                title: 'Manjaro',
+                desc: '最成熟稳定的 Arch 衍生版，图形化安装器让新手也能轻松上手。拥有 Pamac 图形包管理器和庞大的中文社区支持。'
+            },
+            endeavour: {
+                icon: '🚀',
+                title: 'EndeavourOS',
+                desc: '最接近原生 Arch 的体验，使用 Calamares 图形安装器但保持系统纯净。社区极其活跃，是学习 Arch 的最佳跳板。'
+            },
+            cachyos: {
+                icon: '⚡',
+                title: 'CachyOS',
+                desc: '2026 年性能之王！内核深度优化，支持 x86-64-v3/v4 指令集优化，游戏性能爆炸，还有 Steam Deck 专用版本。'
+            },
+            garuda: {
+                icon: '✨',
+                title: 'Garuda Linux',
+                desc: '颜值与性能兼顾，Btrfs 自动快照让你无惧系统更新失败，Chaotic-AUR 提供大量预编译软件，开箱即用的游戏体验。'
+            },
+            pearos: {
+                icon: '🍐',
+                title: 'pearOS',
+                desc: '最完美的 macOS 替代品，基于 KDE Plasma 6 深度定制，拥有 Dock、顶栏、macOS 风格图标，界面精致美观。'
+            }
+        };
+
+        function selectOption(element, distro) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.choice-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked card
+            element.classList.add('selected');
+            
+            // Show result
+            const result = document.getElementById('result');
+            const info = distroInfo[distro];
+            
+            document.getElementById('result-icon').textContent = info.icon;
+            document.getElementById('result-title').textContent = info.title;
+            document.getElementById('result-desc').textContent = info.desc;
+            
+            result.classList.remove('hidden');
+            result.classList.add('animate-slide-up');
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animate progress bars on scroll
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.style.width;
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            observer.observe(bar);
+        });
+    </script>
+</body>
+</html>

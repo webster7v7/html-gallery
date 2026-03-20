@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睡眠姿势完全指南 | The Science of Sleep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #e2e8f0;
+        }
+        .serif {
+            font-family: 'Noto Serif SC', serif;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+        .sleep-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .position-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .position-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .active-position {
+            border-color: #818cf8;
+            background: rgba(99, 102, 241, 0.15);
+        }
+        .moon-icon {
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .breathing-dot {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .has-tooltip:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+
+    <!-- 导航 -->
+    <nav class="fixed top-0 w-full z-50 glass-card border-b border-slate-700/50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                </div>
+                <span class="text-lg font-semibold tracking-wide">SleepScience</span>
+            </div>
+            <div class="text-sm text-slate-400">基于人体工程学的睡眠指南</div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="pt-32 pb-16 px-4 relative overflow-hidden">
+        <div class="absolute top-20 right-10 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 left-10 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl"></div>
+        
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/30 mb-6">
+                <span class="w-2 h-2 rounded-full bg-indigo-400 breathing-dot"></span>
+                <span class="text-sm text-indigo-300">人体工程学认证</span>
+            </div>
+            
+            <h1 class="serif text-5xl md:text-7xl font-bold mb-6 leading-tight bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 bg-clip-text text-transparent">
+                最舒服的<br>睡觉姿势
+            </h1>
+            
+            <p class="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
+                睡眠占据人生三分之一的时间。找到适合你的睡姿，不仅能提升睡眠质量，更能预防颈椎和腰椎疾病。
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4 text-sm text-slate-500">
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400"></span> 缓解背痛</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span> 减少打鼾</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> 优化呼吸</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心对比 -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="serif text-3xl font-bold text-center mb-4">三大睡姿对比</h2>
+            <p class="text-center text-slate-400 mb-12">选择最适合你身体状况的睡眠姿势</p>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 侧卧 -->
+                <div class="position-card glass-card rounded-2xl p-6 cursor-pointer group active-position" onclick="selectPosition('side')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-2xl">🧘</div>
+                        <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-medium">最推荐</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-indigo-200">侧卧位</h3>
+                    <p class="text-slate-400 text-sm mb-4">胎儿姿势，膝盖微曲，双腿夹枕</p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-slate-300">缓解胃酸反流</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-slate-300">减轻打鼾</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-slate-300">保护脊柱曲线</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-700">
+                        <div class="text-xs text-slate-500 mb-1">适合人群</div>
+                        <div class="text-sm text-indigo-200">孕妇、打鼾者、胃酸过多者</div>
+                    </div>
+                </div>
+
+                <!-- 仰卧 -->
+                <div class="position-card glass-card rounded-2xl p-6 cursor-pointer group" onclick="selectPosition('back')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl">🛌</div>
+                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-medium">次选</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-blue-200">仰卧位</h3>
+                    <p class="text-slate-400 text-sm mb-4">面部朝上，脊柱自然伸展，手臂放两侧</p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-slate-300">脊柱对齐最佳</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-slate-300">减少面部皱纹</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-slate-300">可能加重打鼾</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-700">
+                        <div class="text-xs text-slate-500 mb-1">适合人群</div>
+                        <div class="text-sm text-blue-200">腰背疼痛患者、美容抗衰者</div>
+                    </div>
+                </div>
+
+                <!-- 俯卧 -->
+                <div class="position-card glass-card rounded-2xl p-6 cursor-pointer group" onclick="selectPosition('stomach')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center text-2xl">🙇</div>
+                        <span class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-300 text-xs font-medium">谨慎</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-orange-200">俯卧位</h3>
+                    <p class="text-slate-400 text-sm mb-4">面部朝下，头转向一侧，腹部贴床</p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-slate-300">缓解部分打鼾</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-slate-300">颈椎高度扭曲</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <span class="text-slate-300">腰椎压力过大</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-700">
+                        <div class="text-xs text-slate-500 mb-1">适合人群</div>
+                        <div class="text-sm text-orange-200">仅少数习惯者，<span class="text-red-400">不推荐长期</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 交互式详细建议 -->
+    <section id="detail-section" class="py-16 px-4 bg-slate-900/50">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-card rounded-3xl p-8 md:p-12 glow-effect">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-3xl" id="detail-icon">🧘</span>
+                    <h2 class="serif text-2xl md:text-3xl font-bold" id="detail-title">侧卧优化指南</h2>
+                </div>
+
+                <div id="detail-content" class="space-y-6">
+                    <!-- 动态内容 -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-indigo-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                正确姿势要点
+                            </h4>
+                            <ul class="space-y-3 text-slate-300 text-sm leading-relaxed">
+                                <li class="flex gap-3">
+                                    <span class="text-indigo-400 font-bold">01.</span>
+                                    <span>膝盖间夹一个枕头，保持骨盆中立位，减轻腰椎压力</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-indigo-400 font-bold">02.</span>
+                                    <span>头部枕头高度适中，保持颈椎与脊柱呈一条直线</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-indigo-400 font-bold">03.</span>
+                                    <span>轻微蜷缩如胎儿姿势，但避免过度弯曲（会限制呼吸）</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-purple-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                左右侧选择
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="p-3 rounded-lg bg-indigo-500/10 border border-indigo-500/30">
+                                    <div class="font-medium text-indigo-200 text-sm mb-1">左侧卧 ⭐ 推荐</div>
+                                    <div class="text-xs text-slate-400">减少胃酸反流（胃部位置），促进消化，孕期20周后推荐</div>
+                                </div>
+                                <div class="p-3 rounded-lg bg-slate-700/30 border border-slate-600">
+                                    <div class="font-medium text-slate-300 text-sm mb-1">右侧卧</div>
+                                    <div class="text-xs text-slate-400">减轻心脏压力，适合心脏负担重者，但可能加重胃灼热</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-700 pt-6 mt-6">
+                        <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 flex gap-3">
+                            <svg class="w-6 h-6 text-yellow-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            <div>
+                                <div class="font-medium text-yellow-200 text-sm mb-1">注意事项</div>
+                                <div class="text-xs text-slate-400">长期单侧睡可能导致肩膀疼痛和面部不对称，建议定期更换左右侧，或搭配仰睡交替进行。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特殊人群 -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="serif text-3xl font-bold text-center mb-12">特殊状况睡眠方案</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-card rounded-xl p-5 hover:bg-slate-800/50 transition-colors">
+                    <div class="text-2xl mb-3">🤰</div>
+                    <h3 class="font-bold mb-2 text-pink-200">孕期（20周后）</h3>
+                    <p class="text-xs text-slate-400 mb-3">必须左侧卧，避免仰卧压迫下腔静脉影响胎儿供血</p>
+                    <div class="text-xs text-indigo-300">膝盖夹长枕，腹部下方支撑</div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 hover:bg-slate-800/50 transition-colors">
+                    <div class="text-2xl mb-3">🦴</div>
+                    <h3 class="font-bold mb-2 text-cyan-200">腰背疼痛</h3>
+                    <p class="text-xs text-slate-400 mb-3">仰卧时在膝盖下垫枕头，维持腰椎自然曲度</p>
+                    <div class="text-xs text-indigo-300">或在侧卧时膝盖向胸部微曲</div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 hover:bg-slate-800/50 transition-colors">
+                    <div class="text-2xl mb-3">🔥</div>
+                    <h3 class="font-bold mb-2 text-orange-200">胃酸反流</h3>
+                    <p class="text-xs text-slate-400 mb-3">左侧卧最佳，上半身抬高15-20厘米</p>
+                    <div class="text-xs text-indigo-300">避免右侧卧和饱食后2小时内平躺</div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 hover:bg-slate-800/50 transition-colors">
+                    <div class="text-2xl mb-3">😮‍💨</div>
+                    <h3 class="font-bold mb-2 text-green-200">打鼾/呼吸暂停</h3>
+                    <p class="text-xs text-slate-400 mb-3">侧卧显著优于仰睡，保持气道通畅</p>
+                    <div class="text-xs text-indigo-300">背部放枕头防止翻身仰卧</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 装备建议 -->
+    <section class="py-16 px-4 bg-gradient-to-b from-slate-900 to-indigo-950/30">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="serif text-3xl font-bold text-center mb-4">睡眠装备配置</h2>
+            <p class="text-center text-slate-400 mb-12">工欲善其事，必先利其器</p>
+
+            <div class="space-y-6">
+                <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="w-full md:w-1/3">
+                        <div class="aspect-video rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-4xl">🛏️</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold mb-2 text-indigo-200">床垫选择</h3>
+                        <p class="text-slate-400 text-sm mb-4">中等硬度（Medium-Firm）最适合大多数人。过软导致腰部塌陷，过硬压迫肩部和髋部。</p>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">记忆棉</span>
+                            <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">乳胶</span>
+                            <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">独立弹簧</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="w-full md:w-1/3">
+                        <div class="aspect-video rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center text-4xl">🪶</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold mb-2 text-blue-200">枕头高度公式</h3>
+                        <p class="text-slate-400 text-sm mb-4">侧睡需要较高枕头（填满肩膀到脖子的空隙），仰睡需要较薄枕头（保持颈椎自然曲度）。</p>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="p-2 rounded bg-slate-800/50">
+                                <div class="text-blue-300 font-medium">侧睡</div>
+                                <div class="text-slate-500">高度 ≈ 肩宽</div>
+                            </div>
+                            <div class="p-2 rounded bg-slate-800/50">
+                                <div class="text-blue-300 font-medium">仰睡</div>
+                                <div class="text-slate-500">高度 ≈ 一拳高</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="w-full md:w-1/3">
+                        <div class="aspect-video rounded-lg bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center text-4xl">🧸</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold mb-2 text-pink-200">辅助枕头</h3>
+                        <p class="text-slate-400 text-sm mb-4">长条抱枕（Dakimakura）是侧睡神器，夹在膝盖间保持骨盆对齐，环抱减轻肩部压力。</p>
+                        <div class="text-xs text-slate-500 italic">推荐尺寸：50×150cm 或 50×160cm</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 快速检查清单 -->
+    <section class="py-16 px-4">
+        <div class="max-w-2xl mx-auto glass-card rounded-3xl p-8 border-indigo-500/30 border-2">
+            <h3 class="serif text-2xl font-bold text-center mb-8 text-indigo-200">睡姿自检清单</h3>
+            
+            <div class="space-y-4">
+                <label class="flex items-start gap-3 cursor-pointer group">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-600 bg-slate-700 text-indigo-500 focus:ring-indigo-500/50">
+                    <span class="text-slate-300 group-hover:text-white transition-colors">醒来时没有颈部僵硬或肩膀酸痛</span>
+                </label>
+                <label class="flex items-start gap-3 cursor-pointer group">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-600 bg-slate-700 text-indigo-500 focus:ring-indigo-500/50">
+                    <span class="text-slate-300 group-hover:text-white transition-colors">腰部紧贴床面，没有悬空感</span>
+                </label>
+                <label class="flex items-start gap-3 cursor-pointer group">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-600 bg-slate-700 text-indigo-500 focus:ring-indigo-500/50">
+                    <span class="text-slate-300 group-hover:text-white transition-colors">呼吸顺畅，没有打鼾或口干</span>
+                </label>
+                <label class="flex items-start gap-3 cursor-pointer group">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-600 bg-slate-700 text-indigo-500 focus:ring-indigo-500/50">
+                    <span class="text-slate-300 group-hover:text-white transition-colors">枕头高度使颈椎与脊柱保持直线</span>
+                </label>
+            </div>
+
+            <div class="mt-8 p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-center">
+                <p class="text-sm text-indigo-200">✨ 如果以上都符合，说明你的睡姿很科学！</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-8 px-4 text-center text-slate-500 text-sm border-t border-slate-800">
+        <p>基于人体工程学与睡眠医学研究整理 | 如有严重睡眠障碍请咨询专业医师</p>
+        <p class="mt-2 text-slate-600">sleep-posture-science.html</p>
+    </footer>
+
+    <script>
+        const positionData = {
+            side: {
+                icon: '🧘',
+                title: '侧卧优化指南',
+                content: `
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-indigo-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                正确姿势要点
+                            </h4>
+                            <ul class="space-y-3 text-slate-300 text-sm leading-relaxed">
+                                <li class="flex gap-3">
+                                    <span class="text-indigo-400 font-bold">01.</span>
+                                    <span>膝盖间夹一个枕头，保持骨盆中立位，减轻腰椎压力</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-indigo-400 font-bold">02.</span>
+                                    <span>头部枕头高度适中，保持颈椎与脊柱呈一条直线</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-indigo-400 font-bold">03.</span>
+                                    <span>轻微蜷缩如胎儿姿势，但避免过度弯曲（会限制呼吸）</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-purple-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                左右侧选择
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="p-3 rounded-lg bg-indigo-500/10 border border-indigo-500/30">
+                                    <div class="font-medium text-indigo-200 text-sm mb-1">左侧卧 ⭐ 推荐</div>
+                                    <div class="text-xs text-slate-400">减少胃酸反流（胃部位置），促进消化，孕期20周后推荐</div>
+                                </div>
+                                <div class="p-3 rounded-lg bg-slate-700/30 border border-slate-600">
+                                    <div class="font-medium text-slate-300 text-sm mb-1">右侧卧</div>
+                                    <div class="text-xs text-slate-400">减轻心脏压力，适合心脏负担重者，但可能加重胃灼热</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-700 pt-6 mt-6">
+                        <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 flex gap-3">
+                            <svg class="w-6 h-6 text-yellow-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            <div>
+                                <div class="font-medium text-yellow-200 text-sm mb-1">注意事项</div>
+                                <div class="text-xs text-slate-400">长期单侧睡可能导致肩膀疼痛和面部不对称，建议定期更换左右侧，或搭配仰睡交替进行。</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            back: {
+                icon: '🛌',
+                title: '仰卧优化指南',
+                content: `
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-blue-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                正确姿势要点
+                            </h4>
+                            <ul class="space-y-3 text-slate-300 text-sm leading-relaxed">
+                                <li class="flex gap-3">
+                                    <span class="text-blue-400 font-bold">01.</span>
+                                    <span>膝盖下垫一个小枕头（5-10cm高），帮助维持腰椎自然前凸曲线</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-blue-400 font-bold">02.</span>
+                                    <span>使用较低的枕头，避免"下巴抵胸口"的姿势</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-blue-400 font-bold">03.</span>
+                                    <span>手臂自然放于身体两侧，避免举过头顶（会压迫肩部神经）</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-cyan-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                特殊技巧
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="p-3 rounded-lg bg-blue-500/10 border border-blue-500/30">
+                                    <div class="font-medium text-blue-200 text-sm mb-1">美容优势</div>
+                                    <div class="text-xs text-slate-400">面部完全不接触枕头，减少皱纹产生和皮肤摩擦，抗衰老首选睡姿</div>
+                                </div>
+                                <div class="p-3 rounded-lg bg-slate-700/30 border border-slate-600">
+                                    <div class="font-medium text-slate-300 text-sm mb-1">缓解鼻塞</div>
+                                    <div class="text-xs text-slate-400">抬高头部15-30度（使用楔形枕或调高床头）有助于减轻鼻窦压力</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-700 pt-6 mt-6">
+                        <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex gap-3">
+                            <svg class="w-6 h-6 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <div>
+                                <div class="font-medium text-red-200 text-sm mb-1">慎用人群</div>
+                                <div class="text-xs text-slate-400">睡眠呼吸暂停综合征患者、重度打鼾者应避免仰卧，这会加重上呼吸道塌陷。建议在睡衣背部缝网球或使用体位训练设备。</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            stomach: {
+                icon: '🙇',
+                title: '俯卧优化指南（不推荐）',
+                content: `
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-orange-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                潜在风险
+                            </h4>
+                            <ul class="space-y-3 text-slate-300 text-sm leading-relaxed">
+                                <li class="flex gap-3">
+                                    <span class="text-red-400 font-bold">01.</span>
+                                    <span>颈部必须扭转90度呼吸，导致颈椎过度旋转，易引发颈椎病</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-red-400 font-bold">02.</span>
+                                    <span>腰椎过度前凸（塌腰），导致晨起腰痛，加速椎间盘退化</span>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-red-400 font-bold">03.</span>
+                                    <span>胸腔受压，呼吸深度减少，可能导致缺氧</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-yellow-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                如果必须趴睡
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="p-3 rounded-lg bg-orange-500/10 border border-orange-500/30">
+                                    <div class="font-medium text-orange-200 text-sm mb-1">额头枕法</div>
+                                    <div class="text-xs text-slate-400">使用极薄枕头或不用枕头，额头贴在枕头上，口鼻悬空保持呼吸，减少颈部扭转</div>
+                                </div>
+                                <div class="p-3 rounded-lg bg-slate-700/30 border border-slate-600">
+                                    <div class="font-medium text-slate-300 text-sm mb-1">骨盆垫高</div>
+                                    <div class="text-xs text-slate-400">在骨盆/小腹下方垫薄枕，减少腰椎过度伸展</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-700 pt-6 mt-6">
+                        <div class="bg-indigo-500/10 border border-indigo-500/30 rounded-xl p-4 flex gap-3">
+                            <svg class="w-6 h-6 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            <div>
+                                <div class="font-medium text-indigo-200 text-sm mb-1">过渡建议</div>
+                                <div class="text-xs text-slate-400">长期趴睡者建议逐步过渡到侧卧（抱长枕模仿趴睡的安全感）或仰卧，以保护颈椎和腰椎健康。可通过侧睡时向前轻微蜷缩获得类似趴睡的"包裹感"。</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        function selectPosition(pos) {
+            // Update cards
+            document.querySelectorAll('.position-card').forEach(card => {
+                card.classList.remove('active-position');
+            });
+            event.currentTarget.classList.add('active-position');
+
+            // Update content
+            const data = positionData[pos];
+            document.getElementById('detail-icon').textContent = data.icon;
+            document.getElementById('detail-title').textContent = data.title;
+            document.getElementById('detail-content').innerHTML = data.content;
+
+            // Smooth scroll
+            document.getElementById('detail-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Add parallax effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelectorAll('.glass-card');
+            parallax.forEach(element => {
+                const speed = 0.5;
+                element.style.transform = `translateY(${scrolled * speed * 0.1}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
