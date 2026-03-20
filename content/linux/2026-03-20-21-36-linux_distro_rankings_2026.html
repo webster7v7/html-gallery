@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 最受欢迎 Linux 发行版排行榜 | Linux Distro Rankings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        linux: {
+                            dark: '#0D1117',
+                            gray: '#161B22',
+                            light: '#21262D',
+                            accent: '#58A6FF',
+                            ubuntu: '#E95420',
+                            fedora: '#51A2DA',
+                            arch: '#1793D1',
+                            mint: '#87CF3E',
+                            debian: '#A80030',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'count-up': 'countUp 2s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        countUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0D1117 0%, #161B22 50%, #0D1117 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(22, 27, 34, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(88, 166, 255, 0.1);
+        }
+        .glass-card:hover {
+            border-color: rgba(88, 166, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(88, 166, 255, 0.15);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #58A6FF 0%, #79C0FF 50%, #58A6FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #B87333); }
+        .rank-other { background: linear-gradient(135deg, #21262D, #30363D); }
+        .distro-ubuntu { border-left: 4px solid #E95420; }
+        .distro-fedora { border-left: 4px solid #51A2DA; }
+        .distro-arch { border-left: 4px solid #1793D1; }
+        .distro-mint { border-left: 4px solid #87CF3E; }
+        .distro-debian { border-left: 4px solid #A80030; }
+        .progress-bar {
+            background: linear-gradient(90deg, #58A6FF, #79C0FF);
+            transition: width 1.5s ease-out;
+        }
+        .floating-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite;
+        }
+        .orb-1 { width: 300px; height: 300px; background: #E95420; top: 5%; left: 5%; animation-delay: 0s; }
+        .orb-2 { width: 250px; height: 250px; background: #1793D1; top: 40%; right: 5%; animation-delay: 2s; }
+        .orb-3 { width: 200px; height: 200px; background: #87CF3E; bottom: 20%; left: 30%; animation-delay: 4s; }
+        .category-tab {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .category-tab:hover, .category-tab.active {
+            background: rgba(88, 166, 255, 0.2);
+            border-color: #58A6FF;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(22, 27, 34, 0.9), rgba(13, 17, 23, 0.9));
+            border: 1px solid rgba(88, 166, 255, 0.2);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="text-gray-100 antialiased overflow-x-hidden">
+
+    <!-- Floating Background Orbs -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-card border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="text-3xl">🐧</div>
+                    <span class="font-bold text-xl tracking-tight">Linux<span class="text-linux-accent">Rank</span> 2026</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#top10" class="hover:text-linux-accent transition-colors">TOP 10</a>
+                    <a href="#categories" class="hover:text-linux-accent transition-colors">分类排行</a>
+                    <a href="#stats" class="hover:text-linux-accent transition-colors">市场数据</a>
+                    <a href="#comparison" class="hover:text-linux-accent transition-colors">对比表</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-linux-light border border-linux-accent/30 text-sm mb-6 animate-slide-up">
+                <span class="w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
+                2026 年 2-3 月最新数据
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-slide-up" style="animation-delay: 0.1s">
+                <span class="gradient-text">Linux 发行版</span><br>
+                <span class="text-white"> popularity 排行榜</span>
+            </h1>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-10 animate-slide-up" style="animation-delay: 0.2s">
+                基于 DistroWatch、Steam 硬件调查、开发者统计等多维度数据<br>
+                覆盖桌面、服务器、开发、游戏全场景
+            </p>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up" style="animation-delay: 0.3s">
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-linux-accent counter" data-target="600">600+</div>
+                    <div class="text-sm text-gray-400 mt-1">活跃发行版</div>
+                </div>
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-green-400">4.7%</div>
+                    <div class="text-sm text-gray-400 mt-1">全球桌面市场份额</div>
+                </div>
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-yellow-400">60.5%</div>
+                    <div class="text-sm text-gray-400 mt-1">网站服务器占比</div>
+                </div>
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-purple-400">100%</div>
+                    <div class="text-sm text-gray-400 mt-1">超级计算机占比</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOP 10 Ranking -->
+    <section id="top10" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">🏆 2026 年 TOP 10 排行榜</h2>
+                <p class="text-gray-400">综合 DistroWatch 热度、社区活跃度与实际采用率</p>
+            </div>
+
+            <!-- Top 3 Podium -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <!-- Rank 2 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center order-2 md:order-1">
+                    <div class="w-20 h-20 rounded-full rank-2 flex items-center justify-center text-3xl font-bold text-black mb-4">2</div>
+                    <div class="text-4xl mb-3">🍃</div>
+                    <h3 class="text-2xl font-bold text-gray-300">Linux Mint</h3>
+                    <p class="text-sm text-gray-400 text-center mt-2">新手首选 · 最稳</p>
+                    <div class="mt-4 px-4 py-2 bg-green-900/30 rounded-full text-xs text-green-400">基于 Ubuntu LTS</div>
+                </div>
+
+                <!-- Rank 1 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center order-1 md:order-2 transform md:scale-110 border-yellow-500/30">
+                    <div class="absolute -top-4 text-4xl">👑</div>
+                    <div class="w-24 h-24 rounded-full rank-1 flex items-center justify-center text-4xl font-bold text-black mb-4">1</div>
+                    <div class="text-5xl mb-3">⚡</div>
+                    <h3 class="text-3xl font-bold text-white">CachyOS</h3>
+                    <p class="text-sm text-gray-400 text-center mt-2">2026 黑马 · 性能之王</p>
+                    <div class="mt-4 px-4 py-2 bg-yellow-900/30 rounded-full text-xs text-yellow-400">基于 Arch</div>
+                </div>
+
+                <!-- Rank 3 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center order-3">
+                    <div class="w-20 h-20 rounded-full rank-3 flex items-center justify-center text-3xl font-bold text-white mb-4">3</div>
+                    <div class="text-4xl mb-3">🚀</div>
+                    <h3 class="text-2xl font-bold text-orange-300">MX Linux</h3>
+                    <p class="text-sm text-gray-400 text-center mt-2">轻量稳定 · 老机救星</p>
+                    <div class="mt-4 px-4 py-2 bg-orange-900/30 rounded-full text-xs text-orange-400">基于 Debian</div>
+                </div>
+            </div>
+
+            <!-- Rank 4-10 -->
+            <div class="space-y-3">
+                <div class="glass-card rounded-xl p-5 flex items-center gap-6 distro-ubuntu hover:scale-[1.02] transition-all">
+                    <div class="w-14 h-14 rounded-full rank-other flex items-center justify-center text-xl font-bold">4</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3">
+                            <h4 class="text-xl font-bold">Pop!_OS</h4>
+                            <span class="px-3 py-1 bg-purple-900/30 text-purple-400 text-xs rounded-full">开发者最爱</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1">System76 开发，COSMIC 桌面，游戏与创作优化</p>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-sm text-gray-500">基于 Ubuntu</div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 flex items-center gap-6 distro-debian hover:scale-[1.02] transition-all">
+                    <div class="w-14 h-14 rounded-full rank-other flex items-center justify-center text-xl font-bold">5</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3">
+                            <h4 class="text-xl font-bold text-red-400">Debian</h4>
+                            <span class="px-3 py-1 bg-red-900/30 text-red-400 text-xs rounded-full">服务器之王</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1">Ubuntu 之母，极致稳定，50000+ 软件包</p>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-sm text-gray-500">独立发行版</div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 flex items-center gap-6 distro-ubuntu hover:scale-[1.02] transition-all">
+                    <div class="w-14 h-14 rounded-full rank-other flex items-center justify-center text-xl font-bold">6</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3">
+                            <h4 class="text-xl font-bold text-blue-400">Zorin OS</h4>
+                            <span class="px-3 py-1 bg-blue-900/30 text-blue-400 text-xs rounded-full">Windows 迁移首选</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1">界面类似 Windows，新手友好，内置大量预装软件</p>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-sm text-gray-500">基于 Ubuntu</div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 flex items-center gap-6 distro-arch hover:scale-[1.02] transition-all">
+                    <div class="w-14 h-14 rounded-full rank-other flex items-center justify-center text-xl font-bold">7</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3">
+                            <h4 class="text-xl font-bold text-cyan-400">EndeavourOS</h4>
+                            <span class="px-3 py-1 bg-cyan-900/30 text-cyan-400 text-xs rounded-full">纯净 Arch</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1">最接近原生 Arch，图形安装器，社区极活跃</p>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-sm text-gray-500">基于 Arch</div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 flex items-center gap-6 distro-arch hover:scale-[1.02] transition-all">
+                    <div class="w-14 h-14 rounded-full rank-other flex items-center justify-center text-xl font-bold">8</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3">
+                            <h4 class="text-xl font-bold text-green-400">Manjaro</h4>
+                            <span class="px-3 py-1 bg-green-900/30 text-green-400 text-xs rounded-full">新手友好 Arch</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1">图形安装、开箱即用、中文支持好</p>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-sm text-gray-500">基于 Arch</div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 flex items-center gap-6 distro-fedora hover:scale-[1.02] transition-all">
+                    <div class="w-14 h-14 rounded-full rank-other flex items-center justify-center text-xl font-bold">9</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3">
+                            <h4 class="text-xl font-bold text-blue-400">Fedora</h4>
+                            <span class="px-3 py-1 bg-blue-900/30 text-blue-400 text-xs rounded-full">红帽系先锋</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1">红帽上游，最新技术，开发者工作站首选</p>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-sm text-gray-500">独立发行版 (RPM)</div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 flex items-center gap-6 distro-ubuntu hover:scale-[1.02] transition-all">
+                    <div class="w-14 h-14 rounded-full rank-other flex items-center justify-center text-xl font-bold">10</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3">
+                            <h4 class="text-xl font-bold text-orange-500">Ubuntu</h4>
+                            <span class="px-3 py-1 bg-orange-900/30 text-orange-400 text-xs rounded-full">全球知名度最高</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1">13.7% 服务器市场份额，27.8% 开发者采用率</p>
+                    </div>
+                    <div class="hidden md:block text-right">
+                        <div class="text-sm text-gray-500">基于 Debian</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Rankings -->
+    <section id="categories" class="py-20 bg-gradient-to-b from-linux-dark to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">📊 分类排行榜</h2>
+                <p class="text-gray-400">按使用场景分类，找到最适合你的发行版</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Beginners -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center text-2xl">🌱</div>
+                        <h3 class="text-xl font-bold">新手友好</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥇</span>
+                            <div>
+                                <div class="font-semibold">Linux Mint</div>
+                                <div class="text-xs text-gray-400">最直观，Windows 风格</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥈</span>
+                            <div>
+                                <div class="font-semibold">Zorin OS</div>
+                                <div class="text-xs text-gray-400">Windows 迁移首选</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥉</span>
+                            <div>
+                                <div class="font-semibold">Ubuntu</div>
+                                <div class="text-xs text-gray-400">社区最大，教程最多</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Developers -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl">💻</div>
+                        <h3 class="text-xl font-bold">开发者首选</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥇</span>
+                            <div>
+                                <div class="font-semibold">Pop!_OS</div>
+                                <div class="text-xs text-gray-400">COSMIC 桌面，开发工具齐全</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥈</span>
+                            <div>
+                                <div class="font-semibold">Fedora</div>
+                                <div class="text-xs text-gray-400">最新技术，容器原生支持</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥉</span>
+                            <div>
+                                <div class="font-semibold">Arch Linux</div>
+                                <div class="text-xs text-gray-400">极致自定义，最新软件</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gaming -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl">🎮</div>
+                        <h3 class="text-xl font-bold">游戏优化</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥇</span>
+                            <div>
+                                <div class="font-semibold">CachyOS</div>
+                                <div class="text-xs text-gray-400">性能优化最强，Proton 定制</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥈</span>
+                            <div>
+                                <div class="font-semibold">Garuda Linux</div>
+                                <div class="text-xs text-gray-400">Btrfs 快照，游戏预设</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥉</span>
+                            <div>
+                                <div class="font-semibold">Pop!_OS</div>
+                                <div class="text-xs text-gray-400">NVIDIA 驱动优化</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Servers -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center text-2xl">🖥️</div>
+                        <h3 class="text-xl font-bold">服务器部署</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥇</span>
+                            <div>
+                                <div class="font-semibold">Ubuntu Server</div>
+                                <div class="text-xs text-gray-400">13.7% 市场份额，云原生</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥈</span>
+                            <div>
+                                <div class="font-semibold">Debian</div>
+                                <div class="text-xs text-gray-400">极致稳定，长期支持</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥉</span>
+                            <div>
+                                <div class="font-semibold">RHEL / AlmaLinux</div>
+                                <div class="text-xs text-gray-400">企业级，43.1% 企业市场</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lightweight -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center text-2xl">🪶</div>
+                        <h3 class="text-xl font-bold">轻量/老旧硬件</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥇</span>
+                            <div>
+                                <div class="font-semibold">MX Linux</div>
+                                <div class="text-xs text-gray-400">Xfce 桌面，资源占用极低</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥈</span>
+                            <div>
+                                <div class="font-semibold">Lubuntu</div>
+                                <div class="text-xs text-gray-400">LXQt 桌面，老旧机救星</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥉</span>
+                            <div>
+                                <div class="font-semibold">Archcraft</div>
+                                <div class="text-xs text-gray-400">500MB 内存可运行</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gray-500/20 flex items-center justify-center text-2xl">🔒</div>
+                        <h3 class="text-xl font-bold">安全/渗透测试</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥇</span>
+                            <div>
+                                <div class="font-semibold">Kali Linux</div>
+                                <div class="text-xs text-gray-400">安全审计，渗透测试</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥈</span>
+                            <div>
+                                <div class="font-semibold">BlackArch</div>
+                                <div class="text-xs text-gray-400">2800+ 安全工具，基于 Arch</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                            <span class="text-2xl">🥉</span>
+                            <div>
+                                <div class="font-semibold">Qubes OS</div>
+                                <div class="text-xs text-gray-400">隔离安全，隐私保护</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Stats -->
+    <section id="stats" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">📈 市场数据洞察</h2>
+                <p class="text-gray-400">2026 年 Linux 市场关键指标</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Developer Adoption -->
+                <div class="glass-card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span>👨‍💻</span> 开发者采用率 (Stack Overflow 2025)
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-orange-400 font-semibold">Ubuntu</span>
+                                <span class="text-orange-400">27.8%</span>
+                            </div>
+                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="progress-bar h-full rounded-full" style="width: 27.8%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-red-400 font-semibold">Debian</span>
+                                <span class="text-red-400">11.4%</span>
+                            </div>
+                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full bg-red-500" style="width: 11.4%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-cyan-400 font-semibold">Arch Linux</span>
+                                <span class="text-cyan-400">8.0%</span>
+                            </div>
+                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full bg-cyan-500" style="width: 8%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-blue-400 font-semibold">Fedora</span>
+                                <span class="text-blue-400">5.8%</span>
+                            </div>
+                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full bg-blue-500" style="width: 5.8%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Web Server Market -->
+                <div class="glass-card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span>🌐</span> Web 服务器市场份额 (W3Techs 2026)
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-orange-400 font-semibold">Ubuntu</span>
+                                <span class="text-orange-400">13.7%</span>
+                            </div>
+                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="progress-bar h-full rounded-full" style="width: 13.7%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-red-400 font-semibold">Debian</span>
+                                <span class="text-red-400">7.0%</span>
+                            </div>
+                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full bg-red-500" style="width: 7%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400 font-semibold">CentOS (Legacy)</span>
+                                <span class="text-gray-400">1.7%</span>
+                            </div>
+                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full bg-gray-500" style="width: 1.7%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-blue-400 font-semibold">Fedora</span>
+                                <span class="text-blue-400">&lt;0.1%</span>
+                            </div>
+                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full bg-blue-500" style="width: 0.1%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steam Gaming Stats -->
+            <div class="glass-card rounded-2xl p-8 mt-8">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span>🎮</span> Steam Linux 游戏市场 (2025 年 12 月)
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center p-6 bg-gray-800/30 rounded-xl">
+                        <div class="text-4xl font-bold text-purple-400 mb-2">3.20%</div>
+                        <div class="text-sm text-gray-400">Linux 整体占比 (历史新高)</div>
+                    </div>
+                    <div class="text-center p-6 bg-gray-800/30 rounded-xl">
+                        <div class="text-4xl font-bold text-cyan-400 mb-2">13.97%</div>
+                        <div class="text-sm text-gray-400">Arch 系发行版占比</div>
+                    </div>
+                    <div class="text-center p-6 bg-gray-800/30 rounded-xl">
+                        <div class="text-4xl font-bold text-green-400 mb-2">100%</div>
+                        <div class="text-sm text-gray-400">Steam Deck 基于 Arch</div>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-yellow-900/20 border border-yellow-700/30 rounded-lg">
+                    <p class="text-sm text-yellow-200">
+                        <span class="font-bold">💡 洞察：</span>Arch 系发行版 (13.97%) 已超越 Debian 系 (12.23%)，成为 Steam 平台 Linux 游戏玩家的首选。CachyOS、Garuda 等游戏优化发行版推动增长。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section id="comparison" class="py-20 bg-gradient-to-b from-linux-dark to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">🔍 主流发行版对比</h2>
+                <p class="text-gray-400">Ubuntu vs Fedora vs Arch 核心差异</p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse glass-card rounded-2xl overflow-hidden">
+                    <thead>
+                        <tr class="bg-gray-800/50">
+                            <th class="py-4 px-6 text-gray-400 font-medium">特性</th>
+                            <th class="py-4 px-6 text-orange-400 font-bold">Ubuntu</th>
+                            <th class="py-4 px-6 text-blue-400 font-bold">Fedora</th>
+                            <th class="py-4 px-6 text-cyan-400 font-bold">Arch Linux</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-gray-800">
+                            <td class="py-4 px-6 font-medium">易用性</td>
+                            <td class="py-4 px-6 text-green-400">⭐⭐⭐ 极高</td>
+                            <td class="py-4 px-6 text-yellow-400">⭐⭐ 中等</td>
+                            <td class="py-4 px-6 text-red-400">⭐ 低</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-4 px-6 font-medium">发布周期</td>
+                            <td class="py-4 px-6">LTS (2年) + 定期</td>
+                            <td class="py-4 px-6">6个月</td>
+                            <td class="py-4 px-6 text-green-400">滚动更新</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-4 px-6 font-medium">软件新鲜度</td>
+                            <td class="py-4 px-6">稳定版</td>
+                            <td class="py-4 px-6 text-green-400">较新</td>
+                            <td class="py-4 px-6 text-green-400">最新</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-4 px-6 font-medium">包管理器</td>
+                            <td class="py-4 px-6">APT + Snap</td>
+                            <td class="py-4 px-6">DNF + Flatpak</td>
+                            <td class="py-4 px-6">Pacman + AUR</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-4 px-6 font-medium">默认桌面</td>
+                            <td class="py-4 px-6">GNOME (定制)</td>
+                            <td class="py-4 px-6">GNOME (原生)</td>
+                            <td class="py-4 px-6">无 (自选)</td>
+                        </tr>
+                        <tr class="border-b border-gray-800">
+                            <td class="py-4 px-6 font-medium">适合人群</td>
+                            <td class="py-4 px-6">新手 / 通用</td>
+                            <td class="py-4 px-6">开发者 / 工作站</td>
+                            <td class="py-4 px-6">极客 / 高级用户</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-medium">社区规模</td>
+                            <td class="py-4 px-6 text-green-400">最大</td>
+                            <td class="py-4 px-6 text-blue-400">大</td>
+                            <td class="py-4 px-6 text-cyan-400">活跃</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Chooser -->
+    <section class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">🎯 快速选择指南</h2>
+                <p class="text-gray-400">根据你的需求，一句话推荐</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="glass-card rounded-xl p-6 hover:border-linux-accent/50 transition-all">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl">🆕</div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">我是 Linux 新手</h4>
+                            <p class="text-gray-400 text-sm mb-3">刚从 Windows/macOS 迁移，想要开箱即用的体验</p>
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 bg-green-900/30 text-green-400 text-xs rounded-full">Linux Mint</span>
+                                <span class="px-3 py-1 bg-blue-900/30 text-blue-400 text-xs rounded-full">Zorin OS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-6 hover:border-linux-accent/50 transition-all">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl">💻</div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">我是开发者</h4>
+                            <p class="text-gray-400 text-sm mb-3">需要最新工具链、容器支持、开发环境</p>
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 bg-purple-900/30 text-purple-400 text-xs rounded-full">Pop!_OS</span>
+                                <span class="px-3 py-1 bg-blue-900/30 text-blue-400 text-xs rounded-full">Fedora</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-6 hover:border-linux-accent/50 transition-all">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl">🎮</div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">我要玩游戏</h4>
+                            <p class="text-gray-400 text-sm mb-3">追求游戏性能，Steam Proton 优化</p>
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 bg-yellow-900/30 text-yellow-400 text-xs rounded-full">CachyOS</span>
+                                <span class="px-3 py-1 bg-pink-900/30 text-pink-400 text-xs rounded-full">Garuda</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-6 hover:border-linux-accent/50 transition-all">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl">🖥️</div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">我要搭服务器</h4>
+                            <p class="text-gray-400 text-sm mb-3">稳定、安全、长期支持的生产环境</p>
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 bg-orange-900/30 text-orange-400 text-xs rounded-full">Ubuntu Server</span>
+                                <span class="px-3 py-1 bg-red-900/30 text-red-400 text-xs rounded-full">Debian</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-6 hover:border-linux-accent/50 transition-all">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl">⚡</div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">我要极致性能</h4>
+                            <p class="text-gray-400 text-sm mb-3">老旧硬件、资源占用极低</p>
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 bg-orange-900/30 text-orange-400 text-xs rounded-full">MX Linux</span>
+                                <span class="px-3 py-1 bg-cyan-900/30 text-cyan-400 text-xs rounded-full">Archcraft</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-6 hover:border-linux-accent/50 transition-all">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl">🔧</div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">我要学习 Linux</h4>
+                            <p class="text-gray-400 text-sm mb-3">深入了解系统原理，愿意折腾</p>
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 bg-cyan-900/30 text-cyan-400 text-xs rounded-full">EndeavourOS</span>
+                                <span class="px-3 py-1 bg-cyan-900/30 text-cyan-400 text-xs rounded-full">Arch</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="text-4xl mb-4">🐧</div>
+            <p class="text-gray-500 mb-4">2026 Linux 发行版 popularity 排行榜</p>
+            <div class="flex justify-center gap-6 text-xs text-gray-600 mb-4">
+                <span>数据来源: DistroWatch</span>
+                <span>W3Techs</span>
+                <span>Stack Overflow</span>
+                <span>Steam 硬件调查</span>
+            </div>
+            <p class="text-xs text-gray-700">
+                更新时间：2026 年 3 月 | 市场数据截至 2026 年 2 月
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Animate progress bars on scroll
+        const observerOptions = { threshold: 0.5 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.style.width;
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            observer.observe(bar);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年Linux发行版人气排行榜 | Linux Distro Popularity Rankings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-hover: #252535;
+            --accent-cachy: #ff6b35;
+            --accent-mint: #87ceeb;
+            --accent-ubuntu: #e95420;
+            --accent-arch: #1793d1;
+            --accent-debian: #d70a53;
+            --accent-fedora: #294172;
+            --accent-garuda: #00d4aa;
+            --accent-opensuse: #73ba25;
+            --accent-pear: #c4a35a;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --glow-cachy: 0 0 30px rgba(255, 107, 53, 0.3);
+            --glow-mint: 0 0 30px rgba(135, 206, 235, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(240, 147, 251, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(79, 172, 254, 0.05) 0%, transparent 40%);
+            animation: bgFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(1deg); }
+            66% { transform: translate(-20px, 20px) rotate(-1deg); }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--gradient-1);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #a0a0c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .update-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .update-time::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        /* Section Title */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 50px 0 30px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .section-title .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        /* Rankings Grid */
+        .rankings-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        /* Distro Card */
+        .distro-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 25px 30px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 25px;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .distro-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .distro-card:hover {
+            transform: translateX(5px);
+            background: var(--bg-hover);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .distro-card:hover::before {
+            width: 6px;
+        }
+
+        /* Rank Number */
+        .rank-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--bg-secondary);
+            border: 2px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .rank-number.top3 {
+            background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+            color: #000;
+            border: none;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .rank-number.top3::after {
+            content: '👑';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 1rem;
+        }
+
+        /* Distro Info */
+        .distro-info h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .distro-info .tag {
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .distro-info .description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .feature-tag {
+            padding: 4px 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Stats */
+        .distro-stats {
+            text-align: right;
+            min-width: 150px;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Color Variants */
+        .distro-card.cachy::before { background: var(--accent-cachy); }
+        .distro-card.cachy .stat-value { color: var(--accent-cachy); }
+        .distro-card.cachy .tag { background: rgba(255, 107, 53, 0.2); color: var(--accent-cachy); }
+
+        .distro-card.mint::before { background: var(--accent-mint); }
+        .distro-card.mint .stat-value { color: var(--accent-mint); }
+        .distro-card.mint .tag { background: rgba(135, 206, 235, 0.2); color: var(--accent-mint); }
+
+        .distro-card.ubuntu::before { background: var(--accent-ubuntu); }
+        .distro-card.ubuntu .stat-value { color: var(--accent-ubuntu); }
+        .distro-card.ubuntu .tag { background: rgba(233, 84, 32, 0.2); color: var(--accent-ubuntu); }
+
+        .distro-card.endeavour::before { background: var(--accent-arch); }
+        .distro-card.endeavour .stat-value { color: var(--accent-arch); }
+        .distro-card.endeavour .tag { background: rgba(23, 147, 209, 0.2); color: var(--accent-arch); }
+
+        .distro-card.manjaro::before { background: #35bf5c; }
+        .distro-card.manjaro .stat-value { color: #35bf5c; }
+        .distro-card.manjaro .tag { background: rgba(53, 191, 92, 0.2); color: #35bf5c; }
+
+        .distro-card.debian::before { background: var(--accent-debian); }
+        .distro-card.debian .stat-value { color: var(--accent-debian); }
+        .distro-card.debian .tag { background: rgba(215, 10, 83, 0.2); color: var(--accent-debian); }
+
+        .distro-card.fedora::before { background: #3c6eb4; }
+        .distro-card.fedora .stat-value { color: #3c6eb4; }
+        .distro-card.fedora .tag { background: rgba(60, 110, 180, 0.2); color: #60a5fa; }
+
+        .distro-card.garuda::before { background: var(--accent-garuda); }
+        .distro-card.garuda .stat-value { color: var(--accent-garuda); }
+        .distro-card.garuda .tag { background: rgba(0, 212, 170, 0.2); color: var(--accent-garuda); }
+
+        .distro-card.opensuse::before { background: var(--accent-opensuse); }
+        .distro-card.opensuse .stat-value { color: var(--accent-opensuse); }
+        .distro-card.opensuse .tag { background: rgba(115, 186, 37, 0.2); color: var(--accent-opensuse); }
+
+        .distro-card.pear::before { background: var(--accent-pear); }
+        .distro-card.pear .stat-value { color: var(--accent-pear); }
+        .distro-card.pear .tag { background: rgba(196, 163, 90, 0.2); color: var(--accent-pear); }
+
+        /* Comparison Tables */
+        .tables-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .table-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .table-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .comparison-table th {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-table tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .comparison-table td:first-child {
+            font-weight: 600;
+        }
+
+        /* Quick Selector */
+        .selector-section {
+            background: var(--gradient-1);
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .selector-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            filter: blur(60px);
+        }
+
+        .selector-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            position: relative;
+        }
+
+        .selector-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .selector-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+        }
+
+        .selector-item .emoji {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .selector-item h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .selector-item p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .distro-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .distro-stats {
+                text-align: center;
+            }
+
+            .rank-number {
+                margin: 0 auto;
+            }
+
+            .tables-section {
+                grid-template-columns: 1fr;
+            }
+
+            .selector-section {
+                padding: 25px;
+            }
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .distro-card:nth-child(1) { animation-delay: 0.1s; }
+        .distro-card:nth-child(2) { animation-delay: 0.2s; }
+        .distro-card:nth-child(3) { animation-delay: 0.3s; }
+        .distro-card:nth-child(4) { animation-delay: 0.4s; }
+        .distro-card:nth-child(5) { animation-delay: 0.5s; }
+        .distro-card:nth-child(6) { animation-delay: 0.6s; }
+        .distro-card:nth-child(7) { animation-delay: 0.7s; }
+        .distro-card:nth-child(8) { animation-delay: 0.8s; }
+        .distro-card:nth-child(9) { animation-delay: 0.9s; }
+        .distro-card:nth-child(10) { animation-delay: 1s; }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header>
+        <div class="badge">🐧 2026年3月最新数据</div>
+        <h1>Linux发行版人气排行榜</h1>
+        <p class="subtitle">基于DistroWatch热度数据 + 全球用户口碑综合排名<br>Discover the Most Popular Linux Distributions</p>
+        <div class="update-time">数据更新时间：2026年3月20日</div>
+    </header>
+
+    <div class="container">
+        <!-- TOP 10 Rankings -->
+        <div class="section-title">
+            <div class="icon" style="background: linear-gradient(135deg, #ff6b35, #f7931e);">🔥</div>
+            <span>综合人气 TOP 10</span>
+        </div>
+
+        <div class="rankings-grid">
+            <!-- 1. CachyOS -->
+            <div class="distro-card cachy fade-in">
+                <div class="rank-number top3">1</div>
+                <div class="distro-info">
+                    <h3>CachyOS <span class="tag">Arch系</span></h3>
+                    <p class="description">性能爆炸、游戏优化极致、滚动更新、极简设计。采用自定义内核优化，游戏帧率比Windows还高。</p>
+                    <div class="features">
+                        <span class="feature-tag">🎮 游戏优化</span>
+                        <span class="feature-tag">⚡ 性能极致</span>
+                        <span class="feature-tag">🔄 滚动更新</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">4000+</div>
+                    <div class="stat-label">日点击量(HPD)</div>
+                </div>
+            </div>
+
+            <!-- 2. Linux Mint -->
+            <div class="distro-card mint fade-in">
+                <div class="rank-number top3">2</div>
+                <div class="distro-info">
+                    <h3>Linux Mint <span class="tag">Debian系</span></h3>
+                    <p class="description">最像Windows的Linux发行版，稳定可靠，小白友好，开箱即用。Cinnamon桌面环境让Windows用户零门槛迁移。</p>
+                    <div class="features">
+                        <span class="feature-tag">🪟 类Windows</span>
+                        <span class="feature-tag">🛡️ 超稳定</span>
+                        <span class="feature-tag">👶 新手首选</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">#2</div>
+                    <div class="stat-label">DistroWatch排名</div>
+                </div>
+            </div>
+
+            <!-- 3. Ubuntu -->
+            <div class="distro-card ubuntu fade-in">
+                <div class="rank-number top3">3</div>
+                <div class="distro-info">
+                    <h3>Ubuntu <span class="tag">Debian系</span></h3>
+                    <p class="description">全球用户量最多的Linux发行版，生态最完善。服务器和桌面双强，企业级支持长达15年。</p>
+                    <div class="features">
+                        <span class="feature-tag">🌍 全球第一</span>
+                        <span class="feature-tag">🏢 企业首选</span>
+                        <span class="feature-tag">📚 生态完善</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">~30%</div>
+                    <div class="stat-label">桌面市场份额</div>
+                </div>
+            </div>
+
+            <!-- 4. EndeavourOS -->
+            <div class="distro-card endeavour fade-in">
+                <div class="rank-number">4</div>
+                <div class="distro-info">
+                    <h3>EndeavourOS <span class="tag">Arch系</span></h3>
+                    <p class="description">最接近原生Arch的发行版，极简主义者的最爱。安装友好但保持Arch的纯粹性，无自有仓库，直接使用Arch源。</p>
+                    <div class="features">
+                        <span class="feature-tag">🎯 原生Arch</span>
+                        <span class="feature-tag">🧘 极简</span>
+                        <span class="feature-tag">📦 无中间层</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">Top 5</div>
+                    <div class="stat-label">热度排名</div>
+                </div>
+            </div>
+
+            <!-- 5. Manjaro -->
+            <div class="distro-card manjaro fade-in">
+                <div class="rank-number">5</div>
+                <div class="distro-info">
+                    <h3>Manjaro <span class="tag">Arch系</span></h3>
+                    <p class="description">Arch懒人版，图形化安装，驱动齐全。自带 Pamac 图形包管理器，新手体验Arch的最佳入口。</p>
+                    <div class="features">
+                        <span class="feature-tag">🔧 图形安装</span>
+                        <span class="feature-tag">🎨 多桌面</span>
+                        <span class="feature-tag">🚀 硬件检测</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">Top 5</div>
+                    <div class="stat-label">热度排名</div>
+                </div>
+            </div>
+
+            <!-- 6. Debian -->
+            <div class="distro-card debian fade-in">
+                <div class="rank-number">6</div>
+                <div class="distro-info">
+                    <h3>Debian <span class="tag">上游根基</span></h3>
+                    <p class="description">无数发行版的"爹"，极致稳定，软件包极多。Ubuntu、Mint等都基于Debian，服务器领域的黄金标准。</p>
+                    <div class="features">
+                        <span class="feature-tag">🏛️ 发行版之祖</span>
+                        <span class="feature-tag">⚖️ 极致稳定</span>
+                        <span class="feature-tag">📦 6万+软件包</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">#4</div>
+                    <div class="stat-label">DistroWatch排名</div>
+                </div>
+            </div>
+
+            <!-- 7. Fedora -->
+            <div class="distro-card fedora fade-in">
+                <div class="rank-number">7</div>
+                <div class="distro-info">
+                    <h3>Fedora <span class="tag">红帽社区</span></h3>
+                    <p class="description">技术前沿，开发者首选。默认使用Wayland和SELinux，Red Hat Enterprise Linux的上游试验田。</p>
+                    <div class="features">
+                        <span class="feature-tag">💻 开发者</span>
+                        <span class="feature-tag">🔒 SELinux</span>
+                        <span class="feature-tag">🖥️ Wayland</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">Top 6</div>
+                    <div class="stat-label">热度排名</div>
+                </div>
+            </div>
+
+            <!-- 8. Garuda Linux -->
+            <div class="distro-card garuda fade-in">
+                <div class="rank-number">8</div>
+                <div class="distro-info">
+                    <h3>Garuda Linux <span class="tag">Arch系</span></h3>
+                    <p class="description">Linux颜值天花板，特效拉满，Btrfs快照，游戏向优化。Dragonized主题让桌面美得像艺术品。</p>
+                    <div class="features">
+                        <span class="feature-tag">✨ 颜值巅峰</span>
+                        <span class="feature-tag">💾 Btrfs快照</span>
+                        <span class="feature-tag">🎮 游戏优化</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">Top 10</div>
+                    <div class="stat-label">热度排名</div>
+                </div>
+            </div>
+
+            <!-- 9. openSUSE -->
+            <div class="distro-card opensuse fade-in">
+                <div class="rank-number">9</div>
+                <div class="distro-info">
+                    <h3>openSUSE <span class="tag">独立</span></h3>
+                    <p class="description">YaST配置工具强大，稳定可靠，企业+桌面双用。Tumbleweed滚动版Leap固定版满足不同需求。</p>
+                    <div class="features">
+                        <span class="feature-tag">🛠️ YaST神器</span>
+                        <span class="feature-tag">🏢 企业级</span>
+                        <span class="feature-tag">⚙️ 灵活</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">#5</div>
+                    <div class="stat-label">DistroWatch排名</div>
+                </div>
+            </div>
+
+            <!-- 10. pearOS -->
+            <div class="distro-card pear fade-in">
+                <div class="rank-number">10</div>
+                <div class="distro-info">
+                    <h3>pearOS <span class="tag">Arch系</span></h3>
+                    <p class="description">仿macOS最强发行版，基于Arch+KDE，Liquid Gel设计语言，流畅美观。Mac用户转Linux的最佳选择。</p>
+                    <div class="features">
+                        <span class="feature-tag">🍎 仿macOS</span>
+                        <span class="feature-tag">🎨 Liquid Gel</span>
+                        <span class="feature-tag">📈 热度飙升</span>
+                    </div>
+                </div>
+                <div class="distro-stats">
+                    <div class="stat-value">飙升</div>
+                    <div class="stat-label">热度趋势</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Tables -->
+        <div class="tables-section">
+            <div class="table-card">
+                <h3>📊 DistroWatch热度榜（3月）</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>发行版</th>
+                            <th>日均点击</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td style="color: var(--accent-cachy);">CachyOS</td>
+                            <td>4000+</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td style="color: var(--accent-mint);">Linux Mint</td>
+                            <td>2400+</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td style="color: var(--accent-ubuntu);">Ubuntu</td>
+                            <td>2200+</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td style="color: var(--accent-debian);">Debian</td>
+                            <td>1800+</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td style="color: var(--accent-opensuse);">openSUSE</td>
+                            <td>1600+</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td style="color: #3c6eb4;">Fedora</td>
+                            <td>1500+</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td style="color: var(--accent-arch);">EndeavourOS</td>
+                            <td>1400+</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td style="color: #35bf5c;">Manjaro</td>
+                            <td>1300+</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td style="color: var(--accent-garuda);">Garuda</td>
+                            <td>1100+</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>MX Linux</td>
+                            <td>1000+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-card">
+                <h3>🌍 全球桌面市场份额</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>发行版</th>
+                            <th>份额</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td style="color: var(--accent-ubuntu);">Ubuntu</td>
+                            <td>~30%</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td style="color: var(--accent-mint);">Linux Mint</td>
+                            <td>~15%</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td style="color: #35bf5c;">Manjaro</td>
+                            <td>~10%</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td style="color: #3c6eb4;">Fedora</td>
+                            <td>~8%</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td style="color: var(--accent-debian);">Debian</td>
+                            <td>~7%</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td style="color: var(--accent-arch);">Arch系合计</td>
+                            <td>~25%</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td style="color: var(--accent-opensuse);">openSUSE</td>
+                            <td>~3%</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>其他</td>
+                            <td>~2%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Quick Selector -->
+        <div class="selector-section">
+            <h2>🎯 一句话选系统</h2>
+            <div class="selector-grid">
+                <div class="selector-item">
+                    <div class="emoji">🪟</div>
+                    <h4>小白/Windows转</h4>
+                    <p>Linux Mint / Ubuntu</p>
+                </div>
+                <div class="selector-item">
+                    <div class="emoji">🎮</div>
+                    <h4>游戏/性能</h4>
+                    <p>CachyOS / Garuda</p>
+                </div>
+                <div class="selector-item">
+                    <div class="emoji">🧘</div>
+                    <h4>极简/原生Arch</h4>
+                    <p>EndeavourOS</p>
+                </div>
+                <div class="selector-item">
+                    <div class="emoji">🍎</div>
+                    <h4>仿macOS颜值</h4>
+                    <p>pearOS</p>
+                </div>
+                <div class="selector-item">
+                    <div class="emoji">🏢</div>
+                    <h4>稳定/服务器</h4>
+                    <p>Debian / Ubuntu</p>
+                </div>
+                <div class="selector-item">
+                    <div class="emoji">💻</div>
+                    <h4>开发/前沿</h4>
+                    <p>Fedora</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>数据来源：DistroWatch Page Hit Ranking | 数据仅供参考，不代表实际用户数量</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">© 2026 Linux Distro Rankings | Made with ❤️ for the Linux Community</p>
+    </footer>
+
+    <script>
+        // Add scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add hover effect for selector items
+        document.querySelectorAll('.selector-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const text = this.querySelector('p').textContent;
+                
+                // Create toast notification
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 30px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: var(--bg-card);
+                    color: var(--text-primary);
+                    padding: 15px 30px;
+                    border-radius: 50px;
+                    border: 1px solid rgba(255,255,255,0.1);
+                    z-index: 1000;
+                    animation: slideUp 0.3s ease;
+                `;
+                toast.textContent = `推荐系统：${text}`;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.animation = 'slideDown 0.3s ease forwards';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            });
+        });
+
+        // Add keyframes for toast
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+            @keyframes slideDown {
+                from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
