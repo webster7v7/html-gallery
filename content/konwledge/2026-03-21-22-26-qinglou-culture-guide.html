@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>锦瑟华年 - 古代顶级青楼消费图谱</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ink': '#1a1a1a',
+                        'cinnabar': '#c9372c',
+                        'gold': '#d4af37',
+                        'jade': '#2d6a4f',
+                        'paper': '#f7f3e9',
+                        'charcoal': '#2c2c2c'
+                    },
+                    fontFamily: {
+                        'serif': ['"Noto Serif SC"', 'serif'],
+                        'sans': ['"Noto Sans SC"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'cloud-pattern': "url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23d4af37\" fill-opacity=\"0.05\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #f7f3e9;
+        }
+        .text-shadow-gold {
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+        }
+        .glow-cinnabar {
+            box-shadow: 0 0 20px rgba(201, 55, 44, 0.2);
+        }
+        .step-line {
+            background: linear-gradient(to bottom, #c9372c, transparent);
+        }
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -5px rgba(212, 175, 55, 0.15);
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c9372c;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-ink bg-cloud-pattern overflow-x-hidden">
+
+    <!-- Hero Section -->
+    <header class="relative min-h-[60vh] flex items-center justify-center px-6 py-20 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-ink/50 to-ink z-0"></div>
+        <div class="absolute top-0 left-0 w-full h-full opacity-20">
+            <div class="absolute top-10 left-10 w-32 h-32 border border-gold/30 rounded-full blur-xl"></div>
+            <div class="absolute bottom-10 right-10 w-48 h-48 border border-cinnabar/30 rounded-full blur-2xl"></div>
+        </div>
+        
+        <div class="relative z-10 text-center max-w-4xl mx-auto fade-in-up">
+            <div class="inline-block mb-4 px-4 py-1 border border-gold/40 rounded-full text-gold/80 text-sm tracking-widest uppercase">
+                历史文化专题
+            </div>
+            <h1 class="font-serif text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gold via-yellow-200 to-gold mb-6 text-shadow-gold leading-tight">
+                锦瑟华年
+            </h1>
+            <p class="font-serif text-2xl md:text-3xl text-paper/90 mb-4 italic">
+                古代顶级青楼消费图谱
+            </p>
+            <p class="text-paper/60 max-w-2xl mx-auto text-lg leading-relaxed">
+                探索明清士大夫阶层的复合型奢侈体验 —— 从打茶围到留宿，一场跨越金钱、才华与权力的社交博弈
+            </p>
+        </div>
+    </header>
+
+    <!-- Introduction -->
+    <section class="px-6 py-12 max-w-5xl mx-auto">
+        <div class="bg-charcoal/50 border-l-4 border-cinnabar p-8 rounded-r-2xl backdrop-blur-sm fade-in-up delay-100">
+            <p class="text-lg leading-relaxed text-paper/90 font-serif">
+                古代有钱人（尤其是真正有闲钱、有身份的士大夫、富商、皇亲国戚）去<span class="text-gold font-bold">顶级青楼</span>（不是路边下等窑子）找<span class="text-gold font-bold">头牌/花魁</span>，爽的点其实远超单纯的"肉体交易"，而是一种<span class="text-cinnabar font-bold">多重感官+社交地位+虚荣心+文化优越感</span>的复合型奢侈体验。
+            </p>
+        </div>
+    </section>
+
+    <!-- Four Levels -->
+    <section class="px-6 py-12 max-w-6xl mx-auto">
+        <div class="grid gap-8 md:gap-12">
+            
+            <!-- Level 1 -->
+            <div class="relative pl-8 md:pl-16 fade-in-up delay-200 group">
+                <div class="absolute left-0 top-0 w-1 h-full step-line rounded-full"></div>
+                <div class="absolute left-[-5px] top-0 w-3 h-3 bg-cinnabar rounded-full glow-cinnabar group-hover:scale-150 transition-transform"></div>
+                
+                <div class="bg-gradient-to-br from-charcoal/80 to-ink/80 border border-gold/20 rounded-2xl p-6 md:p-8 card-hover backdrop-blur-sm">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <span class="text-cinnabar text-sm font-bold tracking-widest uppercase mb-2 block">阶段一</span>
+                            <h2 class="font-serif text-2xl md:text-3xl font-bold text-gold">前戏阶段 · 竞逐游戏</h2>
+                        </div>
+                        <div class="hidden md:block text-6xl font-serif text-gold/10 font-black">01</div>
+                    </div>
+                    
+                    <div class="space-y-3 text-paper/80">
+                        <p class="flex items-start gap-2">
+                            <span class="text-cinnabar mt-1">◆</span>
+                            <span>层层筛选机制：打茶围 → 吟诗作对 → 比才情 → 比财力</span>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <span class="text-cinnabar mt-1">◆</span>
+                            <span>时间成本：连去好几天甚至几十天，不断写诗、送礼、展示才华</span>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <span class="text-cinnabar mt-1">◆</span>
+                            <span>巨额前置消费：动辄几十两到上百两银子（仅赏钱、酒水、打赏）</span>
+                        </p>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-cinnabar/10 border border-cinnabar/30 rounded-lg">
+                        <p class="text-gold font-serif italic">
+                            "爽点：打败其他竞争者，成为'唯一幸运儿'的虚荣心爆炸感 + '老子有钱有才'的双重满足"
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 2 -->
+            <div class="relative pl-8 md:pl-16 fade-in-up delay-300 group">
+                <div class="absolute left-0 top-0 w-1 h-full step-line rounded-full"></div>
+                <div class="absolute left-[-5px] top-0 w-3 h-3 bg-cinnabar rounded-full glow-cinnabar group-hover:scale-150 transition-transform"></div>
+                
+                <div class="bg-gradient-to-br from-charcoal/80 to-ink/80 border border-gold/20 rounded-2xl p-6 md:p-8 card-hover backdrop-blur-sm">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <span class="text-cinnabar text-sm font-bold tracking-widest uppercase mb-2 block">阶段二</span>
+                            <h2 class="font-serif text-2xl md:text-3xl font-bold text-gold">文艺享受 · 精神盛宴</h2>
+                        </div>
+                        <div class="hidden md:block text-6xl font-serif text-gold/10 font-black">02</div>
+                    </div>
+                    
+                    <p class="text-paper/80 mb-4">顶级花魁通常<span class="text-gold font-bold">琴棋书画诗词歌赋样样精通</span>，很多人本身就是落难官宦小姐或经过严格训练的艺妓。</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2 text-paper/90">
+                                <span class="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-gold text-xs">琴</span>
+                                <span>古琴/琵琶现场演奏</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-paper/90">
+                                <span class="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-gold text-xs">棋</span>
+                                <span>对弈围棋/象棋</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-paper/90">
+                                <span class="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-gold text-xs">书</span>
+                                <span>联句行酒令、诗词唱和</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2 text-paper/90">
+                                <span class="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-gold text-xs">画</span>
+                                <span>赏画、题跋、焚香</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-paper/90">
+                                <span class="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-gold text-xs">茶</span>
+                                <span>品茶论道、八卦秘闻</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-paper/90">
+                                <span class="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-gold text-xs">曲</span>
+                                <span>唱小曲、讲段子</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-jade/10 border border-jade/30 rounded-lg">
+                        <p class="text-paper/90 text-sm">
+                            <span class="text-gold font-bold">现代类比：</span>同时包下林俊杰开私人演唱会 + 顶级超模陪聊 + 米其林三星主厨做宵夜 + 私人哲学顾问
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 3 -->
+            <div class="relative pl-8 md:pl-16 fade-in-up delay-400 group">
+                <div class="absolute left-0 top-0 w-1 h-full step-line rounded-full"></div>
+                <div class="absolute left-[-5px] top-0 w-3 h-3 bg-cinnabar rounded-full glow-cinnabar group-hover:scale-150 transition-transform"></div>
+                
+                <div class="bg-gradient-to-br from-charcoal/80 to-ink/80 border border-gold/20 rounded-2xl p-6 md:p-8 card-hover backdrop-blur-sm">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <span class="text-cinnabar text-sm font-bold tracking-widest uppercase mb-2 block">阶段三</span>
+                            <h2 class="font-serif text-2xl md:text-3xl font-bold text-gold">肉体部分 · 天价留宿</h2>
+                        </div>
+                        <div class="hidden md:block text-6xl font-serif text-gold/10 font-black">03</div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <p class="text-paper/80">
+                            高端消费中，<span class="text-cinnabar font-bold">破身/留宿/独占</span>的价格才是天价。历史上李师师、陈圆圆、柳如是等级别：
+                        </p>
+                        
+                        <div class="grid md:grid-cols-3 gap-4 text-center">
+                            <div class="bg-ink/50 p-4 rounded-lg border border-gold/20">
+                                <div class="text-2xl font-serif text-gold font-bold">数百两</div>
+                                <div class="text-xs text-paper/60 mt-1">普通留宿</div>
+                            </div>
+                            <div class="bg-cinnabar/20 p-4 rounded-lg border border-cinnabar/40 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-cinnabar/10 animate-pulse"></div>
+                                <div class="relative text-3xl font-serif text-cinnabar font-bold">千两+</div>
+                                <div class="relative text-xs text-paper/80 mt-1">破身/独占</div>
+                            </div>
+                            <div class="bg-ink/50 p-4 rounded-lg border border-gold/20">
+                                <div class="text-2xl font-serif text-gold font-bold">百万¥</div>
+                                <div class="text-xs text-paper/60 mt-1">现代购买力折算</div>
+                            </div>
+                        </div>
+                        
+                        <p class="text-paper/60 text-sm italic border-l-2 border-gold/40 pl-4">
+                            相当于今天几百万人民币起步，普通有钱人能留宿头牌一晚，已是几万到几十万人民币的水平。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Table -->
+    <section class="px-6 py-12 max-w-6xl mx-auto fade-in-up">
+        <div class="mb-8 text-center">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold text-gold mb-2">消费价格参考</h2>
+            <p class="text-paper/60">不同朝代/档次差异（以明清购买力为主）</p>
+        </div>
+        
+        <div class="overflow-x-auto rounded-2xl border border-gold/20 bg-charcoal/30 backdrop-blur-sm">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gradient-to-r from-cinnabar/20 to-gold/10 border-b border-gold/30">
+                        <th class="p-4 font-serif text-gold text-lg">档次</th>
+                        <th class="p-4 font-serif text-gold">古代花费</th>
+                        <th class="p-4 font-serif text-gold">现代折算（人民币）</th>
+                        <th class="p-4 font-serif text-gold">体验内容</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gold/10">
+                    <tr class="hover:bg-white/5 transition-colors group">
+                        <td class="p-4 font-bold text-paper/70">下等窑子</td>
+                        <td class="p-4 text-paper/80">几百文～几贯</td>
+                        <td class="p-4 text-paper/60">几百～两三千</td>
+                        <td class="p-4 text-paper/80">快速解决生理需求</td>
+                    </tr>
+                    <tr class="hover:bg-white/5 transition-colors group">
+                        <td class="p-4 font-bold text-paper/90">中档酒楼</td>
+                        <td class="p-4 text-paper/90">几两～十几两</td>
+                        <td class="p-4 text-paper/80">几千～两三万</td>
+                        <td class="p-4 text-paper/90">喝酒听曲，能上手</td>
+                    </tr>
+                    <tr class="hover:bg-white/5 transition-colors group">
+                        <td class="p-4 font-bold text-gold">普通头牌</td>
+                        <td class="p-4 text-gold/90">20～100两</td>
+                        <td class="p-4 text-gold/80">几万～20万</td>
+                        <td class="p-4 text-paper/90">文艺+肉体全套</td>
+                    </tr>
+                    <tr class="hover:bg-cinnabar/10 transition-colors border-l-4 border-cinnabar bg-cinnabar/5">
+                        <td class="p-4 font-bold text-cinnabar">顶级花魁</td>
+                        <td class="p-4 text-cinnabar font-bold">100～1000+两</td>
+                        <td class="p-4 text-cinnabar font-bold">几十万～数百万</td>
+                        <td class="p-4 text-paper/90">征服名妓的谈资 + 极致享受</td>
+                    </tr>
+                    <tr class="hover:bg-white/5 transition-colors group">
+                        <td class="p-4 font-bold text-jade">长期包养/赎身</td>
+                        <td class="p-4 text-jade">几百～几千两</td>
+                        <td class="p-4 text-jade">数百万～上千万</td>
+                        <td class="p-4 text-paper/90">相当于娶顶级网红/艺人回家</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Summary -->
+    <section class="px-6 py-16 max-w-4xl mx-auto">
+        <div class="relative bg-gradient-to-br from-gold/10 via-transparent to-cinnabar/10 rounded-3xl p-8 md:p-12 border border-gold/30 text-center fade-in-up">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-ink px-6 py-2 rounded-full border border-gold/40">
+                <span class="text-gold font-serif text-sm tracking-widest">一句话总结</span>
+            </div>
+            
+            <blockquote class="font-serif text-xl md:text-2xl text-paper leading-relaxed italic mb-6">
+                "古代真正有钱有闲的男人去顶级青楼，最爽的不是'啪'，而是<span class="text-gold not-italic font-bold">'老子用钱和才华，把全城最美最有才的女人竞争到手，然后在极其奢华的环境里，被她用最高级的文艺方式伺候一整晚，还能事后到处吹牛逼'</span>的那种综合体验。"
+            </blockquote>
+            
+            <div class="w-16 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-6"></div>
+            
+            <p class="text-paper/70 leading-relaxed">
+                这套体验的<span class="text-gold">稀缺性、仪式感、排他性、社会认可度</span>，在古代是普通人一辈子都触摸不到的天花板级享受。底层逻辑古今相通：<span class="text-cinnabar font-bold">越稀缺、越需要拼财力+拼社会资源的东西，对有钱人来说就越爽</span>。
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-6 py-8 text-center text-paper/40 text-sm border-t border-gold/10 mt-12">
+        <p class="font-serif">历史文化研究 · 学术资料整理</p>
+        <p class="mt-2 text-xs">内容仅供历史文化参考，探讨古代社会阶层与消费文化</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach((el) => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('header');
+            if (parallax) {
+                parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
