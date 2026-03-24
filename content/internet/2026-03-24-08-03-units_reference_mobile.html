@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <title>技术单位换算手册</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Inter', sans-serif;
+                background: #0f172a;
+                color: #e2e8f0;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .mono {
+                font-family: 'JetBrains Mono', monospace;
+            }
+        }
+        @layer components {
+            .glass-panel {
+                background: rgba(30, 41, 59, 0.8);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(148, 163, 184, 0.1);
+            }
+            .gradient-text {
+                background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .unit-card {
+                transition: all 0.2s ease;
+            }
+            .unit-card:active {
+                transform: scale(0.98);
+            }
+            .tab-active {
+                background: rgba(96, 165, 250, 0.15);
+                color: #60a5fa;
+                border-bottom: 2px solid #60a5fa;
+            }
+            .mobile-tab {
+                min-width: 80px;
+                white-space: nowrap;
+            }
+            .data-card {
+                background: rgba(30, 41, 59, 0.6);
+                border: 1px solid rgba(148, 163, 184, 0.1);
+            }
+            .grid-bg {
+                background-image: 
+                    linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+                background-size: 20px 20px;
+            }
+            /* Mobile-optimized scrollbar */
+            .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .hide-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .touch-pad {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen grid-bg pb-safe">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-3 sm:px-4 py-3">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-blue-500/10 rounded-lg shrink-0">
+                    <i data-lucide="cpu" class="w-5 h-5 sm:w-6 sm:h-6 text-blue-400"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h1 class="text-base sm:text-lg font-bold gradient-text truncate">技术单位换算手册</h1>
+                    <p class="text-[10px] sm:text-xs text-slate-400 truncate">Power & Memory Units</p>
+                </div>
+            </div>
+
+            <!-- Search Bar - Mobile Optimized -->
+            <div class="mt-3 relative">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="搜索单位 (如: GB, kW, dBm)..." 
+                    class="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all"
+                >
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+        <!-- Category Tabs - Horizontal Scroll on Mobile -->
+        <div class="flex gap-1 mb-4 sm:mb-6 p-1 bg-slate-800/50 rounded-xl overflow-x-auto hide-scrollbar">
+            <button onclick="switchTab('power')" id="tab-power" class="tab-btn tab-active mobile-tab px-4 sm:px-6 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 sm:gap-2 shrink-0 touch-pad">
+                <i data-lucide="zap" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                <span>功率</span>
+            </button>
+            <button onclick="switchTab('memory')" id="tab-memory" class="tab-btn mobile-tab px-4 sm:px-6 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5 sm:gap-2 shrink-0 touch-pad">
+                <i data-lucide="hard-drive" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                <span>存储</span>
+            </button>
+            <button onclick="switchTab('bits')" id="tab-bits" class="tab-btn mobile-tab px-4 sm:px-6 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5 sm:gap-2 shrink-0 touch-pad">
+                <i data-lucide="wifi" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                <span>带宽</span>
+            </button>
+            <button onclick="switchTab('quick')" id="tab-quick" class="tab-btn mobile-tab px-4 sm:px-6 py-2.5 rounded-lg text-xs sm:text-sm font-medium text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5 sm:gap-2 shrink-0 touch-pad sm:hidden">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                <span>场景</span>
+            </button>
+        </div>
+
+        <!-- Power Units Section -->
+        <div id="section-power" class="space-y-3 sm:space-y-6">
+            <!-- Mobile Cards View -->
+            <div class="sm:hidden space-y-3" id="power-mobile-cards">
+                <!-- Generated by JS -->
+            </div>
+
+            <!-- Desktop Table View -->
+            <div class="hidden sm:block glass-panel rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                        <i data-lucide="zap" class="w-5 h-5 text-yellow-400"></i>
+                        国际单位制 (SI)
+                    </h2>
+                    <span class="text-xs px-2 py-1 bg-yellow-500/10 text-yellow-400 rounded-full">基础单位: 瓦特 (W)</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-700">
+                                <th class="text-left py-3 px-4 text-slate-400 font-medium">单位</th>
+                                <th class="text-left py-3 px-4 text-slate-400 font-medium">符号</th>
+                                <th class="text-left py-3 px-4 text-slate-400 font-medium">换算关系</th>
+                                <th class="text-left py-3 px-4 text-slate-400 font-medium">应用场景</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800" id="powerTableBody">
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="py-4 px-4 font-medium text-slate-200">瓦特</td>
+                                <td class="py-4 px-4"><span class="mono text-blue-400">W</span></td>
+                                <td class="py-4 px-4 text-slate-400">基础单位</td>
+                                <td class="py-4 px-4 text-slate-300">电器功率、CPU功耗</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="py-4 px-4 font-medium text-slate-200">毫瓦</td>
+                                <td class="py-4 px-4"><span class="mono text-blue-400">mW</span></td>
+                                <td class="py-4 px-4 text-slate-400">10⁻³ W</td>
+                                <td class="py-4 px-4 text-slate-300">低功耗芯片、传感器</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="py-4 px-4 font-medium text-slate-200">微瓦</td>
+                                <td class="py-4 px-4"><span class="mono text-blue-400">μW</span></td>
+                                <td class="py-4 px-4 text-slate-400">10⁻⁶ W</td>
+                                <td class="py-4 px-4 text-slate-300">极低功耗设备</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30 bg-blue-500/5">
+                                <td class="py-4 px-4 font-medium text-slate-200">千瓦</td>
+                                <td class="py-4 px-4"><span class="mono text-blue-400 font-bold">kW</span></td>
+                                <td class="py-4 px-4 text-slate-400">10³ W</td>
+                                <td class="py-4 px-4 text-slate-300">家用电器、小型电机</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="py-4 px-4 font-medium text-slate-200">兆瓦</td>
+                                <td class="py-4 px-4"><span class="mono text-blue-400">MW</span></td>
+                                <td class="py-4 px-4 text-slate-400">10⁶ W</td>
+                                <td class="py-4 px-4 text-slate-300">发电机组、工厂用电</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="py-4 px-4 font-medium text-slate-200">吉瓦</td>
+                                <td class="py-4 px-4"><span class="mono text-blue-400">GW</span></td>
+                                <td class="py-4 px-4 text-slate-400">10⁹ W</td>
+                                <td class="py-4 px-4 text-slate-300">核电站、大型电网</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="py-4 px-4 font-medium text-slate-200">太瓦</td>
+                                <td class="py-4 px-4"><span class="mono text-blue-400">TW</span></td>
+                                <td class="py-4 px-4 text-slate-400">10¹² W</td>
+                                <td class="py-4 px-4 text-slate-300">国家/全球发电量级</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Special Units - Responsive Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <div class="data-card rounded-xl p-4 unit-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-slate-400 block mb-1">马力</span>
+                            <span class="mono text-lg text-blue-400 font-bold">hp</span>
+                        </div>
+                        <span class="text-xs text-slate-500 bg-slate-800/50 px-2 py-1 rounded">≈ 746 W</span>
+                    </div>
+                </div>
+                <div class="data-card rounded-xl p-4 unit-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-slate-400 block mb-1">英制马力</span>
+                            <span class="mono text-lg text-blue-400 font-bold">bhp</span>
+                        </div>
+                        <span class="text-xs text-slate-500 bg-slate-800/50 px-2 py-1 rounded">≈ 745.7 W</span>
+                    </div>
+                </div>
+                <div class="data-card rounded-xl p-4 unit-card border-purple-500/20">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-slate-400 block mb-1">分贝毫瓦</span>
+                            <span class="mono text-lg text-purple-400 font-bold">dBm</span>
+                        </div>
+                        <span class="text-xs text-slate-500 bg-slate-800/50 px-2 py-1 rounded">0 = 1mW</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Conversion -->
+            <div class="glass-panel rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                <h3 class="text-sm font-semibold text-slate-300 mb-3 sm:mb-4 flex items-center gap-2">
+                    <i data-lucide="calculator" class="w-4 h-4 text-slate-400"></i>
+                    快速换算
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 text-xs sm:text-sm">
+                    <div class="p-2.5 sm:p-3 bg-slate-800/50 rounded-lg text-center">
+                        <span class="block text-slate-500 text-[10px] sm:text-xs mb-1">1 kW</span>
+                        <span class="block text-blue-400 font-mono font-semibold">= 1000 W</span>
+                    </div>
+                    <div class="p-2.5 sm:p-3 bg-slate-800/50 rounded-lg text-center">
+                        <span class="block text-slate-500 text-[10px] sm:text-xs mb-1">1 MW</span>
+                        <span class="block text-blue-400 font-mono font-semibold">= 1000 kW</span>
+                    </div>
+                    <div class="p-2.5 sm:p-3 bg-slate-800/50 rounded-lg text-center">
+                        <span class="block text-slate-500 text-[10px] sm:text-xs mb-1">1 hp</span>
+                        <span class="block text-yellow-400 font-mono font-semibold">≈ 0.746 kW</span>
+                    </div>
+                    <div class="p-2.5 sm:p-3 bg-slate-800/50 rounded-lg text-center">
+                        <span class="block text-slate-500 text-[10px] sm:text-xs mb-1">1 GW</span>
+                        <span class="block text-blue-400 font-mono font-semibold">= 10⁶ kW</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Units Section -->
+        <div id="section-memory" class="space-y-3 sm:space-y-6 hidden">
+            <!-- Mobile Cards -->
+            <div class="sm:hidden space-y-3" id="memory-mobile-cards"></div>
+
+            <!-- Desktop View -->
+            <div class="hidden sm:grid sm:grid-cols-2 gap-6">
+                <div class="glass-panel rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                            <i data-lucide="binary" class="w-5 h-5 text-green-400"></i>
+                            二进制 (IEC)
+                        </h2>
+                        <span class="text-xs px-2 py-1 bg-green-500/10 text-green-400 rounded-full">RAM、显存</span>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center p-3 bg-slate-800/30 rounded-lg">
+                            <span class="mono text-green-400">KiB</span>
+                            <span class="text-xs text-slate-400">1,024 B</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-800/30 rounded-lg">
+                            <span class="mono text-green-400">MiB</span>
+                            <span class="text-xs text-slate-400">1,048,576 B</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                            <span class="mono text-green-400 font-bold">GiB</span>
+                            <span class="text-xs text-slate-400">1,073,741,824 B</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-800/30 rounded-lg">
+                            <span class="mono text-green-400">TiB</span>
+                            <span class="text-xs text-slate-400">~1.1 × 10¹² B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                            <i data-lucide="hash" class="w-5 h-5 text-blue-400"></i>
+                            十进制 (SI)
+                        </h2>
+                        <span class="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded-full">硬盘、SSD</span>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center p-3 bg-slate-800/30 rounded-lg">
+                            <span class="mono text-blue-400">KB</span>
+                            <span class="text-xs text-slate-400">1,000 B</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-800/30 rounded-lg">
+                            <span class="mono text-blue-400">MB</span>
+                            <span class="text-xs text-slate-400">1,000,000 B</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                            <span class="mono text-blue-400 font-bold">GB</span>
+                            <span class="text-xs text-slate-400">10⁹ B</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-slate-800/30 rounded-lg">
+                            <span class="mono text-blue-400">TB</span>
+                            <span class="text-xs text-slate-400">10¹² B</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Capacity Loss Notice -->
+            <div class="glass-panel rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-orange-500/20 bg-orange-500/5">
+                <div class="flex items-start gap-3 sm:gap-4">
+                    <div class="p-2 bg-orange-500/10 rounded-lg shrink-0">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-orange-400"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="text-sm font-semibold text-orange-300 mb-2">为什么 1TB 硬盘显示 931GB？</h3>
+                        <p class="text-xs sm:text-sm text-slate-400 mb-3">
+                            硬盘厂商使用十进制，但操作系统使用二进制显示。
+                        </p>
+                        <div class="grid grid-cols-3 gap-2 text-xs">
+                            <div class="p-2 bg-slate-800/50 rounded text-center">
+                                <span class="block text-slate-500 mb-1">标称</span>
+                                <span class="block text-slate-200 font-mono">1 TB</span>
+                            </div>
+                            <div class="p-2 bg-slate-800/50 rounded text-center">
+                                <span class="block text-slate-500 mb-1">实际</span>
+                                <span class="block text-slate-200 font-mono">÷ 1.024³</span>
+                            </div>
+                            <div class="p-2 bg-slate-800/50 rounded text-center">
+                                <span class="block text-slate-500 mb-1">显示</span>
+                                <span class="block text-orange-400 font-mono">931 GiB</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bits Section -->
+        <div id="section-bits" class="space-y-3 sm:space-y-6 hidden">
+            <!-- Mobile Cards -->
+            <div class="sm:hidden space-y-3" id="bits-mobile-cards"></div>
+
+            <!-- Desktop View -->
+            <div class="hidden sm:block glass-panel rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                        <i data-lucide="wifi" class="w-5 h-5 text-purple-400"></i>
+                        位单位 (Bits) - 网络带宽
+                    </h2>
+                    <span class="text-xs px-2 py-1 bg-purple-500/10 text-purple-400 rounded-full">1 Byte = 8 bits</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-700">
+                                <th class="text-left py-3 px-4 text-slate-400 font-medium">单位</th>
+                                <th class="text-left py-3 px-4 text-slate-400 font-medium">符号</th>
+                                <th class="text-left py-3 px-4 text-slate-400 font-medium">换算</th>
+                                <th class="text-left py-3 px-4 text-slate-400 font-medium">实际下载速度</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="py-4 px-4 font-medium text-slate-200">千位</td>
+                                <td class="py-4 px-4"><span class="mono text-purple-400">Kb</span></td>
+                                <td class="py-4 px-4 text-slate-400">10³ bits</td>
+                                <td class="py-4 px-4 text-slate-500">-</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30 bg-purple-500/5">
+                                <td class="py-4 px-4 font-medium text-slate-200">兆位</td>
+                                <td class="py-4 px-4"><span class="mono text-purple-400 font-bold">Mb</span></td>
+                                <td class="py-4 px-4 text-slate-400">10⁶ bits</td>
+                                <td class="py-4 px-4"><span class="mono text-green-400">100 Mbps ÷ 8 = 12.5 MB/s</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/30">
+                                <td class="py-4 px-4 font-medium text-slate-200">吉位</td>
+                                <td class="py-4 px-4"><span class="mono text-purple-400">Gb</span></td>
+                                <td class="py-4 px-4 text-slate-400">10⁹ bits</td>
+                                <td class="py-4 px-4"><span class="mono text-green-400">1 Gbps ÷ 8 = 125 MB/s</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Case Distinction Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div class="data-card rounded-xl p-4 sm:p-5">
+                    <div class="flex items-center gap-4">
+                        <span class="mono text-3xl sm:text-4xl font-bold text-purple-400">b</span>
+                        <div>
+                            <span class="block text-sm font-medium text-slate-200">小写 b</span>
+                            <span class="block text-xs text-slate-400">bit (位)</span>
+                            <span class="block text-[10px] text-purple-400 mt-1">带宽单位: Mbps</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-card rounded-xl p-4 sm:p-5 border border-green-500/20">
+                    <div class="flex items-center gap-4">
+                        <span class="mono text-3xl sm:text-4xl font-bold text-green-400">B</span>
+                        <div>
+                            <span class="block text-sm font-medium text-slate-200">大写 B</span>
+                            <span class="block text-xs text-slate-400">Byte (字节) = 8 bits</span>
+                            <span class="block text-[10px] text-green-400 mt-1">存储单位: MB, GB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real World Examples -->
+            <div class="glass-panel rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                <h3 class="text-sm font-semibold text-slate-300 mb-3 sm:mb-4">实际换算示例</h3>
+                <div class="space-y-2 sm:space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="wifi" class="w-4 h-4 text-purple-400"></i>
+                            <span class="text-sm text-slate-300">100 Mbps 宽带</span>
+                        </div>
+                        <span class="text-xs sm:text-sm mono text-green-400">= 12.5 MB/s</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="wifi" class="w-4 h-4 text-purple-400"></i>
+                            <span class="text-sm text-slate-300">1000 Mbps (千兆)</span>
+                        </div>
+                        <span class="text-xs sm:text-sm mono text-green-400">= 125 MB/s</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="download" class="w-4 h-4 text-blue-400"></i>
+                            <span class="text-sm text-slate-300">5G 峰值 (1 Gbps)</span>
+                        </div>
+                        <span class="text-xs sm:text-sm mono text-green-400">= 125 MB/s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Reference Section (Mobile Only Tab) -->
+        <div id="section-quick" class="space-y-3 hidden sm:hidden">
+            <div class="grid grid-cols-1 gap-3" id="scenario-mobile-cards"></div>
+        </div>
+
+        <!-- Scenario Reference (Desktop + Mobile Bottom) -->
+        <div class="mt-6 sm:mt-8 glass-panel rounded-xl sm:rounded-2xl p-4 sm:p-6">
+            <h2 class="text-base sm:text-lg font-semibold text-slate-100 mb-4 sm:mb-6 flex items-center gap-2">
+                <i data-lucide="map-pin" class="w-4 h-4 sm:w-5 sm:h-5 text-pink-400"></i>
+                场景速查表
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div class="p-3 sm:p-4 bg-slate-800/30 rounded-xl border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="cpu" class="w-4 h-4 text-blue-400"></i>
+                        <span class="text-sm font-medium text-slate-200">CPU/GPU功耗</span>
+                    </div>
+                    <span class="mono text-xs text-blue-400">W、kW</span>
+                    <p class="text-[10px] sm:text-xs text-slate-500 mt-1">i9-14900K 基础功耗 125W</p>
+                </div>
+                <div class="p-3 sm:p-4 bg-slate-800/30 rounded-xl border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="memory-stick" class="w-4 h-4 text-green-400"></i>
+                        <span class="text-sm font-medium text-slate-200">内存容量</span>
+                    </div>
+                    <span class="mono text-xs text-green-400">GiB (标称GB)</span>
+                    <p class="text-[10px] sm:text-xs text-slate-500 mt-1">32GB DDR5 = 实际 32 GiB</p>
+                </div>
+                <div class="p-3 sm:p-4 bg-slate-800/30 rounded-xl border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="hard-drive" class="w-4 h-4 text-blue-400"></i>
+                        <span class="text-sm font-medium text-slate-200">硬盘/SSD</span>
+                    </div>
+                    <span class="mono text-xs text-blue-400">GB、TB (十进制)</span>
+                    <p class="text-[10px] sm:text-xs text-slate-500 mt-1">1TB SSD ≈ 931 GiB 可用</p>
+                </div>
+                <div class="p-3 sm:p-4 bg-slate-800/30 rounded-xl border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="wifi" class="w-4 h-4 text-purple-400"></i>
+                        <span class="text-sm font-medium text-slate-200">网络带宽</span>
+                    </div>
+                    <span class="mono text-xs text-purple-400">Mbps、Gbps</span>
+                    <p class="text-[10px] sm:text-xs text-slate-500 mt-1">千兆宽带 = 1000 Mbps</p>
+                </div>
+                <div class="p-3 sm:p-4 bg-slate-800/30 rounded-xl border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="monitor" class="w-4 h-4 text-yellow-400"></i>
+                        <span class="text-sm font-medium text-slate-200">显存</span>
+                    </div>
+                    <span class="mono text-xs text-yellow-400">GB (实际GiB)</span>
+                    <p class="text-[10px] sm:text-xs text-slate-500 mt-1">RTX 4090 24GB GDDR6X</p>
+                </div>
+                <div class="p-3 sm:p-4 bg-slate-800/30 rounded-xl border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="signal" class="w-4 h-4 text-orange-400"></i>
+                        <span class="text-sm font-medium text-slate-200">无线信号</span>
+                    </div>
+                    <span class="mono text-xs text-orange-400">dBm</span>
+                    <p class="text-[10px] sm:text-xs text-slate-500 mt-1">WiFi/蓝牙功率测量</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 mt-8 sm:mt-12 py-4 sm:py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-[10px] sm:text-xs text-slate-500">
+            <p>技术单位换算手册 · IEC 80000-13 & SI 标准</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Data for mobile cards
+        const powerData = [
+            { name: '瓦特', symbol: 'W', value: '基础单位', desc: '电器功率、CPU功耗', highlight: false },
+            { name: '毫瓦', symbol: 'mW', value: '10⁻³ W', desc: '低功耗芯片、传感器', highlight: false },
+            { name: '微瓦', symbol: 'μW', value: '10⁻⁶ W', desc: '极低功耗设备', highlight: false },
+            { name: '千瓦', symbol: 'kW', value: '10³ W', desc: '家用电器、小型电机', highlight: true },
+            { name: '兆瓦', symbol: 'MW', value: '10⁶ W', desc: '发电机组、工厂用电', highlight: false },
+            { name: '吉瓦', symbol: 'GW', value: '10⁹ W', desc: '核电站、大型电网', highlight: false },
+            { name: '太瓦', symbol: 'TW', value: '10¹² W', desc: '国家/全球发电量级', highlight: false },
+        ];
+
+        const memoryData = [
+            { name: '字节', symbol: 'B', binary: '8 bits', decimal: '8 bits', type: 'both' },
+            { name: '千字节', symbol: 'KiB/KB', binary: '1,024 B', decimal: '1,000 B', type: 'both' },
+            { name: '兆字节', symbol: 'MiB/MB', binary: '1,048,576 B', decimal: '1,000,000 B', type: 'both' },
+            { name: '吉字节', symbol: 'GiB/GB', binary: '1,073,741,824 B', decimal: '10⁹ B', type: 'both', highlight: true },
+            { name: '太字节', symbol: 'TiB/TB', binary: '~1.1 × 10¹² B', decimal: '10¹² B', type: 'both' },
+        ];
+
+        const bitsData = [
+            { name: '千位', symbol: 'Kb', value: '10³ bits', speed: '-' },
+            { name: '兆位', symbol: 'Mb', value: '10⁶ bits', speed: '100 Mbps = 12.5 MB/s', highlight: true },
+            { name: '吉位', symbol: 'Gb', value: '10⁹ bits', speed: '1 Gbps = 125 MB/s' },
+        ];
+
+        // Generate mobile cards
+        function generatePowerCards() {
+            const container = document.getElementById('power-mobile-cards');
+            container.innerHTML = powerData.map(item => `
+                <div class="data-card rounded-xl p-4 ${item.highlight ? 'border border-blue-500/30 bg-blue-500/5' : ''}">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-medium text-slate-200">${item.name}</span>
+                            <span class="mono text-xs ${item.highlight ? 'text-blue-400 font-bold' : 'text-blue-400'}">${item.symbol}</span>
+                        </div>
+                        <span class="text-xs text-slate-500 mono">${item.value}</span>
+                    </div>
+                    <p class="text-xs text-slate-400">${item.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function generateMemoryCards() {
+            const container = document.getElementById('memory-mobile-cards');
+            container.innerHTML = memoryData.map(item => `
+                <div class="data-card rounded-xl p-4 ${item.highlight ? 'border border-green-500/30 bg-green-500/5' : ''}">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-medium text-slate-200">${item.name}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full ${item.highlight ? 'bg-green-500/20 text-green-400' : 'bg-slate-700 text-slate-400'}">${item.symbol}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="p-2 bg-slate-800/50 rounded">
+                            <span class="block text-[10px] text-green-400 mb-1">二进制 (IEC)</span>
+                            <span class="block text-slate-300 mono">${item.binary}</span>
+                        </div>
+                        <div class="p-2 bg-slate-800/50 rounded">
+                            <span class="block text-[10px] text-blue-400 mb-1">十进制 (SI)</span>
+                            <span class="block text-slate-300 mono">${item.decimal}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateBitsCards() {
+            const container = document.getElementById('bits-mobile-cards');
+            container.innerHTML = bitsData.map(item => `
+                <div class="data-card rounded-xl p-4 ${item.highlight ? 'border border-purple-500/30 bg-purple-500/5' : ''}">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-medium text-slate-200">${item.name}</span>
+                            <span class="mono text-xs ${item.highlight ? 'text-purple-400 font-bold' : 'text-purple-400'}">${item.symbol}</span>
+                        </div>
+                        <span class="text-xs text-slate-500 mono">${item.value}</span>
+                    </div>
+                    ${item.speed !== '-' ? `<p class="text-xs text-green-400 mt-2">${item.speed}</p>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Tab switching
+        function switchTab(tab) {
+            // Hide all sections
+            ['power', 'memory', 'bits', 'quick'].forEach(t => {
+                const section = document.getElementById('section-' + t);
+                if (section) section.classList.add('hidden');
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('text-slate-400');
+            });
+
+            // Show selected section
+            const selectedSection = document.getElementById('section-' + tab);
+            if (selectedSection) selectedSection.classList.remove('hidden');
+
+            const selectedTab = document.getElementById('tab-' + tab);
+            if (selectedTab) {
+                selectedTab.classList.add('tab-active');
+                selectedTab.classList.remove('text-slate-400');
+            }
+
+            // Re-render icons
+            lucide.createIcons();
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            if (!searchTerm) {
+                // Reset all cards visibility
+                document.querySelectorAll('.data-card').forEach(card => {
+                    card.style.display = '';
+                });
+                return;
+            }
+
+            // Filter cards
+            document.querySelectorAll('.data-card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    card.style.display = '';
+                    card.classList.add('ring-1', 'ring-blue-500/50');
+                } else {
+                    card.style.display = 'none';
+                    card.classList.remove('ring-1', 'ring-blue-500/50');
+                }
+            });
+
+            // Filter table rows (desktop)
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                    row.classList.add('bg-blue-500/10');
+                } else {
+                    row.style.display = 'none';
+                    row.classList.remove('bg-blue-500/10');
+                }
+            });
+        });
+
+        // Initialize
+        generatePowerCards();
+        generateMemoryCards();
+        generateBitsCards();
+        lucide.createIcons();
+
+        // Handle window resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                lucide.createIcons();
+            }, 250);
+        });
+    </script>
+</body>
+</html>
