@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>八爪鱼采集器 vs 八爪鱼RPA | 全面对比指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .gradient-bg-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .comparison-card {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+        .rpa-card {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .integration-flow {
+            position: relative;
+        }
+        .flow-arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        .feature-check { color: #10b981; }
+        .feature-cross { color: #ef4444; }
+        .scenario-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .scenario-card:hover {
+            border-left-color: #667eea;
+            transform: translateX(5px);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-left: 4px solid #f5576c;
+        }
+        .integration-diagram {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Hero Section -->
+    <section class="gradient-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-20 w-48 h-48 bg-white rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-5xl mx-auto text-center text-white">
+                <div class="flex justify-center items-center gap-8 mb-8">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-3 backdrop-blur-sm">
+                            <i class="fas fa-spider text-4xl"></i>
+                        </div>
+                        <div class="text-sm font-medium opacity-80">八爪鱼采集器</div>
+                    </div>
+                    <div class="text-4xl font-light opacity-60">VS</div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-3 backdrop-blur-sm">
+                            <i class="fas fa-robot text-4xl"></i>
+                        </div>
+                        <div class="text-sm font-medium opacity-80">八爪鱼RPA</div>
+                    </div>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl font-black mb-6 leading-tight">
+                    选对工具，效率翻倍
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90 font-light max-w-3xl mx-auto">
+                    一文读懂数据采集与流程自动化的边界与融合<br>
+                    <span class="text-lg opacity-75">采集器解决"数据从哪来"，RPA解决"数据怎么用"</span>
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4 text-sm font-medium">
+                    <span class="px-4 py-2 bg-white/20 rounded-full backdrop-blur-sm">
+                        <i class="fas fa-layer-group mr-2"></i>功能边界
+                    </span>
+                    <span class="px-4 py-2 bg-white/20 rounded-full backdrop-blur-sm">
+                        <i class="fas fa-exchange-alt mr-2"></i>集成关系
+                    </span>
+                    <span class="px-4 py-2 bg-white/20 rounded-full backdrop-blur-sm">
+                        <i class="fas fa-lightbulb mr-2"></i>选型建议
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-white text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- Core Definition -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-gray-900">一句话定位</h2>
+                <p class="text-gray-600 text-lg">先搞清楚两者的本质区别</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+                <!-- Collector Card -->
+                <div class="comparison-card rounded-3xl p-8 text-white card-hover relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center mb-6">
+                            <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-spider text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold">八爪鱼采集器</h3>
+                                <div class="text-white/80 text-sm">Web Data Collector</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/20 rounded-xl p-6 mb-6 backdrop-blur-sm">
+                            <div class="text-3xl font-black mb-2">"数据抓取专家"</div>
+                            <p class="text-white/90">专注把网页上的数据抓下来</p>
+                        </div>
+
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 mr-3 opacity-80"></i>
+                                <span>输入网址 → 智能识别 → 导出数据</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 mr-3 opacity-80"></i>
+                                <span>输出：Excel、CSV、数据库、API</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times-circle mt-1 mr-3 opacity-60"></i>
+                                <span class="opacity-75">局限：仅网页端，无法操作桌面软件</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- RPA Card -->
+                <div class="rpa-card rounded-3xl p-8 text-white card-hover relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center mb-6">
+                            <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-robot text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold">八爪鱼RPA</h3>
+                                <div class="text-white/80 text-sm">Robotic Process Automation</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/20 rounded-xl p-6 mb-6 backdrop-blur-sm">
+                            <div class="text-3xl font-black mb-2">"数字员工"</div>
+                            <p class="text-white/90">模拟人工操作电脑的全过程</p>
+                        </div>
+
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 mr-3 opacity-80"></i>
+                                <span>网页采集 + 桌面软件 + 数据处理 + AI分析</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 mr-3 opacity-80"></i>
+                                <span>跨系统协同，实现"采集-应用"闭环</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-star mt-1 mr-3 opacity-80"></i>
+                                <span>支持：Excel、ERP、钉钉、ChatGPT集成</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Comparison -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-gray-900">功能边界全景对比</h2>
+                <p class="text-gray-600">RPA在采集器基础上实现了哪些能力扩展？</p>
+            </div>
+
+            <div class="max-w-6xl mx-auto">
+                <!-- Comparison Table -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-900 text-white">
+                                    <th class="px-6 py-4 text-left font-bold">能力维度</th>
+                                    <th class="px-6 py-4 text-center w-1/4">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <i class="fas fa-spider"></i>
+                                            八爪鱼采集器
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-center w-1/4 bg-purple-600">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <i class="fas fa-robot"></i>
+                                            八爪鱼RPA
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-medium">
+                                        <i class="fas fa-globe text-blue-500 mr-2"></i>网页数据采集
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check mr-1"></i> 核心功能
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center bg-purple-50">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check mr-1"></i> 继承+控制
+                                        </span>
+                                        <div class="text-xs text-gray-500 mt-1">可调度采集器任务</div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-medium">
+                                        <i class="fas fa-desktop text-purple-500 mr-2"></i>桌面软件操作
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                            <i class="fas fa-times mr-1"></i> 不支持
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center bg-purple-50">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check mr-1"></i> 全面支持
+                                        </span>
+                                        <div class="text-xs text-gray-500 mt-1">Excel/ERP/钉钉/微信</div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-medium">
+                                        <i class="fas fa-keyboard text-orange-500 mr-2"></i>模拟人工操作
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                                            <i class="fas fa-minus mr-1"></i> 有限
+                                        </span>
+                                        <div class="text-xs text-gray-500 mt-1">仅网页内点击</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center bg-purple-50">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check mr-1"></i> 完整模拟
+                                        </span>
+                                        <div class="text-xs text-gray-500 mt-1">键盘/鼠标/输入全模拟</div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-medium">
+                                        <i class="fas fa-brain text-pink-500 mr-2"></i>AI智能处理
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                            <i class="fas fa-times mr-1"></i> 不支持
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center bg-purple-50">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check mr-1"></i> 深度集成
+                                        </span>
+                                        <div class="text-xs text-gray-500 mt-1">ChatGPT/DeepSeek</div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-medium">
+                                        <i class="fas fa-code text-green-500 mr-2"></i>编程扩展
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                                            <i class="fas fa-minus mr-1"></i> 基础脚本
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center bg-purple-50">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check mr-1"></i> JS/Python
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-medium">
+                                        <i class="fas fa-network-wired text-indigo-500 mr-2"></i>跨系统协同
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                            <i class="fas fa-times mr-1"></i> 不支持
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center bg-purple-50">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check mr-1"></i> 核心能力
+                                        </span>
+                                        <div class="text-xs text-gray-500 mt-1">多系统数据自动流转</div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-medium">
+                                        <i class="fas fa-clock text-teal-500 mr-2"></i>定时触发
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check mr-1"></i> 支持
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center bg-purple-50">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check mr-1"></i> 更强大
+                                        </span>
+                                        <div class="text-xs text-gray-500 mt-1">可触发完整工作流</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Relationship -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-gray-900">集成关系：单向控制</h2>
+                <p class="text-gray-600">两者如何配合使用？</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="integration-diagram rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10">
+                        <div class="absolute top-10 right-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
+                        <div class="absolute bottom-10 left-10 w-48 h-48 bg-white rounded-full blur-3xl"></div>
+                    </div>
+
+                    <div class="relative z-10">
+                        <div class="grid md:grid-cols-3 gap-8 items-center">
+                            <!-- RPA Control -->
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                                    <i class="fas fa-robot text-5xl"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">八爪鱼RPA</h3>
+                                <div class="text-white/80 text-sm">流程编排中心</div>
+                                <div class="mt-4 space-y-2 text-xs bg-white/10 rounded-lg p-3">
+                                    <div>✓ 启动采集器任务</div>
+                                    <div>✓ 获取采集状态</div>
+                                    <div>✓ 拉取云端数据</div>
+                                    <div>✓ 后续数据处理</div>
+                                </div>
+                            </div>
+
+                            <!-- Arrow -->
+                            <div class="flex flex-col items-center justify-center">
+                                <div class="text-6xl mb-4">
+                                    <i class="fas fa-arrow-right hidden md:block"></i>
+                                    <i class="fas fa-arrow-down md:hidden"></i>
+                                </div>
+                                <div class="bg-white/20 rounded-full px-4 py-2 text-sm backdrop-blur-sm">
+                                    单向控制
+                                </div>
+                                <div class="mt-2 text-xs text-white/70">RPA可以控制采集器</div>
+                                <div class="text-xs text-white/50">采集器无法操作RPA</div>
+                            </div>
+
+                            <!-- Collector -->
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                                    <i class="fas fa-spider text-5xl"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">八爪鱼采集器</h3>
+                                <div class="text-white/80 text-sm">数据采集引擎</div>
+                                <div class="mt-4 space-y-2 text-xs bg-white/10 rounded-lg p-3">
+                                    <div>✓ 网页数据提取</div>
+                                    <div>✓ 智能识别结构</div>
+                                    <div>✓ 云端存储数据</div>
+                                    <div>✓ 等待RPA调度</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Workflow Example -->
+                        <div class="mt-12 bg-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                            <h4 class="text-lg font-bold mb-4 text-center">典型协作流程示例</h4>
+                            <div class="flex flex-wrap justify-center items-center gap-4 text-sm">
+                                <div class="bg-white/20 rounded-lg px-4 py-2">
+                                    <i class="fas fa-robot mr-2"></i>RPA启动
+                                </div>
+                                <i class="fas fa-chevron-right text-white/50"></i>
+                                <div class="bg-white/20 rounded-lg px-4 py-2">
+                                    <i class="fas fa-spider mr-2"></i>采集器抓取数据
+                                </div>
+                                <i class="fas fa-chevron-right text-white/50"></i>
+                                <div class="bg-white/20 rounded-lg px-4 py-2">
+                                    <i class="fas fa-cloud mr-2"></i>数据上传云端
+                                </div>
+                                <i class="fas fa-chevron-right text-white/50"></i>
+                                <div class="bg-white/20 rounded-lg px-4 py-2">
+                                    <i class="fas fa-robot mr-2"></i>RPA读取处理
+                                </div>
+                                <i class="fas fa-chevron-right text-white/50"></i>
+                                <div class="bg-white/20 rounded-lg px-4 py-2">
+                                    <i class="fas fa-file-excel mr-2"></i>填入Excel/ERP
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scenario Comparison -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-gray-900">典型场景对比</h2>
+                <p class="text-gray-600">不同业务需求下，该选哪个工具？</p>
+            </div>
+
+            <div class="max-w-6xl mx-auto space-y-6">
+                <!-- Scenario 1 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 md:p-8">
+                        <div class="flex items-start gap-6">
+                            <div class="flex-shrink-0 w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-shopping-cart text-2xl text-blue-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2">场景一：电商竞品监控</h3>
+                                <p class="text-gray-600 mb-4">需要每天抓取竞品价格并生成对比报表</p>
+
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="border-2 border-gray-200 rounded-xl p-4">
+                                        <div class="flex items-center mb-3">
+                                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded font-medium mr-2">采集器</span>
+                                            <span class="text-sm text-gray-500">可独立完成</span>
+                                        </div>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li>• 定时抓取商品价格</li>
+                                            <li>• 导出Excel表格</li>
+                                            <li>• <span class="text-red-500">需人工打开Excel分析对比</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="border-2 border-purple-200 bg-purple-50 rounded-xl p-4">
+                                        <div class="flex items-center mb-3">
+                                            <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded font-medium mr-2">RPA方案</span>
+                                            <span class="text-sm text-purple-600">全流程自动化</span>
+                                        </div>
+                                        <ul class="text-sm text-gray-700 space-y-1">
+                                            <li>• 采集器抓取价格数据</li>
+                                            <li>• RPA自动打开Excel</li>
+                                            <li>• 自动计算差价、生成图表</li>
+                                            <li>• 邮件发送给相关负责人</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 2 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 md:p-8">
+                        <div class="flex items-start gap-6">
+                            <div class="flex-shrink-0 w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-university text-2xl text-green-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2">场景二：银行流水自动下载</h3>
+                                <p class="text-gray-600 mb-4">需登录网银下载交易明细并汇总</p>
+
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="border-2 border-gray-200 rounded-xl p-4 opacity-60">
+                                        <div class="flex items-center mb-3">
+                                            <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded font-medium mr-2">采集器</span>
+                                            <span class="text-sm text-red-500"><i class="fas fa-times mr-1"></i>无法完成</span>
+                                        </div>
+                                        <ul class="text-sm text-gray-500 space-y-1">
+                                            <li>• 无法操作网银客户端</li>
+                                            <li>• 无法处理证书/U盾</li>
+                                            <li>• 无法下载本地文件</li>
+                                        </ul>
+                                    </div>
+                                    <div class="border-2 border-purple-200 bg-purple-50 rounded-xl p-4">
+                                        <div class="flex items-center mb-3">
+                                            <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded font-medium mr-2">RPA方案</span>
+                                            <span class="text-sm text-purple-600">唯一选择</span>
+                                        </div>
+                                        <ul class="text-sm text-gray-700 space-y-1">
+                                            <li>• 自动打开网银客户端</li>
+                                            <li>• 模拟人工输入密码</li>
+                                            <li>• 下载Excel流水文件</li>
+                                            <li>• 自动汇总到财务系统</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 3 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 md:p-8">
+                        <div class="flex items-start gap-6">
+                            <div class="flex-shrink-0 w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-comments text-2xl text-pink-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2">场景三：招聘网站自动打招呼</h3>
+                                <p class="text-gray-600 mb-4">筛选简历后批量发送邀约消息</p>
+
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="border-2 border-gray-200 rounded-xl p-4">
+                                        <div class="flex items-center mb-3">
+                                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded font-medium mr-2">采集器</span>
+                                            <span class="text-sm text-gray-500">仅数据采集</span>
+                                        </div>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li>• 采集候选人简历信息</li>
+                                            <li>• 导出联系方式列表</li>
+                                            <li>• <span class="text-red-500">需人工登录招聘网站发送</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="border-2 border-purple-200 bg-purple-50 rounded-xl p-4">
+                                        <div class="flex items-center mb-3">
+                                            <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded font-medium mr-2">RPA方案</span>
+                                            <span class="text-sm text-purple-600">端到端自动化</span>
+                                        </div>
+                                        <ul class="text-sm text-gray-700 space-y-1">
+                                            <li>• 采集器获取简历数据</li>
+                                            <li>• RPA自动登录招聘网站</li>
+                                            <li>• 按条件筛选候选人</li>
+                                            <li>• 批量发送个性化消息</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 4 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 md:p-8">
+                        <div class="flex items-start gap-6">
+                            <div class="flex-shrink-0 w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-file-invoice text-2xl text-orange-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2">场景四：发票自动录入系统</h3>
+                                <p class="text-gray-600 mb-4">识别发票信息并录入财务ERP</p>
+
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="border-2 border-gray-200 rounded-xl p-4 opacity-60">
+                                        <div class="flex items-center mb-3">
+                                            <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded font-medium mr-2">采集器</span>
+                                            <span class="text-sm text-red-500"><i class="fas fa-times mr-1"></i>无法完成</span>
+                                        </div>
+                                        <ul class="text-sm text-gray-500 space-y-1">
+                                            <li>• 无法读取本地发票图片</li>
+                                            <li>• 无法操作财务ERP软件</li>
+                                            <li>• 无法实现跨系统流转</li>
+                                        </ul>
+                                    </div>
+                                    <div class="border-2 border-purple-200 bg-purple-50 rounded-xl p-4">
+                                        <div class="flex items-center mb-3">
+                                            <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded font-medium mr-2">RPA方案</span>
+                                            <span class="text-sm text-purple-600">完整解决方案</span>
+                                        </div>
+                                        <ul class="text-sm text-gray-700 space-y-1">
+                                            <li>• OCR识别发票图片</li>
+                                            <li>• 自动打开财务ERP</li>
+                                            <li>• 模拟人工填表录入</li>
+                                            <li>• 自动提交审核流程</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selection Guide -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-gray-900">选型决策指南</h2>
+                <p class="text-gray-600">根据你的具体需求，快速找到适合的工具</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Choose Collector -->
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 border-2 border-blue-200">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center text-white mr-4">
+                                <i class="fas fa-spider text-3xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">选择采集器</h3>
+                                <div class="text-blue-600 font-medium">如果你只需要...</div>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mr-3 mt-0.5">
+                                    <i class="fas fa-check text-blue-600 text-xs"></i>
+                                </div>
+                                <span class="text-gray-700">批量抓取网页数据（商品、新闻、评论等）</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mr-3 mt-0.5">
+                                    <i class="fas fa-check text-blue-600 text-xs"></i>
+                                </div>
+                                <span class="text-gray-700">导出到Excel/CSV进行人工分析</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mr-3 mt-0.5">
+                                    <i class="fas fa-check text-blue-600 text-xs"></i>
+                                </div>
+                                <span class="text-gray-700">预算有限，希望低成本入门</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mr-3 mt-0.5">
+                                    <i class="fas fa-check text-blue-600 text-xs"></i>
+                                </div>
+                                <span class="text-gray-700">技术基础较弱，追求极简操作</span>
+                            </li>
+                        </ul>
+
+                        <div class="mt-6 p-4 bg-white rounded-xl border border-blue-100">
+                            <div class="text-sm text-gray-600 mb-2">推荐场景：</div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">电商选品</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">舆情监控</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">学术数据</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">房产信息</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Choose RPA -->
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-8 border-2 border-purple-200">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center text-white mr-4">
+                                <i class="fas fa-robot text-3xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">选择RPA</h3>
+                                <div class="text-purple-600 font-medium">如果你需要...</div>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center mr-3 mt-0.5">
+                                    <i class="fas fa-check text-purple-600 text-xs"></i>
+                                </div>
+                                <span class="text-gray-700">"采集+处理+应用"全流程无人值守</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center mr-3 mt-0.5">
+                                    <i class="fas fa-check text-purple-600 text-xs"></i>
+                                </div>
+                                <span class="text-gray-700">操作桌面软件（ERP、网银、Office等）</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center mr-3 mt-0.5">
+                                    <i class="fas fa-check text-purple-600 text-xs"></i>
+                                </div>
+                                <span class="text-gray-700">跨系统数据自动流转（如网页→Excel→邮件）</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center mr-3 mt-0.5">
+                                    <i class="fas fa-check text-purple-600 text-xs"></i>
+                                </div>
+                                <span class="text-gray-700">集成AI进行智能分析（ChatGPT/DeepSeek）</span>
+                            </li>
+                        </ul>
+
+                        <div class="mt-6 p-4 bg-white rounded-xl border border-purple-100">
+                            <div class="text-sm text-gray-600 mb-2">推荐场景：</div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">财务对账</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">HR招聘</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">数据录入</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">智能分析</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combined Usage -->
+                <div class="mt-8 bg-gradient-to-r from-gray-50 to-gray-100 rounded-3xl p-8 border-2 border-gray-200">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-white">
+                                <i class="fas fa-spider text-xl"></i>
+                            </div>
+                            <i class="fas fa-plus text-gray-400 text-xl"></i>
+                            <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center text-white">
+                                <i class="fas fa-robot text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4">最佳实践：两者配合使用</h3>
+                    <p class="text-gray-600 text-center max-w-2xl mx-auto mb-6">
+                        已有采集器任务，想实现定时自动运行并后续处理？用RPA调度采集器，实现"采集-处理-应用"闭环
+                    </p>
+                    <div class="flex justify-center">
+                        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 max-w-2xl">
+                            <div class="flex items-center justify-center gap-3 text-sm">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg">采集器抓取数据</span>
+                                <i class="fas fa-arrow-right text-gray-400"></i>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-lg">RPA定时调度</span>
+                                <i class="fas fa-arrow-right text-gray-400"></i>
+                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg">自动处理分发</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Comparison -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-gray-900">价格与授权对比</h2>
+                <p class="text-gray-600">根据预算选择合适版本</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+                <!-- Collector Pricing -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-blue-500 text-white p-6 text-center">
+                        <h3 class="text-2xl font-bold">八爪鱼采集器</h3>
+                        <div class="text-blue-100 mt-2">按功能与导出量收费</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">免费版</span>
+                                <span class="text-sm text-gray-600">每月1000条导出限制</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <span class="font-medium text-blue-900">专业版</span>
+                                <span class="text-sm text-blue-700">¥49/月，无限本地采集</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg border border-purple-200">
+                                <span class="font-medium text-purple-900">旗舰版</span>
+                                <span class="text-sm text-purple-700">¥299/月，含云采集加速</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-sm text-gray-500">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            新用户可领取3天VIP体验全部功能
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RPA Pricing -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-purple-500 text-white p-6 text-center">
+                        <h3 class="text-2xl font-bold">八爪鱼RPA</h3>
+                        <div class="text-purple-100 mt-2">按应用与运行时长收费</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">免费版</span>
+                                <span class="text-sm text-gray-600">全功能自定义，有限制</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg border border-purple-200">
+                                <span class="font-medium text-purple-900">专业版</span>
+                                <span class="text-sm text-purple-700">更多应用数与运行时长</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-indigo-50 rounded-lg border border-indigo-200">
+                                <span class="font-medium text-indigo-900">企业版</span>
+                                <span class="text-sm text-indigo-700">无限应用，私有化部署</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-sm text-gray-500">
+                            <i class="fas fa-gift mr-1"></i>
+                            免费版即可使用全功能自定义操作
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Reference Card -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
+                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-24 -mb-24"></div>
+
+                    <div class="relative z-10">
+                        <h2 class="text-3xl font-bold mb-8 text-center">速查表：我该如何选择？</h2>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-lg font-bold mb-4 text-blue-400">
+                                    <i class="fas fa-spider mr-2"></i>采集器适用
+                                </h3>
+                                <ul class="space-y-2 text-gray-300 text-sm">
+                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>只需网页数据，不操作其他软件</li>
+                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>导出Excel后人工处理即可</li>
+                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>预算有限，追求性价比</li>
+                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>零基础，快速上手</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold mb-4 text-purple-400">
+                                    <i class="fas fa-robot mr-2"></i>RPA适用
+                                </h3>
+                                <ul class="space-y-2 text-gray-300 text-sm">
+                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>需要操作Excel/ERP/邮箱等软件</li>
+                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>全流程自动化，无人值守</li>
+                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>跨系统数据流转</li>
+                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>集成AI进行智能分析</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-8 border-t border-gray-700 text-center">
+                            <p class="text-gray-400 mb-4">记住这个公式：</p>
+                            <div class="text-xl md:text-2xl font-bold">
+                                <span class="text-blue-400">采集器</span>
+                                <span class="text-gray-500 mx-2">=</span>
+                                <span class="text-gray-300">数据从哪来（网页）</span>
+                            </div>
+                            <div class="text-xl md:text-2xl font-bold mt-2">
+                                <span class="text-purple-400">RPA</span>
+                                <span class="text-gray-500 mx-2">=</span>
+                                <span class="text-gray-300">数据怎么用（全流程）</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <div class="container mx-auto px-6">
+            <p class="mb-2">本对比基于八爪鱼官方文档整理 | 数据更新时间：2026年3月</p>
+            <p>建议访问官网获取最新产品信息</p>
+            <div class="mt-4 space-x-4">
+                <a href="https://www.bazhuayu.com/" target="_blank" class="text-blue-400 hover:text-blue-300">八爪鱼采集器官网</a>
+                <span class="text-gray-600">|</span>
+                <a href="https://rpa.bazhuayu.com/" target="_blank" class="text-purple-400 hover:text-purple-300">八爪鱼RPA官网</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Scroll reveal
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card-hover, .scenario-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
