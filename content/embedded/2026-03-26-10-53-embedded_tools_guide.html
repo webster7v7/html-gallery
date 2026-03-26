@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嵌入式四大软件之神 | Embedded Dev Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-purple: #bc13fe;
+            --neon-green: #0aff0a;
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(20, 20, 30, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--dark-bg);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* 动态背景网格 */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 浮动粒子 */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.5;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        /* 霓虹发光效果 */
+        .neon-text {
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+        }
+
+        .neon-border {
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1);
+        }
+
+        /* 卡片悬停效果 */
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple), var(--neon-green));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s;
+            border-radius: inherit;
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 240, 255, 0.2);
+            border-color: transparent;
+        }
+
+        /* 图标容器 */
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: 900;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-box::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .tool-card:hover .icon-box::after {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* 进度条动画 */
+        .progress-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--neon-blue), var(--neon-purple));
+            transform: translateX(-50%);
+            opacity: 0.3;
+        }
+
+        .progress-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--dark-bg);
+            border: 3px solid var(--neon-blue);
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        /* 路线图步骤 */
+        .roadmap-step {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        /* 标签样式 */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid;
+        }
+
+        .tag-blue {
+            color: var(--neon-blue);
+            border-color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.1);
+        }
+
+        .tag-purple {
+            color: var(--neon-purple);
+            border-color: var(--neon-purple);
+            background: rgba(188, 19, 254, 0.1);
+        }
+
+        .tag-green {
+            color: var(--neon-green);
+            border-color: var(--neon-green);
+            background: rgba(10, 255, 10, 0.1);
+        }
+
+        /* 扫描线效果 */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            animation: scan 3s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(400px); }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .icon-box {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* 按钮样式 */
+        .cta-button {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* 特性列表 */
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--neon-blue);
+            font-weight: bold;
+        }
+
+        /* 打字机效果 */
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid var(--neon-blue);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--neon-blue); }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- 背景网格 -->
+    <div class="bg-grid"></div>
+
+    <!-- 浮动粒子 -->
+    <div id="particles"></div>
+
+    <!-- 头部区域 -->
+    <header class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0f]"></div>
+
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="mb-6 inline-block">
+                <span class="tag tag-blue mono">EMBEDDED SYSTEMS</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
+                <span class="block text-white">嵌入式</span>
+                <span class="block neon-text text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
+                    四大软件之神
+                </span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 mono typewriter" style="animation-delay: 1s;">
+                Keil • Altium • JLC • Visual Studio
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4 text-sm mono text-gray-500">
+                <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    IDE
+                </span>
+                <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse" style="animation-delay: 0.2s;"></span>
+                    PCB Design
+                </span>
+                <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse" style="animation-delay: 0.4s;"></span>
+                    Manufacturing
+                </span>
+                <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse" style="animation-delay: 0.6s;"></span>
+                    Development
+                </span>
+            </div>
+
+            <div class="mt-16 animate-bounce">
+                <svg class="w-8 h-8 mx-auto text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- 工具卡片区域 -->
+    <section class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+
+                <!-- Keil 5 -->
+                <div class="tool-card rounded-2xl p-8 gs-reveal" data-color="blue">
+                    <div class="scan-line"></div>
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-box bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+                            K5
+                        </div>
+                        <span class="tag tag-blue mono">IDE</span>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mb-2 text-white">Keil 5</h2>
+                    <p class="text-cyan-400 font-medium mb-4 mono">μVision IDE</p>
+
+                    <div class="mb-6">
+                        <p class="text-gray-300 text-lg leading-relaxed mb-4">
+                            <strong class="text-white">单片机/嵌入式开发IDE</strong>，专门用于编写、编译、调试 51 单片机、ARM Cortex-M 等嵌入式芯片的程序。
+                        </p>
+                        <ul class="feature-list text-gray-400 space-y-2">
+                            <li>提供代码编辑、工程管理、仿真调试、烧录固件等完整开发流程</li>
+                            <li>嵌入式入门最常用工具，几乎所有单片机教程标配</li>
+                            <li>适合写底层驱动、控制程序</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="px-3 py-1 rounded-full bg-blue-900/30 text-blue-300 text-xs mono">51单片机</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-900/30 text-blue-300 text-xs mono">STM32</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-900/30 text-blue-300 text-xs mono">Cortex-M</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-900/30 text-blue-300 text-xs mono">智能小车</span>
+                    </div>
+                </div>
+
+                <!-- Altium Designer -->
+                <div class="tool-card rounded-2xl p-8 gs-reveal" data-color="purple">
+                    <div class="scan-line" style="animation-delay: 0.5s;"></div>
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-box bg-gradient-to-br from-purple-600 to-purple-800 text-white">
+                            AD
+                        </div>
+                        <span class="tag tag-purple mono">CAD</span>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mb-2 text-white">Altium Designer</h2>
+                    <p class="text-purple-400 font-medium mb-4 mono">PCB Design Suite</p>
+
+                    <div class="mb-6">
+                        <p class="text-gray-300 text-lg leading-relaxed mb-4">
+                            <strong class="text-white">PCB 设计与电子工程 CAD 软件</strong>，绘制电路原理图、设计 PCB 电路板，把电路图变成实物电路板。
+                        </p>
+                        <ul class="feature-list text-gray-400 space-y-2">
+                            <li>支持高速信号、多层板、封装库管理</li>
+                            <li>专业硬件工程师的主力工具</li>
+                            <li>从原理图到 Gerber 文件的全流程设计</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="px-3 py-1 rounded-full bg-purple-900/30 text-purple-300 text-xs mono">原理图</span>
+                        <span class="px-3 py-1 rounded-full bg-purple-900/30 text-purple-300 text-xs mono">PCB Layout</span>
+                        <span class="px-3 py-1 rounded-full bg-purple-900/30 text-purple-300 text-xs mono">Gerber</span>
+                        <span class="px-3 py-1 rounded-full bg-purple-900/30 text-purple-300 text-xs mono">高速信号</span>
+                    </div>
+                </div>
+
+                <!-- 嘉立创 JLC -->
+                <div class="tool-card rounded-2xl p-8 gs-reveal" data-color="green">
+                    <div class="scan-line" style="animation-delay: 1s;"></div>
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-box bg-gradient-to-br from-green-600 to-green-800 text-white">
+                            JLC
+                        </div>
+                        <span class="tag tag-green mono">PLATFORM</span>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mb-2 text-white">嘉立创 JLC</h2>
+                    <p class="text-green-400 font-medium mb-4 mono">PCB + EDA + Supply Chain</p>
+
+                    <div class="mb-6">
+                        <p class="text-gray-300 text-lg leading-relaxed mb-4">
+                            <strong class="text-white">PCB 打样/元器件采购/EDA 设计平台</strong>，平台+工具+供应链三位一体，不是单纯的软件。
+                        </p>
+                        <ul class="feature-list text-gray-400 space-y-2">
+                            <li>在线下单 PCB 打样、SMT 贴片，设计变实物</li>
+                            <li>免费「嘉立创EDA」，可替代 AD 做入门级设计</li>
+                            <li>一站式采购电子元器件，解决供应链问题</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="px-3 py-1 rounded-full bg-green-900/30 text-green-300 text-xs mono">免费EDA</span>
+                        <span class="px-3 py-1 rounded-full bg-green-900/30 text-green-300 text-xs mono">PCB打样</span>
+                        <span class="px-3 py-1 rounded-full bg-green-900/30 text-green-300 text-xs mono">SMT贴片</span>
+                        <span class="px-3 py-1 rounded-full bg-green-900/30 text-green-300 text-xs mono">元器件</span>
+                    </div>
+                </div>
+
+                <!-- Visual Studio -->
+                <div class="tool-card rounded-2xl p-8 gs-reveal" data-color="blue">
+                    <div class="scan-line" style="animation-delay: 1.5s;"></div>
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-box bg-gradient-to-br from-indigo-600 to-blue-800 text-white">
+                            VS
+                        </div>
+                        <span class="tag tag-blue mono">IDE++</span>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mb-2 text-white">Visual Studio</h2>
+                    <p class="text-blue-400 font-medium mb-4 mono">Universal IDE</p>
+
+                    <div class="mb-6">
+                        <p class="text-gray-300 text-lg leading-relaxed mb-4">
+                            <strong class="text-white">通用型 IDE</strong>，Windows 桌面开发、.NET 主力，配合 VisualGDB 等插件可开发 Linux 嵌入式、Raspberry Pi。
+                        </p>
+                        <ul class="feature-list text-gray-400 space-y-2">
+                            <li>代码补全、调试功能强大</li>
+                            <li>适合复杂嵌入式应用开发（带操作系统的设备）</li>
+                            <li>支持复杂 GUI/网络功能的设备开发</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="px-3 py-1 rounded-full bg-indigo-900/30 text-indigo-300 text-xs mono">VisualGDB</span>
+                        <span class="px-3 py-1 rounded-full bg-indigo-900/30 text-indigo-300 text-xs mono">Linux嵌入式</span>
+                        <span class="px-3 py-1 rounded-full bg-indigo-900/30 text-indigo-300 text-xs mono">Raspberry Pi</span>
+                        <span class="px-3 py-1 rounded-full bg-indigo-900/30 text-indigo-300 text-xs mono">.NET</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 学习路线图 -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="tag tag-green mono mb-4 inline-block">ROADMAP</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">零基础学习路径</h2>
+                <p class="text-gray-400 text-lg">从入门到精通，按顺序掌握四大神器</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto relative">
+                <!-- 进度线 -->
+                <div class="progress-line hidden md:block"></div>
+
+                <!-- 步骤 1 -->
+                <div class="roadmap-step flex flex-col md:flex-row items-center mb-16 relative">
+                    <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                        <div class="bg-gradient-to-br from-blue-900/40 to-blue-800/20 border border-blue-500/30 rounded-2xl p-6 backdrop-blur-sm">
+                            <h3 class="text-2xl font-bold text-white mb-2">第一阶段：Keil 5</h3>
+                            <p class="text-cyan-400 mono mb-3">Foundation</p>
+                            <p class="text-gray-300">从 51 单片机或 STM32 入手，学会写简单的控制程序：点灯、串口通信、传感器读取。建立嵌入式思维。</p>
+                        </div>
+                    </div>
+                    <div class="progress-dot flex-shrink-0 my-4 md:my-0"></div>
+                    <div class="md:w-1/2 md:pl-12">
+                        <div class="flex items-center gap-4 text-blue-400">
+                            <span class="text-4xl font-bold mono">01</span>
+                            <span class="text-sm">预计时间：2-4周</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤 2 -->
+                <div class="roadmap-step flex flex-col md:flex-row items-center mb-16 relative">
+                    <div class="md:w-1/2 md:pr-12 md:text-right order-1 md:order-1 mb-4 md:mb-0 md:invisible">
+                        <div class="flex items-center justify-end gap-4 text-purple-400">
+                            <span class="text-sm">预计时间：3-6周</span>
+                            <span class="text-4xl font-bold mono">02</span>
+                        </div>
+                    </div>
+                    <div class="progress-dot flex-shrink-0 my-4 md:my-0 order-2 md:order-2" style="border-color: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple);"></div>
+                    <div class="md:w-1/2 md:pl-12 order-3 md:order-3">
+                        <div class="bg-gradient-to-br from-purple-900/40 to-purple-800/20 border border-purple-500/30 rounded-2xl p-6 backdrop-blur-sm">
+                            <h3 class="text-2xl font-bold text-white mb-2">第二阶段：嘉立创EDA / AD</h3>
+                            <p class="text-purple-400 mono mb-3">Hardware Design</p>
+                            <p class="text-gray-300">学会画简单的 PCB，把自己写的程序跑在自己设计的板子上。从原理图到实物，体验完整的硬件创造流程。</p>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 md:pr-12 md:text-right order-1 md:hidden mb-4">
+                        <div class="flex items-center justify-end gap-4 text-purple-400">
+                            <span class="text-sm">预计时间：3-6周</span>
+                            <span class="text-4xl font-bold mono">02</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤 3 -->
+                <div class="roadmap-step flex flex-col md:flex-row items-center relative">
+                    <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                        <div class="bg-gradient-to-br from-indigo-900/40 to-indigo-800/20 border border-indigo-500/30 rounded-2xl p-6 backdrop-blur-sm">
+                            <h3 class="text-2xl font-bold text-white mb-2">第三阶段：Visual Studio</h3>
+                            <p class="text-indigo-400 mono mb-3">Advanced Systems</p>
+                            <p class="text-gray-300">如果要做更复杂的嵌入式系统（带 Linux、AI 功能、复杂 GUI/网络），再深入学习。配合 VisualGDB 开发高端应用。</p>
+                        </div>
+                    </div>
+                    <div class="progress-dot flex-shrink-0 my-4 md:my-0" style="border-color: #6366f1; box-shadow: 0 0 20px #6366f1;"></div>
+                    <div class="md:w-1/2 md:pl-12">
+                        <div class="flex items-center gap-4 text-indigo-400">
+                            <span class="text-4xl font-bold mono">03</span>
+                            <span class="text-sm">按需学习</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术栈对比 -->
+    <section class="py-20 bg-black/30">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <span class="tag tag-blue mono mb-4 inline-block">COMPARISON</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white">技术栈定位对比</h2>
+            </div>
+
+            <div class="max-w-5xl mx-auto overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="p-4 text-gray-400 font-medium mono">工具</th>
+                            <th class="p-4 text-gray-400 font-medium">类型</th>
+                            <th class="p-4 text-gray-400 font-medium">核心功能</th>
+                            <th class="p-4 text-gray-400 font-medium">学习曲线</th>
+                            <th class="p-4 text-gray-400 font-medium">成本</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-b border-gray-800 hover:bg-white/5 transition-colors">
+                            <td class="p-4 font-bold text-cyan-400">Keil 5</td>
+                            <td class="p-4">IDE</td>
+                            <td class="p-4">代码编写、编译、调试、烧录</td>
+                            <td class="p-4"><span class="text-green-400">★★☆☆☆</span></td>
+                            <td class="p-4"><span class="text-yellow-400">收费/社区版</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-white/5 transition-colors">
+                            <td class="p-4 font-bold text-purple-400">Altium Designer</td>
+                            <td class="p-4">CAD</td>
+                            <td class="p-4">原理图、PCB设计、仿真</td>
+                            <td class="p-4"><span class="text-yellow-400">★★★★☆</span></td>
+                            <td class="p-4"><span class="text-red-400">高收费</span></td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-white/5 transition-colors">
+                            <td class="p-4 font-bold text-green-400">嘉立创 JLC</td>
+                            <td class="p-4">Platform</td>
+                            <td class="p-4">EDA设计、打样、贴片、采购</td>
+                            <td class="p-4"><span class="text-green-400">★★☆☆☆</span></td>
+                            <td class="p-4"><span class="text-green-400">免费EDA+低价打样</span></td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-4 font-bold text-indigo-400">Visual Studio</td>
+                            <td class="p-4">IDE++</td>
+                            <td class="p-4">高级嵌入式、Linux开发</td>
+                            <td class="p-4"><span class="text-red-400">★★★★★</span></td>
+                            <td class="p-4"><span class="text-blue-400">社区版免费</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 实战项目建议 -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="tag tag-purple mono mb-4 inline-block">PROJECTS</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">实战项目建议</h2>
+                <p class="text-gray-400">边学边做，从简单到复杂</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <div class="group relative bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-xl p-6 hover:border-cyan-500/50 transition-all duration-300">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all"></div>
+                    <div class="text-3xl mb-4">💡</div>
+                    <h3 class="text-xl font-bold text-white mb-2">智能小灯</h3>
+                    <p class="text-gray-400 text-sm mb-4">Keil + 51单片机</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li>• LED 流水灯控制</li>
+                        <li>• 按键中断处理</li>
+                        <li>• PWM 调光</li>
+                    </ul>
+                </div>
+
+                <div class="group relative bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-xl p-6 hover:border-purple-500/50 transition-all duration-300">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
+                    <div class="text-3xl mb-4">📟</div>
+                    <h3 class="text-xl font-bold text-white mb-2">温湿度监测仪</h3>
+                    <p class="text-gray-400 text-sm mb-4">Keil + 嘉立创EDA</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li>• DHT11 传感器读取</li>
+                        <li>• OLED 显示屏驱动</li>
+                        <li>• 自主设计 PCB 板</li>
+                    </ul>
+                </div>
+
+                <div class="group relative bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-xl p-6 hover:border-indigo-500/50 transition-all duration-300">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all"></div>
+                    <div class="text-3xl mb-4">🤖</div>
+                    <h3 class="text-xl font-bold text-white mb-2">物联网网关</h3>
+                    <p class="text-gray-400 text-sm mb-4">Visual Studio + Linux</p>
+                    <ul class="text-sm text-gray-500 space-y-1">
+                        <li>• ESP32 WiFi 通信</li>
+                        <li>• 云平台数据上传</li>
+                        <li>• 远程控制接口</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA 区域 -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-900/20 to-purple-900/20"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">准备好开始了吗？</h2>
+            <p class="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
+                嵌入式开发是一场从代码到实物的创造之旅。选择 Keil 5 作为起点，打开你的第一行嵌入式代码。
+            </p>
+            <button class="cta-button mono" onclick="scrollToTop()">
+                开始嵌入式之旅 ↑
+            </button>
+
+            <div class="mt-12 flex justify-center gap-8 text-sm text-gray-500 mono">
+                <span>Build</span>
+                <span>•</span>
+                <span>Flash</span>
+                <span>•</span>
+                <span>Debug</span>
+                <span>•</span>
+                <span>Repeat</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center text-gray-600 text-sm mono">
+            <p>Embedded Systems Development Tools Guide • 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        // 生成浮动粒子
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // GSAP 动画
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 卡片入场动画
+        gsap.utils.toArray('.gs-reveal').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 100,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.1,
+                ease: 'power3.out'
+            });
+        });
+
+        // 路线图步骤动画
+        gsap.utils.toArray('.roadmap-step').forEach((step, i) => {
+            gsap.to(step, {
+                scrollTrigger: {
+                    trigger: step,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                x: 0,
+                duration: 0.8,
+                delay: i * 0.2,
+                ease: 'power3.out'
+            });
+        });
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 鼠标跟随效果（卡片内）
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // 表格行动画
+        gsap.from('tbody tr', {
+            scrollTrigger: {
+                trigger: 'table',
+                start: 'top 80%'
+            },
+            y: 30,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: 'power2.out'
+        });
+    </script>
+</body>
+</html>

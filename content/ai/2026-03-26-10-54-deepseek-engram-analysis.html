@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek Engram 技术深度解析 | Architecture Breakthrough</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                    },
+                    colors: {
+                        deepseek: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        },
+                        engram: {
+                            primary: '#4f46e5',
+                            secondary: '#7c3aed',
+                            accent: '#06b6d4',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-position': '0% 50%' },
+                            '50%': { 'background-position': '100% 50%' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'glow': {
+                            '0%': { boxShadow: '0 0 20px rgba(79, 70, 229, 0.3)' },
+                            '100%': { boxShadow: '0 0 40px rgba(79, 70, 229, 0.6)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .tech-grid {
+            background-image: 
+                linear-gradient(rgba(79, 70, 229, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(79, 70, 229, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        .flow-arrow {
+            position: relative;
+        }
+        .flow-arrow::after {
+            content: '→';
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #4f46e5;
+            animation: pulse 2s infinite;
+        }
+        @media (max-width: 768px) {
+            .flow-arrow::after {
+                content: '↓';
+                right: 50%;
+                top: 100%;
+                transform: translateX(50%);
+            }
+        }
+        .code-block {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .metric-card {
+            transition: all 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.2);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4f46e5;
+            border: 3px solid #1e1b4b;
+        }
+        .comparison-table tr:hover td {
+            background: rgba(79, 70, 229, 0.05);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans overflow-x-hidden">
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 tech-grid opacity-30"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950"></div>
+
+        <!-- Animated Background Elements -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-engram-primary/20 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-engram-secondary/20 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-engram-accent/10 rounded-full blur-3xl animate-pulse-slow"></div>
+
+        <div class="relative z-10 container mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 animate-glow">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-sm text-slate-300">DeepSeek V4 即将发布 · 架构革命</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                <span class="block text-slate-400 text-2xl md:text-3xl font-medium mb-4">Architecture Breakthrough</span>
+                <span class="bg-gradient-to-r from-engram-primary via-engram-secondary to-engram-accent bg-clip-text text-transparent">
+                    Engram 技术
+                </span>
+                <span class="block mt-2">深度解析</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed">
+                从「纯计算」到「计算+记忆」双系统范式转移<br>
+                <span class="text-engram-accent">MoE 让模型找专家开会，Engram 让模型翻笔记复习</span>
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#core-concept" class="px-8 py-4 bg-engram-primary hover:bg-engram-secondary rounded-full font-semibold transition-all hover:scale-105 shadow-lg shadow-engram-primary/25">
+                    <i class="fas fa-brain mr-2"></i>核心原理
+                </a>
+                <a href="#performance" class="px-8 py-4 glass-panel hover:bg-white/10 rounded-full font-semibold transition-all">
+                    <i class="fas fa-chart-line mr-2"></i>性能突破
+                </a>
+            </div>
+
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div class="glass-panel rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-bold text-engram-primary">O(1)</div>
+                    <div class="text-sm text-slate-400 mt-1">知识检索复杂度</div>
+                </div>
+                <div class="glass-panel rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-bold text-engram-secondary">100万</div>
+                    <div class="text-sm text-slate-400 mt-1">Token 上下文</div>
+                </div>
+                <div class="glass-panel rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-bold text-engram-accent">+5.0%</div>
+                    <div class="text-sm text-slate-400 mt-1">推理能力提升</div>
+                </div>
+                <div class="glass-panel rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-bold text-green-400">&lt;3%</div>
+                    <div class="text-sm text-slate-400 mt-1">吞吐量损失</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-slate-400 text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- Status Banner -->
+    <div class="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-y border-amber-500/30">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-center gap-4 flex-wrap">
+                <i class="fas fa-clock text-amber-400"></i>
+                <span class="text-amber-200 font-medium">DeepSeek V4 当前状态：收尾/灰度测试阶段</span>
+                <span class="hidden md:inline text-slate-500">|</span>
+                <span class="text-slate-400 text-sm">V4 Lite 已灰度开放 · 旗舰版预计 4 月上线</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- What is Engram -->
+    <section id="core-concept" class="py-24 relative">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-center">
+                    <span class="gradient-text">Engram</span> 是什么？
+                </h2>
+                <p class="text-center text-slate-400 text-lg mb-16">记忆印迹：条件记忆模块架构</p>
+
+                <div class="glass-panel rounded-3xl p-8 md:p-12 mb-12">
+                    <div class="flex items-start gap-6">
+                        <div class="w-16 h-16 rounded-2xl bg-engram-primary/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-lightbulb text-3xl text-engram-primary"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">核心定义</h3>
+                            <p class="text-slate-300 text-lg leading-relaxed">
+                                Engram 是 DeepSeek 与北京大学 2026 年初提出的<strong class="text-engram-accent">条件记忆模块</strong>，
+                                给大模型增加一个「可查表的高速缓存」，将<strong class="text-white">静态知识记忆</strong>与<strong class="text-white">动态推理计算</strong>彻底解耦。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Architecture Comparison -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="glass-panel rounded-2xl p-6 border-l-4 border-red-500/50">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-times-circle text-red-400 text-xl"></i>
+                            <h4 class="text-lg font-bold text-slate-200">传统 Transformer/MoE</h4>
+                        </div>
+                        <ul class="space-y-3 text-slate-400">
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-400 mt-1">•</span>
+                                <span>记忆 = 计算，靠多层注意力「算出来」知识</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-400 mt-1">•</span>
+                                <span>静态事实需要层层矩阵运算重建</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-400 mt-1">•</span>
+                                <span>复杂度 O(n²)，上下文越长越慢</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6 border-l-4 border-green-500/50">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-check-circle text-green-400 text-xl"></i>
+                            <h4 class="text-lg font-bold text-slate-200">Engram 架构</h4>
+                        </div>
+                        <ul class="space-y-3 text-slate-400">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 mt-1">•</span>
+                                <span>记忆 = 查表（O(1)）+ 计算 = 推理</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 mt-1">•</span>
+                                <span>双系统分工，静态知识直接检索</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 mt-1">•</span>
+                                <span>摆脱注意力瓶颈，长文本神器</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points -->
+    <section class="py-20 bg-slate-900/50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                为什么需要 <span class="text-engram-primary">Engram</span>？
+            </h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                <div class="glass-panel rounded-2xl p-6 hover:bg-white/5 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-microchip text-red-400 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">知识靠算，浪费算力</h3>
+                    <p class="text-slate-400 text-sm">事实、实体、短语、模板都要层层矩阵运算「重算」</p>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-6 hover:bg-white/5 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-snail text-orange-400 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">长上下文低效</h3>
+                    <p class="text-slate-400 text-sm">注意力复杂度 O(n²)，序列越长计算成本指数级增长</p>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-6 hover:bg-white/5 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-puzzle-piece text-yellow-400 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">MoE 未解决存储</h3>
+                    <p class="text-slate-400 text-sm">只解决「谁来算」，没解决「知识怎么存」，依然隐式记忆</p>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-6 hover:bg-white/5 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-percentage text-purple-400 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">参数利用率低</h3>
+                    <p class="text-slate-400 text-sm">大量参数用来「死记硬背」，挤占推理能力空间</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Principles -->
+    <section class="py-24 relative">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Engram 核心原理</h2>
+            <p class="text-center text-slate-400 mb-16">双轴稀疏新范式：MoE + Engram 协同工作</p>
+
+            <!-- Dual System Diagram -->
+            <div class="max-w-5xl mx-auto mb-16">
+                <div class="glass-panel rounded-3xl p-8 md:p-12">
+                    <div class="grid md:grid-cols-2 gap-8 mb-8">
+                        <div class="bg-gradient-to-br from-engram-primary/20 to-engram-primary/5 rounded-2xl p-6 border border-engram-primary/30">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-lg bg-engram-primary flex items-center justify-center">
+                                    <i class="fas fa-brain text-white"></i>
+                                </div>
+                                <h3 class="text-xl font-bold">MoE (条件计算)</h3>
+                            </div>
+                            <ul class="space-y-2 text-slate-300">
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-chevron-right text-engram-primary text-xs"></i>
+                                    <span>动态推理与逻辑处理</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-chevron-right text-engram-primary text-xs"></i>
+                                    <span>长程依赖关系建模</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-chevron-right text-engram-primary text-xs"></i>
+                                    <span>复杂问题求解</span>
+                                </li>
+                            </ul>
+                            <div class="mt-4 text-sm text-engram-primary font-medium">解决「谁来算」</div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-engram-secondary/20 to-engram-secondary/5 rounded-2xl p-6 border border-engram-secondary/30">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-lg bg-engram-secondary flex items-center justify-center">
+                                    <i class="fas fa-database text-white"></i>
+                                </div>
+                                <h3 class="text-xl font-bold">Engram (条件记忆)</h3>
+                            </div>
+                            <ul class="space-y-2 text-slate-300">
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-chevron-right text-engram-secondary text-xs"></i>
+                                    <span>静态知识存储检索</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-chevron-right text-engram-secondary text-xs"></i>
+                                    <span>N-gram 实体模板</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-chevron-right text-engram-secondary text-xs"></i>
+                                    <span>O(1) 常数时间查表</span>
+                                </li>
+                            </ul>
+                            <div class="mt-4 text-sm text-engram-secondary font-medium">解决「用什么知识」</div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="inline-flex items-center gap-4 glass-panel rounded-full px-6 py-3">
+                            <span class="text-slate-400">协同工作</span>
+                            <i class="fas fa-arrows-alt-h text-engram-accent"></i>
+                            <span class="text-white font-semibold">查算分离，效率革命</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workflow Steps -->
+            <div class="max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-center mb-10">工作流程（4步）</h3>
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="relative flow-arrow">
+                        <div class="glass-panel rounded-2xl p-6 text-center h-full">
+                            <div class="w-12 h-12 rounded-full bg-engram-primary/20 flex items-center justify-center mx-auto mb-4 text-engram-primary font-bold text-xl">1</div>
+                            <h4 class="font-bold mb-2">输入哈希</h4>
+                            <p class="text-sm text-slate-400">文本切成 N 元短语，映射成键</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flow-arrow">
+                        <div class="glass-panel rounded-2xl p-6 text-center h-full">
+                            <div class="w-12 h-12 rounded-full bg-engram-secondary/20 flex items-center justify-center mx-auto mb-4 text-engram-secondary font-bold text-xl">2</div>
+                            <h4 class="font-bold mb-2">O(1) 查表</h4>
+                            <p class="text-sm text-slate-400">从超大记忆表直接读记忆向量</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flow-arrow">
+                        <div class="glass-panel rounded-2xl p-6 text-center h-full">
+                            <div class="w-12 h-12 rounded-full bg-engram-accent/20 flex items-center justify-center mx-auto mb-4 text-engram-accent font-bold text-xl">3</div>
+                            <h4 class="font-bold mb-2">特征融合</h4>
+                            <p class="text-sm text-slate-400">记忆向量 + Transformer 隐状态拼接</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6 text-center h-full">
+                        <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4 text-green-400 font-bold text-xl">4</div>
+                        <h4 class="font-bold mb-2">下游计算</h4>
+                        <p class="text-sm text-slate-400">交给 MoE 做复杂推理</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Designs -->
+            <div class="max-w-4xl mx-auto mt-16">
+                <h3 class="text-2xl font-bold text-center mb-10">关键技术设计</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="glass-panel rounded-xl p-6 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-code text-blue-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">现代化 N-gram</h4>
+                            <p class="text-slate-400 text-sm">可微、可训练、上下文感知，突破传统 n-gram 局限</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl p-6 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-layer-group text-purple-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">稀疏激活</h4>
+                            <p class="text-slate-400 text-sm">不是每层都用，只在特定层注入记忆，保持效率</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl p-6 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-pink-500/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-chart-pie text-pink-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">U 型缩放定律</h4>
+                            <p class="text-slate-400 text-sm">最优分配 ~75% MoE + 25% Engram（ρ*≈75%–80%）</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl p-6 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-server text-green-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">系统优化</h4>
+                            <p class="text-slate-400 text-sm">记忆表可卸载到 CPU，吞吐损失 &lt;2.8%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Section -->
+    <section id="performance" class="py-24 bg-slate-900/50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">性能突破实测</h2>
+            <p class="text-center text-slate-400 mb-12">Engram-27B vs MoE-27B 等参数严格对比</p>
+
+            <div class="max-w-5xl mx-auto">
+                <!-- Metrics Grid -->
+                <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-4 mb-12">
+                    <div class="metric-card glass-panel rounded-2xl p-6 text-center border-t-4 border-blue-500">
+                        <div class="text-3xl font-bold text-blue-400 mb-2">+3.4%</div>
+                        <div class="text-slate-300 font-medium">MMLU</div>
+                        <div class="text-xs text-slate-500 mt-1">知识理解</div>
+                    </div>
+
+                    <div class="metric-card glass-panel rounded-2xl p-6 text-center border-t-4 border-purple-500">
+                        <div class="text-3xl font-bold text-purple-400 mb-2">+5.0%</div>
+                        <div class="text-slate-300 font-medium">BBH</div>
+                        <div class="text-xs text-slate-500 mt-1">推理能力</div>
+                    </div>
+
+                    <div class="metric-card glass-panel rounded-2xl p-6 text-center border-t-4 border-green-500">
+                        <div class="text-3xl font-bold text-green-400 mb-2">+3.0%</div>
+                        <div class="text-slate-300 font-medium">HumanEval</div>
+                        <div class="text-xs text-slate-500 mt-1">代码生成</div>
+                    </div>
+
+                    <div class="metric-card glass-panel rounded-2xl p-6 text-center border-t-4 border-orange-500">
+                        <div class="text-3xl font-bold text-orange-400 mb-2">+4.2%</div>
+                        <div class="text-slate-300 font-medium">GSM8K</div>
+                        <div class="text-xs text-slate-500 mt-1">数学推理</div>
+                    </div>
+
+                    <div class="metric-card glass-panel rounded-2xl p-6 text-center border-t-4 border-red-500">
+                        <div class="text-3xl font-bold text-red-400 mb-2">97%</div>
+                        <div class="text-slate-300 font-medium">NIAH</div>
+                        <div class="text-xs text-slate-500 mt-1">长上下文检索</div>
+                    </div>
+                </div>
+
+                <!-- Key Insight -->
+                <div class="glass-panel rounded-2xl p-8 bg-gradient-to-r from-engram-primary/10 to-engram-secondary/10 border border-engram-primary/30">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-engram-primary/20 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-star text-engram-primary text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">意外发现：推理/代码/数学提升 > 纯知识任务</h3>
+                            <p class="text-slate-300">
+                                虽然 Engram 主要优化知识存储，但解放了 MoE 的计算资源，使得模型在需要深度推理的代码和数学任务上获得更大提升。
+                                这验证了<strong class="text-white">「查算分离」</strong>架构的有效性：让专业模块做专业的事。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Significance -->
+    <section class="py-24">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">架构意义</h2>
+
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="glass-panel rounded-2xl p-6 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-engram-primary/20 flex items-center justify-center flex-shrink-0">
+                            <span class="text-2xl font-bold text-engram-primary">01</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">范式转移</h3>
+                            <p class="text-slate-400">从「纯计算」走向「计算+记忆」双系统，模拟人类大脑的工作记忆与长期记忆分离机制</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-engram-secondary/20 flex items-center justify-center flex-shrink-0">
+                            <span class="text-2xl font-bold text-engram-secondary">02</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">O(1) 知识检索</h3>
+                            <p class="text-slate-400">彻底摆脱 O(n²) 注意力瓶颈，知识检索变为常数时间操作，与序列长度无关</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="glass-panel rounded-2xl p-6 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-engram-accent/20 flex items-center justify-center flex-shrink-0">
+                            <span class="text-2xl font-bold text-engram-accent">03</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">长文本神器</h3>
+                            <p class="text-slate-400">上下文越长、优势越明显，100万 Token 原生支持，RAG 架构潜在替代方案</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6 flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                            <span class="text-2xl font-bold text-green-400">04</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">部署友好</h3>
+                            <p class="text-slate-400">大记忆表可放 CPU 内存，降低 GPU 显存压力，支持消费级硬件部署大模型</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- V4 Status & Timeline -->
+    <section class="py-24 bg-slate-900/50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">DeepSeek V4 发布状态</h2>
+            <p class="text-center text-slate-400 mb-12">截至 2026年3月26日</p>
+
+            <div class="max-w-4xl mx-auto">
+                <!-- Status Cards -->
+                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                    <div class="glass-panel rounded-2xl p-6 text-center border-2 border-green-500/30">
+                        <div class="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check-circle text-green-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">开发完成</h3>
+                        <p class="text-slate-400 text-sm">内部开发、大规模训练、核心评测已完成</p>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6 text-center border-2 border-amber-500/30">
+                        <div class="w-16 h-16 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-flask text-amber-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">灰度测试</h3>
+                        <p class="text-slate-400 text-sm">V4 Lite 轻量版已小规模开放测试</p>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6 text-center border-2 border-slate-600/30">
+                        <div class="w-16 h-16 rounded-full bg-slate-700/50 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-hourglass-half text-slate-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">等待官宣</h3>
+                        <p class="text-slate-400 text-sm">旗舰版预计 4 月正式上线</p>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="glass-panel rounded-3xl p-8">
+                    <h3 class="text-xl font-bold mb-8 flex items-center gap-2">
+                        <i class="fas fa-history text-engram-primary"></i>
+                        关键时间线
+                    </h3>
+                    <div class="relative border-l-2 border-engram-primary/30 ml-4 space-y-8">
+                        <div class="timeline-item relative pl-8">
+                            <div class="text-sm text-engram-primary font-semibold mb-1">2026年1月12日</div>
+                            <h4 class="font-bold text-lg">Engram 论文发布</h4>
+                            <p class="text-slate-400 text-sm">DeepSeek + 北大联合发表条件记忆架构研究</p>
+                        </div>
+
+                        <div class="timeline-item relative pl-8">
+                            <div class="text-sm text-engram-primary font-semibold mb-1">2月11日</div>
+                            <h4 class="font-bold text-lg">百万 Token 上下文测试</h4>
+                            <p class="text-slate-400 text-sm">技术验证版本上线，测试长文本能力</p>
+                        </div>
+
+                        <div class="timeline-item relative pl-8">
+                            <div class="text-sm text-engram-primary font-semibold mb-1">3月3-7日</div>
+                            <h4 class="font-bold text-lg">完成最终测试</h4>
+                            <p class="text-slate-400 text-sm">内部测试与发布准备全部就绪</p>
+                        </div>
+
+                        <div class="timeline-item relative pl-8">
+                            <div class="text-sm text-engram-primary font-semibold mb-1">3月9日</div>
+                            <h4 class="font-bold text-lg">V4 Lite 灰度开放</h4>
+                            <p class="text-slate-400 text-sm">官网低调上线轻量版，约 2000 亿参数</p>
+                        </div>
+
+                        <div class="timeline-item relative pl-8">
+                            <div class="text-sm text-amber-400 font-semibold mb-1">预计 4月上旬</div>
+                            <h4 class="font-bold text-lg text-amber-400">V4 旗舰版发布</h4>
+                            <p class="text-slate-400 text-sm">约 1 万亿参数 MoE + Engram 完整版正式上线</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deployment Info -->
+    <section class="py-24">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">V4 旗舰部署配置</h2>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- API Pricing -->
+                    <div class="glass-panel rounded-3xl p-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                                <i class="fas fa-cloud text-blue-400 text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold">API 调用方案</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+                                <span class="text-slate-300">输入 Token</span>
+                                <span class="text-2xl font-bold text-green-400">$0.14</span>
+                                <span class="text-xs text-slate-500">/百万</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+                                <span class="text-slate-300">输出 Token</span>
+                                <span class="text-2xl font-bold text-blue-400">$0.28</span>
+                                <span class="text-xs text-slate-500">/百万</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-white/5 rounded-xl">
+                                <span class="text-slate-300">缓存输入</span>
+                                <span class="text-2xl font-bold text-purple-400">$0.07</span>
+                                <span class="text-xs text-slate-500">/百万</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
+                            <p class="text-sm text-green-300">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                相比 GPT-4 预计便宜 20-50 倍
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Hardware Config -->
+                    <div class="glass-panel rounded-3xl p-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                                <i class="fas fa-server text-purple-400 text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold">私有化部署</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="p-4 bg-white/5 rounded-xl">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-semibold text-slate-200">高性能配置</span>
+                                    <span class="text-red-400 font-bold">$150K-200K</span>
+                                </div>
+                                <p class="text-sm text-slate-400">8× A100 80GB 或 4× H100 GPU</p>
+                            </div>
+
+                            <div class="p-4 bg-white/5 rounded-xl">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-semibold text-slate-200">优化配置 (4-bit)</span>
+                                    <span class="text-orange-400 font-bold">$60K-80K</span>
+                                </div>
+                                <p class="text-sm text-slate-400">4× A100 GPU 集群</p>
+                            </div>
+
+                            <div class="p-4 bg-white/5 rounded-xl">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-semibold text-slate-200">云部署起步</span>
+                                    <span class="text-blue-400 font-bold">$5K/月</span>
+                                </div>
+                                <p class="text-sm text-slate-400">AWS/GCP/阿里云 GPU 实例</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hardware Support -->
+                <div class="mt-8 glass-panel rounded-2xl p-8">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <i class="fas fa-microchip text-engram-accent"></i>
+                        国产/外产硬件支持
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="text-center p-4 bg-green-500/10 rounded-xl border border-green-500/30">
+                            <i class="fas fa-check-circle text-green-400 text-2xl mb-2"></i>
+                            <h4 class="font-bold mb-1">英伟达 GPU</h4>
+                            <p class="text-sm text-slate-400">A100/H100/RTX 4090 原生支持</p>
+                        </div>
+                        <div class="text-center p-4 bg-amber-500/10 rounded-xl border border-amber-500/30">
+                            <i class="fas fa-tools text-amber-400 text-2xl mb-2"></i>
+                            <h4 class="font-bold mb-1">国产芯片</h4>
+                            <p class="text-sm text-slate-400">华为昇腾 910B 等适配中</p>
+                        </div>
+                        <div class="text-center p-4 bg-blue-500/10 rounded-xl border border-blue-500/30">
+                            <i class="fas fa-expand-arrows-alt text-blue-400 text-2xl mb-2"></i>
+                            <h4 class="font-bold mb-1">AMD GPU</h4>
+                            <p class="text-sm text-slate-400">Engram 降低 CUDA 依赖</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-sm text-slate-400">
+                            <i class="fas fa-open-source text-green-400"></i>
+                            Apache 2.0 开源协议 · 允许商业使用和修改
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Quote -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-engram-primary/20 via-engram-secondary/20 to-engram-accent/20"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <i class="fas fa-quote-left text-6xl text-engram-primary/30 mb-6"></i>
+                <h2 class="text-3xl md:text-5xl font-bold mb-8 leading-tight">
+                    MoE 是让模型<span class="text-engram-primary">「找专家开会」</span><br>
+                    Engram 是让模型<span class="text-engram-secondary">「翻笔记复习」</span>
+                </h2>
+                <p class="text-xl text-engram-accent font-semibold">查算分离，效率革命</p>
+                <div class="mt-8 text-slate-400">
+                    —— bycloud《DeepSeek架构重大突破: Engram技术深度解析》
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-slate-500 text-sm">
+                    <p>基于 bycloud 技术分析与 DeepSeek 官方研究整理</p>
+                    <p class="mt-1">数据截至 2026年3月26日 · 仅供参考</p>
+                </div>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-engram-primary/20 transition-all">
+                        <i class="fab fa-github text-slate-400"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-engram-primary/20 transition-all">
+                        <i class="fab fa-twitter text-slate-400"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-engram-primary/20 transition-all">
+                        <i class="fas fa-globe text-slate-400"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-panel').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

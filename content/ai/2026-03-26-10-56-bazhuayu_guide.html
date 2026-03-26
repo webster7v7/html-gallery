@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>八爪鱼采集器 | 零基础完全指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .step-number { 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .flow-line {
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            width: 4px;
+            height: 100%;
+            position: absolute;
+            left: 24px;
+            top: 0;
+            z-index: 0;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-left: 4px solid #f5576c;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-animation { animation: float 3s ease-in-out infinite; }
+        .mode-card {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .mode-card-2 {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+        .mode-card-3 {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Hero Section -->
+    <section class="gradient-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-20 w-48 h-48 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/3 w-24 h-24 bg-white rounded-full blur-2xl"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto text-center text-white">
+                <div class="float-animation mb-6">
+                    <i class="fas fa-spider text-6xl opacity-80"></i>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                    八爪鱼采集器
+                    <span class="block text-3xl md:text-4xl font-light mt-2 opacity-90">零基础完全指南</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90 font-light">
+                    无需编程，3分钟上手，轻松采集任何网页数据
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 text-sm font-medium">
+                    <span class="px-4 py-2 bg-white/20 rounded-full backdrop-blur-sm">
+                        <i class="fas fa-mouse-pointer mr-2"></i>可视化操作
+                    </span>
+                    <span class="px-4 py-2 bg-white/20 rounded-full backdrop-blur-sm">
+                        <i class="fas fa-bolt mr-2"></i>智能识别
+                    </span>
+                    <span class="px-4 py-2 bg-white/20 rounded-full backdrop-blur-sm">
+                        <i class="fas fa-cloud mr-2"></i>云采集
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-white text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- Quick Start Overview -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-gray-900">三种采集模式，总有一款适合你</h2>
+                <p class="text-gray-600 text-lg">根据你的技术水平和需求复杂度，选择最适合的采集方式</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Mode 1: Template -->
+                <div class="mode-card rounded-3xl p-8 text-white card-hover relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4"><i class="fas fa-copy"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">模板采集</h3>
+                        <p class="text-white/90 mb-4 text-sm">内置500+主流网站模板，输入参数即可一键采集</p>
+                        <div class="flex items-center text-xs bg-white/20 rounded-lg p-3">
+                            <i class="fas fa-star mr-2"></i>
+                            <span>难度：⭐ 最简单</span>
+                        </div>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><i class="fas fa-check mr-2 opacity-80"></i>淘宝/京东商品</li>
+                            <li><i class="fas fa-check mr-2 opacity-80"></i>微博/抖音数据</li>
+                            <li><i class="fas fa-check mr-2 opacity-80"></i>新闻/招聘信息</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Mode 2: Smart Recognition -->
+                <div class="mode-card-2 rounded-3xl p-8 text-white card-hover relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4"><i class="fas fa-magic"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">智能识别</h3>
+                        <p class="text-white/90 mb-4 text-sm">AI自动识别网页数据结构，自动生成采集规则</p>
+                        <div class="flex items-center text-xs bg-white/20 rounded-lg p-3">
+                            <i class="fas fa-robot mr-2"></i>
+                            <span>难度：⭐⭐ 半自动</span>
+                        </div>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><i class="fas fa-check mr-2 opacity-80"></i>自动识别列表</li>
+                            <li><i class="fas fa-check mr-2 opacity-80"></i>自动识别翻页</li>
+                            <li><i class="fas fa-check mr-2 opacity-80"></i>一键生成规则</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Mode 3: Custom -->
+                <div class="mode-card-3 rounded-3xl p-8 text-gray-800 card-hover relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-black/5 rounded-full -mr-16 -mt-16"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4 feature-icon"><i class="fas fa-cogs"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">自定义采集</h3>
+                        <p class="text-gray-600 mb-4 text-sm">手动配置采集流程，应对复杂网页结构</p>
+                        <div class="flex items-center text-xs bg-black/10 rounded-lg p-3">
+                            <i class="fas fa-sliders-h mr-2"></i>
+                            <span>难度：⭐⭐⭐ 最灵活</span>
+                        </div>
+                        <ul class="mt-4 space-y-2 text-sm text-gray-700">
+                            <li><i class="fas fa-check mr-2 text-green-500"></i>循环翻页点击</li>
+                            <li><i class="fas fa-check mr-2 text-green-500"></i>登录态采集</li>
+                            <li><i class="fas fa-check mr-2 text-green-500"></i>多级页面跳转</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step by Step Guide -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">零基础 7 步采集法</h2>
+                <p class="text-gray-600">以采集电商商品为例，手把手教你完成第一个采集任务</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto relative">
+                <div class="flow-line hidden md:block"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 mb-12 md:pl-20">
+                    <div class="glass-effect rounded-2xl p-6 md:p-8 shadow-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">1</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-900">下载安装与注册</h3>
+                                <p class="text-gray-600 mb-4">访问八爪鱼官网下载客户端，完成安装后注册账号（支持微信扫码快速登录）</p>
+                                <div class="highlight-box rounded-lg p-4 text-sm">
+                                    <i class="fas fa-lightbulb text-orange-500 mr-2"></i>
+                                    <strong>提示：</strong>新用户可领取3天VIP体验，使用全部高级模板
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 mb-12 md:pl-20">
+                    <div class="glass-effect rounded-2xl p-6 md:p-8 shadow-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">2</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-900">新建任务 - 输入网址</h3>
+                                <p class="text-gray-600 mb-4">点击「新建」→「自定义采集」，在输入框粘贴目标网址（如京东搜索页、豆瓣列表页）</p>
+                                <div class="bg-gray-100 rounded-lg p-3 font-mono text-sm text-gray-700">
+                                    示例：https://search.jd.com/Search?keyword=手机
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 mb-12 md:pl-20">
+                    <div class="glass-effect rounded-2xl p-6 md:p-8 shadow-lg border-2 border-purple-200">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">3</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-900 flex items-center">
+                                    选择采集模式
+                                    <span class="ml-2 px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">关键步骤</span>
+                                </h3>
+
+                                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                                    <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                                        <h4 class="font-bold text-blue-900 mb-2"><i class="fas fa-magic mr-2"></i>推荐：智能识别</h4>
+                                        <p class="text-sm text-blue-800">点击「自动识别网页」，AI自动分析页面列表、翻页按钮</p>
+                                    </div>
+                                    <div class="bg-orange-50 rounded-lg p-4 border border-orange-200">
+                                        <h4 class="font-bold text-orange-900 mb-2"><i class="fas fa-hand-pointer mr-2"></i>手动模式</h4>
+                                        <p class="text-sm text-orange-800">点击网页元素 → 选择「选中全部相似元素」→ 提取数据</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative z-10 mb-12 md:pl-20">
+                    <div class="glass-effect rounded-2xl p-6 md:p-8 shadow-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">4</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-900">配置采集字段</h3>
+                                <p class="text-gray-600 mb-4">勾选需要采集的数据项，修改字段名称（如将「title」改为「商品名称」）</p>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="px-3 py-1 bg-gray-200 rounded-full text-sm"><i class="fas fa-tag mr-1"></i>商品标题</span>
+                                    <span class="px-3 py-1 bg-gray-200 rounded-full text-sm"><i class="fas fa-yen-sign mr-1"></i>价格</span>
+                                    <span class="px-3 py-1 bg-gray-200 rounded-full text-sm"><i class="fas fa-store mr-1"></i>店铺名</span>
+                                    <span class="px-3 py-1 bg-gray-200 rounded-full text-sm"><i class="fas fa-link mr-1"></i>商品链接</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="relative z-10 mb-12 md:pl-20">
+                    <div class="glass-effect rounded-2xl p-6 md:p-8 shadow-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">5</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-900">设置翻页与滚动</h3>
+                                <p class="text-gray-600 mb-4">如需采集多页数据，在分页区域右键选择「循环点击下一页」，设置最大页数限制</p>
+                                <div class="bg-gray-800 rounded-lg p-4 text-white text-sm">
+                                    <div class="flex items-center gap-2 mb-2 text-green-400">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>翻页采集：自动点击「下一页」按钮</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-green-400">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>滚动加载：适用于瀑布流页面（如抖音、小红书）</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="relative z-10 mb-12 md:pl-20">
+                    <div class="glass-effect rounded-2xl p-6 md:p-8 shadow-lg">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">6</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-900">测试与启动采集</h3>
+                                <p class="text-gray-600 mb-4">点击「采集」→「启动本地采集（调试模式）」，先测试前几页数据是否正确</p>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="border border-gray-200 rounded-lg p-3 text-center">
+                                        <i class="fas fa-desktop text-2xl text-blue-500 mb-2"></i>
+                                        <div class="text-sm font-medium">本地采集</div>
+                                        <div class="text-xs text-gray-500">适合小数据量，电脑需保持开启</div>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-3 text-center bg-purple-50">
+                                        <i class="fas fa-cloud text-2xl text-purple-500 mb-2"></i>
+                                        <div class="text-sm font-medium">云采集</div>
+                                        <div class="text-xs text-gray-500">适合大数据量，可关机运行</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="relative z-10 md:pl-20">
+                    <div class="glass-effect rounded-2xl p-6 md:p-8 shadow-lg border-2 border-green-200 bg-green-50/30">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">7</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold mb-2 text-gray-900">导出数据</h3>
+                                <p class="text-gray-600 mb-4">采集完成后，支持导出为 Excel、CSV、JSON、数据库等多种格式</p>
+                                <div class="flex gap-3">
+                                    <button class="px-4 py-2 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600 transition">
+                                        <i class="fas fa-file-excel mr-2"></i>导出 Excel
+                                    </button>
+                                    <button class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition">
+                                        <i class="fas fa-file-csv mr-2"></i>导出 CSV
+                                    </button>
+                                    <button class="px-4 py-2 bg-gray-700 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition">
+                                        <i class="fas fa-database mr-2"></i>API接口
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practical Scenarios -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">常用场景实战</h2>
+                <p class="text-gray-600">针对不同类型的网页，选择最佳采集策略</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <!-- Scenario 1 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 card-hover">
+                    <div class="h-32 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-5xl text-white/80"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">电商商品采集</h3>
+                        <p class="text-gray-600 text-sm mb-4">淘宝、京东、拼多多商品列表与详情</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                使用「智能识别」自动抓取列表
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                开启「翻页采集」获取多页数据
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                进入详情页采集SKU、图文详情
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 2 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 card-hover">
+                    <div class="h-32 bg-gradient-to-r from-pink-400 to-rose-500 flex items-center justify-center">
+                        <i class="fas fa-comments text-5xl text-white/80"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">社交媒体监控</h3>
+                        <p class="text-gray-600 text-sm mb-4">微博、抖音、小红书内容采集</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                处理滚动加载（瀑布流）
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                采集评论、点赞、转发数据
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i>
+                                注意反爬机制，设置合理间隔
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 3 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 card-hover">
+                    <div class="h-32 bg-gradient-to-r from-green-400 to-emerald-600 flex items-center justify-center">
+                        <i class="fas fa-newspaper text-5xl text-white/80"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">新闻资讯聚合</h3>
+                        <p class="text-gray-600 text-sm mb-4">新闻列表、公众号文章、行业资讯</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                定时采集实现自动更新监控
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                采集正文内容（需进入详情页）
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                设置去重避免重复采集
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 4 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 card-hover">
+                    <div class="h-32 bg-gradient-to-r from-purple-400 to-indigo-600 flex items-center justify-center">
+                        <i class="fas fa-briefcase text-5xl text-white/80"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">招聘数据监控</h3>
+                        <p class="text-gray-600 text-sm mb-4">BOSS直聘、智联招聘、拉勾网</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                使用官方模板快速配置
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                采集职位、薪资、要求、公司
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-user-lock text-blue-500 mr-2"></i>
+                                需配置登录Cookie
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 5 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 card-hover">
+                    <div class="h-32 bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
+                        <i class="fas fa-home text-5xl text-white/80"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">房产信息抓取</h3>
+                        <p class="text-gray-600 text-sm mb-4">链家、贝壳找房、安居客房源</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                采集价格、面积、户型、位置
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                地图坐标与周边配套信息
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-image text-purple-500 mr-2"></i>
+                                支持图片批量下载
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 6 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 card-hover">
+                    <div class="h-32 bg-gradient-to-r from-cyan-400 to-blue-600 flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-5xl text-white/80"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">学术数据收集</h3>
+                        <p class="text-gray-600 text-sm mb-4">知网、万方、百度学术论文</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                批量采集论文标题、作者、摘要
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                导出参考文献格式
+                            </div>
+                            <div class="flex items-center text-gray-700">
+                                <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                支持PDF原文批量下载
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pro Tips -->
+    <section class="py-20 bg-gray-900 text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">高手进阶技巧</h2>
+                <p class="text-gray-400">解决常见难题，提升采集效率</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mr-3">
+                            <i class="fas fa-sign-in-alt text-blue-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">登录态采集</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">需要登录才能查看的数据（如会员内容、个人中心）：</p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• 在「浏览器模式」下手动登录网站</li>
+                        <li>• 高级设置 → 获取并应用当前Cookie</li>
+                        <li>• 或在流程中添加「输入文本」步骤自动登录</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center mr-3">
+                            <i class="fas fa-shield-alt text-green-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">反爬虫应对</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">网站出现验证码或IP封禁时的解决方案：</p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• 设置采集间隔（建议3-5秒/次）</li>
+                        <li>• 开启「云采集」自动切换IP</li>
+                        <li>• 使用代理IP池（旗舰版功能）</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center mr-3">
+                            <i class="fas fa-clock text-purple-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">定时自动采集</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">监控价格变动、新闻更新的自动化方案：</p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• 任务设置 → 定时运行（每天/每周）</li>
+                        <li>• 开启「自动导出」到指定文件夹</li>
+                        <li>• 设置「去重」只采集新增数据</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mr-3">
+                            <i class="fas fa-code text-orange-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">XPath精准定位</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">当智能识别失效时的手动定位方法：</p>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• F12打开浏览器开发者工具</li>
+                        <li>• 右键元素 → Copy → Copy XPath</li>
+                        <li>• 在八爪鱼中使用「自定义XPath」</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">常见问题解答</h2>
+                <p class="text-gray-600">新手最常遇到的疑问</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-lg text-gray-900">八爪鱼是免费的吗？</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                        <div class="hidden mt-4 text-gray-600">
+                            基础版免费，但有导出数据条数限制（通常每月1000条）。专业版（49元/月）支持无限本地采集，旗舰版（299元/月）包含云采集和加速功能。新用户可领取3天VIP体验全部功能。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-lg text-gray-900">可以采集手机APP数据吗？</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                        <div class="hidden mt-4 text-gray-600">
+                            八爪鱼主要针对PC网页端。如果APP数据能在电脑浏览器中打开（如微信小程序网页版、H5页面），则可以采集。纯APP内数据无法直接采集，需要定制服务。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-lg text-gray-900">采集会被网站封IP吗？</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                        <div class="hidden mt-4 text-gray-600">
+                            合理设置采集间隔（建议3-5秒/次）通常不会触发封禁。使用「云采集」功能可自动分配不同IP地址，有效避免封禁。切勿短时间内高频访问同一页面。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-lg text-gray-900">为什么有些数据预览时有，导出时缺失？</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                        <div class="hidden mt-4 text-gray-600">
+                            可能是动态加载（Ajax）导致。解决方案：1) 在「打开网页」步骤设置「Ajax超时」时间（如2-3秒）；2) 添加「滚动页面」步骤触发加载；3) 使用「等待元素」确保数据加载完成再采集。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleFaq(this)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-lg text-gray-900">如何采集列表+详情页数据？</h3>
+                            <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                        <div class="hidden mt-4 text-gray-600">
+                            1) 先采集列表页的商品标题和链接；2) 点击「进入详情页」或创建「点击元素」步骤；3) 在新页面中提取详情数据；4) 使用「循环」功能批量处理所有列表项。注意设置合理的超时时间。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resource Links -->
+    <section class="py-16 bg-white border-t border-gray-200">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold mb-8 text-center">官方资源与下载</h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <a href="https://www.bazhuayu.com/" target="_blank" class="flex items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition group">
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white mr-4 group-hover:scale-110 transition">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-gray-900">官网下载</div>
+                            <div class="text-sm text-gray-600">获取最新版本</div>
+                        </div>
+                    </a>
+                    <a href="https://www.bazhuayu.com/helpcenter/docs/qeAA9j" target="_blank" class="flex items-center p-4 bg-green-50 rounded-xl hover:bg-green-100 transition group">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center text-white mr-4 group-hover:scale-110 transition">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-gray-900">官方文档</div>
+                            <div class="text-sm text-gray-600">详细图文教程</div>
+                        </div>
+                    </a>
+                    <a href="https://www.bilibili.com/video/BV1PQ4y1p78x/" target="_blank" class="flex items-center p-4 bg-pink-50 rounded-xl hover:bg-pink-100 transition group">
+                        <div class="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center text-white mr-4 group-hover:scale-110 transition">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-gray-900">视频教程</div>
+                            <div class="text-sm text-gray-600">B站入门课程</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <div class="container mx-auto px-6">
+            <p class="mb-2">本指南基于八爪鱼采集器官方文档整理 | 仅供学习交流使用</p>
+            <p>请遵守网站robots协议，合法合规采集公开数据</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(element) {
+            const answer = element.querySelector('div.hidden, div.block');
+            const icon = element.querySelector('.fa-chevron-down');
+
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                answer.classList.add('block');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                answer.classList.remove('block');
+                answer.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Add scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply to cards
+        document.querySelectorAll('.card-hover, .glass-effect').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
