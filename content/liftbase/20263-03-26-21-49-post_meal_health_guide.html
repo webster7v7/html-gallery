@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>饭后健康指南 | 科学养生</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .danger-gradient {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+
+        .success-gradient {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .warning-gradient {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .icon-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .slide-in {
+            animation: slideIn 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown-circle {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+
+        .countdown-circle svg {
+            transform: rotate(-90deg);
+        }
+
+        .countdown-circle circle {
+            fill: none;
+            stroke-width: 4;
+        }
+
+        .countdown-circle .bg {
+            stroke: #e5e7eb;
+        }
+
+        .countdown-circle .progress {
+            stroke: url(#gradient);
+            stroke-linecap: round;
+            stroke-dasharray: 157;
+            stroke-dashoffset: 157;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .tab-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            transform: translateX(-50%);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: white;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        .breathing-circle {
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="antialiased">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"></div>
+
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+            <div class="absolute top-40 right-10 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 slide-in" style="animation-delay: 0.1s">
+                <i class="fas fa-heart-pulse text-red-500"></i>
+                <span class="text-sm font-medium text-gray-700">科学养生指南</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-black mb-6 slide-in" style="animation-delay: 0.2s">
+                <span class="gradient-text">饭后半小时</span><br>
+                <span class="text-gray-800">黄金养生期</span>
+            </h1>
+
+            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto slide-in" style="animation-delay: 0.3s">
+                掌握饭后科学行为，避免健康隐患，让每一餐都成为身体的能量补给站
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4 slide-in" style="animation-delay: 0.4s">
+                <button onclick="scrollToSection('forbidden')" class="px-8 py-4 rounded-full danger-gradient text-white font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center gap-2">
+                    <i class="fas fa-ban"></i>
+                    查看禁忌
+                </button>
+                <button onclick="scrollToSection('correct')" class="px-8 py-4 rounded-full success-gradient text-white font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center gap-2">
+                    <i class="fas fa-check-circle"></i>
+                    正确做法
+                </button>
+            </div>
+
+            <div class="mt-16 slide-in scroll-indicator" style="animation-delay: 0.6s">
+                <i class="fas fa-chevron-down text-gray-400 text-2xl"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forbidden Section -->
+    <section id="forbidden" class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full danger-gradient mb-4 icon-float">
+                    <i class="fas fa-ban text-white text-2xl"></i>
+                </div>
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">饭后七大禁忌</h2>
+                <p class="text-gray-600">这些行为会严重影响消化，甚至危害健康</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1: Lying Down -->
+                <div class="glass-card rounded-2xl p-6 hover-lift cursor-pointer group" onclick="toggleDetail(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                            <i class="fas fa-bed text-red-600 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-red-100 text-red-600 text-xs font-bold">高危</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">立即躺下/睡觉</h3>
+                    <p class="text-gray-600 text-sm mb-4">胃酸和食物反流到食管，长期可能灼伤食道</p>
+                    <div class="flex items-center gap-2 text-red-600 font-semibold text-sm">
+                        <i class="fas fa-clock"></i>
+                        <span>至少等待 30分钟</span>
+                    </div>
+                    <div class="hidden mt-4 pt-4 border-t border-gray-200 text-sm text-gray-600 detail-content">
+                        <p>躺下时垫高上半身15-20厘米，可减少反流风险。长期饭后立即躺下可能引发反流性食管炎，甚至增加食管癌风险。</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Exercise -->
+                <div class="glass-card rounded-2xl p-6 hover-lift cursor-pointer group" onclick="toggleDetail(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+                            <i class="fas fa-running text-orange-600 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-bold">中危</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">剧烈运动</h3>
+                    <p class="text-gray-600 text-sm mb-4">血液分流到四肢，胃部供血不足，导致消化不良</p>
+                    <div class="flex items-center gap-2 text-orange-600 font-semibold text-sm">
+                        <i class="fas fa-clock"></i>
+                        <span>至少等待 30-40分钟</span>
+                    </div>
+                    <div class="hidden mt-4 pt-4 border-t border-gray-200 text-sm text-gray-600 detail-content">
+                        <p>跑步、跳操等剧烈运动可能导致胃下垂、胃痉挛，老年人还可能诱发心脑血管问题。轻度散步除外。</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Bathing -->
+                <div class="glass-card rounded-2xl p-6 hover-lift cursor-pointer group" onclick="toggleDetail(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                            <i class="fas fa-shower text-blue-600 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-xs font-bold">中危</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">立即洗澡</h3>
+                    <p class="text-gray-600 text-sm mb-4">皮肤血管扩张，胃肠道血流量减少，心脏供血不足</p>
+                    <div class="flex items-center gap-2 text-blue-600 font-semibold text-sm">
+                        <i class="fas fa-clock"></i>
+                        <span>建议等待 1-2小时</span>
+                    </div>
+                    <div class="hidden mt-4 pt-4 border-t border-gray-200 text-sm text-gray-600 detail-content">
+                        <p>热水澡会使皮肤血管扩张，减少胃肠道血液供应；冷水澡则刺激血管收缩，两者都影响消化功能，可能导致虚脱。</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Drinking Water/Tea -->
+                <div class="glass-card rounded-2xl p-6 hover-lift cursor-pointer group" onclick="toggleDetail(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-100 flex items-center justify-center group-hover:bg-cyan-200 transition-colors">
+                            <i class="fas fa-glass-water text-cyan-600 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-cyan-100 text-cyan-600 text-xs font-bold">低危</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">大量喝水/浓茶</h3>
+                    <p class="text-gray-600 text-sm mb-4">稀释胃液，影响消化；浓茶损伤胃黏膜</p>
+                    <div class="flex items-center gap-2 text-cyan-600 font-semibold text-sm">
+                        <i class="fas fa-clock"></i>
+                        <span>1小时后正常饮水</span>
+                    </div>
+                    <div class="hidden mt-4 pt-4 border-t border-gray-200 text-sm text-gray-600 detail-content">
+                        <p>大量饮水稀释胃酸，降低消化效率；浓茶中的鞣酸影响铁和蛋白质吸收，建议饭后少量温水即可。</p>
+                    </div>
+                </div>
+
+                <!-- Card 5: Smoking -->
+                <div class="glass-card rounded-2xl p-6 hover-lift cursor-pointer group" onclick="toggleDetail(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                            <i class="fas fa-smoking text-gray-600 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-red-100 text-red-600 text-xs font-bold">高危</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">立即吸烟</h3>
+                    <p class="text-gray-600 text-sm mb-4">有害物质吸收加快，伤害胃黏膜，增加胃溃疡风险2.5倍</p>
+                    <div class="flex items-center gap-2 text-gray-600 font-semibold text-sm">
+                        <i class="fas fa-clock"></i>
+                        <span>至少等待 1小时</span>
+                    </div>
+                    <div class="hidden mt-4 pt-4 border-t border-gray-200 text-sm text-gray-600 detail-content">
+                        <p>饭后血液循环加快，尼古丁等有害物质吸收速度是平时的数倍，对胃黏膜刺激极大，长期可能诱发胃癌。</p>
+                    </div>
+                </div>
+
+                <!-- Card 6: Fruit -->
+                <div class="glass-card rounded-2xl p-6 hover-lift cursor-pointer group" onclick="toggleDetail(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                            <i class="fas fa-apple-alt text-green-600 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-600 text-xs font-bold">注意</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">立即吃水果</h3>
+                    <p class="text-gray-600 text-sm mb-4">水果在胃内发酵产气，导致胃胀，影响正餐消化</p>
+                    <div class="flex items-center gap-2 text-green-600 font-semibold text-sm">
+                        <i class="fas fa-clock"></i>
+                        <span>建议等待 1-2小时</span>
+                    </div>
+                    <div class="hidden mt-4 pt-4 border-t border-gray-200 text-sm text-gray-600 detail-content">
+                        <p>水果中的糖分在胃内停留发酵，产生气体导致腹胀。建议在两餐之间或饭前1小时吃水果最佳。</p>
+                    </div>
+                </div>
+
+                <!-- Card 7: Sedentary -->
+                <div class="glass-card rounded-2xl p-6 hover-lift cursor-pointer group md:col-span-2 lg:col-span-1" onclick="toggleDetail(this)">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                            <i class="fas fa-couch text-purple-600 text-xl"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-600 text-xs font-bold">注意</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">久坐不动</h3>
+                    <p class="text-gray-600 text-sm mb-4">能量转化为脂肪，肠胃蠕动变慢，易胀气便秘</p>
+                    <div class="flex items-center gap-2 text-purple-600 font-semibold text-sm">
+                        <i class="fas fa-clock"></i>
+                        <span>静坐15-30分钟后活动</span>
+                    </div>
+                    <div class="hidden mt-4 pt-4 border-t border-gray-200 text-sm text-gray-600 detail-content">
+                        <p>饭后立即久坐易导致腹部脂肪堆积，建议静坐15-30分钟后进行轻度活动，如站立或缓慢散步。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Correct Practices Section -->
+    <section id="correct" class="py-20 px-4 bg-white/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full success-gradient mb-4 icon-float">
+                    <i class="fas fa-check-circle text-white text-2xl"></i>
+                </div>
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">饭后正确做法</h2>
+                <p class="text-gray-600">黄金半小时，科学养生指南</p>
+            </div>
+
+            <!-- Timeline -->
+            <div class="relative">
+                <div class="timeline-line hidden md:block"></div>
+
+                <!-- Phase 1: 0-15 min -->
+                <div class="relative mb-12 md:mb-24">
+                    <div class="timeline-dot top-0 hidden md:block" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"></div>
+                    <div class="md:grid md:grid-cols-2 md:gap-12 items-center">
+                        <div class="md:text-right mb-6 md:mb-0">
+                            <div class="glass-card rounded-2xl p-6 inline-block w-full md:w-auto">
+                                <div class="flex items-center gap-3 mb-4 md:justify-end">
+                                    <span class="text-2xl font-bold gradient-text">0-15分钟</span>
+                                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                        <i class="fas fa-hourglass-start text-indigo-600"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-3 md:text-right">静坐或站立</h3>
+                                <ul class="space-y-2 text-gray-600 text-sm md:text-right">
+                                    <li class="flex items-center gap-2 md:flex-row-reverse">
+                                        <span>饭后坐着可减少胃食管反流</span>
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </li>
+                                    <li class="flex items-center gap-2 md:flex-row-reverse">
+                                        <span>靠墙站立能消耗热量、控制体重</span>
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </li>
+                                    <li class="flex items-center gap-2 md:flex-row-reverse">
+                                        <span>轻柔揉腹帮助消化</span>
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="w-full h-64 rounded-2xl bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+                                <div class="text-center">
+                                    <i class="fas fa-person text-6xl text-indigo-400 mb-4"></i>
+                                    <p class="text-indigo-600 font-medium">保持直立姿势</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2: 15-30 min -->
+                <div class="relative mb-12 md:mb-24">
+                    <div class="timeline-dot top-0 hidden md:block" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"></div>
+                    <div class="md:grid md:grid-cols-2 md:gap-12 items-center">
+                        <div class="hidden md:block">
+                            <div class="w-full h-64 rounded-2xl bg-gradient-to-br from-cyan-100 to-blue-100 flex items-center justify-center">
+                                <div class="text-center">
+                                    <i class="fas fa-walking text-6xl text-cyan-400 mb-4"></i>
+                                    <p class="text-cyan-600 font-medium">轻度活动</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-6 md:mb-0">
+                            <div class="glass-card rounded-2xl p-6 inline-block w-full md:w-auto">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center">
+                                        <i class="fas fa-hourglass-half text-cyan-600"></i>
+                                    </div>
+                                    <span class="text-2xl font-bold" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">15-30分钟</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-3">缓慢散步</h3>
+                                <ul class="space-y-2 text-gray-600 text-sm">
+                                    <li class="flex items-center gap-2">
+                                        <i class="fas fa-check text-green-500"></i>
+                                        <span>促进肠道蠕动，帮助消化</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <i class="fas fa-check text-green-500"></i>
+                                        <span>避免"饭后百步走"误区——不要剧烈运动</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <i class="fas fa-check text-green-500"></i>
+                                        <span>步速控制在每分钟60-80步</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meal Specific Advice -->
+            <div class="mt-16">
+                <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">不同时段的养生重点</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Breakfast -->
+                    <div class="glass-card rounded-2xl p-6 hover-lift">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
+                                <i class="fas fa-sun text-yellow-600 text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800">早餐后</h4>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-apple-alt text-green-500 mt-1"></i>
+                                <span>吃水果（猕猴桃、樱桃最佳）</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-teeth text-blue-500 mt-1"></i>
+                                <span>漱口叩齿，保护牙齿</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-hand text-purple-500 mt-1"></i>
+                                <span>按摩膝盖、梳头促进血液循环</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Lunch -->
+                    <div class="glass-card rounded-2xl p-6 hover-lift">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
+                                <i class="fas fa-cloud-sun text-orange-600 text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800">午餐后</h4>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-wine-glass text-pink-500 mt-1"></i>
+                                <span>喝酸奶，补充益生菌</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-bed text-indigo-500 mt-1"></i>
+                                <span>午睡20-30分钟，恢复精力</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-sun text-yellow-500 mt-1"></i>
+                                <span>晒太阳15分钟，促进钙吸收</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Dinner -->
+                    <div class="glass-card rounded-2xl p-6 hover-lift">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-moon text-indigo-600 text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800">晚餐后</h4>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-walking text-green-500 mt-1"></i>
+                                <span>散步30分钟，帮助消化助眠</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-hot-tub text-red-500 mt-1"></i>
+                                <span>泡脚20分钟，促进血液循环</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-hand-sparkles text-purple-500 mt-1"></i>
+                                <span>按摩脚底穴位，放松身心</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Timer Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-card rounded-3xl p-8 md:p-12 text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">饭后计时器</h2>
+                <p class="text-gray-600 mb-8">记录您的饭后时间，科学安排活动</p>
+
+                <div class="flex justify-center gap-8 mb-8">
+                    <div class="text-center">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold mb-2 shadow-lg breathing-circle" id="timer-display">
+                            00:00
+                        </div>
+                        <p class="text-sm text-gray-500">已用时间</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-4 mb-8">
+                    <button onclick="startTimer()" class="px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105">
+                        <i class="fas fa-play mr-2"></i>开始计时
+                    </button>
+                    <button onclick="resetTimer()" class="px-6 py-3 rounded-full bg-gradient-to-r from-gray-500 to-gray-600 text-white font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105">
+                        <i class="fas fa-redo mr-2"></i>重置
+                    </button>
+                </div>
+
+                <div id="timer-advice" class="hidden">
+                    <div class="grid grid-cols-3 gap-4 max-w-lg mx-auto">
+                        <div class="p-4 rounded-xl bg-indigo-50 border-2 border-indigo-200" id="phase-1">
+                            <i class="fas fa-chair text-indigo-500 text-2xl mb-2"></i>
+                            <p class="text-xs font-bold text-indigo-700">0-15分钟</p>
+                            <p class="text-xs text-gray-600">静坐/站立</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-gray-50 border-2 border-gray-200 opacity-50" id="phase-2">
+                            <i class="fas fa-walking text-cyan-500 text-2xl mb-2"></i>
+                            <p class="text-xs font-bold text-cyan-700">15-30分钟</p>
+                            <p class="text-xs text-gray-600">缓慢散步</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-gray-50 border-2 border-gray-200 opacity-50" id="phase-3">
+                            <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
+                            <p class="text-xs font-bold text-green-700">30分钟后</p>
+                            <p class="text-xs text-gray-600">正常活动</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Cards -->
+    <section class="py-20 px-4 bg-white/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card rounded-2xl p-8 border-l-4 border-red-500">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-exclamation-triangle text-red-500"></i>
+                        核心禁忌
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        饭后血液集中在胃部进行消化，任何会<strong class="text-red-600">分散血液供应</strong>或<strong class="text-red-600">改变体位导致反流</strong>的行为都应避免。躺下、剧烈运动、洗澡是最危险的三件事。
+                    </p>
+                </div>
+                <div class="glass-card rounded-2xl p-8 border-l-4 border-green-500">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-lightbulb text-green-500"></i>
+                        黄金法则
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        <strong class="text-green-600">轻度站立或静坐15-30分钟</strong>是最佳选择，既不影响消化，又能预防反流和肥胖。记住：饭后半小时是养生黄金期！
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 text-center text-gray-500 text-sm">
+        <p>基于权威医学来源整理 | 仅供参考，特殊情况请咨询医生</p>
+        <p class="mt-2">© 2026 饭后健康指南</p>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Toggle detail
+        function toggleDetail(element) {
+            const detail = element.querySelector('.detail-content');
+            detail.classList.toggle('hidden');
+        }
+
+        // Timer functionality
+        let timerInterval;
+        let seconds = 0;
+        let isRunning = false;
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            document.getElementById('timer-advice').classList.remove('hidden');
+
+            timerInterval = setInterval(() => {
+                seconds++;
+                updateDisplay();
+                updatePhases();
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            seconds = 0;
+            isRunning = false;
+            updateDisplay();
+            document.getElementById('timer-advice').classList.add('hidden');
+            resetPhases();
+        }
+
+        function updateDisplay() {
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').textContent = `${mins}:${secs}`;
+        }
+
+        function updatePhases() {
+            const phase1 = document.getElementById('phase-1');
+            const phase2 = document.getElementById('phase-2');
+            const phase3 = document.getElementById('phase-3');
+
+            // Reset all
+            [phase1, phase2, phase3].forEach(p => {
+                p.classList.remove('bg-indigo-50', 'bg-cyan-50', 'bg-green-50', 'border-indigo-500', 'border-cyan-500', 'border-green-500', 'scale-105');
+                p.classList.add('bg-gray-50', 'border-gray-200', 'opacity-50');
+            });
+
+            if (seconds < 900) { // < 15 min
+                phase1.classList.remove('bg-gray-50', 'border-gray-200', 'opacity-50');
+                phase1.classList.add('bg-indigo-50', 'border-indigo-500', 'scale-105');
+            } else if (seconds < 1800) { // 15-30 min
+                phase2.classList.remove('bg-gray-50', 'border-gray-200', 'opacity-50');
+                phase2.classList.add('bg-cyan-50', 'border-cyan-500', 'scale-105');
+            } else { // > 30 min
+                phase3.classList.remove('bg-gray-50', 'border-gray-200', 'opacity-50');
+                phase3.classList.add('bg-green-50', 'border-green-500', 'scale-105');
+            }
+        }
+
+        function resetPhases() {
+            const phase1 = document.getElementById('phase-1');
+            const phase2 = document.getElementById('phase-2');
+            const phase3 = document.getElementById('phase-3');
+
+            phase1.className = 'p-4 rounded-xl bg-indigo-50 border-2 border-indigo-200';
+            phase2.className = 'p-4 rounded-xl bg-gray-50 border-2 border-gray-200 opacity-50';
+            phase3.className = 'p-4 rounded-xl bg-gray-50 border-2 border-gray-200 opacity-50';
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
