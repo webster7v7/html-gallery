@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广西英语B级考试 - 零基础30天通关指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        .day-card {
+            transition: all 0.3s ease;
+        }
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .checklist-item:checked + label {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
+
+    <!-- 导航栏 -->
+    <nav class="sticky-nav bg-white/80 border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">B</div>
+                <div>
+                    <h1 class="font-bold text-gray-800">广西英语B级</h1>
+                    <p class="text-xs text-gray-500">30天零基础通关</p>
+                </div>
+            </div>
+            <div class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
+                <a href="#structure" class="hover:text-indigo-600 transition">考试结构</a>
+                <a href="#schedule" class="hover:text-indigo-600 transition">学习计划</a>
+                <a href="#templates" class="hover:text-indigo-600 transition">写作模板</a>
+                <a href="#checklist" class="hover:text-indigo-600 transition">备考清单</a>
+            </div>
+            <button onclick="scrollToTop()" class="p-2 hover:bg-gray-100 rounded-lg transition">
+                <i data-lucide="chevron-up" class="w-5 h-5 text-gray-600"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 英雄区 -->
+    <header class="relative overflow-hidden pt-16 pb-12 px-4">
+        <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-6">
+                <i data-lucide="award" class="w-4 h-4"></i>
+                <span>PRETCO-B 高等学校英语应用能力考试</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">
+                <span class="gradient-text">广西英语B级</span><br>
+                <span class="text-gray-800">零基础30天通关指南</span>
+            </h1>
+            <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                总分100分，60分及格，85分优秀。专为高职高专学生设计，科学规划每日2小时，稳过B级不是梦。
+            </p>
+
+            <!-- 关键数据卡片 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-8">
+                <div class="glass-card rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-black text-indigo-600">100</div>
+                    <div class="text-sm text-gray-500">总分</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-black text-green-600">60</div>
+                    <div class="text-sm text-gray-500">及格线</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-black text-purple-600">30</div>
+                    <div class="text-sm text-gray-500">备考天数</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4 text-center">
+                    <div class="text-3xl font-black text-orange-600">2h</div>
+                    <div class="text-sm text-gray-500">每日投入</div>
+                </div>
+            </div>
+
+            <button onclick="document.getElementById('schedule').scrollIntoView({behavior: 'smooth'})" 
+                    class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2 mx-auto">
+                <span>开始备考计划</span>
+                <i data-lucide="arrow-down" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- 考试结构 -->
+    <section id="structure" class="py-12 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                    <i data-lucide="layout" class="w-6 h-6 text-indigo-600"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">考试结构解析</h2>
+                    <p class="text-gray-500">广西B级五大题型分值分布</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 听力 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-blue-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="headphones" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">听力理解</h3>
+                                <p class="text-sm text-gray-500">Listening Comprehension</p>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-black text-blue-600">24分</span>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-blue-500"></i>短对话（5题）</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-blue-500"></i>长对话（5题）</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-blue-500"></i>短文理解（5题）</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg text-sm text-blue-700">
+                        <strong>技巧：</strong>听到什么选什么，B级听力"直来直去"不绕弯
+                    </div>
+                </div>
+
+                <!-- 阅读 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-green-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="book-open" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">阅读理解</h3>
+                                <p class="text-sm text-gray-500">Reading Comprehension</p>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-black text-green-600">35分</span>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i>多项选择（细节题为主）</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i>填空/匹配题</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i>简答题</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-green-50 rounded-lg text-sm text-green-700">
+                        <strong>技巧：</strong>先看题→圈关键词→回原文找同义句，80%题可直接定位
+                    </div>
+                </div>
+
+                <!-- 词汇语法 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-purple-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="type" class="w-5 h-5 text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">词汇语法</h3>
+                                <p class="text-sm text-gray-500">Vocabulary & Structure</p>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-black text-purple-600">15分</span>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-purple-500"></i>单项选择（10题）</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-purple-500"></i>词形填空（5题）</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-purple-50 rounded-lg text-sm text-purple-700">
+                        <strong>重点：</strong>时态、从句、非谓语动词、词义辨析
+                    </div>
+                </div>
+
+                <!-- 翻译 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-orange-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="languages" class="w-5 h-5 text-orange-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">英译汉</h3>
+                                <p class="text-sm text-gray-500">Translation</p>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-black text-orange-600">15分</span>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-orange-500"></i>句子翻译（实用性内容）</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-orange-500"></i>段落翻译</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-orange-50 rounded-lg text-sm text-orange-700">
+                        <strong>原则：</strong>先找主谓宾，通顺第一，不必追求华丽
+                    </div>
+                </div>
+
+                <!-- 写作 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-pink-500 md:col-span-2">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="edit-3" class="w-5 h-5 text-pink-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">写作/汉译英</h3>
+                                <p class="text-sm text-gray-500">Writing</p>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-black text-pink-600">15分</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-pink-500"></i>应用文写作（书信、通知、邮件）</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-pink-500"></i>字数要求：80-100词</li>
+                        </ul>
+                        <div class="p-3 bg-pink-50 rounded-lg text-sm text-pink-700">
+                            <strong>秘诀：</strong>背模板=稳拿分！格式正确+要点齐全+少语法错误=高分
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 30天学习计划 -->
+    <section id="schedule" class="py-12 px-4 bg-white/50">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="calendar" class="w-6 h-6 text-indigo-600"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">30天学习计划</h2>
+                        <p class="text-gray-500">科学分阶段，每日2小时精准突破</p>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <span class="w-3 h-3 rounded-full bg-blue-500"></span>基础期
+                        <span class="w-3 h-3 rounded-full bg-green-500"></span>强化期
+                        <span class="w-3 h-3 rounded-full bg-purple-500"></span>冲刺期
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段标签 -->
+            <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+                <button onclick="showPhase('week1')" class="phase-btn px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium whitespace-nowrap hover:shadow-lg transition" data-phase="week1">第1周：基础筑基</button>
+                <button onclick="showPhase('week2')" class="phase-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-300 transition" data-phase="week2">第2-3周：题型突破</button>
+                <button onclick="showPhase('week4')" class="phase-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-300 transition" data-phase="week4">第4周：真题冲刺</button>
+            </div>
+
+            <!-- 第1周内容 -->
+            <div id="week1" class="phase-content">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="md:col-span-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-6 text-white mb-4">
+                        <h3 class="text-xl font-bold mb-2">🎯 第1周目标：打基础</h3>
+                        <p class="opacity-90">掌握800-1000核心高频词 + 48音标 + 5大基础语法点</p>
+                    </div>
+
+                    <!-- 单词 -->
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="book" class="w-5 h-5 text-yellow-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800">单词攻坚</h4>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <span class="text-yellow-500 font-bold">50-60</span>
+                                <span>词/天，只记：发音+中文+词性</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="smartphone" class="w-4 h-4 text-gray-400"></i>
+                                <span>工具：百词斩/扇贝（选B级词书）</span>
+                            </li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-yellow-50 rounded-lg text-xs text-yellow-700">
+                            ⚠️ 不要背3500全词书，800高频词足够过级
+                        </div>
+                    </div>
+
+                    <!-- 音标 -->
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="volume-2" class="w-5 h-5 text-red-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800">音标速成</h4>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-red-500 mt-0.5"></i>
+                                <span>48个国际音标过一遍</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-red-500 mt-0.5"></i>
+                                <span>重点：元音20个，辅音28个</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-red-500 mt-0.5"></i>
+                                <span>目标：看到音标能读单词</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 语法 -->
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="code" class="w-5 h-5 text-purple-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800">5大语法点</h4>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li class="flex items-center gap-2"><span class="w-5 h-5 bg-purple-100 text-purple-600 rounded text-xs flex items-center justify-center font-bold">1</span>be动词（am/is/are）</li>
+                            <li class="flex items-center gap-2"><span class="w-5 h-5 bg-purple-100 text-purple-600 rounded text-xs flex items-center justify-center font-bold">2</span>三大时态（现在/过去/将来）</li>
+                            <li class="flex items-center gap-2"><span class="w-5 h-5 bg-purple-100 text-purple-600 rounded text-xs flex items-center justify-center font-bold">3</span>比较级（-er/more）</li>
+                            <li class="flex items-center gap-2"><span class="w-5 h-5 bg-purple-100 text-purple-600 rounded text-xs flex items-center justify-center font-bold">4</span>介词（in/on/at/for）</li>
+                            <li class="flex items-center gap-2"><span class="w-5 h-5 bg-purple-100 text-purple-600 rounded text-xs flex items-center justify-center font-bold">5</span>固定搭配（look forward to）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 每日时间分配 -->
+                <div class="mt-6 bg-white rounded-2xl p-6 shadow-sm">
+                    <h4 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="clock" class="w-5 h-5 text-indigo-600"></i>
+                        每日时间安排（2小时）
+                    </h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center p-4 bg-gray-50 rounded-xl">
+                            <div class="text-2xl font-bold text-indigo-600">30min</div>
+                            <div class="text-sm text-gray-600">背单词+复习</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-xl">
+                            <div class="text-2xl font-bold text-indigo-600">20min</div>
+                            <div class="text-sm text-gray-600">音标练习</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-xl">
+                            <div class="text-2xl font-bold text-indigo-600">40min</div>
+                            <div class="text-sm text-gray-600">语法学习</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-xl">
+                            <div class="text-2xl font-bold text-indigo-600">30min</div>
+                            <div class="text-sm text-gray-600">简单阅读</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第2-3周内容 -->
+            <div id="week2" class="phase-content hidden">
+                <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-6 text-white mb-6">
+                    <h3 class="text-xl font-bold mb-2">🎯 第2-3周目标：分题型猛攻</h3>
+                    <p class="opacity-90">真题训练为主，掌握各题型解题技巧，建立错题本</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- 听力 -->
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm border-t-4 border-blue-500">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="headphones" class="w-5 h-5 text-blue-600"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800">听力（24分）</h4>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">每天15min</span>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-600 mb-4">
+                            <li>• 先看选项，圈关键词（时间/地点/数字）</li>
+                            <li>• 精听真题：反复听直到听懂每句</li>
+                            <li>• 听不懂看原文→跟读→再听</li>
+                        </ul>
+                        <div class="p-3 bg-blue-50 rounded-lg text-xs text-blue-700">
+                            💡 技巧：听到什么选什么，B级听力不绕弯
+                        </div>
+                    </div>
+
+                    <!-- 阅读 -->
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm border-t-4 border-green-500">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="book-open" class="w-5 h-5 text-green-600"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800">阅读（35分）</h4>
+                            </div>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">每天40min</span>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-600 mb-4">
+                            <li>• <strong>三步法：</strong>看题→圈关键词→回原文找</li>
+                            <li>• 每天2-3篇真题，精读（生词+长句）</li>
+                            <li>• 细节题占80%，原文找同义句</li>
+                        </ul>
+                        <div class="p-3 bg-green-50 rounded-lg text-xs text-green-700">
+                            💡 80%题目可直接在原文找到"相同词"
+                        </div>
+                    </div>
+
+                    <!-- 词汇语法 -->
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm border-t-4 border-purple-500">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="type" class="w-5 h-5 text-purple-600"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800">词汇语法（15分）</h4>
+                            </div>
+                            <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">每天30min</span>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-600 mb-4">
+                            <li>• 刷真题单选+填空</li>
+                            <li>• 错题本：固定搭配、时态、从句引导词</li>
+                            <li>• 重点：现在完成时、定语从句、非谓语</li>
+                        </ul>
+                    </div>
+
+                    <!-- 翻译 -->
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm border-t-4 border-orange-500">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="languages" class="w-5 h-5 text-orange-600"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800">翻译（15分）</h4>
+                            </div>
+                            <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">每天20min</span>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-600 mb-4">
+                            <li>• 先找主谓宾，再翻修饰成分</li>
+                            <li>• 通顺第一，不必华丽</li>
+                            <li>• 积累高频短语、句型</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第4周内容 -->
+            <div id="week4" class="phase-content hidden">
+                <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-6 text-white mb-6">
+                    <h3 class="text-xl font-bold mb-2">🎯 第4周目标：真题冲刺</h3>
+                    <p class="opacity-90">每2天1套完整真题，限时120分钟，查漏补缺</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm">
+                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="timer" class="w-6 h-6 text-red-600"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">全真模拟</h4>
+                        <p class="text-sm text-gray-600">严格计时120分钟，模拟真实考试环境，训练答题节奏</p>
+                    </div>
+
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="bug" class="w-6 h-6 text-yellow-600"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">错题复盘</h4>
+                        <p class="text-sm text-gray-600">分析错题原因：单词不认识？语法混淆？还是粗心？针对性补强</p>
+                    </div>
+
+                    <div class="day-card bg-white rounded-2xl p-6 shadow-sm">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="file-text" class="w-6 h-6 text-green-600"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">作文模板</h4>
+                        <p class="text-sm text-gray-600">套用模板写2-3篇，确保格式正确、要点齐全、无明显语法错误</p>
+                    </div>
+                </div>
+
+                <!-- 考前3天清单 -->
+                <div class="mt-6 bg-white rounded-2xl p-6 shadow-sm">
+                    <h4 class="font-bold text-gray-800 mb-4">📋 考前3天必做清单</h4>
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition">
+                            <input type="checkbox" class="w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500">
+                            <span class="text-gray-700">再过一遍800高频词，重点看易混词</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition">
+                            <input type="checkbox" class="w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500">
+                            <span class="text-gray-700">背诵4类作文模板（通知/感谢信/邀请信/邮件）</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition">
+                            <input type="checkbox" class="w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500">
+                            <span class="text-gray-700">复习错题本，特别是时态和从句错误</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition">
+                            <input type="checkbox" class="w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500">
+                            <span class="text-gray-700">每天听1套真题听力，保持耳感</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition">
+                            <input type="checkbox" class="w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500">
+                            <span class="text-gray-700">准备考试用品：2B铅笔、橡皮、黑色签字笔、准考证</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 写作模板 -->
+    <section id="templates" class="py-12 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
+                    <i data-lucide="file-text" class="w-6 h-6 text-pink-600"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">写作万能模板</h2>
+                    <p class="text-gray-500">背完这4类，15分稳拿10+</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 书信类 -->
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 text-white">
+                        <h3 class="font-bold flex items-center gap-2">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                            书信/邮件类
+                        </h3>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="bg-gray-50 p-4 rounded-lg font-mono text-sm text-gray-700 space-y-1">
+                            <p>Dear [Name],</p>
+                            <p class="text-blue-600">I am writing to [目的]...</p>
+                            <p>[正文分点：Firstly, Besides, Finally]</p>
+                            <p class="text-blue-600">Please let me know if you have any questions.</p>
+                            <p class="text-blue-600">Looking forward to your reply.</p>
+                            <p>Yours sincerely,</p>
+                            <p>[Your Name]</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">感谢信</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">邀请信</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">申请信</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 通知类 -->
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 p-4 text-white">
+                        <h3 class="font-bold flex items-center gap-2">
+                            <i data-lucide="bell" class="w-5 h-5"></i>
+                            通知/公告类
+                        </h3>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="bg-gray-50 p-4 rounded-lg font-mono text-sm text-gray-700 space-y-1">
+                            <p class="font-bold text-center text-lg">NOTICE</p>
+                            <p>[时间/地点/事件]</p>
+                            <p>[具体要求/注意事项]</p>
+                            <p class="text-green-600">Everyone is welcome to attend.</p>
+                            <p class="text-right">[单位名称]</p>
+                            <p class="text-right">[日期：June 15, 2024]</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs">活动通知</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs">会议通知</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs">放假通知</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 万能句型 -->
+                <div class="md:col-span-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
+                    <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        万能句型（必背）
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white/10 backdrop-blur rounded-xl p-4">
+                            <h4 class="font-semibold mb-2">开头句</h4>
+                            <ul class="space-y-2 text-sm opacity-90">
+                                <li>• I am writing to... 我写信是为了...</li>
+                                <li>• I am glad to hear that... 很高兴听说...</li>
+                                <li>• Thank you for... 感谢你...</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur rounded-xl p-4">
+                            <h4 class="font-semibold mb-2">结尾句</h4>
+                            <ul class="space-y-2 text-sm opacity-90">
+                                <li>• Looking forward to... 期待...</li>
+                                <li>• Please let me know... 请告诉我...</li>
+                                <li>• Best wishes! 祝好！</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 备考清单 -->
+    <section id="checklist" class="py-12 px-4 bg-white/50">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                    <i data-lucide="check-square" class="w-6 h-6 text-indigo-600"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">必背清单</h2>
+                    <p class="text-gray-500">0基础直接打印背诵版</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 高频词 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="book" class="w-5 h-5 text-yellow-600"></i>
+                        高频动词（20个）
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">be</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">have</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">do</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">go</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">get</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">make</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">take</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">like</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">need</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">want</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">know</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">think</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">come</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">see</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">give</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">find</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">tell</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">ask</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">work</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded-lg text-sm">feel</span>
+                    </div>
+                </div>
+
+                <!-- 介词 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-red-600"></i>
+                        高频介词（8个）
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-bold text-gray-800">in</span>
+                            <span class="text-sm text-gray-600">在...里 / 在...时间</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-bold text-gray-800">on</span>
+                            <span class="text-sm text-gray-600">在...上 / 在...天</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-bold text-gray-800">at</span>
+                            <span class="text-sm text-gray-600">在...点 / 在...处</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-bold text-gray-800">for</span>
+                            <span class="text-sm text-gray-600">为了 / 持续...时间</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 时态公式 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="clock" class="w-5 h-5 text-blue-600"></i>
+                        时态公式（直接套用）
+                    </h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="p-3 bg-blue-50 rounded-lg">
+                            <div class="font-semibold text-blue-800 mb-1">现在时态</div>
+                            <div class="text-gray-700">一般：do/does → 进行：am/is/are doing → 完成：have/has done</div>
+                        </div>
+                        <div class="p-3 bg-purple-50 rounded-lg">
+                            <div class="font-semibold text-purple-800 mb-1">过去时态</div>
+                            <div class="text-gray-700">一般：did → 进行：was/were doing → 完成：had done</div>
+                        </div>
+                        <div class="p-3 bg-green-50 rounded-lg">
+                            <div class="font-semibold text-green-800 mb-1">将来时态</div>
+                            <div class="text-gray-700">will do / be going to do / shall do（第一人称）</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 避坑指南 -->
+                <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 border border-red-100">
+                    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600"></i>
+                        0基础避坑指南
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold">❌</span>
+                            <span class="text-sm text-gray-700">别背3500全词书：800高频词足够过</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold">❌</span>
+                            <span class="text-sm text-gray-700">别啃厚语法书：只考最基础的5大点</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold">❌</span>
+                            <span class="text-sm text-gray-700">别做模拟题：真题为王，做3遍比做10套模拟强</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-green-500 font-bold">✅</span>
+                            <span class="text-sm text-gray-700">能看懂、能选对、少犯错 → 60分很稳</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 资料推荐 -->
+    <section class="py-12 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-8 text-white">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <i data-lucide="download" class="w-6 h-6"></i>
+                    推荐资料（免费/低成本）
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">真题资源</h4>
+                                <p class="text-sm opacity-90">近5年广西英语B级真题PDF（清华大学出版社版本最佳）</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="smartphone" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">背单词APP</h4>
+                                <p class="text-sm opacity-90">百词斩（选"英语B级"词书）、扇贝单词</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="headphones" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">听力训练</h4>
+                                <p class="text-sm opacity-90">每日英语听力APP（搜索"英语B级"）</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="video" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">视频课程</h4>
+                                <p class="text-sm opacity-90">B站搜索"英语B级语法"，看10小时速成课</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-8 px-4 text-center text-gray-500 text-sm">
+        <p>广西英语B级（PRETCO-B）备考指南 | 总分100分，60分及格，85分优秀</p>
+        <p class="mt-2">坚持30天，每天2小时，稳过B级！</p>
+    </footer>
+
+    <script>
+        // 初始化Lucide图标
+        lucide.createIcons();
+
+        // 阶段切换
+        function showPhase(phaseId) {
+            // 隐藏所有阶段
+            document.querySelectorAll('.phase-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            // 显示选中阶段
+            document.getElementById(phaseId).classList.remove('hidden');
+
+            // 更新按钮样式
+            document.querySelectorAll('.phase-btn').forEach(btn => {
+                if(btn.dataset.phase === phaseId) {
+                    btn.classList.remove('bg-gray-200', 'text-gray-700');
+                    btn.classList.add('bg-blue-600', 'text-white');
+                } else {
+                    btn.classList.remove('bg-blue-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                }
+            });
+        }
+
+        // 回到顶部
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // 进度条动画（滚动时触发）
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-pulse');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.day-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

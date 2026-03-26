@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嵌入式四大软件「说人话」版 | 零基础也能懂</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --keil-blue: #2563eb;
+            --ad-purple: #7c3aed;
+            --jlc-green: #059669;
+            --vs-indigo: #4f46e5;
+            --warm-bg: #fefce8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #fefce8 0%, #ecfdf5 50%, #eff6ff 100%);
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        .fun-font {
+            font-family: 'ZCOOL KuaiLe', cursive;
+        }
+
+        /* 手绘风格边框 */
+        .hand-drawn {
+            border: 3px solid #1f2937;
+            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .hand-drawn:hover {
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.15);
+            transform: translate(-2px, -2px);
+        }
+
+        /* 便签纸效果 */
+        .sticky-note {
+            background: #fef3c7;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transform: rotate(-1deg);
+            transition: transform 0.3s ease;
+        }
+
+        .sticky-note:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .sticky-note::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 20px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        /* 胶带效果 */
+        .tape {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 100px;
+            height: 30px;
+            background: rgba(255,255,255,0.4);
+            border-left: 2px dashed rgba(0,0,0,0.1);
+            border-right: 2px dashed rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* 工具卡片 */
+        .tool-card {
+            background: white;
+            border: 3px solid;
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px) rotate(0deg) !important;
+        }
+
+        .card-keil {
+            border-color: var(--keil-blue);
+            transform: rotate(-1deg);
+            box-shadow: 8px 8px 0 rgba(37, 99, 235, 0.2);
+        }
+
+        .card-ad {
+            border-color: var(--ad-purple);
+            transform: rotate(1deg);
+            box-shadow: 8px 8px 0 rgba(124, 58, 237, 0.2);
+        }
+
+        .card-jlc {
+            border-color: var(--jlc-green);
+            transform: rotate(-0.5deg);
+            box-shadow: 8px 8px 0 rgba(5, 150, 105, 0.2);
+        }
+
+        .card-vs {
+            border-color: var(--vs-indigo);
+            transform: rotate(0.5deg);
+            box-shadow: 8px 8px 0 rgba(79, 70, 229, 0.2);
+        }
+
+        /* 图标样式 */
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 900;
+            border: 3px solid;
+            background: white;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 对话气泡 */
+        .speech-bubble {
+            background: white;
+            border: 3px solid #1f2937;
+            border-radius: 20px;
+            padding: 1.5rem;
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 30px;
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 15px solid #1f2937;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 33px;
+            width: 0;
+            height: 0;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-right: 12px solid white;
+        }
+
+        /* 步骤路径 */
+        .path-step {
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 45px;
+            height: 45px;
+            background: #1f2937;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.2rem;
+            border: 3px solid white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .path-line {
+            position: absolute;
+            left: 21px;
+            top: 50px;
+            width: 3px;
+            height: calc(100% - 40px);
+            background: repeating-linear-gradient(
+                to bottom,
+                #1f2937 0px,
+                #1f2937 8px,
+                transparent 8px,
+                transparent 16px
+            );
+        }
+
+        /* 标签 */
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            border: 2px solid;
+        }
+
+        /* 手绘按钮 */
+        .btn-hand {
+            background: #1f2937;
+            color: white;
+            border: 3px solid #1f2937;
+            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+            padding: 1rem 2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn-hand:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+            background: #374151;
+        }
+
+        .btn-hand:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+
+        /* 类比框 */
+        .analogy-box {
+            background: linear-gradient(135deg, #fee2e2 0%, #fef3c7 100%);
+            border: 3px dashed #f59e0b;
+            border-radius: 15px;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .analogy-box::before {
+            content: '💡 类比';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #f59e0b;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        /* 涂鸦装饰 */
+        .doodle {
+            position: absolute;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        /* 检查清单 */
+        .check-item {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .check-item:hover {
+            border-color: var(--keil-blue);
+            transform: translateX(5px);
+        }
+
+        .check-box {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #1f2937;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 900;
+            color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .check-item:hover .check-box {
+            background: var(--keil-blue);
+            color: white;
+            border-color: var(--keil-blue);
+        }
+
+        /* 波浪分隔 */
+        .wave-divider {
+            width: 100%;
+            height: 50px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='1' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+        }
+
+        /* 浮动动画 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* 涂鸦线条 */
+        .scribble {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 2s ease forwards;
+        }
+
+        @keyframes draw {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- 装饰涂鸦 -->
+    <svg class="doodle top-20 left-10 w-32 h-32" viewBox="0 0 100 100">
+        <path class="scribble" d="M10,50 Q25,25 50,50 T90,50" fill="none" stroke="#1f2937" stroke-width="2"/>
+        <circle cx="50" cy="50" r="30" fill="none" stroke="#1f2937" stroke-width="2" stroke-dasharray="5,5"/>
+    </svg>
+
+    <svg class="doodle top-40 right-20 w-24 h-24" viewBox="0 0 100 100">
+        <rect x="20" y="20" width="60" height="60" fill="none" stroke="#1f2937" stroke-width="2" transform="rotate(15 50 50)"/>
+    </svg>
+
+    <!-- 头部区域 -->
+    <header class="min-h-screen flex items-center justify-center relative pt-20 pb-10">
+        <div class="container mx-auto px-4 text-center">
+            <div class="inline-block mb-6">
+                <span class="tag border-yellow-500 text-yellow-700 bg-yellow-100 fun-font text-lg">零基础友好</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight fun-font">
+                <span class="block text-gray-800">嵌入式四大软件</span>
+                <span class="block text-blue-600 mt-2">「说人话」版</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto mb-8">
+                不用背术语，不用看手册<br>
+                <span class="text-blue-600 font-bold">四句话</span>让你秒懂这些工具是干嘛的
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full font-bold border-2 border-blue-200">Keil 5</span>
+                <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full font-bold border-2 border-purple-200">Altium</span>
+                <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full font-bold border-2 border-green-200">嘉立创</span>
+                <span class="px-4 py-2 bg-indigo-100 text-indigo-800 rounded-full font-bold border-2 border-indigo-200">VS</span>
+            </div>
+
+            <div class="animate-bounce">
+                <svg class="w-8 h-8 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="pb-20">
+
+        <!-- Keil 5 -->
+        <section class="py-16 relative">
+            <div class="container mx-auto px-4 max-w-5xl">
+                <div class="tool-card card-keil">
+                    <div class="tape"></div>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="icon-circle border-blue-500 text-blue-600 float-anim">
+                                K5
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-3 mb-3">
+                                <h2 class="text-3xl font-black text-gray-800 fun-font">Keil 5</h2>
+                                <span class="tag border-blue-500 text-blue-600 text-xs">单片机编程</span>
+                            </div>
+
+                            <div class="speech-bubble bg-blue-50 mb-4">
+                                <p class="text-lg text-gray-800 leading-relaxed">
+                                    <span class="text-blue-600 font-bold text-xl">大白话：</span>
+                                    写单片机程序的<span class="bg-yellow-200 px-2 py-1 rounded font-bold">「代码编辑器 + 编译器 + 调试器」</span>
+                                </p>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <div class="bg-white p-4 rounded-xl border-2 border-gray-100">
+                                    <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                        <span class="text-blue-500">📝</span> 写代码
+                                    </h4>
+                                    <p class="text-gray-600 text-sm">给芯片写控制指令，比如让LED灯闪烁、读取传感器数据</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl border-2 border-gray-100">
+                                    <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                        <span class="text-blue-500">🔧</span> 编译调试
+                                    </h4>
+                                    <p class="text-gray-600 text-sm">把代码翻译成芯片能懂的机器语言，模拟运行找bug</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl border-2 border-gray-100">
+                                    <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                        <span class="text-blue-500">💾</span> 烧录程序
+                                    </h4>
+                                    <p class="text-gray-600 text-sm">最后把程序烧进芯片里，让硬件「活」起来</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl border-2 border-gray-100">
+                                    <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                        <span class="text-blue-500">🎯</span> 目标芯片
+                                    </h4>
+                                    <p class="text-gray-600 text-sm">51单片机、STM32、ARM Cortex-M 等</p>
+                                </div>
+                            </div>
+
+                            <div class="analogy-box">
+                                <p class="text-gray-800 font-medium">
+                                    就像给<span class="font-bold text-blue-600">智能小车</span>写「前进/转弯/停车」的操作手册，Keil 就是那个写手册+翻译成机器语言+教小车怎么执行的工具。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Altium Designer -->
+        <section class="py-16 relative">
+            <div class="container mx-auto px-4 max-w-5xl">
+                <div class="tool-card card-ad">
+                    <div class="tape" style="transform: translateX(-50%) rotate(2deg);"></div>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="icon-circle border-purple-500 text-purple-600 float-anim" style="animation-delay: 0.5s;">
+                                AD
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-3 mb-3">
+                                <h2 class="text-3xl font-black text-gray-800 fun-font">Altium Designer</h2>
+                                <span class="tag border-purple-500 text-purple-600 text-xs">画电路板</span>
+                            </div>
+
+                            <div class="speech-bubble bg-purple-50 mb-4">
+                                <p class="text-lg text-gray-800 leading-relaxed">
+                                    <span class="text-purple-600 font-bold text-xl">大白话：</span>
+                                    画电路板的<span class="bg-yellow-200 px-2 py-1 rounded font-bold">「电子CAD工具」</span>
+                                </p>
+                            </div>
+
+                            <div class="space-y-4 mb-4">
+                                <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-2 border-gray-100">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-2xl flex-shrink-0">🏠</div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-800 mb-1">第一步：画户型图（原理图）</h4>
+                                        <p class="text-gray-600 text-sm">画电路原理图，相当于画房子的户型图，告诉系统有哪些房间（元件）、怎么连线</p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-center">
+                                    <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-2 border-gray-100">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-2xl flex-shrink-0">🔨</div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-800 mb-1">第二步：施工图纸（PCB Layout）</h4>
+                                        <p class="text-gray-600 text-sm">画PCB板图，相当于把户型图变成真实的房屋布局，精确规划每根电线（铜线）的走向</p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-center">
+                                    <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-2 border-gray-100">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-2xl flex-shrink-0">🏭</div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-800 mb-1">第三步：工厂生产（Gerber文件）</h4>
+                                        <p class="text-gray-600 text-sm">导出工厂能生产的Gerber文件，做出实实在在的电路板</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="analogy-box" style="background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%); border-color: #a855f7;">
+                                <p class="text-gray-800 font-medium">
+                                    就像设计<span class="font-bold text-purple-600">手机主板</span>、Arduino开发板的「电路板设计师」，把抽象的电路想法变成能生产的图纸。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 嘉立创 -->
+        <section class="py-16 relative">
+            <div class="container mx-auto px-4 max-w-5xl">
+                <div class="tool-card card-jlc">
+                    <div class="tape" style="transform: translateX(-50%) rotate(-3deg); background: rgba(5, 150, 105, 0.2);"></div>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="icon-circle border-green-500 text-green-600 float-anim" style="animation-delay: 1s;">
+                                JLC
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-3 mb-3">
+                                <h2 class="text-3xl font-black text-gray-800 fun-font">嘉立创 JLC</h2>
+                                <span class="tag border-green-500 text-green-600 text-xs">工厂+平台</span>
+                            </div>
+
+                            <div class="speech-bubble bg-green-50 mb-4">
+                                <p class="text-lg text-gray-800 leading-relaxed">
+                                    <span class="text-green-600 font-bold text-xl">大白话：</span>
+                                    把设计变成实物的<span class="bg-yellow-200 px-2 py-1 rounded font-bold">「硬件工厂 + 在线平台」</span>
+                                </p>
+                            </div>
+
+                            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                                <div class="sticky-note p-4 rounded-lg relative">
+                                    <div class="text-3xl mb-2">📤</div>
+                                    <h4 class="font-bold text-gray-800 mb-1">上传设计</h4>
+                                    <p class="text-gray-600 text-sm">上传画好的PCB文件，在线下单</p>
+                                </div>
+                                <div class="sticky-note p-4 rounded-lg relative" style="transform: rotate(1deg); background: #dbeafe;">
+                                    <div class="text-3xl mb-2">🏭</div>
+                                    <h4 class="font-bold text-gray-800 mb-1">工厂生产</h4>
+                                    <p class="text-gray-600 text-sm">花钱让工厂做出实物电路板（打样）</p>
+                                </div>
+                                <div class="sticky-note p-4 rounded-lg relative" style="transform: rotate(-1deg); background: #fce7f3;">
+                                    <div class="text-3xl mb-2">🛒</div>
+                                    <h4 class="font-bold text-gray-800 mb-1">买零件</h4>
+                                    <p class="text-gray-600 text-sm">一站式买齐电阻、电容、芯片等</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-green-50 border-2 border-green-200 rounded-xl p-4 mb-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-2xl">🎁</span>
+                                    <span class="font-bold text-green-800">额外福利：免费EDA工具</span>
+                                </div>
+                                <p class="text-gray-700 text-sm">自带「嘉立创EDA」，可以替代 Altium Designer 做入门级设计，完全免费！</p>
+                            </div>
+
+                            <div class="analogy-box" style="background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%); border-color: #10b981;">
+                                <p class="text-gray-800 font-medium">
+                                    就像你设计了一张<span class="font-bold text-green-600">桌子</span>，嘉立创帮你把图纸变成能坐的<span class="font-bold">实木桌子</span>，还提供木材（零件）和简易设计工具。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visual Studio -->
+        <section class="py-16 relative">
+            <div class="container mx-auto px-4 max-w-5xl">
+                <div class="tool-card card-vs">
+                    <div class="tape" style="transform: translateX(-50%) rotate(2deg); background: rgba(79, 70, 229, 0.2);"></div>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="icon-circle border-indigo-500 text-indigo-600 float-anim" style="animation-delay: 1.5s;">
+                                VS
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-3 mb-3">
+                                <h2 class="text-3xl font-black text-gray-800 fun-font">Visual Studio</h2>
+                                <span class="tag border-indigo-500 text-indigo-600 text-xs">全能IDE</span>
+                            </div>
+
+                            <div class="speech-bubble bg-indigo-50 mb-4">
+                                <p class="text-lg text-gray-800 leading-relaxed">
+                                    <span class="text-indigo-600 font-bold text-xl">大白话：</span>
+                                    全能型<span class="bg-yellow-200 px-2 py-1 rounded font-bold">「代码开发工具」</span>，也能搞嵌入式
+                                </p>
+                            </div>
+
+                            <div class="bg-white rounded-xl border-2 border-gray-200 p-4 mb-4">
+                                <h4 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                                    <span class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">🚀</span>
+                                    为什么选它做嵌入式？
+                                </h4>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-indigo-500 font-bold">▸</span>
+                                        <span>装个插件（如VisualGDB）就能开发带系统的嵌入式设备（树莓派、Linux开发板）</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-indigo-500 font-bold">▸</span>
+                                        <span>代码补全、调试功能超强，写代码像开了挂</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-indigo-500 font-bold">▸</span>
+                                        <span>适合写复杂的嵌入式程序：带界面、连网络、跑AI的智能设备</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="bg-indigo-50 p-3 rounded-lg text-center border-2 border-indigo-100">
+                                    <div class="text-2xl mb-1">💻</div>
+                                    <div class="text-xs text-gray-600">原本用途</div>
+                                    <div class="font-bold text-indigo-700 text-sm">电脑软件/网站开发</div>
+                                </div>
+                                <div class="bg-indigo-100 p-3 rounded-lg text-center border-2 border-indigo-200">
+                                    <div class="text-2xl mb-1">🔌</div>
+                                    <div class="text-xs text-gray-600">+ 插件后</div>
+                                    <div class="font-bold text-indigo-700 text-sm">高级嵌入式开发</div>
+                                </div>
+                            </div>
+
+                            <div class="analogy-box" style="background: linear-gradient(135deg, #e0e7ff 0%, #eef2ff 100%); border-color: #6366f1;">
+                                <p class="text-gray-800 font-medium">
+                                    就像一个<span class="font-bold text-indigo-600">万能工具箱</span>，既能修电脑，也能改装智能家电。平时写软件，加个配件就能搞嵌入式。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 波浪分隔 -->
+        <div class="wave-divider"></div>
+
+        <!-- 学习路线图 -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4 max-w-4xl">
+                <div class="text-center mb-12">
+                    <span class="tag border-orange-500 text-orange-600 bg-orange-50 mb-4 inline-block">学习顺序</span>
+                    <h2 class="text-4xl font-black text-gray-800 mb-4 fun-font">小白该怎么学？</h2>
+                    <p class="text-gray-600 text-lg">别急着全装，按这个顺序来，少走弯路</p>
+                </div>
+
+                <div class="relative space-y-8">
+                    <!-- 步骤1 -->
+                    <div class="path-step">
+                        <div class="path-line"></div>
+                        <div class="step-number bg-blue-600">1</div>
+                        <div class="hand-drawn bg-blue-50 p-6 ml-4">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">先学 Keil 5</h3>
+                            <p class="text-gray-600 mb-3">从点灯、按键开始，学会让芯片听话</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-white rounded-full text-sm border-2 border-blue-200 text-blue-700">LED闪烁</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-sm border-2 border-blue-200 text-blue-700">按键控制</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-sm border-2 border-blue-200 text-blue-700">串口通信</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步骤2 -->
+                    <div class="path-step">
+                        <div class="path-line"></div>
+                        <div class="step-number bg-green-600">2</div>
+                        <div class="hand-drawn bg-green-50 p-6 ml-4">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">再学嘉立创/Altium</h3>
+                            <p class="text-gray-600 mb-3">自己画块板子，把程序跑在自己设计的硬件上</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-white rounded-full text-sm border-2 border-green-200 text-green-700">画原理图</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-sm border-2 border-green-200 text-green-700">PCB布局</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-sm border-2 border-green-200 text-green-700">下单打样</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步骤3 -->
+                    <div class="path-step">
+                        <div class="step-number bg-indigo-600">3</div>
+                        <div class="hand-drawn bg-indigo-50 p-6 ml-4">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">最后看 Visual Studio</h3>
+                            <p class="text-gray-600 mb-3">等你要做带系统的复杂项目再用（带Linux、GUI、网络）</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-white rounded-full text-sm border-2 border-indigo-200 text-indigo-700">Linux开发</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-sm border-2 border-indigo-200 text-indigo-700">树莓派</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-sm border-2 border-indigo-200 text-indigo-700">复杂GUI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 检查清单 -->
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4 max-w-3xl">
+                <div class="hand-drawn bg-white p-8">
+                    <h2 class="text-3xl font-black text-gray-800 mb-6 text-center fun-font">✅ 新手起步检查清单</h2>
+                    <p class="text-center text-gray-600 mb-8">跟着做，别跳过</p>
+
+                    <div class="space-y-3">
+                        <div class="check-item">
+                            <div class="check-box">✓</div>
+                            <div>
+                                <div class="font-bold text-gray-800">安装 Keil 5</div>
+                                <div class="text-sm text-gray-500">下载MDK-ARM版本，装STM32芯片包</div>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box">✓</div>
+                            <div>
+                                <div class="font-bold text-gray-800">买一块STM32开发板</div>
+                                <div class="text-sm text-gray-500">推荐STM32F103C8T6（最小系统板，20块钱搞定）</div>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box">✓</div>
+                            <div>
+                                <div class="font-bold text-gray-800">点亮第一颗LED</div>
+                                <div class="text-sm text-gray-500">学GPIO控制，这是嵌入式的「Hello World」</div>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box">✓</div>
+                            <div>
+                                <div class="font-bold text-gray-800">注册嘉立创账号</div>
+                                <div class="text-sm text-gray-500">下载嘉立创EDA，试着画一块简单的板子</div>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box">✓</div>
+                            <div>
+                                <div class="font-bold text-gray-800">打样第一块PCB</div>
+                                <div class="text-sm text-gray-500">嘉立创每个月有免费打样名额，白嫖学习</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <button class="btn-hand" onclick="checkAll()">
+                            我准备好了，开始！
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 总结 -->
+        <section class="py-16">
+            <div class="container mx-auto px-4 max-w-4xl text-center">
+                <h2 class="text-3xl font-black text-gray-800 mb-8 fun-font">一句话总结</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-blue-100 border-4 border-blue-300 rounded-2xl p-6 transform -rotate-1">
+                        <div class="text-4xl mb-2">🧠</div>
+                        <div class="font-bold text-blue-900 text-lg">Keil 5</div>
+                        <div class="text-blue-800">给芯片写「大脑指令」</div>
+                    </div>
+                    <div class="bg-purple-100 border-4 border-purple-300 rounded-2xl p-6 transform rotate-1">
+                        <div class="text-4xl mb-2">📐</div>
+                        <div class="font-bold text-purple-900 text-lg">Altium</div>
+                        <div class="text-purple-800">画电路「施工图纸」</div>
+                    </div>
+                    <div class="bg-green-100 border-4 border-green-300 rounded-2xl p-6 transform rotate-1">
+                        <div class="text-4xl mb-2">🏭</div>
+                        <div class="font-bold text-green-900 text-lg">嘉立创</div>
+                        <div class="text-green-800">把图纸变成「实物」</div>
+                    </div>
+                    <div class="bg-indigo-100 border-4 border-indigo-300 rounded-2xl p-6 transform -rotate-1">
+                        <div class="text-4xl mb-2">🧰</div>
+                        <div class="font-bold text-indigo-900 text-lg">VS</div>
+                        <div class="text-indigo-800">复杂项目的「万能箱」</div>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-6 bg-yellow-100 border-4 border-yellow-400 rounded-3xl inline-block transform hover:scale-105 transition-transform">
+                    <p class="text-xl font-bold text-yellow-900">
+                        🎯 记住：先让灯亮起来，再考虑画板子，<br>
+                        最后才玩复杂的！
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-8 bg-gray-800 text-white text-center">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-400 mb-2">嵌入式开发，从点亮第一颗LED开始 ✨</p>
+            <p class="text-sm text-gray-500">说人话版指南 · 让技术不再难懂</p>
+        </div>
+    </footer>
+
+    <script>
+        // GSAP 动画
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 卡片入场动画
+        gsap.utils.toArray('.tool-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 60,
+                opacity: 0,
+                rotation: 0,
+                duration: 0.8,
+                delay: i * 0.15,
+                ease: 'back.out(1.7)'
+            });
+        });
+
+        // 路径步骤动画
+        gsap.utils.toArray('.path-step').forEach((step, i) => {
+            gsap.from(step, {
+                scrollTrigger: {
+                    trigger: step,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                x: -50,
+                opacity: 0,
+                duration: 0.6,
+                delay: i * 0.2,
+                ease: 'power2.out'
+            });
+        });
+
+        // 检查清单动画
+        gsap.from('.check-item', {
+            scrollTrigger: {
+                trigger: '.check-item',
+                start: 'top 85%'
+            },
+            x: -30,
+            opacity: 0,
+            duration: 0.4,
+            stagger: 0.1,
+            ease: 'power2.out'
+        });
+
+        // 全选功能
+        function checkAll() {
+            const boxes = document.querySelectorAll('.check-box');
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    box.style.background = '#2563eb';
+                    box.style.color = 'white';
+                    box.style.borderColor = '#2563eb';
+                    box.textContent = '✓';
+                }, index * 100);
+            });
+
+            setTimeout(() => {
+                alert('🎉 太棒了！你已经准备好开始嵌入式之旅了！
+
+第一步：去下载 Keil 5，买个STM32板子，点亮你的第一颗LED！');
+            }, boxes.length * 100 + 300);
+        }
+
+        // 鼠标跟随效果（可选）
+        document.addEventListener('mousemove', (e) => {
+            const doodles = document.querySelectorAll('.doodle');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            doodles.forEach((doodle, index) => {
+                const speed = (index + 1) * 10;
+                const xOffset = (x - 0.5) * speed;
+                const yOffset = (y - 0.5) * speed;
+                doodle.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
