@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>融资、股票与上市 — 一篇搞懂所有基础问题</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+  :root {
+    --bg:#080c18;--card:#0f1629;--gold:#f59e0b;--gold2:#fbbf24;--green:#10b981;--blue:#3b82f6;
+    --purple:#8b5cf6;--red:#ef4444;--cyan:#06b6d4;--pink:#ec4899;--text:#e2e8f0;--muted:#94a3b8;--border:#1e293b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;overflow-x:hidden}
+
+  /* Hero */
+  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 30%,rgba(99,102,241,.1),transparent),radial-gradient(ellipse 60% 40% at 80% 70%,rgba(245,158,11,.06),transparent);pointer-events:none}
+  .hero h1{font-size:clamp(2rem,5vw,4rem);font-weight:900;background:linear-gradient(135deg,#fff,var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.8rem}
+  .hero-sub{max-width:750px;font-size:1.05rem;color:var(--muted);margin-bottom:2rem}
+  .hero-tags{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+  .htag{padding:.4rem 1rem;border-radius:999px;font-size:.82rem;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted)}
+
+  /* Sections */
+  section{max-width:1100px;margin:0 auto;padding:4rem 1.5rem}
+  .stitle{font-size:1.8rem;font-weight:700;margin-bottom:.4rem}
+  .sdesc{color:var(--muted);margin-bottom:2.5rem}
+
+  /* QA Style */
+  .qa{margin-bottom:3rem}
+  .qa-q{font-size:1.3rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:flex-start;gap:.6rem}
+  .qa-q .icon{flex-shrink:0;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+  .qa-a{padding-left:0;font-size:.95rem;color:var(--muted);line-height:1.9}
+  .qa-a b,.qa-a strong{color:var(--text)}
+  .qa-a em{color:var(--gold2);font-style:normal}
+
+  /* Highlight Box */
+  .hbox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;margin:1.5rem 0;transition:transform .3s}
+  .hbox:hover{transform:translateY(-2px)}
+  .hbox h4{font-size:1rem;margin-bottom:.8rem;color:var(--gold2)}
+
+  /* Round Cards */
+  .round-flow{display:flex;flex-wrap:wrap;gap:1rem;margin:1.5rem 0;justify-content:center}
+  .rcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;min-width:160px;max-width:200px;text-align:center;flex:1;transition:transform .3s,box-shadow .3s}
+  .rcard:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(245,158,11,.1)}
+  .rcard-name{font-size:1rem;font-weight:700;margin-bottom:.3rem}
+  .rcard-val{font-size:.72rem;color:var(--muted);margin-bottom:.5rem}
+  .rcard-desc{font-size:.78rem;color:var(--muted)}
+  .rcard .arrow{color:var(--gold);font-size:1.5rem;margin-bottom:.3rem}
+
+  /* Comparison Table */
+  .cmp-table{width:100%;border-collapse:collapse;margin:1.5rem 0}
+  .cmp-table th,.cmp-table td{padding:.7rem .8rem;text-align:left;border-bottom:1px solid var(--border);font-size:.85rem}
+  .cmp-table th{color:var(--gold2);font-weight:600;font-size:.78rem;text-transform:uppercase}
+  .cmp-table tr:hover{background:rgba(255,255,255,.02)}
+  .cmp-table .emoji{margin-right:.3rem}
+  .table-wrap{overflow-x:auto}
+
+  /* Steps */
+  .step-list{list-style:none;padding:0;counter-reset:step}
+  .step-list li{position:relative;padding:1rem 0 1rem 3.5rem;border-bottom:1px solid var(--border);counter-increment:step}
+  .step-list li:last-child{border-bottom:none}
+  .step-list li::before{content:counter(step);position:absolute;left:0;top:1rem;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;background:linear-gradient(135deg,var(--gold),var(--green));color:#000}
+  .step-list h4{font-size:.95rem;margin-bottom:.3rem}
+  .step-list p{font-size:.85rem;color:var(--muted)}
+
+  /* Stats Row */
+  .stat-row{display:flex;flex-wrap:wrap;gap:1.2rem;margin:1.5rem 0;justify-content:center}
+  .sbox{text-align:center;padding:1.2rem 1.5rem;background:var(--card);border:1px solid var(--border);border-radius:14px;min-width:140px;flex:1;max-width:220px}
+  .sbox-val{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .sbox-label{font-size:.75rem;color:var(--muted);margin-top:.2rem}
+
+  /* Callout */
+  .callout{border-left:4px solid var(--gold);background:rgba(245,158,11,.05);border-radius:0 12px 12px 0;padding:1.2rem 1.5rem;margin:1.5rem 0}
+  .callout.red{border-left-color:var(--red);background:rgba(239,68,68,.05)}
+  .callout.green{border-left-color:var(--green);background:rgba(16,185,129,.05)}
+  .callout.blue{border-left-color:var(--blue);background:rgba(59,130,246,.05)}
+  .callout h4{font-size:.95rem;margin-bottom:.3rem}
+  .callout p{font-size:.88rem;color:var(--muted)}
+
+  /* Insight Box */
+  .insight-box{background:linear-gradient(135deg,rgba(245,158,11,.05),rgba(16,185,129,.05));border:1px solid var(--border);border-radius:20px;padding:2.5rem;margin-top:1.5rem}
+  .insight-box h2{font-size:1.5rem;margin-bottom:1.5rem;background:linear-gradient(135deg,#fff,var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+  footer{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);max-width:1100px;margin:0 auto}
+
+  .fade-in{opacity:0;transform:translateY(25px);transition:opacity .5s,transform .5s}
+  .fade-in.visible{opacity:1;transform:translateY(0)}
+
+  @media(max-width:600px){.rcard{min-width:130px;max-width:100%}.cmp-table th,.cmp-table td{padding:.5rem .4rem;font-size:.78rem}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>💡 融资、股票与上市<br>普通人完全指南</h1>
+  <p class="hero-sub">融资是什么？A轮B轮什么意思？我能买阶跃星辰的股票吗？为什么AI公司扎堆港股？<br>一篇文章，用大白话全讲清楚。</p>
+  <div class="hero-tags">
+    <span class="htag">💰 融资ABC</span>
+    <span class="htag">📊 股票交易规则</span>
+    <span class="htag">🇭🇰 为什么选港股</span>
+    <span class="htag">🌍 全球上市数据</span>
+    <span class="htag">🛒 普通人如何参与</span>
+  </div>
+</div>
+
+<!-- ===== 第一部分：融资是什么 ===== -->
+<section>
+  <h2 class="stitle fade-in">💰 第一问：融资到底是什么意思？</h2>
+  <p class="sdesc fade-in">用最简单的话说</p>
+
+  <div class="qa fade-in">
+    <div class="qa-q"><div class="icon" style="background:rgba(245,158,11,.15);color:var(--gold2)">Q</div>融资是什么？</div>
+    <div class="qa-a">
+      <b>融资 = 找别人要钱来发展自己的公司。</b><br><br>
+      打个比方：你开了一家奶茶店，生意不错，想开第二家、第三家。但你自己没那么多钱，怎么办？<br><br>
+      <em>方案一：找银行借钱</em> → 这叫<b>债权融资</b>（要还本付息）<br>
+      <em>方案二：找有钱人投资，给他公司的一部分股份</em> → 这叫<b>股权融资</b>（不用还，但要分红分利润）<br><br>
+      我们平时说的"某公司完成A轮融资"，指的就是<b>股权融资</b> — 用公司的一部分所有权，换来发展资金。
+    </div>
+  </div>
+</section>
+
+<!-- ===== 第二部分：融资轮次 ===== -->
+<section>
+  <h2 class="stitle fade-in">🎯 第二问：A轮、B轮、B+轮是什么意思？</h2>
+  <p class="sdesc fade-in">融资轮次 = 公司成长的"升级路线"</p>
+
+  <div class="qa fade-in">
+    <div class="qa-a">
+      公司从创立到上市，就像打游戏升级一样，每升一级就要"充一次钱"。不同阶段找的人不同、给的钱也不同：
+    </div>
+  </div>
+
+  <div class="round-flow fade-in">
+    <div class="rcard" style="border-top:3px solid #94a3b8">
+      <div class="arrow">💡</div>
+      <div class="rcard-name">种子轮 Seed</div>
+      <div class="rcard-val">几十万~几百万</div>
+      <div class="rcard-desc">就一个想法+团队<br>通常是创始人自掏腰包、亲友借钱、天使投资人</div>
+    </div>
+    <div class="rcard" style="border-top:3px solid var(--purple)">
+      <div class="arrow">👼</div>
+      <div class="rcard-name">天使轮 Angel</div>
+      <div class="rcard-val">几百万~几千万</div>
+      <div class="rcard-desc">产品刚成型<br>天使投资人/早期基金<br>赌的是「人」</div>
+    </div>
+    <div class="rcard" style="border-top:3px solid var(--blue)">
+      <div class="arrow">🅰️</div>
+      <div class="rcard-name">A 轮</div>
+      <div class="rcard-val">千万~数亿</div>
+      <div class="rcard-desc">产品已验证、有用户<br>VC风投入场<br>赌的是「模式」</div>
+    </div>
+    <div class="rcard" style="border-top:3px solid var(--green)">
+      <div class="arrow">🅱️</div>
+      <div class="rcard-name">B 轮</div>
+      <div class="rcard-val">数亿~数十亿</div>
+      <div class="rcard-desc">高速增长期<br>扩大规模、抢市场<br>大型VC/PE入场</div>
+    </div>
+    <div class="rcard" style="border-top:3px solid var(--cyan)">
+      <div class="arrow">➕</div>
+      <div class="rcard-name">B+ 轮</div>
+      <div class="rcard-val">追加融资</div>
+      <div class="rcard-desc">B轮和C轮之间<br>需要更多弹药<br>通常老股东跟投</div>
+    </div>
+    <div class="rcard" style="border-top:3px solid var(--gold)">
+      <div class="arrow">🔥</div>
+      <div class="rcard-name">C/D/E… 轮</div>
+      <div class="rcard-val">数十亿~百亿</div>
+      <div class="rcard-desc">接近上市<br>PE/战略投资者<br>估值已经很高</div>
+    </div>
+    <div class="rcard" style="border-top:3px solid var(--red)">
+      <div class="arrow">🔔</div>
+      <div class="rcard-name">IPO 上市</div>
+      <div class="rcard-val">向公众发售股票</div>
+      <div class="rcard-desc">公司股票在交易所<br>公开买卖<br>所有人都能参与</div>
+    </div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>🔍 以阶跃星辰为例</h4>
+    <div class="qa-a">
+      • <b>2023年4月</b> — 成立，早期融资<br>
+      • <b>2024年中</b> — 估值约20亿美元<br>
+      • <b>2024年12月</b> — B轮，数亿美元（上海国投等）<br>
+      • <b>2026年1月</b> — <em>B+轮，超50亿元人民币</em>，创12个月中国AI赛道单笔最高纪录<br>
+      • <b>2026年2月</b> — 网传计划港股IPO（尚未确认）<br><br>
+      <b>注意：</b>阶跃星辰目前还没有上市，<em>普通人暂时买不到它的股票</em>。只有等它IPO之后才能在交易所购买。
+    </div>
+  </div>
+
+  <div class="callout fade-in">
+    <h4>💡 "+" 是什么意思？</h4>
+    <p>B+轮、C+轮中的 <b>"+"</b> 表示<em>在两轮正式融资之间的追加融资</em>。比如B轮钱花得差不多了，但还没准备好C轮的规模，就先做一轮"加餐"，叫B+。性质和B轮差不多，但估值通常更高一些。</p>
+  </div>
+</section>
+
+<!-- ===== 第三部分：普通人如何参与 ===== -->
+<section>
+  <h2 class="stitle fade-in">🛒 第三问：普通人能参与融资吗？怎么买股票？</h2>
+  <p class="sdesc fade-in">分两种情况</p>
+
+  <div class="hbox fade-in">
+    <h4>❌ 上市前的融资 — 普通人基本参与不了</h4>
+    <div class="qa-a">
+      A轮、B轮这些融资，参与者都是<em>风投基金（VC）、私募股权基金（PE）、战略投资者</em>，门槛极高：<br>
+      • 单笔投资通常<b>几百万到几亿元</b>起步<br>
+      • 需要<b>合格投资者</b>资格（国内要求金融资产≥300万元或近3年年收入≥50万元）<br>
+      • 投资后股份<b>锁定期</b>长，不能随时卖出<br><br>
+      所以你在新闻里看到的"阶跃星辰完成50亿B+轮融资"，那些钱是来自腾讯、启明创投、五源资本等机构，不是散户能参与的。
+    </div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>✅ 上市后的股票 — 普通人可以买卖</h4>
+    <div class="qa-a">
+      一旦公司在交易所IPO上市，它的股票就变成了<b>公开交易</b>的，任何人开个证券账户就能买卖。<br><br>
+      <b>你想买阶跃星辰的股票？</b>需要等它正式上市。如果传闻属实在港股上市，你需要：
+    </div>
+  </div>
+
+  <ol class="step-list fade-in">
+    <li>
+      <h4>开立证券账户</h4>
+      <p><b>买A股</b>：到国内券商（如中信、华泰、招商证券）开户，用身份证+银行卡，手机App几分钟搞定，免费。<br>
+      <b>买港股</b>：可以通过「港股通」（需A股账户资产≥50万元），或直接开港股账户（富途、老虎证券等互联网券商，门槛低很多）。<br>
+      <b>买美股</b>：通过互联网券商（富途、老虎、盈透IBKR等）开美股账户。</p>
+    </li>
+    <li>
+      <h4>往账户里充钱</h4>
+      <p>A股直接银行转账；港股/美股需要换汇（人民币→港币/美元）后入金。最低几百元就能开始。</p>
+    </li>
+    <li>
+      <h4>在交易时间内下单买卖</h4>
+      <p>在券商App里搜索股票代码，输入数量和价格，点击"买入"即可。卖出同理。</p>
+    </li>
+    <li>
+      <h4>参与新股申购（打新）</h4>
+      <p>公司IPO时会公开发售新股，普通人可以<b>"打新"</b>申请购买。港股和A股都支持。中签了就能以发行价买到。</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ===== 第四部分：交易时间和结算 ===== -->
+<section>
+  <h2 class="stitle fade-in">⏰ 第四问：股票是"日结"的吗？交易时间是固定的吗？</h2>
+  <p class="sdesc fade-in">不同市场规则不同</p>
+
+  <div class="table-wrap fade-in">
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>项目</th>
+          <th><span class="emoji">🇨🇳</span>A股（沪深北）</th>
+          <th><span class="emoji">🇭🇰</span>港股</th>
+          <th><span class="emoji">🇺🇸</span>美股</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>交易时间</b></td>
+          <td>周一至五<br>9:30-11:30<br>13:00-15:00</td>
+          <td>周一至五<br>9:30-12:00<br>13:00-16:00</td>
+          <td>周一至五<br>美东9:30-16:00<br>（北京时间21:30-次日4:00）<br>有盘前盘后交易</td>
+        </tr>
+        <tr>
+          <td><b>当天买能当天卖吗？</b></td>
+          <td>❌ <b>T+1</b><br>今天买，明天才能卖</td>
+          <td>✅ <b>T+0</b><br>今天买今天就能卖</td>
+          <td>✅ <b>T+0</b><br>今天买今天就能卖</td>
+        </tr>
+        <tr>
+          <td><b>资金到账</b></td>
+          <td>卖出后<b>T+1</b>到账<br>（第二天可取）</td>
+          <td>卖出后<b>T+2</b>交收<br>（两个工作日后）</td>
+          <td>卖出后<b>T+2</b>交收</td>
+        </tr>
+        <tr>
+          <td><b>涨跌幅限制</b></td>
+          <td>主板±10%<br>创业板/科创板±20%</td>
+          <td>❌ <b>无涨跌幅限制</b><br>一天可以涨跌任意幅度</td>
+          <td>❌ <b>无涨跌幅限制</b><br>但有熔断机制</td>
+        </tr>
+        <tr>
+          <td><b>最低买入单位</b></td>
+          <td>100股（1手）</td>
+          <td>每手股数不固定<br>（可能100/200/500…）</td>
+          <td>1股起买</td>
+        </tr>
+        <tr>
+          <td><b>货币</b></td>
+          <td>人民币</td>
+          <td>港币</td>
+          <td>美元</td>
+        </tr>
+        <tr>
+          <td><b>节假日</b></td>
+          <td>中国法定节假日休市</td>
+          <td>香港公众假期休市</td>
+          <td>美国联邦假日休市</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout fade-in">
+    <h4>📌 所以"日结"这个说法：</h4>
+    <p>
+      股票<b>不是每天自动结算收益的</b>。你买了就一直持有，价格每天在变化，但只有在你<b>卖出</b>的那一刻才真正"落袋为安"。<br>
+      每天交易时间内价格实时波动，收盘后就不能交易了（美股有盘前盘后例外）。<br>
+      你可以<b>长期持有</b>（几天到几十年都行），也可以<b>频繁交易</b>（A股隔天卖，港股/美股当天买卖）。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 第五部分：为什么港股 ===== -->
+<section>
+  <h2 class="stitle fade-in">🇭🇰 第五问：为什么国内这么多AI公司选择港股上市？</h2>
+  <p class="sdesc fade-in">已有智谱、MiniMax等AI公司递交港股IPO，阶跃星辰也传闻计划港股</p>
+
+  <div class="qa fade-in">
+    <div class="qa-a">这背后有<b>6个核心原因</b>：</div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>① 🏗️ VIE架构 + 外资股东 → A股上不了</h4>
+    <div class="qa-a">
+      大部分AI公司（阶跃星辰、智谱、MiniMax等）早期融资都拿了<b>美元基金</b>的钱（红杉、启明、IDG等），公司架构是<b>「VIE/红筹」结构</b>（在海外注册控股公司）。
+      这种结构要上A股，需要先把架构全部拆掉、外资股东退出，<b>极其复杂、耗时极长</b>。<br><br>
+      而港股<b>天然支持VIE架构</b>，不需要拆。
+    </div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>② ⚡ 港股审批快，A股排队久</h4>
+    <div class="qa-a">
+      • A股上市：注册制下仍需<b>6-18个月</b>审核+排队，且监管问询非常严格<br>
+      • 港股上市：推出了<b>「科企专线」18C章</b>，专门为科技公司开绿灯，审核周期<b>大幅压缩</b><br><br>
+      对于烧钱极快的AI公司，<em>速度就是生命线</em>。
+    </div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>③ 👑 同股不同权（WVR）</h4>
+    <div class="qa-a">
+      创始人上市后可能只持有少数股份，但需要保持公司控制权以推动长期技术研发。<br>
+      港股2018年起允许<b>同股不同权</b>（一票多权），A股目前<b>仅科创板有限支持</b>。<br><br>
+      对AI公司创始人来说：<em>"我可以融你的钱，但不能丢掉方向盘。"</em>
+    </div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>④ 🌍 连接国际资本</h4>
+    <div class="qa-a">
+      港股是<b>全球第四大资本市场</b>，沪深港通打通了内地和海外资金。AI公司在港股上市，既能拿到<b>国际投资者</b>的钱（美国/欧洲基金），也能通过港股通让<b>内地资金</b>买入。<br>
+      而A股相对封闭，外资参与渠道有限。
+    </div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>⑤ 📊 盈利要求更灵活</h4>
+    <div class="qa-a">
+      A股上市对<b>盈利或收入</b>有硬性门槛。绝大多数AI公司目前<b>仍在亏损</b>（烧钱搞研发），A股可能达不到条件。<br>
+      港股18C章允许<b>尚未盈利的科技公司</b>上市，只要市值和研发投入达标即可。
+    </div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>⑥ 🏃 跟风效应 + 政策鼓励</h4>
+    <div class="qa-a">
+      智谱率先递表港股后，其他AI公司纷纷跟进。截至2025年，已有<b>约50家AI企业</b>递交港股IPO申请。<br>
+      香港政府也在积极拉拢，推出税收优惠、上市补贴等政策。
+    </div>
+  </div>
+</section>
+
+<!-- ===== 第六部分：能否同时上市 ===== -->
+<section>
+  <h2 class="stitle fade-in">🔗 第六问：能同时在A股、港股、美股上市吗？</h2>
+  <p class="sdesc fade-in">可以！但方式不同</p>
+
+  <div class="qa fade-in">
+    <div class="qa-a">
+      答案是<b>可以</b>，很多大公司就是这样做的。常见模式：
+    </div>
+  </div>
+
+  <div class="table-wrap fade-in">
+    <table class="cmp-table">
+      <thead>
+        <tr><th>模式</th><th>含义</th><th>典型案例</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>A+H 双上市</b></td>
+          <td>同一公司在A股和港股同时上市<br>两地发行不同的股票</td>
+          <td>中国平安、工商银行、<br>中芯国际、比亚迪</td>
+        </tr>
+        <tr>
+          <td><b>港股+美股</b></td>
+          <td>先在美股上市，后回港股"二次上市"<br>或双重主要上市</td>
+          <td>阿里巴巴、京东、<br>网易、百度</td>
+        </tr>
+        <tr>
+          <td><b>A+H+美 三地上市</b></td>
+          <td>三个市场同时交易</td>
+          <td>极少数（理论上可行）</td>
+        </tr>
+        <tr>
+          <td><b>CDR（中国存托凭证）</b></td>
+          <td>海外上市公司通过CDR让<br>A股投资者间接投资</td>
+          <td>曾有讨论，尚未大规模实施</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout green fade-in">
+    <h4>✅ 同一公司不同市场的股价可能不一样</h4>
+    <p>比如中国平安的A股价格和港股价格经常有差异（A-H溢价），因为两个市场的投资者结构和交易规则不同。这也创造了「套利」机会。</p>
+  </div>
+</section>
+
+<!-- ===== 第七部分：全球上市数据 ===== -->
+<section>
+  <h2 class="stitle fade-in">🌍 第七问：全球到底有多少公司上市了？</h2>
+  <p class="sdesc fade-in">数据来自清华大学全球产业研究院、WFE等</p>
+
+  <div class="stat-row fade-in">
+    <div class="sbox">
+      <div class="sbox-val">48,618</div>
+      <div class="sbox-label">全球上市公司总数<br>（2024年底）</div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-val">117</div>
+      <div class="sbox-label">分布国家数</div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-val">$120万亿+</div>
+      <div class="sbox-label">全球总市值（美元）</div>
+    </div>
+  </div>
+
+  <div class="table-wrap fade-in">
+    <table class="cmp-table">
+      <thead>
+        <tr><th>排名</th><th>国家/地区</th><th>上市公司数量</th><th>说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>🥇</td><td>🇨🇳 <b>中国</b></td><td><b>~7,071</b></td><td>A股5,469 + 港股2,627（含重叠），全口径约8,000+</td></tr>
+        <tr><td>🥈</td><td>🇮🇳 <b>印度</b></td><td><b>~5,700-7,500</b></td><td>NSE + BSE，增长最快的市场</td></tr>
+        <tr><td>🥉</td><td>🇺🇸 <b>美国</b></td><td><b>~7,679</b></td><td>NYSE + NASDAQ + AMEX，市值全球第一</td></tr>
+        <tr><td>4</td><td>🇯🇵 日本</td><td>~3,400+</td><td>东京JPX为主</td></tr>
+        <tr><td>5</td><td>🇨🇦 加拿大</td><td>~3,300+</td><td>TSX + TSXV，资源股为主</td></tr>
+        <tr><td>6</td><td>🇬🇧 英国</td><td>~1,900+</td><td>LSE</td></tr>
+        <tr><td>7</td><td>🇰🇷 韩国</td><td>~2,600+</td><td>KRX</td></tr>
+        <tr><td>8</td><td>🇦🇺 澳大利亚</td><td>~2,200+</td><td>ASX</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout blue fade-in">
+    <h4>📊 中国资本市场的规模</h4>
+    <p>
+      • <b>A股（沪+深+北）</b>：5,469家上市公司，全球第二大市值<br>
+      • <b>港股</b>：2,627家<br>
+      • <b>在美上市中概股</b>：约400+家<br>
+      • 合计中国相关上市公司 <b>约8,000-8,500家</b>（含重复上市）
+    </p>
+  </div>
+</section>
+
+<!-- ===== 综合答疑 ===== -->
+<section>
+  <div class="insight-box fade-in">
+    <h2>🎓 给完全不懂股票的人的总结</h2>
+
+    <div class="hbox" style="margin-top:0">
+      <h4>❓ 我想买阶跃星辰的股票，现在能买吗？</h4>
+      <div class="qa-a">
+        <b>现在不能。</b>阶跃星辰目前是<b>私有公司</b>（未上市），只有机构投资者通过私募融资参与。<br>
+        等它IPO上市后（传闻港股），你可以开一个港股账户（如富途证券），在交易时间内买入。
+      </div>
+    </div>
+
+    <div class="hbox">
+      <h4>❓ 买股票最少要多少钱？</h4>
+      <div class="qa-a">
+        • <b>A股</b>：最低买100股（1手），几百元就能开始（比如10元/股 × 100股 = 1000元）<br>
+        • <b>美股</b>：最低买1股，几十美元到几千美元不等<br>
+        • <b>港股</b>：按手数买，最低一手可能几百到几千港币<br><br>
+        <em>门槛没想象中那么高。</em>
+      </div>
+    </div>
+
+    <div class="hbox">
+      <h4>❓ 买股票一定赚钱吗？</h4>
+      <div class="qa-a">
+        <b>当然不是！</b>股票价格有涨有跌，可能赚也可能亏。<br>
+        • 短期波动很大，一天涨跌几个百分点是常事<br>
+        • 长期来看，好公司的股票往往增值，但也有公司倒闭变成废纸<br>
+        • <em>投资有风险，入市需谨慎</em> — 这不是套话，是真话<br><br>
+        建议：<b>先学习基础知识，用少量闲钱试水，永远不要借钱炒股。</b>
+      </div>
+    </div>
+
+    <div class="hbox">
+      <h4>❓ 融资轮次越多越好吗？</h4>
+      <div class="qa-a">
+        不一定。融资意味着<b>稀释创始人和早期投资者的股份</b>。<br>
+        理想情况：尽量少融资就能跑通商业模式。但AI行业烧钱巨大（训练一次大模型可能花几亿），所以多轮融资是正常的。<br>
+        关键看：<em>每轮融资后估值是否在涨</em>（涨了说明市场认可），以及<em>钱花在了哪里</em>（是研发还是浪费）。
+      </div>
+    </div>
+
+    <div class="hbox">
+      <h4>❓ 一图看懂"钱的流向"</h4>
+      <div class="qa-a" style="text-align:center;font-size:1rem;line-height:2.2">
+        <b>普通人的钱</b><br>
+        ↓ 开证券账户<br>
+        <b>证券交易所</b>（上交所/港交所/纽交所…）<br>
+        ↓ 买入股票<br>
+        <b>上市公司</b>（阿里/腾讯/未来的阶跃星辰…）<br>
+        ↓ 公司用钱<br>
+        <b>研发、扩张、招人、买设备…</b><br>
+        ↓ 公司赚钱<br>
+        <b>股价上涨 / 分红</b> → 回到你的账户 💰
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>
+    数据来源：清华大学全球产业研究院、WFE、各交易所官方、新浪财经、雪球、澎湃新闻等公开信息<br>
+    制作时间：2026年3月28日 · 仅供学习科普，不构成投资建议<br><br>
+    <em>"股市是把钱从没耐心的人口袋转到有耐心的人口袋的工具。" — 沃伦·巴菲特</em>
+  </p>
+</footer>
+
+<script>
+const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-in').forEach(el=>o.observe(el));
+</script>
+
+</body>
+</html>

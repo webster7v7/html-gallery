@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球股票交易所 — 发展历程与全景图</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --bg: #06090f;
+    --card: #0f1629;
+    --card2: #131b30;
+    --gold: #f59e0b;
+    --gold2: #fbbf24;
+    --green: #10b981;
+    --blue: #3b82f6;
+    --purple: #8b5cf6;
+    --red: #ef4444;
+    --cyan: #06b6d4;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #1e293b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 30%, rgba(245,158,11,0.08), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 70%, rgba(59,130,246,0.06), transparent),
+      radial-gradient(ellipse 40% 30% at 20% 60%, rgba(139,92,246,0.05), transparent);
+    pointer-events: none;
+  }
+
+  .hero-icon { font-size: 4rem; margin-bottom: 1rem; }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff 0%, var(--gold) 50%, var(--green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -.02em;
+    margin-bottom: .8rem;
+  }
+
+  .hero-sub {
+    max-width: 750px;
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-nums {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hnum {
+    text-align: center;
+    padding: 1.2rem 1.8rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+    min-width: 150px;
+  }
+
+  .hnum-val {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--gold), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hnum-label { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+
+  /* ===== Sections ===== */
+  section { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; }
+
+  .stitle {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: .5rem;
+  }
+
+  .sdesc { color: var(--muted); margin-bottom: 2.5rem; }
+
+  /* ===== Purpose Cards ===== */
+  .purpose-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .pcard {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: transform .3s, box-shadow .3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pcard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(245,158,11,0.1);
+  }
+
+  .pcard-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+  .pcard h3 { font-size: 1.1rem; margin-bottom: .5rem; color: var(--gold2); }
+
+  .pcard p { font-size: .9rem; color: var(--muted); line-height: 1.7; }
+
+  /* ===== Timeline ===== */
+  .timeline { position: relative; padding-left: 3.5rem; }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--gold), var(--blue), var(--green), var(--purple), var(--cyan));
+    border-radius: 3px;
+  }
+
+  .tl-era {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .tl-era-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding: .4rem 1rem;
+    display: inline-block;
+    border-radius: 8px;
+  }
+
+  .era-1 .tl-era-title { background: rgba(245,158,11,0.15); color: var(--gold2); }
+  .era-2 .tl-era-title { background: rgba(59,130,246,0.15); color: var(--blue); }
+  .era-3 .tl-era-title { background: rgba(16,185,129,0.15); color: var(--green); }
+  .era-4 .tl-era-title { background: rgba(139,92,246,0.15); color: var(--purple); }
+  .era-5 .tl-era-title { background: rgba(6,182,212,0.15); color: var(--cyan); }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -2.85rem;
+    top: .55rem;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 10px rgba(245,158,11,0.3);
+    z-index: 1;
+  }
+
+  .tl-item.major::before {
+    width: 17px; height: 17px;
+    left: -2.97rem;
+    background: linear-gradient(135deg, var(--gold), var(--green));
+    box-shadow: 0 0 18px rgba(245,158,11,0.4);
+  }
+
+  .tl-date {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--gold2);
+    background: rgba(245,158,11,0.1);
+    border-radius: 6px;
+    padding: .12rem .6rem;
+    margin-bottom: .3rem;
+  }
+
+  .tl-title { font-size: 1.05rem; font-weight: 600; margin-bottom: .3rem; }
+  .tl-desc { font-size: .88rem; color: var(--muted); line-height: 1.7; }
+
+  .tl-tag {
+    display: inline-block;
+    font-size: .7rem;
+    padding: .1rem .5rem;
+    border-radius: 4px;
+    margin-top: .4rem;
+    margin-right: .3rem;
+  }
+
+  .tag-first { background: rgba(245,158,11,0.2); color: var(--gold2); }
+  .tag-tech { background: rgba(6,182,212,0.15); color: var(--cyan); }
+  .tag-crisis { background: rgba(239,68,68,0.15); color: var(--red); }
+  .tag-china { background: rgba(239,68,68,0.2); color: #fca5a5; }
+  .tag-global { background: rgba(59,130,246,0.15); color: #93c5fd; }
+
+  /* ===== Continent Distribution ===== */
+  .continent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .cont-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    transition: transform .3s;
+  }
+
+  .cont-card:hover { transform: translateY(-3px); }
+
+  .cont-header {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-bottom: 1rem;
+  }
+
+  .cont-header .emoji { font-size: 1.8rem; }
+
+  .cont-header h3 { font-size: 1.15rem; font-weight: 700; }
+
+  .cont-header .count {
+    margin-left: auto;
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--gold), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .cont-list { list-style: none; padding: 0; }
+
+  .cont-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: .85rem;
+  }
+
+  .cont-list li:last-child { border-bottom: none; }
+
+  .cont-list .name { color: var(--text); }
+  .cont-list .val { color: var(--muted); font-size: .8rem; }
+
+  .cont-list .flag { margin-right: .4rem; }
+
+  /* ===== Top 10 Table ===== */
+  .top-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+
+  .top-table th, .top-table td {
+    padding: .8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: .88rem;
+  }
+
+  .top-table th {
+    color: var(--gold2);
+    font-weight: 600;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+
+  .top-table tr:hover { background: rgba(255,255,255,0.02); }
+
+  .rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: .85rem;
+  }
+
+  .rank-1 { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #000; }
+  .rank-2 { background: linear-gradient(135deg, #d1d5db, #9ca3af); color: #000; }
+  .rank-3 { background: linear-gradient(135deg, #d97706, #b45309); color: #fff; }
+  .rank-n { background: rgba(255,255,255,0.08); color: var(--muted); }
+
+  .market-val {
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--gold), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ===== Insight Box ===== */
+  .insight-box {
+    background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(16,185,129,0.06));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3rem;
+    margin-top: 2rem;
+  }
+
+  .insight-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff, var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .insight-list { list-style: none; padding: 0; }
+
+  .insight-list li {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .insight-list li:last-child { border-bottom: none; }
+
+  .ins-icon {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    background: rgba(245,158,11,0.1);
+  }
+
+  .ins-text h4 { font-size: 1rem; margin-bottom: .3rem; }
+  .ins-text p { font-size: .88rem; color: var(--muted); line-height: 1.7; }
+
+  /* ===== Responsive Table ===== */
+  .table-wrap { overflow-x: auto; }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+    font-size: .82rem;
+    border-top: 1px solid var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ===== Animations ===== */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .hero-nums { gap: 1rem; }
+    .hnum { min-width: 120px; }
+    .top-table th, .top-table td { padding: .6rem .5rem; font-size: .8rem; }
+    .insight-box { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-icon">🏛️</div>
+  <h1>全球股票交易所</h1>
+  <p class="hero-sub">
+    从1602年阿姆斯特丹的第一间交易所，到今天遍布130多个国家的80+交易所 ——<br>
+    股票交易所如何诞生、为何存在、走过了怎样的424年？
+  </p>
+  <div class="hero-nums">
+    <div class="hnum">
+      <div class="hnum-val">~80</div>
+      <div class="hnum-label">独立运营交易所</div>
+    </div>
+    <div class="hnum">
+      <div class="hnum-val">130+</div>
+      <div class="hnum-label">覆盖国家/地区</div>
+    </div>
+    <div class="hnum">
+      <div class="hnum-val">$120万亿+</div>
+      <div class="hnum-label">全球总市值（美元）</div>
+    </div>
+    <div class="hnum">
+      <div class="hnum-val">424年</div>
+      <div class="hnum-label">历史（1602至今）</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 创立初衷与目的 ===== -->
+<section>
+  <h2 class="stitle fade-in">🎯 股票交易所为什么会诞生？</h2>
+  <p class="sdesc fade-in">交易所的本质：让资本与梦想高效相遇</p>
+
+  <div class="purpose-grid">
+    <div class="pcard fade-in">
+      <div class="pcard-icon">💰</div>
+      <h3>为企业筹集资金</h3>
+      <p>1602年，荷兰东印度公司需要巨额资金开拓海上贸易航线，但没有任何单一商人能独自承担。于是发明了「股票」——把公司拆成无数份，向公众出售。交易所就是让这些股票自由买卖的地方。<b>这是人类第一次用「众筹」模式做大生意。</b></p>
+    </div>
+    <div class="pcard fade-in">
+      <div class="pcard-icon">🔄</div>
+      <h3>提供流动性</h3>
+      <p>如果你买了东印度公司的股票却不能卖给别人，谁还敢买？交易所让买卖双方在同一个地方撮合交易，<b>保证你随时可以把投资变回现金</b>。流动性越好，越多人愿意投资，形成正循环。</p>
+    </div>
+    <div class="pcard fade-in">
+      <div class="pcard-icon">⚖️</div>
+      <h3>价格发现</h3>
+      <p>一家公司值多少钱？不是老板说了算，而是所有买家和卖家的博弈决定。交易所通过<b>公开竞价</b>，让市场给出一个公平合理的价格。这个价格信号引导着全社会的资源配置。</p>
+    </div>
+    <div class="pcard fade-in">
+      <div class="pcard-icon">🛡️</div>
+      <h3>规范与监管</h3>
+      <p>早期股票交易在街边和咖啡馆里进行，混乱不堪、欺诈横行。交易所的成立就是为了<b>建立规则：统一报价、标准合约、信息披露、防范操纵</b>。有了规则，投资者才敢把钱交出去。</p>
+    </div>
+    <div class="pcard fade-in">
+      <div class="pcard-icon">🌍</div>
+      <h3>推动经济增长</h3>
+      <p>当企业能轻松融资，创新和扩张就有了燃料。铁路、电力、互联网、AI……人类每一次产业革命背后，都有资本市场在输血。<b>交易所是经济发展的加速器。</b></p>
+    </div>
+    <div class="pcard fade-in">
+      <div class="pcard-icon">👥</div>
+      <h3>让普通人分享增长</h3>
+      <p>交易所让每个人都能用少量资金成为企业的股东，分享经济增长的红利。<b>这是人类历史上最伟大的财富民主化工具之一。</b>从荷兰渔民到今天的全球散户，400多年来始终如此。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 发展历程 ===== -->
+<section>
+  <h2 class="stitle fade-in">📜 发展历程：424年的金融史诗</h2>
+  <p class="sdesc fade-in">从阿姆斯特丹的河畔到全球电子交易网络</p>
+
+  <div class="timeline">
+
+    <!-- 萌芽时代 -->
+    <div class="tl-era era-1">
+      <div class="tl-era-title">🌱 萌芽时代（1531-1700）</div>
+
+      <div class="tl-item major fade-in">
+        <div class="tl-date">1531年</div>
+        <div class="tl-title">安特卫普交易所成立 — 世界第一个有组织的证券交易场所</div>
+        <div class="tl-desc">比利时安特卫普。严格来说主要交易债券和票据，但首创了集中交易的组织形式，为后来的股票交易所奠定基础。</div>
+        <span class="tl-tag tag-first">世界首创</span>
+      </div>
+
+      <div class="tl-item major fade-in">
+        <div class="tl-date">1602年</div>
+        <div class="tl-title">🏆 阿姆斯特丹证券交易所 — 人类第一个股票交易所</div>
+        <div class="tl-desc">荷兰东印度公司（VOC）发行世界上第一只股票，为远洋贸易筹集资金。阿姆斯特丹交易所为其提供二级交易市场，标志着现代资本市场的诞生。荷兰由此进入「黄金时代」。这里还诞生了世界上第一次投机泡沫（1637年郁金香狂热）。</div>
+        <span class="tl-tag tag-first">里程碑</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">1698年</div>
+        <div class="tl-title">伦敦 — 乔纳森咖啡馆开始股票交易</div>
+        <div class="tl-desc">伦敦的股票经纪人们聚集在 Jonathan's Coffee House 交易股票和商品价格单。这间咖啡馆后来发展成为伦敦证券交易所。大英帝国的崛起推动伦敦从「追赶者」变成全球金融中心。</div>
+        <span class="tl-tag tag-first">咖啡馆起源</span>
+      </div>
+    </div>
+
+    <!-- 奠基时代 -->
+    <div class="tl-era era-2">
+      <div class="tl-era-title">🏗️ 奠基时代（1700-1900）</div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">1773年</div>
+        <div class="tl-title">伦敦证券交易所（LSE）正式成立</div>
+        <div class="tl-desc">从咖啡馆搬入专用场所，制定交易规则。随着大英帝国的殖民扩张，LSE成为19世纪全球金融霸主，为铁路、运河、矿业融资。</div>
+        <span class="tl-tag tag-first">正式机构化</span>
+      </div>
+
+      <div class="tl-item major fade-in">
+        <div class="tl-date">1792年5月17日</div>
+        <div class="tl-title">🌳 梧桐树协议 — 纽约证交所的起点</div>
+        <div class="tl-desc">24名经纪人在华尔街68号门前的一棵梧桐树下签署《梧桐树协议》（Buttonwood Agreement），约定只与彼此交易并收取固定佣金。这短短几行字，孕育了日后全球最大的纽约证券交易所。</div>
+        <span class="tl-tag tag-first">梧桐树协议</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">1817年</div>
+        <div class="tl-title">纽约证券和交易委员会成立</div>
+        <div class="tl-desc">《梧桐树协议》的参与者们正式组建「纽约证券和交易委员会」（New York Stock and Exchange Board），制定章程、搬入室内。后更名为纽约证券交易所（NYSE）。</div>
+        <span class="tl-tag tag-global">制度化</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">1878年</div>
+        <div class="tl-title">东京证券交易所成立</div>
+        <div class="tl-desc">日本明治维新后建立的现代金融基础设施之一，标志着亚洲开始融入全球资本市场体系。</div>
+        <span class="tl-tag tag-global">亚洲先驱</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">1891年</div>
+        <div class="tl-title">香港股票经纪协会成立</div>
+        <div class="tl-desc">香港证券交易的起源，后发展为香港交易所（HKEX）。作为中国与世界的金融桥梁，至今扮演关键角色。</div>
+        <span class="tl-tag tag-china">中国关联</span>
+      </div>
+    </div>
+
+    <!-- 现代化时代 -->
+    <div class="tl-era era-3">
+      <div class="tl-era-title">⚡ 现代化时代（1900-1970）</div>
+
+      <div class="tl-item major fade-in">
+        <div class="tl-date">1929年10月</div>
+        <div class="tl-title">💥 华尔街大崩盘 — 催生现代监管体系</div>
+        <div class="tl-desc">「黑色星期二」引发全球大萧条。痛定思痛后，美国于1933年通过《证券法》、1934年通过《证券交易法》并成立SEC（证券交易委员会）。<b>现代证券监管体系由此诞生</b>，信息披露、反欺诈、投资者保护成为全球通行准则。</div>
+        <span class="tl-tag tag-crisis">历史性危机</span>
+        <span class="tl-tag tag-global">监管革命</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">1950-60年代</div>
+        <div class="tl-title">战后全球交易所扩张</div>
+        <div class="tl-desc">二战后各国重建经济，证券交易所在全球加速设立。孟买（印度）、圣保罗（巴西）、约翰内斯堡（南非）等新兴市场交易所进入快速发展期。</div>
+        <span class="tl-tag tag-global">全球化浪潮</span>
+      </div>
+    </div>
+
+    <!-- 电子化革命 -->
+    <div class="tl-era era-4">
+      <div class="tl-era-title">💻 电子化革命（1971-2000）</div>
+
+      <div class="tl-item major fade-in">
+        <div class="tl-date">1971年</div>
+        <div class="tl-title">🖥️ 纳斯达克（NASDAQ）诞生 — 世界第一个电子交易所</div>
+        <div class="tl-desc">National Association of Securities Dealers Automated Quotations。告别人声鼎沸的交易大厅，股票交易第一次完全通过电子屏幕和计算机网络完成。后来成为苹果、微软、亚马逊等科技巨头的上市首选。</div>
+        <span class="tl-tag tag-first">电子化先驱</span>
+        <span class="tl-tag tag-tech">技术革命</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">1986年10月</div>
+        <div class="tl-title">伦敦"大爆炸"改革</div>
+        <div class="tl-desc">撒切尔政府推动伦敦证交所大改革：废除固定佣金、允许外资进入、引入电子交易系统。伦敦重新夺回全球金融中心地位。</div>
+        <span class="tl-tag tag-global">自由化改革</span>
+      </div>
+
+      <div class="tl-item major fade-in">
+        <div class="tl-date">1990年11月 / 12月</div>
+        <div class="tl-title">🇨🇳 上海证券交易所 & 深圳证券交易所成立</div>
+        <div class="tl-desc">上交所1990年11月26日成立（12月19日正式开业），深交所1990年12月1日试营业。中国资本市场从零起步，开启改革开放新篇章。如今沪深两市总市值已跻身全球前五。</div>
+        <span class="tl-tag tag-china">中国里程碑</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">1997-2000年</div>
+        <div class="tl-title">互联网泡沫 & 全球交易所公司化浪潮</div>
+        <div class="tl-desc">互联网催生大量科技公司上市，纳斯达克指数飙升至5000点后泡沫破裂。同时，全球交易所纷纷从「会员制」转为「公司制」，自身也成为上市公司。澳交所（1998）、伦交所（2001）、纽交所（2006）相继上市。</div>
+        <span class="tl-tag tag-crisis">互联网泡沫</span>
+        <span class="tl-tag tag-global">公司化改革</span>
+      </div>
+    </div>
+
+    <!-- 智能化时代 -->
+    <div class="tl-era era-5">
+      <div class="tl-era-title">🤖 智能化时代（2000-至今）</div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">2000年</div>
+        <div class="tl-title">泛欧交易所（Euronext）成立</div>
+        <div class="tl-desc">阿姆斯特丹、布鲁塞尔、巴黎三家交易所合并，开创跨国交易所联盟模式。后又纳入里斯本、都柏林等。当年那个1602年的阿姆斯特丹交易所，成为泛欧交易所的历史源头。</div>
+        <span class="tl-tag tag-global">跨国合并</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">2007年</div>
+        <div class="tl-title">NYSE 与 Euronext 合并</div>
+        <div class="tl-desc">纽约证交所集团与泛欧交易所合并为 NYSE Euronext，成为全球第一个跨大西洋交易所集团。2013年被 ICE（洲际交易所）收购。</div>
+        <span class="tl-tag tag-global">超级并购</span>
+      </div>
+
+      <div class="tl-item major fade-in">
+        <div class="tl-date">2008年</div>
+        <div class="tl-title">💥 全球金融危机</div>
+        <div class="tl-desc">雷曼兄弟破产引发全球金融海啸。各国加强金融监管，推动衍生品标准化、中央清算等改革。危机再次证明：透明、规范的交易所比暗箱操作的场外市场更能抵御风险。</div>
+        <span class="tl-tag tag-crisis">金融海啸</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">2010年代</div>
+        <div class="tl-title">算法交易 & 高频交易主导</div>
+        <div class="tl-desc">全球主要交易所60-70%的交易量由算法和高频交易完成。交易延迟从秒级缩短到微秒级。暗池交易（Dark Pool）兴起，挑战传统交易所模式。</div>
+        <span class="tl-tag tag-tech">算法时代</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">2021年</div>
+        <div class="tl-title">🇨🇳 北京证券交易所成立</div>
+        <div class="tl-desc">2021年11月15日，北交所正式开市。中国大陆形成上交所、深交所、北交所三足鼎立格局。北交所聚焦「专精特新」中小企业，完善多层次资本市场体系。</div>
+        <span class="tl-tag tag-china">中国新篇</span>
+      </div>
+
+      <div class="tl-item fade-in">
+        <div class="tl-date">2020s</div>
+        <div class="tl-title">AI交易 + 数字货币交易所崛起</div>
+        <div class="tl-desc">AI驱动的智能投顾和量化策略成为主流。加密货币交易所（Binance、Coinbase等）挑战传统格局。各国央行探索数字货币（CBDC），交易所面临新一轮变革。世界银行预计2030年全球将有至少150个股票交易场所。</div>
+        <span class="tl-tag tag-tech">AI + 数字化</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== 全球十大交易所 ===== -->
+<section>
+  <h2 class="stitle fade-in">🏆 全球十大证券交易所（2025年数据）</h2>
+  <p class="sdesc fade-in">按总市值排名，美国两大交易所占全球近40%</p>
+
+  <div class="table-wrap fade-in">
+    <table class="top-table">
+      <thead>
+        <tr>
+          <th>排名</th>
+          <th>交易所</th>
+          <th>所在地</th>
+          <th>成立年份</th>
+          <th>总市值</th>
+          <th>上市公司</th>
+          <th>特色</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rank rank-1">1</span></td>
+          <td><b>纽约证券交易所 NYSE</b></td>
+          <td>🇺🇸 纽约</td>
+          <td>1792</td>
+          <td class="market-val">~31.7万亿</td>
+          <td>~2,126</td>
+          <td>全球最大，传统行业大本营</td>
+        </tr>
+        <tr>
+          <td><span class="rank rank-2">2</span></td>
+          <td><b>纳斯达克 NASDAQ</b></td>
+          <td>🇺🇸 纽约</td>
+          <td>1971</td>
+          <td class="market-val">~29.9万亿</td>
+          <td>~3,285</td>
+          <td>科技股圣地，首个电子交易所</td>
+        </tr>
+        <tr>
+          <td><span class="rank rank-3">3</span></td>
+          <td><b>上海证券交易所</b></td>
+          <td>🇨🇳 上海</td>
+          <td>1990</td>
+          <td class="market-val">~7.6万亿</td>
+          <td>~2,200+</td>
+          <td>中国最大，科创板创新试验田</td>
+        </tr>
+        <tr>
+          <td><span class="rank rank-n">4</span></td>
+          <td><b>泛欧交易所 Euronext</b></td>
+          <td>🇪🇺 阿姆斯特丹</td>
+          <td>2000</td>
+          <td class="market-val">~7.5万亿</td>
+          <td>~1,900+</td>
+          <td>跨国联盟，源自1602年</td>
+        </tr>
+        <tr>
+          <td><span class="rank rank-n">5</span></td>
+          <td><b>香港交易所 HKEX</b></td>
+          <td>🇭🇰 香港</td>
+          <td>1891</td>
+          <td class="market-val">~7.5万亿</td>
+          <td>~2,655</td>
+          <td>中国与世界的金融桥梁</td>
+        </tr>
+        <tr>
+          <td><span class="rank rank-n">6</span></td>
+          <td><b>东京证券交易所</b></td>
+          <td>🇯🇵 东京</td>
+          <td>1878</td>
+          <td class="market-val">~6.6万亿</td>
+          <td>~3,400+</td>
+          <td>亚洲老字号，制造业强阵</td>
+        </tr>
+        <tr>
+          <td><span class="rank rank-n">7</span></td>
+          <td><b>深圳证券交易所</b></td>
+          <td>🇨🇳 深圳</td>
+          <td>1990</td>
+          <td class="market-val">~5.0万亿</td>
+          <td>~2,800+</td>
+          <td>创业板、中小企业板</td>
+        </tr>
+        <tr>
+          <td><span class="rank rank-n">8</span></td>
+          <td><b>印度国家证券交易所 NSE</b></td>
+          <td>🇮🇳 孟买</td>
+          <td>1992</td>
+          <td class="market-val">~4.9万亿</td>
+          <td>~2,400+</td>
+          <td>增速最快，年增15%+</td>
+        </tr>
+        <tr>
+          <td><span class="rank rank-n">9</span></td>
+          <td><b>伦敦证券交易所 LSE</b></td>
+          <td>🇬🇧 伦敦</td>
+          <td>1773</td>
+          <td class="market-val">~3.8万亿</td>
+          <td>~1,900+</td>
+          <td>国际化最高，数据巨头转型</td>
+        </tr>
+        <tr>
+          <td><span class="rank rank-n">10</span></td>
+          <td><b>沙特证券交易所 Tadawul</b></td>
+          <td>🇸🇦 利雅得</td>
+          <td>2007</td>
+          <td class="market-val">~3.5万亿</td>
+          <td>~400+</td>
+          <td>中东最大，沙特阿美上市地</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="color: var(--muted); font-size: .8rem; margin-top: 1rem; text-align: center;">
+    * 市值为约数（万亿美元），数据来源：WFE、各交易所公报、公开报道。排名可能因市场波动而变化。
+  </p>
+</section>
+
+<!-- ===== 全球分布 ===== -->
+<section>
+  <h2 class="stitle fade-in">🌍 全球分布：各大洲交易所概览</h2>
+  <p class="sdesc fade-in">全球约80个独立交易所分布于六大洲，亚洲数量最多</p>
+
+  <div class="continent-grid">
+
+    <div class="cont-card fade-in">
+      <div class="cont-header">
+        <span class="emoji">🌏</span>
+        <h3>亚洲-太平洋</h3>
+        <span class="count">~25</span>
+      </div>
+      <ul class="cont-list">
+        <li><span class="name"><span class="flag">🇨🇳</span>中国大陆</span><span class="val">上交所、深交所、北交所</span></li>
+        <li><span class="name"><span class="flag">🇭🇰</span>中国香港</span><span class="val">港交所 HKEX</span></li>
+        <li><span class="name"><span class="flag">🇹🇼</span>中国台湾</span><span class="val">台湾证交所 TWSE</span></li>
+        <li><span class="name"><span class="flag">🇯🇵</span>日本</span><span class="val">东京、大阪（JPX）</span></li>
+        <li><span class="name"><span class="flag">🇰🇷</span>韩国</span><span class="val">韩国交易所 KRX</span></li>
+        <li><span class="name"><span class="flag">🇮🇳</span>印度</span><span class="val">NSE、BSE（孟买）</span></li>
+        <li><span class="name"><span class="flag">🇸🇬</span>新加坡</span><span class="val">新加坡交易所 SGX</span></li>
+        <li><span class="name"><span class="flag">🇦🇺</span>澳大利亚</span><span class="val">澳交所 ASX</span></li>
+        <li><span class="name">🇹🇭🇲🇾🇮🇩🇵🇭🇻🇳</span><span class="val">东南亚各国交易所</span></li>
+      </ul>
+    </div>
+
+    <div class="cont-card fade-in">
+      <div class="cont-header">
+        <span class="emoji">🌍</span>
+        <h3>欧洲</h3>
+        <span class="count">~20</span>
+      </div>
+      <ul class="cont-list">
+        <li><span class="name"><span class="flag">🇬🇧</span>英国</span><span class="val">伦敦证交所 LSE</span></li>
+        <li><span class="name"><span class="flag">🇪🇺</span>泛欧交易所</span><span class="val">阿姆斯特丹/巴黎/布鲁塞尔等</span></li>
+        <li><span class="name"><span class="flag">🇩🇪</span>德国</span><span class="val">法兰克福（Xetra/DAX）</span></li>
+        <li><span class="name"><span class="flag">🇨🇭</span>瑞士</span><span class="val">瑞士证交所 SIX</span></li>
+        <li><span class="name"><span class="flag">🇪🇸</span>西班牙</span><span class="val">马德里证交所 BME</span></li>
+        <li><span class="name">🇸🇪🇳🇴🇩🇰🇫🇮</span><span class="val">北欧纳斯达克（合并）</span></li>
+        <li><span class="name">🇵🇱🇷🇺🇬🇷🇹🇷</span><span class="val">东欧/南欧各国交易所</span></li>
+      </ul>
+    </div>
+
+    <div class="cont-card fade-in">
+      <div class="cont-header">
+        <span class="emoji">🌎</span>
+        <h3>北美洲</h3>
+        <span class="count">~8</span>
+      </div>
+      <ul class="cont-list">
+        <li><span class="name"><span class="flag">🇺🇸</span>美国</span><span class="val">NYSE、NASDAQ、CBOE、CME等</span></li>
+        <li><span class="name"><span class="flag">🇨🇦</span>加拿大</span><span class="val">多伦多交易所 TSX</span></li>
+        <li><span class="name"><span class="flag">🇲🇽</span>墨西哥</span><span class="val">墨西哥证交所 BMV</span></li>
+      </ul>
+    </div>
+
+    <div class="cont-card fade-in">
+      <div class="cont-header">
+        <span class="emoji">🌎</span>
+        <h3>南美洲</h3>
+        <span class="count">~8</span>
+      </div>
+      <ul class="cont-list">
+        <li><span class="name"><span class="flag">🇧🇷</span>巴西</span><span class="val">圣保罗交易所 B3</span></li>
+        <li><span class="name"><span class="flag">🇦🇷</span>阿根廷</span><span class="val">布宜诺斯艾利斯证交所</span></li>
+        <li><span class="name"><span class="flag">🇨🇱</span>智利</span><span class="val">圣地亚哥证交所</span></li>
+        <li><span class="name"><span class="flag">🇨🇴</span>哥伦比亚</span><span class="val">波哥大证交所</span></li>
+        <li><span class="name">🇵🇪🇻🇪🇪🇨</span><span class="val">秘鲁、委内瑞拉等</span></li>
+      </ul>
+    </div>
+
+    <div class="cont-card fade-in">
+      <div class="cont-header">
+        <span class="emoji">🏜️</span>
+        <h3>中东</h3>
+        <span class="count">~10</span>
+      </div>
+      <ul class="cont-list">
+        <li><span class="name"><span class="flag">🇸🇦</span>沙特</span><span class="val">Tadawul（中东最大）</span></li>
+        <li><span class="name"><span class="flag">🇦🇪</span>阿联酋</span><span class="val">阿布扎比ADX、迪拜DFM</span></li>
+        <li><span class="name"><span class="flag">🇮🇱</span>以色列</span><span class="val">特拉维夫证交所 TASE</span></li>
+        <li><span class="name"><span class="flag">🇶🇦</span>卡塔尔</span><span class="val">多哈证交所 QSE</span></li>
+        <li><span class="name">🇰🇼🇧🇭🇴🇲🇯🇴</span><span class="val">科威特、巴林、阿曼、约旦</span></li>
+      </ul>
+    </div>
+
+    <div class="cont-card fade-in">
+      <div class="cont-header">
+        <span class="emoji">🌍</span>
+        <h3>非洲</h3>
+        <span class="count">~12</span>
+      </div>
+      <ul class="cont-list">
+        <li><span class="name"><span class="flag">🇿🇦</span>南非</span><span class="val">约翰内斯堡 JSE（非洲最大）</span></li>
+        <li><span class="name"><span class="flag">🇳🇬</span>尼日利亚</span><span class="val">拉各斯证交所 NGX</span></li>
+        <li><span class="name"><span class="flag">🇪🇬</span>埃及</span><span class="val">开罗证交所 EGX</span></li>
+        <li><span class="name"><span class="flag">🇰🇪</span>肯尼亚</span><span class="val">内罗毕证交所 NSE</span></li>
+        <li><span class="name"><span class="flag">🇲🇦</span>摩洛哥</span><span class="val">卡萨布兰卡证交所</span></li>
+        <li><span class="name">🇬🇭🇹🇿🇧🇼🇲🇺</span><span class="val">加纳、坦桑尼亚、博茨瓦纳等</span></li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 关键洞察 ===== -->
+<section>
+  <div class="insight-box fade-in">
+    <h2>💡 关键洞察：交易所的过去与未来</h2>
+
+    <ul class="insight-list">
+      <li>
+        <div class="ins-icon">📊</div>
+        <div class="ins-text">
+          <h4>T+0 vs T+1：中国是少数派</h4>
+          <p>全球44个主要股票市场中，42个实行 T+0 交易制度（当天买当天卖）。仅有中国大陆的上交所和深交所实行 T+1。这一制度差异常引发投资者讨论。</p>
+        </div>
+      </li>
+      <li>
+        <div class="ins-icon">🔀</div>
+        <div class="ins-text">
+          <h4>从会员制到公司制</h4>
+          <p>20世纪末开始，全球交易所从非营利的「会员制」转向营利的「公司制」，自身也成为上市公司。纽交所、伦交所、港交所、日本JPX都已上市。交易所本身就是好生意——「卖铲子的人」。</p>
+        </div>
+      </li>
+      <li>
+        <div class="ins-icon">🤝</div>
+        <div class="ins-text">
+          <h4>并购整合是大趋势</h4>
+          <p>泛欧交易所合并了5国交易所；ICE收购了NYSE；纳斯达克收购了北欧交易所。未来可能出现更大规模的跨洲际交易所集团。</p>
+        </div>
+      </li>
+      <li>
+        <div class="ins-icon">⚡</div>
+        <div class="ins-text">
+          <h4>从梧桐树到微秒级</h4>
+          <p>1792年签协议要跑到树下；2026年一笔交易在微秒内完成。技术革命让交易速度提升了数十亿倍，但核心功能——筹资、流动性、价格发现——从未改变。</p>
+        </div>
+      </li>
+      <li>
+        <div class="ins-icon">🌱</div>
+        <div class="ins-text">
+          <h4>新兴市场仍在扩张</h4>
+          <p>非洲、东南亚仍有20余个国家在筹建证券交易所。世界银行预计2030年全球将有至少150个股票交易场所。资本市场的全球化远未结束。</p>
+        </div>
+      </li>
+      <li>
+        <div class="ins-icon">🤖</div>
+        <div class="ins-text">
+          <h4>AI 正在重塑交易</h4>
+          <p>英伟达报告显示，65%的金融机构已积极使用AI，89%表示AI同时增加了收入并降低了成本。AI驱动的量化交易、智能风控、自动合规正在改变交易所生态的每一个环节。</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <p>
+    数据来源：世界交易所联合会（WFE）、各交易所官方、新浪财经、雪球、百度百科等公开信息<br>
+    制作时间：2026年3月28日 · 仅供学习参考，不构成投资建议<br><br>
+    <em>"证券交易所的建立，是人类将个体的微小储蓄汇聚成推动文明进步的巨大力量的伟大发明。"</em>
+  </p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

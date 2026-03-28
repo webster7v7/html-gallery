@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>与钱打交道的行业全景图</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+  :root{--bg:#070b14;--card:#0e1525;--gold:#f59e0b;--gold2:#fbbf24;--green:#10b981;--blue:#3b82f6;--purple:#8b5cf6;--red:#ef4444;--cyan:#06b6d4;--pink:#ec4899;--orange:#f97316;--lime:#84cc16;--text:#e2e8f0;--muted:#94a3b8;--border:#1e293b}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;overflow-x:hidden}
+
+  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 30%,rgba(245,158,11,.08),transparent),radial-gradient(ellipse 50% 40% at 80% 70%,rgba(16,185,129,.06),transparent);pointer-events:none}
+  .hero h1{font-size:clamp(2rem,5vw,4rem);font-weight:900;background:linear-gradient(135deg,#fff,var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.8rem}
+  .hero-sub{max-width:750px;font-size:1.05rem;color:var(--muted);margin-bottom:2rem}
+
+  section{max-width:1200px;margin:0 auto;padding:3.5rem 1.5rem}
+  .stitle{font-size:1.8rem;font-weight:700;margin-bottom:.4rem}
+  .sdesc{color:var(--muted);margin-bottom:2.5rem}
+
+  /* Category Header */
+  .cat-head{display:flex;align-items:center;gap:.8rem;margin:3rem 0 1.5rem;padding-bottom:.8rem;border-bottom:2px solid var(--border)}
+  .cat-head .icon{font-size:2rem}
+  .cat-head h3{font-size:1.3rem;font-weight:700}
+  .cat-head .tag{margin-left:auto;font-size:.75rem;padding:.2rem .8rem;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+
+  /* Industry Cards */
+  .ind-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.2rem}
+  .icard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.6rem;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
+  .icard:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(245,158,11,.08)}
+  .icard-top{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
+  .icard-emoji{font-size:1.6rem}
+  .icard-name{font-size:1.05rem;font-weight:700}
+  .icard-badge{margin-left:auto;font-size:.65rem;padding:.15rem .5rem;border-radius:4px}
+  .badge-core{background:rgba(245,158,11,.15);color:var(--gold2)}
+  .badge-invest{background:rgba(139,92,246,.15);color:var(--purple)}
+  .badge-service{background:rgba(59,130,246,.15);color:var(--blue)}
+  .badge-new{background:rgba(236,72,153,.15);color:var(--pink)}
+  .badge-special{background:rgba(16,185,129,.15);color:var(--green)}
+  .icard-what{font-size:.85rem;color:var(--muted);margin-bottom:.6rem}
+  .icard-how{font-size:.82rem;color:var(--gold2);margin-bottom:.5rem;font-weight:500}
+  .icard-detail{font-size:.8rem;color:var(--muted);line-height:1.7}
+  .icard-examples{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+  .icard-examples span{font-size:.7rem;padding:.15rem .5rem;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted)}
+
+  /* Money Flow */
+  .flow-box{background:linear-gradient(135deg,rgba(245,158,11,.05),rgba(16,185,129,.05));border:1px solid var(--border);border-radius:20px;padding:2.5rem;margin:2rem 0}
+  .flow-box h2{font-size:1.4rem;margin-bottom:1.5rem;background:linear-gradient(135deg,#fff,var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .flow-diagram{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;align-items:center;text-align:center;margin:1.5rem 0}
+  .flow-node{padding:1rem 1.2rem;background:var(--card);border:1px solid var(--border);border-radius:12px;min-width:120px}
+  .flow-node .fn-icon{font-size:1.5rem;margin-bottom:.3rem}
+  .flow-node .fn-name{font-size:.85rem;font-weight:600}
+  .flow-node .fn-desc{font-size:.7rem;color:var(--muted)}
+  .flow-arrow{font-size:1.5rem;color:var(--gold)}
+
+  /* Stats */
+  .stat-row{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin:2rem 0}
+  .sbox{text-align:center;padding:1.2rem 1.5rem;background:var(--card);border:1px solid var(--border);border-radius:14px;min-width:150px;flex:1;max-width:200px}
+  .sbox-val{font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .sbox-label{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+
+  /* Insight */
+  .insight-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;margin:1.5rem 0}
+  .insight-box h4{font-size:1rem;margin-bottom:.8rem;color:var(--gold2)}
+  .insight-box p,.insight-box li{font-size:.88rem;color:var(--muted);line-height:1.8}
+  .insight-box ul{padding-left:1.2rem}
+  .insight-box li{margin-bottom:.3rem}
+
+  footer{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);max-width:1200px;margin:0 auto}
+
+  .fade-in{opacity:0;transform:translateY(25px);transition:opacity .5s,transform .5s}
+  .fade-in.visible{opacity:1;transform:translateY(0)}
+
+  @media(max-width:600px){.ind-grid{grid-template-columns:1fr}.flow-diagram{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>💰 与钱打交道的行业全景图</h1>
+  <p class="hero-sub">
+    金融行业就是"钱生钱"？没那么简单。<br>
+    从银行到风投、从支付宝到穆迪评级、从典当行到加密交易所——<br>
+    人类围绕"钱"构建了一个庞大的行业帝国，至少有 <b>20+个</b> 细分领域。
+  </p>
+</div>
+
+<!-- ===== 钱的流动 ===== -->
+<section>
+  <h2 class="stitle fade-in">🔄 先搞清楚一件事：钱是怎么流动的？</h2>
+  <p class="sdesc fade-in">所有"与钱打交道的行业"，本质上都在做这条链上的某个环节</p>
+
+  <div class="flow-diagram fade-in">
+    <div class="flow-node"><div class="fn-icon">👤</div><div class="fn-name">你（储蓄者）</div><div class="fn-desc">手里有闲钱</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><div class="fn-icon">🏦</div><div class="fn-name">金融中介</div><div class="fn-desc">银行/基金/保险…</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><div class="fn-icon">🏭</div><div class="fn-name">企业/政府</div><div class="fn-desc">需要用钱发展</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><div class="fn-icon">📈</div><div class="fn-name">创造价值</div><div class="fn-desc">生产/服务/创新</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><div class="fn-icon">💰</div><div class="fn-name">回报</div><div class="fn-desc">利息/分红/增值</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><div class="fn-icon">👤</div><div class="fn-name">回到你手里</div><div class="fn-desc">钱生了钱</div></div>
+  </div>
+
+  <div class="insight-box fade-in">
+    <h4>💡 "钱生钱"的三种基本模式</h4>
+    <ul>
+      <li><b>借贷模式</b>：我把钱借给你，你还我本金+利息（银行、小贷）</li>
+      <li><b>投资模式</b>：我买你公司的股份，你赚钱了我分红，股价涨了我赚差价（股票、基金、风投）</li>
+      <li><b>风险转移模式</b>：你交保费，出事了我赔你钱；大多数人不出事，我就赚了（保险）</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 核心金融行业 ===== -->
+<section>
+  <div class="cat-head fade-in">
+    <span class="icon">🏛️</span>
+    <h3>第一类：核心金融行业 — 直接"搬运"钱</h3>
+    <span class="tag">传统金融六大支柱</span>
+  </div>
+
+  <div class="ind-grid">
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🏦</span><span class="icard-name">银行业</span><span class="icard-badge badge-core">核心</span></div>
+      <div class="icard-how">💸 赚钱方式：吃"利差"（低息吸存款，高息放贷款）</div>
+      <div class="icard-what">最古老、最基础的金融行业。吸收你的存款，再借给企业和个人，中间赚利息差。</div>
+      <div class="icard-detail">
+        • <b>商业银行</b>：工农中建交、招商、兴业…你的工资卡就是<br>
+        • <b>投资银行</b>：帮企业IPO上市、并购重组（高盛、摩根士丹利、中金公司）<br>
+        • <b>中央银行</b>：央妈（中国人民银行），印钞票、调利率、管全局<br>
+        • <b>政策银行</b>：国开行、进出口银行，服务国家战略
+      </div>
+      <div class="icard-examples"><span>工商银行</span><span>招商银行</span><span>高盛</span><span>摩根大通</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🛡️</span><span class="icard-name">保险业</span><span class="icard-badge badge-core">核心</span></div>
+      <div class="icard-how">💸 赚钱方式：收保费 > 赔付支出 + 用保费去投资赚钱</div>
+      <div class="icard-what">本质是"用大多数人的钱，赔给少数倒霉的人"。同时保险公司拿着巨额保费去投资（买债券、股票、房产），这部分投资收益往往比承保利润还多。</div>
+      <div class="icard-detail">
+        • <b>寿险</b>：人寿、养老、重疾<br>
+        • <b>财险</b>：车险、火灾、货运<br>
+        • <b>再保险</b>：给保险公司上保险（瑞士再保险、慕尼黑再保险）
+      </div>
+      <div class="icard-examples"><span>中国平安</span><span>中国人寿</span><span>安联</span><span>伯克希尔</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">📊</span><span class="icard-name">证券业</span><span class="icard-badge badge-core">核心</span></div>
+      <div class="icard-how">💸 赚钱方式：佣金 + 自营投资 + 承销费 + 利息</div>
+      <div class="icard-what">帮你买卖股票、帮企业上市融资、自己也炒股炒债。券商就是股票市场的"中间商"。</div>
+      <div class="icard-detail">
+        • <b>经纪业务</b>：你每次买卖股票，券商收手续费<br>
+        • <b>投行业务</b>：帮企业IPO、发债、并购<br>
+        • <b>自营业务</b>：券商自己拿钱炒股<br>
+        • <b>资管业务</b>：帮客户管钱
+      </div>
+      <div class="icard-examples"><span>中信证券</span><span>华泰证券</span><span>嘉信理财</span><span>摩根士丹利</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">📦</span><span class="icard-name">基金业</span><span class="icard-badge badge-invest">投资</span></div>
+      <div class="icard-how">💸 赚钱方式：管理费（按资产规模收） + 业绩提成</div>
+      <div class="icard-what">把很多人的钱集中起来，交给专业基金经理去投资。你出钱，他操盘，赚了分你，亏了……也是你的。</div>
+      <div class="icard-detail">
+        • <b>公募基金</b>：老百姓都能买（余额宝就是货币基金）<br>
+        • <b>私募基金</b>：有钱人才能买（门槛100万+）<br>
+        • <b>对冲基金</b>：高风险高收益，策略复杂（桥水、文艺复兴）<br>
+        • <b>ETF/指数基金</b>：跟踪指数，被动投资（巴菲特推荐）
+      </div>
+      <div class="icard-examples"><span>易方达</span><span>天弘基金</span><span>贝莱德</span><span>先锋集团</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🔐</span><span class="icard-name">信托业</span><span class="icard-badge badge-invest">投资</span></div>
+      <div class="icard-how">💸 赚钱方式：信托报酬（管理费） + 超额收益分成</div>
+      <div class="icard-what">"我信任你，把钱/资产交给你管"。信托公司受托管理资产，投向房地产、基建、企业贷款等。中国信托业规模超20万亿元，门槛高（通常100万起），是有钱人的理财工具。</div>
+      <div class="icard-examples"><span>中信信托</span><span>华润信托</span><span>平安信托</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🎰</span><span class="icard-name">期货与衍生品</span><span class="icard-badge badge-invest">投资</span></div>
+      <div class="icard-how">💸 赚钱方式：手续费 + 自营交易 + 对冲服务费</div>
+      <div class="icard-what">买卖"未来的东西"。比如你现在约定3个月后以某个价格买入石油/黄金/大豆。企业用来"锁定成本"，投机者用来"赌涨跌"。杠杆高，风险大。</div>
+      <div class="icard-detail">
+        • <b>商品期货</b>：原油、黄金、农产品<br>
+        • <b>金融期货</b>：股指期货、国债期货<br>
+        • <b>期权</b>：买一个"权利"（可以不执行）
+      </div>
+      <div class="icard-examples"><span>芝加哥CME</span><span>大商所</span><span>郑商所</span><span>上期所</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 投资行业 ===== -->
+<section>
+  <div class="cat-head fade-in">
+    <span class="icon">🚀</span>
+    <h3>第二类：风险投资与股权投资 — "赌"明天的钱</h3>
+    <span class="tag">高风险高回报</span>
+  </div>
+
+  <div class="ind-grid">
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🦄</span><span class="icard-name">风险投资（VC）</span><span class="icard-badge badge-invest">投资</span></div>
+      <div class="icard-how">💸 赚钱方式：投早期公司，等IPO或被收购后套现，赚几倍到几百倍</div>
+      <div class="icard-what">专门投资初创公司（天使轮到B轮），投100个死90个，但活下来的1个可能赚回全部。上期讲的阶跃星辰融资，投钱的启明创投、五源资本就是VC。</div>
+      <div class="icard-examples"><span>红杉资本</span><span>启明创投</span><span>五源资本</span><span>IDG资本</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🏗️</span><span class="icard-name">私募股权（PE）</span><span class="icard-badge badge-invest">投资</span></div>
+      <div class="icard-how">💸 赚钱方式：买成熟公司→改造/做大→卖掉或上市</div>
+      <div class="icard-what">投资成熟但未上市的公司，或者直接收购上市公司做私有化改造。金额更大，风格更稳。</div>
+      <div class="icard-examples"><span>KKR</span><span>黑石集团</span><span>凯雷</span><span>高瓴资本</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">👼</span><span class="icard-name">天使投资</span><span class="icard-badge badge-invest">投资</span></div>
+      <div class="icard-how">💸 赚钱方式：用个人资金投最早期项目，搏超高回报</div>
+      <div class="icard-what">通常是成功企业家/富人，拿自己的钱投种子期公司。门槛最低但风险最高。彼得·蒂尔投Facebook 50万美元，最终赚了10亿。</div>
+      <div class="icard-examples"><span>彼得·蒂尔</span><span>薛蛮子</span><span>徐小平</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 支付与科技 ===== -->
+<section>
+  <div class="cat-head fade-in">
+    <span class="icon">📱</span>
+    <h3>第三类：支付与金融科技 — 让钱"跑得更快"</h3>
+    <span class="tag">新兴力量</span>
+  </div>
+
+  <div class="ind-grid">
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">💳</span><span class="icard-name">第三方支付</span><span class="icard-badge badge-new">新兴</span></div>
+      <div class="icard-how">💸 赚钱方式：交易手续费（每笔0.1%-0.6%） + 沉淀资金利息</div>
+      <div class="icard-what">支付宝、微信支付每天处理数十亿笔交易，每笔都在抽水。商家收款要付手续费，积少成多就是天文数字。</div>
+      <div class="icard-examples"><span>支付宝</span><span>微信支付</span><span>PayPal</span><span>Stripe</span><span>Visa/MasterCard</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🏧</span><span class="icard-name">消费金融 / 小贷</span><span class="icard-badge badge-new">新兴</span></div>
+      <div class="icard-how">💸 赚钱方式：利息（年化10%-36%）</div>
+      <div class="icard-what">花呗、京东白条、信用卡分期——本质都是借钱给你消费，然后收利息。"免息分期"？那是商家补贴了利息，或者在商品价格里已经加了。</div>
+      <div class="icard-examples"><span>蚂蚁集团</span><span>京东金融</span><span>招联消金</span><span>马上消金</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🪙</span><span class="icard-name">加密货币 / 数字资产</span><span class="icard-badge badge-new">新兴</span></div>
+      <div class="icard-how">💸 赚钱方式：交易手续费 + 上币费 + Staking收益</div>
+      <div class="icard-what">比特币、以太坊等加密货币的交易平台。争议极大，有人说是未来货币，有人说是庞氏骗局。中国大陆已禁止交易，但全球市场仍在运转。</div>
+      <div class="icard-examples"><span>Binance</span><span>Coinbase</span><span>OKX</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🤖</span><span class="icard-name">智能投顾 / 量化交易</span><span class="icard-badge badge-new">新兴</span></div>
+      <div class="icard-how">💸 赚钱方式：管理费 + 超额收益分成</div>
+      <div class="icard-what">用AI和算法自动做投资决策。全球主要交易所60-70%的交易量已由算法完成。普通人通过"智能投顾"App也能体验机器帮你理财。</div>
+      <div class="icard-examples"><span>幻方量化</span><span>九坤</span><span>Citadel</span><span>Two Sigma</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 金融服务 ===== -->
+<section>
+  <div class="cat-head fade-in">
+    <span class="icon">🔧</span>
+    <h3>第四类：金融服务业 — 不直接"搬钱"，但离不开钱</h3>
+    <span class="tag">辅助生态</span>
+  </div>
+
+  <div class="ind-grid">
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">📝</span><span class="icard-name">会计与审计</span><span class="icard-badge badge-service">服务</span></div>
+      <div class="icard-how">💸 赚钱方式：服务费（按项目/小时收费）</div>
+      <div class="icard-what">帮企业记账、查账、出财报。上市公司必须经审计才能发布财报。"四大"会计师事务所垄断了全球大部分审计市场。</div>
+      <div class="icard-examples"><span>普华永道</span><span>德勤</span><span>安永</span><span>毕马威</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">⭐</span><span class="icard-name">信用评级</span><span class="icard-badge badge-service">服务</span></div>
+      <div class="icard-how">💸 赚钱方式：评级费用（发行人付费模式）</div>
+      <div class="icard-what">给公司和国家打"信用分"。评级越高（AAA），借钱利率越低。"三大"评级机构的一句话可以让一个国家的借贷成本暴涨。权力极大，争议也极大。</div>
+      <div class="icard-examples"><span>标普 S&P</span><span>穆迪</span><span>惠誉</span><span>中诚信</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🔍</span><span class="icard-name">征信行业</span><span class="icard-badge badge-service">服务</span></div>
+      <div class="icard-how">💸 赚钱方式：征信报告查询费 + 数据服务费</div>
+      <div class="icard-what">记录你的信用历史：借了多少钱、还没还、有没有逾期。银行决定给不给你贷款，第一步就是查征信。"芝麻信用分"也是一种。</div>
+      <div class="icard-examples"><span>央行征信中心</span><span>百行征信</span><span>芝麻信用</span><span>Experian</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">⚖️</span><span class="icard-name">税务服务</span><span class="icard-badge badge-service">服务</span></div>
+      <div class="icard-how">💸 赚钱方式：税务咨询费 + 代理记账费</div>
+      <div class="icard-what">帮企业和个人报税、节税（合法避税）、应对税务稽查。越有钱的人和公司，越需要税务顾问。苹果公司靠爱尔兰架构省了几十亿美元的税。</div>
+      <div class="icard-examples"><span>四大（税务部门）</span><span>各地税务师事务所</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🏘️</span><span class="icard-name">资产评估</span><span class="icard-badge badge-service">服务</span></div>
+      <div class="icard-how">💸 赚钱方式：评估费用</div>
+      <div class="icard-what">这栋楼值多少钱？这家公司值多少钱？这幅画值多少钱？资产评估师给出专业估值，用于并购、上市、抵押贷款等场景。</div>
+      <div class="icard-examples"><span>中联评估</span><span>戴德梁行</span><span>仲量联行</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">⚔️</span><span class="icard-name">金融法律服务</span><span class="icard-badge badge-service">服务</span></div>
+      <div class="icard-how">💸 赚钱方式：律师费（按小时/项目收费）</div>
+      <div class="icard-what">IPO上市要律师、并购要律师、打金融官司要律师。金融律师是律所最赚钱的业务之一，顶级律所合伙人年入千万+。</div>
+      <div class="icard-examples"><span>君合</span><span>金杜</span><span>中伦</span><span>Sullivan & Cromwell</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 财富管理 ===== -->
+<section>
+  <div class="cat-head fade-in">
+    <span class="icon">💎</span>
+    <h3>第五类：财富管理与资产行业 — 帮有钱人管钱</h3>
+    <span class="tag">高端市场</span>
+  </div>
+
+  <div class="ind-grid">
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">👔</span><span class="icard-name">私人银行 / 财富管理</span><span class="icard-badge badge-special">高端</span></div>
+      <div class="icard-how">💸 赚钱方式：管理费 + 产品销售佣金</div>
+      <div class="icard-what">专门为高净值人群（资产千万以上）提供一对一理财服务。不只是投资，还包括税务规划、移民、传承、家族信托等全方位服务。</div>
+      <div class="icard-examples"><span>瑞银UBS</span><span>瑞信</span><span>招行私行</span><span>诺亚财富</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🏠</span><span class="icard-name">房地产金融</span><span class="icard-badge badge-special">特殊</span></div>
+      <div class="icard-how">💸 赚钱方式：房贷利息 + REITs管理费 + 开发贷利息</div>
+      <div class="icard-what">你的房贷就是房地产金融。还有REITs（不动产信托基金）——把商场、写字楼打包成基金份额，普通人也能"买楼收租"。全球房地产金融规模超百万亿。</div>
+      <div class="icard-examples"><span>各大银行房贷</span><span>公募REITs</span><span>黑石地产</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🏛️</span><span class="icard-name">养老金 / 社保基金</span><span class="icard-badge badge-special">特殊</span></div>
+      <div class="icard-how">💸 赚钱方式：长期投资收益</div>
+      <div class="icard-what">每月从你工资里扣的养老保险，汇入社保基金池，再拿去投资（买国债、股票等）。全球养老金总规模超50万亿美元，是资本市场最大的长期资金之一。</div>
+      <div class="icard-examples"><span>全国社保基金</span><span>挪威主权基金</span><span>日本GPIF</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🌐</span><span class="icard-name">外汇交易</span><span class="icard-badge badge-invest">投资</span></div>
+      <div class="icard-how">💸 赚钱方式：点差（买卖价差） + 手续费</div>
+      <div class="icard-what">全球最大的金融市场！日均交易量超7.5万亿美元（比全球股市加起来还多）。你换美元出国旅游、企业进出口结算都属于外汇交易。</div>
+      <div class="icard-examples"><span>ICAP</span><span>各大银行外汇部</span><span>嘉盛</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 另类金融 ===== -->
+<section>
+  <div class="cat-head fade-in">
+    <span class="icon">🎭</span>
+    <h3>第六类：另类与特殊金融 — 你可能想不到的"钱行业"</h3>
+    <span class="tag">冷门但有趣</span>
+  </div>
+
+  <div class="ind-grid">
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🔨</span><span class="icard-name">典当行</span><span class="icard-badge badge-special">传统</span></div>
+      <div class="icard-how">💸 赚钱方式：综合费率（月息2%-4%） + 绝当品处置</div>
+      <div class="icard-what">最古老的金融形式之一！你拿值钱东西（手表、珠宝、房产证）抵押借钱，到期还钱赎回。还不起？东西就归典当行了（绝当）。中国目前有数千家典当行。</div>
+      <div class="icard-examples"><span>华夏典当行</span><span>宝瑞通</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🔔</span><span class="icard-name">拍卖行</span><span class="icard-badge badge-special">传统</span></div>
+      <div class="icard-how">💸 赚钱方式：佣金（成交价的10%-25%）</div>
+      <div class="icard-what">艺术品、古董、珠宝、甚至房产和企业股权都可以拍卖。一幅画可以拍出几亿元。拍卖行两头收钱——卖家给佣金，买家也给佣金。</div>
+      <div class="icard-examples"><span>苏富比</span><span>佳士得</span><span>保利拍卖</span><span>嘉德拍卖</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🤝</span><span class="icard-name">融资租赁</span><span class="icard-badge badge-special">特殊</span></div>
+      <div class="icard-how">💸 赚钱方式：租金与购买成本的利差</div>
+      <div class="icard-what">企业想用设备但买不起？租赁公司帮你买，你按月付租金。飞机、大型设备、医疗器械大多是融资租赁的。全球航空公司一半的飞机都是租的！</div>
+      <div class="icard-examples"><span>远东宏信</span><span>渤海租赁</span><span>AerCap</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🏷️</span><span class="icard-name">保理 / 供应链金融</span><span class="icard-badge badge-special">特殊</span></div>
+      <div class="icard-how">💸 赚钱方式：提前付款的折扣（通常1%-3%）</div>
+      <div class="icard-what">你给大公司供了货，但大公司90天后才付款。保理公司帮你"垫付"，提前给你钱，然后它去找大公司收款。本质是"买应收账款"。</div>
+      <div class="icard-examples"><span>京东供应链金融</span><span>各银行保理业务</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🎲</span><span class="icard-name">博彩业</span><span class="icard-badge badge-special">特殊</span></div>
+      <div class="icard-how">💸 赚钱方式：概率优势（庄家永远赢面更大）</div>
+      <div class="icard-what">严格来说不算金融，但绝对是"与钱打交道"。彩票、赌场、体育博彩…全球博彩业年收入超5000亿美元。澳门赌场收入曾超过整个拉斯维加斯。<br><b>记住：赌场永远赢。</b></div>
+      <div class="icard-examples"><span>澳门金沙</span><span>MGM</span><span>体彩/福彩</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">💱</span><span class="icard-name">货币兑换 / 汇款</span><span class="icard-badge badge-service">服务</span></div>
+      <div class="icard-how">💸 赚钱方式：汇率差价 + 手续费</div>
+      <div class="icard-what">机场换外币、跨境汇款给家人，都要经过这些公司。看似小生意，但全球跨境汇款市场每年超8000亿美元。</div>
+      <div class="icard-examples"><span>西联汇款</span><span>速汇金</span><span>Wise</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">🛡️</span><span class="icard-name">担保公司</span><span class="icard-badge badge-special">特殊</span></div>
+      <div class="icard-how">💸 赚钱方式：担保费（贷款金额的1%-3%）</div>
+      <div class="icard-what">你借钱但银行觉得你还不起？找担保公司"背书"：如果你不还，担保公司替你还。担保公司赚的就是"信用中介费"。</div>
+      <div class="icard-examples"><span>各地融资担保公司</span></div>
+    </div>
+
+    <div class="icard fade-in">
+      <div class="icard-top"><span class="icard-emoji">📰</span><span class="icard-name">金融信息服务</span><span class="icard-badge badge-service">服务</span></div>
+      <div class="icard-how">💸 赚钱方式：数据终端订阅费（Bloomberg终端年费约2万美元）</div>
+      <div class="icard-what">卖金融数据和分析工具。华尔街交易员的桌上都摆着Bloomberg终端。谁掌握了信息，谁就掌握了金融市场的脉搏。</div>
+      <div class="icard-examples"><span>彭博Bloomberg</span><span>路透</span><span>万得Wind</span><span>东方财富</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 全景总结 ===== -->
+<section>
+  <h2 class="stitle fade-in">📊 全景总结：与钱打交道的行业有多大？</h2>
+
+  <div class="stat-row fade-in">
+    <div class="sbox"><div class="sbox-val">$100万亿+</div><div class="sbox-label">全球金融业总资产</div></div>
+    <div class="sbox"><div class="sbox-val">20+</div><div class="sbox-label">细分行业领域</div></div>
+    <div class="sbox"><div class="sbox-val">$7.5万亿/天</div><div class="sbox-label">外汇市场日交易额</div></div>
+    <div class="sbox"><div class="sbox-val">$50万亿+</div><div class="sbox-label">全球养老金规模</div></div>
+  </div>
+
+  <div class="flow-box fade-in">
+    <h2>🧠 一句话记住每个行业</h2>
+    <div class="insight-box" style="margin:0">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.5rem;font-size:.85rem;color:var(--muted)">
+        <div>🏦 <b>银行</b> = 低价收钱、高价借钱</div>
+        <div>🛡️ <b>保险</b> = 大家凑钱、赔给倒霉的人</div>
+        <div>📊 <b>证券</b> = 股票买卖的中间商</div>
+        <div>📦 <b>基金</b> = 集资请高手帮你炒</div>
+        <div>🔐 <b>信托</b> = 有钱人把钱托给专人管</div>
+        <div>🎰 <b>期货</b> = 赌明天的价格</div>
+        <div>🦄 <b>VC</b> = 撒钱给100个创业者赌1个成功</div>
+        <div>🏗️ <b>PE</b> = 买公司改造再卖掉</div>
+        <div>💳 <b>支付</b> = 每笔交易抽一点水</div>
+        <div>🏧 <b>消费贷</b> = 先花后还，利息真不低</div>
+        <div>📝 <b>审计</b> = 查企业的账有没有假</div>
+        <div>⭐ <b>评级</b> = 给公司/国家打信用分</div>
+        <div>🔍 <b>征信</b> = 记你的信用历史</div>
+        <div>👔 <b>私行</b> = 有钱人的管家</div>
+        <div>🏠 <b>房贷/REITs</b> = 围绕房子转的钱</div>
+        <div>🏛️ <b>养老金</b> = 你现在交的钱养未来的你</div>
+        <div>🌐 <b>外汇</b> = 全球最大的赌场（日均7.5万亿美元）</div>
+        <div>🔨 <b>典当</b> = 拿东西换钱，古老但还活着</div>
+        <div>🔔 <b>拍卖</b> = 价高者得，两头收钱</div>
+        <div>🤝 <b>租赁</b> = 帮你买设备你慢慢还</div>
+        <div>🎲 <b>博彩</b> = 庄家永远赢</div>
+        <div>📰 <b>数据终端</b> = 卖信息给华尔街</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box fade-in">
+    <h4>🤔 所以"金融就是钱生钱"对不对？</h4>
+    <p>
+      <b>对，但不完全对。</b><br><br>
+      ✅ 投资类行业（银行、基金、VC）确实是"钱生钱" — 用资金换回报<br>
+      ✅ 保险是"钱防风险" — 用少量的钱换大额保障<br>
+      ✅ 支付是"钱的搬运工" — 赚的是流转中的手续费<br>
+      ✅ 服务类（审计、评级、法律）是"围绕钱的配套" — 赚的是专业能力的服务费<br><br>
+      金融的真正本质是：<em>在有钱的人和需要钱的人之间搭桥</em>，让闲置的资金流向能创造价值的地方。<br>
+      做得好，推动社会进步；做得坏，制造泡沫和危机。<br><br>
+      <b>这就是为什么金融行业既是最赚钱的行业之一，也是监管最严格的行业之一。</b>
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>
+    数据来源：WFE、IMF、BIS、各行业公开报告<br>
+    制作时间：2026年3月28日 · 仅供科普学习，不构成投资建议<br><br>
+    <em>"金融的核心从来不是钱本身，而是信任。" — 某位聪明人</em>
+  </p>
+</footer>
+
+<script>
+const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.fade-in').forEach(el=>o.observe(el));
+</script>
+</body>
+</html>
