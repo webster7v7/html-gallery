@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沪深300 vs 科创50：从0开始的完整投资指南</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+  :root{--bg:#070a12;--card:#0d1321;--gold:#f59e0b;--gold2:#fbbf24;--green:#10b981;--blue:#3b82f6;--purple:#8b5cf6;--red:#ef4444;--cyan:#06b6d4;--pink:#ec4899;--orange:#f97316;--text:#e2e8f0;--muted:#94a3b8;--border:#1e293b}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;overflow-x:hidden}
+
+  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 30%,rgba(59,130,246,.1),transparent),radial-gradient(ellipse 50% 40% at 80% 70%,rgba(245,158,11,.06),transparent);pointer-events:none}
+  .hero h1{font-size:clamp(1.8rem,4.5vw,3.2rem);font-weight:900;background:linear-gradient(135deg,#fff,var(--blue),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1rem;line-height:1.3}
+  .hero-sub{max-width:800px;font-size:1.05rem;color:var(--muted);margin-bottom:2rem}
+  .hero-nums{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+  .hnum{text-align:center;padding:1.2rem 1.8rem;background:var(--card);border:1px solid var(--border);border-radius:16px;min-width:140px}
+  .hnum-val{font-size:1.8rem;font-weight:800}
+  .hnum-val.blue{background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hnum-val.purple{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hnum-label{font-size:.75rem;color:var(--muted);margin-top:.3rem}
+
+  section{max-width:1100px;margin:0 auto;padding:3.5rem 1.5rem}
+  .stitle{font-size:1.7rem;font-weight:700;margin-bottom:.5rem}
+  .sdesc{color:var(--muted);margin-bottom:2rem}
+
+  .big-q{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(245,158,11,.05));border:1px solid var(--border);border-radius:20px;padding:2rem 2.5rem;margin:2rem 0;text-align:center}
+  .big-q-text{font-size:1.2rem;font-weight:600;line-height:1.8}
+  .big-q-text .highlight{color:var(--gold2)}
+
+  .hbox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;margin:1.5rem 0}
+  .hbox h4{font-size:1rem;margin-bottom:1rem;color:var(--gold2);display:flex;align-items:center;gap:.5rem}
+  .hbox p,.hbox li{font-size:.9rem;color:var(--muted);line-height:1.9}
+  .hbox ul{padding-left:1.2rem}
+  .hbox li{margin-bottom:.5rem}
+
+  .compare-table{width:100%;border-collapse:collapse;margin:1.5rem 0}
+  .compare-table th,.compare-table td{padding:.8rem 1rem;text-align:left;border-bottom:1px solid var(--border);font-size:.85rem}
+  .compare-table th{color:var(--gold2);font-weight:600;font-size:.78rem}
+  .compare-table tr:hover{background:rgba(255,255,255,.02)}
+  .table-wrap{overflow-x:auto}
+
+  .tag{display:inline-block;padding:.2rem .7rem;border-radius:6px;font-size:.75rem;margin-right:.4rem;margin-bottom:.4rem}
+  .tag-red{background:rgba(239,68,68,.15);color:#fca5a5}
+  .tag-green{background:rgba(16,185,129,.15);color:#6ee7b7}
+  .tag-blue{background:rgba(59,130,246,.15);color:#93c5fd}
+  .tag-purple{background:rgba(139,92,246,.15);color:#c4b5fd}
+  .tag-gold{background:rgba(245,158,11,.15);color:var(--gold2)}
+
+  .step-list{list-style:none;padding:0;counter-reset:step}
+  .step-list li{position:relative;padding:1.5rem 0 1.5rem 4rem;border-bottom:1px solid var(--border);counter-increment:step}
+  .step-list li:last-child{border-bottom:none}
+  .step-list li::before{content:counter(step);position:absolute;left:0;top:1.5rem;width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;background:linear-gradient(135deg,var(--blue),var(--green));color:#000}
+  .step-list h4{font-size:1.05rem;margin-bottom:.5rem}
+  .step-list p{font-size:.88rem;color:var(--muted)}
+
+  .index-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;margin:1.5rem 0;position:relative;overflow:hidden}
+  .index-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--green))}
+  .index-card.purple::before{background:linear-gradient(90deg,var(--purple),var(--pink))}
+  .index-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+  .index-icon{font-size:2.5rem}
+  .index-name{font-size:1.4rem;font-weight:700}
+  .index-code{font-size:.8rem;color:var(--muted);margin-left:auto;padding:.3rem .8rem;background:rgba(255,255,255,.05);border-radius:6px}
+  .index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+  .index-item{padding:1rem;background:rgba(255,255,255,.03);border-radius:12px}
+  .index-item-label{font-size:.75rem;color:var(--muted);margin-bottom:.3rem}
+  .index-item-val{font-size:1.1rem;font-weight:600}
+
+  .warning-box{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(245,158,11,.05));border:1px solid var(--border);border-left:4px solid var(--red);border-radius:16px;padding:1.8rem;margin:1.5rem 0}
+  .warning-box h4{color:var(--red);margin-bottom:1rem;font-size:1.05rem}
+
+  .tip-box{background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(59,130,246,.05));border:1px solid var(--border);border-left:4px solid var(--green);border-radius:16px;padding:1.8rem;margin:1.5rem 0}
+  .tip-box h4{color:var(--green);margin-bottom:1rem;font-size:1.05rem}
+
+  .strategy-box{background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(16,185,129,.05));border:1px solid var(--border);border-radius:20px;padding:2.5rem;margin:2rem 0}
+  .strategy-box h2{font-size:1.4rem;margin-bottom:1.5rem;background:linear-gradient(135deg,var(--gold2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+  footer{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);max-width:1100px;margin:0 auto}
+
+  .fade-in{opacity:0;transform:translateY(25px);transition:opacity .5s,transform .5s}
+  .fade-in.visible{opacity:1;transform:translateY(0)}
+
+  @media(max-width:600px){.hero-nums{gap:.8rem}.hnum{min-width:120px;padding:1rem}.step-list li{padding-left:3rem}.step-list li::before{width:32px;height:32px}.index-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>沪深300 vs 科创50<br>A股两大核心宽基指数</h1>
+  <p class="hero-sub">
+    投这2个必定赚钱？<br>
+    中国未来这2个指数必定涨？<br>
+    普通人从0开始入市买指数，完整流程
+  </p>
+  <div class="hero-nums">
+    <div class="hnum"><div class="hnum-val blue">沪深300</div><div class="hnum-label">A股核心资产</div></div>
+    <div class="hnum"><div class="hnum-val purple">科创50</div><div class="hnum-label">硬科技龙头</div></div>
+    <div class="hnum"><div class="hnum-val" style="background:linear-gradient(135deg,var(--gold),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent">必涨？</div><div class="hnum-label">先看完再判断</div></div>
+  </div>
+</div>
+
+<!-- 核心问题 -->
+<section>
+  <h2 class="stitle fade-in">🤔 先回答最关键的问题</h2>
+
+  <div class="big-q fade-in">
+    <div class="big-q-text">
+      <b>"必定涨"、"必定赚钱"——这两个词在股市里不存在。</b><br><br>
+      但历史数据告诉我们：<br>
+      <span class="highlight">长期持有优质指数，赚钱概率极高。</span>
+    </div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>📊 数据说话</h4>
+    <ul>
+      <li><b>沪深300近20年：</b>年化收益约8-10%（含分红），跑赢通胀和银行理财</li>
+      <li><b>持有3年以上：</b>胜率约75-80%</li>
+      <li><b>持有5年以上：</b>胜率约90%</li>
+      <li><b>持有10年以上：</b>胜率接近100%</li>
+    </ul>
+    <p style="margin-top:1rem"><b>但前提是：</b>长期持有 + 定投 + 不恐慌割肉。短期（1年内）涨跌无法预测，可能涨20%，也可能跌20%。</p>
+  </div>
+
+  <div class="warning-box fade-in">
+    <h4>⚠️ 重要声明</h4>
+    <ul>
+      <li>没有人能保证任何指数"必定涨"</li>
+      <li>历史业绩不代表未来表现</li>
+      <li>投资有风险，入市需谨慎</li>
+      <li>本文仅供学习，不构成投资建议</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 沪深300详解 -->
+<section>
+  <div class="index-card fade-in">
+    <div class="index-header">
+      <span class="index-icon">🏛️</span>
+      <span class="index-name">沪深300指数</span>
+      <span class="index-code">000300.SH</span>
+    </div>
+    
+    <p style="color:var(--muted);margin-bottom:1.5rem">A股市值最大、流动性最好的300只股票，代表中国经济的核心资产。</p>
+    
+    <div class="index-grid">
+      <div class="index-item">
+        <div class="index-item-label">成立时间</div>
+        <div class="index-item-val">2005年4月</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">成分股数量</div>
+        <div class="index-item-val">300只</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">市值覆盖</div>
+        <div class="index-item-val">A股约60%</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">近20年年化</div>
+        <div class="index-item-val" style="color:var(--green)">~8-10%</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">波动率</div>
+        <div class="index-item-val">中等（年化20%左右）</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">最大回撤</div>
+        <div class="index-item-val" style="color:var(--red)">约-40%（2008年）</div>
+      </div>
+    </div>
+
+    <div class="hbox" style="margin:1rem 0 0 0">
+      <h4>🎯 前十大权重股（2025年）</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem">
+        <span class="tag tag-blue">贵州茅台 4.96%</span>
+        <span class="tag tag-blue">宁德时代 3.01%</span>
+        <span class="tag tag-blue">中国平安 2.74%</span>
+        <span class="tag tag-blue">招商银行</span>
+        <span class="tag tag-blue">五粮液</span>
+        <span class="tag tag-blue">美的集团</span>
+        <span class="tag tag-blue">比亚迪</span>
+        <span class="tag tag-blue">中信证券</span>
+        <span class="tag tag-blue">兴业银行</span>
+        <span class="tag tag-blue">恒瑞医药</span>
+      </div>
+      <p style="margin-top:1rem;font-size:.85rem">涵盖金融、消费、医药、科技等各行业龙头，是真正的"中国经济晴雨表"。</p>
+    </div>
+
+    <div class="hbox" style="margin:1rem 0 0 0">
+      <h4>✅ 适合谁？</h4>
+      <ul>
+        <li>风险承受能力<b>中等</b></li>
+        <li>追求<b>稳健增长</b>，不追求爆发</li>
+        <li>投资周期<b>3-5年以上</b></li>
+        <li>希望<b>分散风险</b>，不想研究个股</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 科创50详解 -->
+<section>
+  <div class="index-card purple fade-in">
+    <div class="index-header">
+      <span class="index-icon">🚀</span>
+      <span class="index-name">科创50指数</span>
+      <span class="index-code">000688.SH</span>
+    </div>
+    
+    <p style="color:var(--muted);margin-bottom:1.5rem">科创板市值最大、流动性最好的50只硬科技股，代表中国科技创新的未来。</p>
+    
+    <div class="index-grid">
+      <div class="index-item">
+        <div class="index-item-label">成立时间</div>
+        <div class="index-item-val">2020年7月</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">成分股数量</div>
+        <div class="index-item-val">50只</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">行业聚焦</div>
+        <div class="index-item-val">半导体/AI/新能源</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">近5年年化</div>
+        <div class="index-item-val" style="color:var(--purple)">波动极大</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">波动率</div>
+        <div class="index-item-val" style="color:var(--red)">高（年化30%+）</div>
+      </div>
+      <div class="index-item">
+        <div class="index-item-label">最大回撤</div>
+        <div class="index-item-val" style="color:var(--red)">约-62%（2024年）</div>
+      </div>
+    </div>
+
+    <div class="hbox" style="margin:1rem 0 0 0">
+      <h4>🎯 前十大权重股（2025年）</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem">
+        <span class="tag tag-purple">中芯国际</span>
+        <span class="tag tag-purple">海光信息</span>
+        <span class="tag tag-purple">寒武纪</span>
+        <span class="tag tag-purple">中微公司</span>
+        <span class="tag tag-purple">澜起科技</span>
+        <span class="tag tag-purple">金山办公</span>
+        <span class="tag tag-purple">传音控股</span>
+        <span class="tag tag-purple">百利天恒</span>
+        <span class="tag tag-purple">联影医疗</span>
+        <span class="tag tag-purple">晶科能源</span>
+      </div>
+      <p style="margin-top:1rem;font-size:.85rem">聚焦半导体、人工智能、生物医药、新能源等"卡脖子"硬科技领域。</p>
+    </div>
+
+    <div class="hbox" style="margin:1rem 0 0 0">
+      <h4>✅ 适合谁？</h4>
+      <ul>
+        <li>风险承受能力<b>较高</b></li>
+        <li>看好中国<b>科技创新</b>未来</li>
+        <li>能承受<b>大幅波动</b>（可能跌50%）</li>
+        <li>投资周期<b>5-10年</b>（科技成长需要时间）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 两者对比 -->
+<section>
+  <h2 class="stitle fade-in">⚖️ 沪深300 vs 科创50 对比</h2>
+
+  <div class="table-wrap fade-in">
+    <table class="compare-table">
+      <thead>
+        <tr><th>对比维度</th><th>🏛️ 沪深300</th><th>🚀 科创50</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>定位</b></td><td>A股核心资产</td><td>科创板硬科技龙头</td></tr>
+        <tr><td><b>成分股</b></td><td>300只，各行业龙头</td><td>50只，聚焦科技</td></tr>
+        <tr><td><b>行业分布</b></td><td>金融、消费、医药、科技均衡</td><td>半导体、AI、新能源为主</td></tr>
+        <tr><td><b>市值特征</b></td><td>大市值（千亿级）</td><td>中小市值（百亿-千亿）</td></tr>
+        <tr><td><b>盈利稳定性</b></td><td>高（成熟企业）</td><td>低（成长期企业）</td></tr>
+        <tr><td><b>分红率</b></td><td>高（约2-3%）</td><td>低（多数不分红）</td></tr>
+        <tr><td><b>波动率</b></td><td>中等（年化20%）</td><td>高（年化30%+）</td></tr>
+        <tr><td><b>最大回撤</b></td><td>约-40%</td><td>约-62%</td></tr>
+        <tr><td><b>长期年化</b></td><td>8-10%（较稳定）</td><td>不确定（可能更高或更低）</td></tr>
+        <tr><td><b>适合人群</b></td><td>稳健型投资者</td><td>激进型投资者</td></tr>
+        <tr><td><b>投资周期</b></td><td>3-5年</td><td>5-10年</td></tr>
+        <tr><td><b>代表ETF</b></td><td>510300、510310</td><td>588000、588080</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tip-box fade-in">
+    <h4>💡 一句话总结</h4>
+    <p><b>沪深300</b> = 稳健基石，适合作为"压舱石"<br>
+    <b>科创50</b> = 成长弹性，适合作为"进攻仓"<br><br>
+    <b>最佳组合：</b>70%沪深300 + 30%科创50，兼顾稳健与成长。</p>
+  </div>
+</section>
+
+<!-- 为什么长期看好 -->
+<section>
+  <h2 class="stitle fade-in">🇨🇳 为什么长期看好这两个指数？</h2>
+
+  <div class="hbox fade-in">
+    <h4>🎯 沪深300的长期逻辑</h4>
+    <ul>
+      <li><b>中国经济持续增长</b>：虽然增速放缓，但GDP仍在增长，龙头企业盈利长期向上</li>
+      <li><b>行业龙头集中</b>：马太效应，强者恒强，沪深300成分股是各行业"优等生"</li>
+      <li><b>估值周期</b>：A股有明显的牛熊周期，当前估值处于历史中低位，长期看估值修复+盈利增长双击</li>
+      <li><b>分红提升</b>：监管鼓励分红，沪深300股息率逐年提升，长期持有有复利效应</li>
+      <li><b>机构化趋势</b>：外资、养老金、险资持续流入，核心资产受益</li>
+    </ul>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>🚀 科创50的长期逻辑</h4>
+    <ul>
+      <li><b>国家战略支持</b>：科技自立自强是国策，半导体、AI、生物医药是重点攻关方向</li>
+      <li><b>国产替代空间</b>：芯片、操作系统、高端设备等"卡脖子"领域，国产替代率从10%→50%→80%，空间巨大</li>
+      <li><b>产业周期</b>：全球半导体周期触底回升，AI革命刚刚起步</li>
+      <li><b>高成长潜力</b>：成分股盈利增速预期2026年达80%+，远高于传统行业</li>
+      <li><b>估值消化</b>：经历2022-2024年大幅调整，当前估值处于历史偏低水平</li>
+    </ul>
+  </div>
+
+  <div class="warning-box fade-in">
+    <h4>⚠️ 但风险依然存在</h4>
+    <ul>
+      <li><b>经济下行风险</b>：如果中国经济长期低迷，企业盈利下滑</li>
+      <li><b>地缘政治风险</b>：中美科技脱钩、贸易摩擦升级</li>
+      <li><b>估值泡沫风险</b>：如果涨得太快，可能面临大幅回调</li>
+      <li><b>科创50的特殊风险</b>：技术迭代快，今天的龙头可能被明天的新技术颠覆</li>
+      <li><b>流动性风险</b>：极端情况下可能面临长期熊市</li>
+    </ul>
+    <p style="margin-top:1rem"><b>结论：</b>长期看好 ≠ 短期必涨，投资需要耐心和承受波动的能力。</p>
+  </div>
+</section>
+
+<!-- 从0开始全流程 -->
+<section>
+  <h2 class="stitle fade-in">🚪 从0开始：入市买指数全流程</h2>
+
+  <ol class="step-list fade-in">
+    <li>
+      <h4>选择券商并开户（10分钟）</h4>
+      <p>推荐头部券商：华泰、中信、招商、国泰君安<br>
+      <b>关键：</b>找客户经理要VIP开户链接，佣金可谈到<b>万1</b>（默认万3）<br>
+      准备：身份证、银行卡、智能手机<br>
+      流程：下载App → 上传身份证 → 人脸识别 → 绑定银行卡 → 风险测评 → 等待审核</p>
+    </li>
+    <li>
+      <h4>开通权限</h4>
+      <p>开户后默认可买沪深300ETF<br>
+      <b>科创50ETF：</b>需要开通"科创板权限"（2年投资经验+50万资产门槛）<br>
+      <b>如果没达到门槛：</b>可以买科创50ETF的联接基金（场外基金，无门槛）</p>
+    </li>
+    <li>
+      <h4>银证转账（入金）</h4>
+      <p>从银行卡转钱到证券账户<br>
+      <b>原则：</b>只转<b>3-5年不用的闲钱</b>，建议初始金额5000-10000元试水</p>
+    </li>
+    <li>
+      <h4>选择ETF产品</h4>
+      <p><b>沪深300ETF推荐：</b><br>
+      • 华泰柏瑞沪深300ETF（510300）——规模最大，流动性最好<br>
+      • 易方达沪深300ETF（510310）——费率低，跟踪误差小<br><br>
+      <b>科创50ETF推荐：</b><br>
+      • 华夏科创50ETF（588000）——规模最大<br>
+      • 易方达科创50ETF（588080）——费率低</p>
+    </li>
+    <li>
+      <h4>买入策略：定投 vs 一次性</h4>
+      <p><b>推荐定投（适合新手）：</b><br>
+      每月固定时间（如发工资后第二天），投入固定金额（如1000元）<br>
+      设置自动扣款，不用择时，平摊成本<br><br>
+      <b>一次性买入（适合有经验）：</b><br>
+      在估值低位（如沪深300市盈率<12倍）时一次性买入<br>
+      但需要判断估值，新手容易买在高点</p>
+    </li>
+    <li>
+      <h4>持有与再平衡</h4>
+      <p><b>持有：</b>至少3-5年，不要频繁查看<br>
+      <b>再平衡：</b>如果沪深300和科创50比例偏离目标（如70:30变成50:50），每年调整一次<br>
+      <b>分红处理：</b>ETF分红自动到账，可选择再投资或取出</p>
+    </li>
+    <li>
+      <h4>何时卖出？</h4>
+      <p><b>不建议频繁卖出，但以下情况可考虑：</b><br>
+      • 需要用钱（买房、结婚、看病）<br>
+      • 估值极度泡沫（如沪深300市盈率>20倍）<br>
+      • 投资目标达成（如年化收益达到预期）<br>
+      • 持有满5-10年，实现长期复利</p>
+    </li>
+  </ol>
+</section>
+
+<!-- 配置建议 -->
+<section>
+  <h2 class="stitle fade-in">🎯 不同人群的配置建议</h2>
+
+  <div class="strategy-box fade-in">
+    <h2>保守型（风险承受低）</h2>
+    <div class="hbox" style="margin:0 0 1rem 0">
+      <p><b>配置：</b><span class="tag tag-blue">90%沪深300</span> <span class="tag tag-purple">10%科创50</span></p>
+      <p style="margin-top:.5rem"><b>理由：</b>以稳健为主，小仓位参与科技成长。适合年龄50+、临近退休、或无法承受大幅波动的投资者。</p>
+    </div>
+  </div>
+
+  <div class="strategy-box fade-in">
+    <h2>平衡型（推荐大多数新手）</h2>
+    <div class="hbox" style="margin:0 0 1rem 0">
+      <p><b>配置：</b><span class="tag tag-blue">70%沪深300</span> <span class="tag tag-purple">30%科创50</span></p>
+      <p style="margin-top:.5rem"><b>理由：</b>沪深300作为压舱石，科创50作为收益放大器。既能享受核心资产稳健增长，又能分享科技红利。适合30-50岁、投资经验较少的投资者。</p>
+    </div>
+  </div>
+
+  <div class="strategy-box fade-in">
+    <h2>进取型（风险承受高）</h2>
+    <div class="hbox" style="margin:0 0 1rem 0">
+      <p><b>配置：</b><span class="tag tag-blue">50%沪深300</span> <span class="tag tag-purple">50%科创50</span></p>
+      <p style="margin-top:.5rem"><b>理由：</b>看好中国科技未来，能承受大幅波动。适合25-35岁、投资周期长、对科技行业有理解的投资者。</p>
+    </div>
+  </div>
+
+  <div class="strategy-box fade-in">
+    <h2>定投金额建议</h2>
+    <div class="hbox" style="margin:0">
+      <ul>
+        <li><b>月收入5000以下：</b>每月定投500-800元</li>
+        <li><b>月收入5000-10000：</b>每月定投1000-2000元</li>
+        <li><b>月收入10000-20000：</b>每月定投2000-5000元</li>
+        <li><b>月收入20000以上：</b>每月定投5000元以上</li>
+      </ul>
+      <p style="margin-top:1rem"><b>原则：</b>定投金额不超过月收入的30%，确保不影响生活质量。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 关键提醒 -->
+<section>
+  <h2 class="stitle fade-in">⏰ 关键提醒：时间是你的朋友</h2>
+
+  <div class="hbox fade-in">
+    <h4>📈 持有时间与胜率的关系</h4>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin-top:1rem">
+      <div style="text-align:center;padding:1rem;background:rgba(255,255,255,.03);border-radius:12px">
+        <div style="font-size:1.5rem;font-weight:700;color:var(--red)">55%</div>
+        <div style="font-size:.8rem;color:var(--muted)">持有1年胜率</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:rgba(255,255,255,.03);border-radius:12px">
+        <div style="font-size:1.5rem;font-weight:700;color:var(--orange)">75%</div>
+        <div style="font-size:.8rem;color:var(--muted)">持有3年胜率</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:rgba(255,255,255,.03);border-radius:12px">
+        <div style="font-size:1.5rem;font-weight:700;color:var(--blue)">90%</div>
+        <div style="font-size:.8rem;color:var(--muted)">持有5年胜率</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:rgba(255,255,255,.03);border-radius:12px">
+        <div style="font-size:1.5rem;font-weight:700;color:var(--green)">~100%</div>
+        <div style="font-size:.8rem;color:var(--muted)">持有10年胜率</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box fade-in">
+    <h4>✅ 成功投资的秘诀</h4>
+    <ul>
+      <li><b>早开始：</b>复利需要时间，越早开始越好</li>
+      <li><b>坚持定投：</b>不管涨跌，每月固定投入</li>
+      <li><b>长期持有：</b>至少3-5年，最好10年以上</li>
+      <li><b>忽略波动：</b>短期涨跌是噪音，长期趋势是收益</li>
+      <li><b>不要恐慌：</b>熊市是积累筹码的好时机</li>
+      <li><b>不要贪婪：</b>牛市泡沫时要懂得止盈</li>
+    </ul>
+  </div>
+
+  <div class="warning-box fade-in">
+    <h4>❌ 最常见的失败原因</h4>
+    <ul>
+      <li>拿不住：跌了20%就恐慌割肉</li>
+      <li>追高：牛市末期才入场，买在山顶</li>
+      <li>频繁交易：给券商打工，手续费吃掉收益</li>
+      <li>借钱投资：被迫割肉，本金永久损失</li>
+      <li>没有耐心：指望一年翻倍，结果三年亏损</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 总结 -->
+<section>
+  <h2 class="stitle fade-in">📝 总结</h2>
+
+  <div class="big-q fade-in" style="background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(59,130,246,.05))">
+    <div class="big-q-text">
+      <b>沪深300 + 科创50，是中国A股最值得长期配置的两大指数。</b><br><br>
+      它们代表中国经济的<b>现在</b>（核心资产）和<b>未来</b>（科技创新）。<br><br>
+      <span style="color:var(--green)">长期持有 + 定投 + 耐心 = 大概率赚钱</span><br><br>
+      但记住：<b>没有"必定涨"的投资</b>，只有"大概率赢"的策略。
+    </div>
+  </div>
+
+  <div class="hbox fade-in">
+    <h4>🎯 给新手的最后一句话</h4>
+    <p style="font-size:1.05rem;line-height:2">
+      不要试图预测明天涨跌，<br>
+      不要试图战胜市场，<br>
+      不要贪婪，不要恐惧，<br>
+      <b>只需要买入、持有、等待。</b><br><br>
+      时间，会奖励有耐心的人。
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>
+    数据来源：中证指数公司、上海证券交易所、Wind、公开研究报告<br>
+    制作时间：2026年3月28日 · 仅供学习参考，不构成投资建议<br><br>
+    <em>"投资很简单，但不容易。耐心，是投资者最重要的品质。" — 沃伦·巴菲特</em>
+  </p>
+</footer>
+
+<script>
+const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.fade-in').forEach(el=>o.observe(el));
+</script>
+</body>
+</html>
