@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阶跃星辰 StepFun — 发展历程与产品全景</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --card: #111827;
+    --accent: #6366f1;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --glow: rgba(99,102,241,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(99,102,241,0.15), transparent),
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(167,139,250,0.1), transparent),
+      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(52,211,153,0.08), transparent);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 999px;
+    padding: .4rem 1.2rem;
+    font-size: .85rem;
+    color: var(--accent2);
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff 0%, var(--accent2) 50%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -.02em;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 span {
+    display: block;
+    font-size: .4em;
+    font-weight: 400;
+    color: var(--muted);
+    -webkit-text-fill-color: var(--muted);
+    letter-spacing: .1em;
+    margin-top: .5rem;
+  }
+
+  .hero-sub {
+    max-width: 700px;
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat {
+    text-align: center;
+    padding: 1rem 1.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    min-width: 140px;
+  }
+
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-label {
+    font-size: .8rem;
+    color: var(--muted);
+    margin-top: .3rem;
+  }
+
+  /* ===== Sections ===== */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: .5rem;
+  }
+
+  .section-title .emoji { margin-right: .5rem; }
+
+  .section-desc {
+    color: var(--muted);
+    margin-bottom: 3rem;
+    font-size: 1rem;
+  }
+
+  /* ===== Company Info Cards ===== */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .info-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    transition: transform .3s, box-shadow .3s;
+  }
+
+  .info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px var(--glow);
+  }
+
+  .info-card h3 {
+    font-size: 1rem;
+    color: var(--accent2);
+    margin-bottom: .8rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .info-card p, .info-card ul {
+    color: var(--muted);
+    font-size: .92rem;
+    line-height: 1.8;
+  }
+
+  .info-card ul { padding-left: 1.2rem; }
+  .info-card li { margin-bottom: .3rem; }
+
+  /* ===== Timeline ===== */
+  .timeline {
+    position: relative;
+    padding-left: 3rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--accent), var(--accent3), var(--accent2));
+    border-radius: 3px;
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -2.28rem;
+    top: .5rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 12px var(--glow);
+    z-index: 1;
+  }
+
+  .tl-item.major::before {
+    width: 18px;
+    height: 18px;
+    left: -2.42rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    box-shadow: 0 0 20px rgba(99,102,241,0.5);
+  }
+
+  .tl-date {
+    display: inline-block;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--accent3);
+    background: rgba(52,211,153,0.1);
+    border-radius: 6px;
+    padding: .15rem .6rem;
+    margin-bottom: .4rem;
+  }
+
+  .tl-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: .3rem;
+  }
+
+  .tl-desc {
+    font-size: .9rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .tl-tag {
+    display: inline-block;
+    font-size: .72rem;
+    padding: .1rem .5rem;
+    border-radius: 4px;
+    margin-top: .4rem;
+    margin-right: .3rem;
+  }
+
+  .tag-model { background: rgba(99,102,241,0.2); color: var(--accent2); }
+  .tag-biz { background: rgba(52,211,153,0.15); color: var(--accent3); }
+  .tag-open { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .tag-team { background: rgba(244,63,94,0.15); color: #fb7185; }
+
+  /* ===== Model Matrix ===== */
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .model-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform .3s, box-shadow .3s;
+  }
+
+  .model-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px var(--glow);
+  }
+
+  .model-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at top right, rgba(99,102,241,0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .model-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: .2rem;
+  }
+
+  .model-card .gen {
+    font-size: .78rem;
+    color: var(--accent3);
+    margin-bottom: .8rem;
+  }
+
+  .model-card .specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-bottom: .8rem;
+  }
+
+  .spec {
+    font-size: .75rem;
+    padding: .2rem .6rem;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .model-card .desc {
+    font-size: .88rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ===== Why Section ===== */
+  .why-section {
+    background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(52,211,153,0.05));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3rem;
+    margin-top: 2rem;
+  }
+
+  .why-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff, var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .reason-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .reason-list li {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .reason-list li:last-child { border-bottom: none; }
+
+  .reason-num {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(99,102,241,0.15);
+    color: var(--accent2);
+    font-weight: 700;
+    font-size: .9rem;
+  }
+
+  .reason-text h4 {
+    font-size: 1rem;
+    margin-bottom: .3rem;
+  }
+
+  .reason-text p {
+    font-size: .88rem;
+    color: var(--muted);
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+    font-size: .82rem;
+    border-top: 1px solid var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  footer a {
+    color: var(--accent2);
+    text-decoration: none;
+  }
+
+  /* ===== Scroll Animations ===== */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 600px) {
+    .hero-stats { gap: 1rem; }
+    .stat { min-width: 120px; padding: .8rem 1rem; }
+    .timeline { padding-left: 2.5rem; }
+    .why-section { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-badge">🚀 AI 六小虎 · 多模态独角兽</div>
+  <h1>
+    阶跃星辰
+    <span>StepFun — 智能阶跃，十倍每一个人的可能</span>
+  </h1>
+  <p class="hero-sub">
+    从微软全球副总裁到 AGI 创业先锋，姜大昕博士带领团队用不到 3 年，打造出中国最受开发者欢迎的 Agent 基座模型，
+    并因 OpenClaw 生态的爆发而被全球认识。
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">2023.4</div>
+      <div class="stat-label">成立于上海</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50亿+</div>
+      <div class="stat-label">B+ 轮融资（元）</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1960亿</div>
+      <div class="stat-label">Step 3.5 总参数</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">#1</div>
+      <div class="stat-label">OpenClaw 调用榜</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 公司概览 ===== -->
+<section>
+  <h2 class="section-title fade-in"><span class="emoji">🏢</span>公司概览</h2>
+  <p class="section-desc fade-in">上海阶跃星辰智能科技有限公司 — 专注通用人工智能（AGI）的创新型科技公司</p>
+
+  <div class="info-grid">
+    <div class="info-card fade-in">
+      <h3>📋 基本信息</h3>
+      <ul>
+        <li><b>全称：</b>上海阶跃星辰智能科技有限公司</li>
+        <li><b>英文名：</b>StepFun</li>
+        <li><b>成立日期：</b>2023年4月6日</li>
+        <li><b>注册地：</b>上海市徐汇区云锦路701号</li>
+        <li><b>注册资本：</b>2000万元人民币</li>
+        <li><b>名字含义：</b>"阶跃"源自阶跃函数（Step Function），代表大模型技术跨越式发展；"星辰"象征对AGI的终极向往</li>
+      </ul>
+    </div>
+    <div class="info-card fade-in">
+      <h3>👥 核心管理层</h3>
+      <ul>
+        <li><b>董事长 印奇</b> — 清华姚班出身，旷视科技创始人，千里科技董事长，2026年1月加入</li>
+        <li><b>CEO 姜大昕</b> — 创始人，前微软全球副总裁、微软亚洲互联网工程院首席科学家</li>
+        <li><b>首席科学家 张祥雨</b> — 负责模型研发与技术攻坚</li>
+        <li><b>CTO 朱亦博</b> — 负责技术架构与工程实现</li>
+      </ul>
+    </div>
+    <div class="info-card fade-in">
+      <h3>💰 融资历程</h3>
+      <ul>
+        <li><b>天使轮/A轮：</b>早期融资，估值约20亿美元</li>
+        <li><b>B轮（2024.12）：</b>数亿美元，上海国投等参投</li>
+        <li><b>B+轮（2026.1）：</b>超50亿元人民币，创12个月中国AI赛道单笔最高纪录。腾讯、启明、五源等跟投</li>
+        <li><b>IPO传闻（2026.2）：</b>网传计划港股上市</li>
+      </ul>
+    </div>
+    <div class="info-card fade-in">
+      <h3>🎯 战略定位</h3>
+      <p>
+        "多模态模型是实现AGI的必经之路" — 姜大昕<br><br>
+        五大技术方向：语言、视觉理解、图像生成、视频生成、语音交互。<br>
+        商业化聚焦：AI+终端（手机、汽车、IoT），50%+头部国产手机品牌合作AI智能体。<br>
+        2025年营收冲刺目标：10亿元。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 发展时间线 ===== -->
+<section>
+  <h2 class="section-title fade-in"><span class="emoji">📅</span>发展历程时间线</h2>
+  <p class="section-desc fade-in">从成立到全球爆发，不到3年的加速之旅</p>
+
+  <div class="timeline">
+
+    <div class="tl-item major fade-in">
+      <div class="tl-date">2023年4月</div>
+      <div class="tl-title">🌟 阶跃星辰成立</div>
+      <div class="tl-desc">前微软全球副总裁姜大昕博士在上海徐汇区创立阶跃星辰，使命：「智能阶跃，十倍每一个人的可能」。早期团队低调组建，专注基础大模型研发。</div>
+      <span class="tl-tag tag-team">创业启航</span>
+    </div>
+
+    <div class="tl-item fade-in">
+      <div class="tl-date">2024年3月</div>
+      <div class="tl-title">Step 系列首次亮相</div>
+      <div class="tl-desc">发布 Step-1（千亿参数语言模型）、Step-1V（千亿参数多模态模型）、Step-2 万亿参数 MoE 预览版。首次向外界展示技术实力。</div>
+      <span class="tl-tag tag-model">模型发布</span>
+    </div>
+
+    <div class="tl-item major fade-in">
+      <div class="tl-date">2024年7月</div>
+      <div class="tl-title">WAIC 2024 三连发</div>
+      <div class="tl-desc">在世界人工智能大会上一次性发布三款模型：Step-2 万亿参数正式版、Step-1.5V 多模态大模型、Step-1X 图像生成大模型。100天内迭代6款基座模型，震动业界。</div>
+      <span class="tl-tag tag-model">模型发布</span>
+      <span class="tl-tag tag-biz">WAIC</span>
+    </div>
+
+    <div class="tl-item fade-in">
+      <div class="tl-date">2024年9月</div>
+      <div class="tl-title">Step-1X 图像生成上线</div>
+      <div class="tl-desc">文生图模型正式上线公测，在国风、动漫等风格上表现亮眼，引发创作者社区关注。</div>
+      <span class="tl-tag tag-model">模型发布</span>
+    </div>
+
+    <div class="tl-item fade-in">
+      <div class="tl-date">2024年11月</div>
+      <div class="tl-title">Step-Video 视频生成内测</div>
+      <div class="tl-desc">通过「跃问」官网开放视频生成模型内测申请，标志着阶跃星辰正式进入视频生成赛道。第二版模型同步研发中。</div>
+      <span class="tl-tag tag-model">视频生成</span>
+    </div>
+
+    <div class="tl-item major fade-in">
+      <div class="tl-date">2024年12月</div>
+      <div class="tl-title">B轮融资完成</div>
+      <div class="tl-desc">完成数亿美元B轮融资，核心投资方包括上海国投及旗下基金，多家国资、战略和财务投资人参与。正式跻身大模型独角兽行列。</div>
+      <span class="tl-tag tag-biz">融资里程碑</span>
+    </div>
+
+    <div class="tl-item fade-in">
+      <div class="tl-date">2025年2月</div>
+      <div class="tl-title">首届 Step UP 生态开放日</div>
+      <div class="tl-desc">CEO姜大昕发布「繁星计划二期」，宣布多模态和开源两大技术路线。与吉利汽车联合开源 Step-Video-T2V（全球参数最大的开源视频生成模型）和 Step-Audio（首款产品级开源语音交互模型）。</div>
+      <span class="tl-tag tag-open">首次开源</span>
+      <span class="tl-tag tag-biz">生态开放</span>
+    </div>
+
+    <div class="tl-item fade-in">
+      <div class="tl-date">2025年3-4月</div>
+      <div class="tl-title">多模态密集上新</div>
+      <div class="tl-desc">一个月内接连发布：Step1X-Edit（图像编辑）、Step-R1-V-Mini（多模态推理）、Step-Video-TI2V（图生视频）。被媒体称为"多模态卷王"。</div>
+      <span class="tl-tag tag-model">多模态矩阵</span>
+    </div>
+
+    <div class="tl-item major fade-in">
+      <div class="tl-date">2025年7月</div>
+      <div class="tl-title">Step 3 发布 + 模芯生态联盟</div>
+      <div class="tl-desc">发布第三代基础大模型 Step 3（MoE架构，321B总参/38B激活），7月31日全球开源。成立模芯生态创新联盟，联合华为昇腾等近10家芯片厂商。宣布冲刺全年10亿元营收。</div>
+      <span class="tl-tag tag-model">第三代模型</span>
+      <span class="tl-tag tag-open">全球开源</span>
+      <span class="tl-tag tag-biz">生态联盟</span>
+    </div>
+
+    <div class="tl-item major fade-in">
+      <div class="tl-date">2026年1月26日</div>
+      <div class="tl-title">50亿B+轮 + 印奇出任董事长</div>
+      <div class="tl-desc">完成超50亿元B+轮融资，创12个月中国AI赛道单笔最高纪录。同日宣布旷视科技创始人印奇出任董事长，与姜大昕、张祥雨、朱亦博组成"1+3"核心管理团队。</div>
+      <span class="tl-tag tag-biz">超级融资</span>
+      <span class="tl-tag tag-team">管理层升级</span>
+    </div>
+
+    <div class="tl-item major fade-in">
+      <div class="tl-date">2026年2月2日</div>
+      <div class="tl-title">⚡ Step 3.5 Flash 发布 — 引爆 OpenClaw</div>
+      <div class="tl-desc">
+        发布新一代 Agent 基座模型 Step 3.5 Flash：MoE架构，总参1960亿，激活仅110亿，推理速度高达 350 TPS。专为智能体（Agent）场景设计。
+        发布首日登上 OpenRouter Fastest Models 榜单，随后迅速登顶 OpenClaw 调用量日榜、周榜、月榜第一。
+      </div>
+      <span class="tl-tag tag-model">王牌模型</span>
+      <span class="tl-tag tag-open">开源</span>
+    </div>
+
+    <div class="tl-item fade-in">
+      <div class="tl-date">2026年3月4日</div>
+      <div class="tl-title">Step 3.5 Flash 全链路开源</div>
+      <div class="tl-desc">史无前例地开源预训练权重（Base）、中训练权重（Midtrain）和配套 Steptron 训练框架。开源尺度之大在全球引发热烈反响，OpenClaw调用量升至前二。</div>
+      <span class="tl-tag tag-open">全链路开源</span>
+    </div>
+
+    <div class="tl-item fade-in">
+      <div class="tl-date">2026年3月11日</div>
+      <div class="tl-title">OpenClaw 月榜全球第一 🏆</div>
+      <div class="tl-desc">中国大模型包揽 OpenClaw 日榜与月榜前三：Step 3.5 Flash、Kimi K2.5、MiniMax M2.5。阶跃星辰以"为Agent而生"的模型理念，成为全球开发者最优选。</div>
+      <span class="tl-tag tag-biz">全球第一</span>
+    </div>
+
+    <div class="tl-item major fade-in">
+      <div class="tl-date">2026年3月12-19日</div>
+      <div class="tl-title">StepClaw 发布 — 一键养虾</div>
+      <div class="tl-desc">
+        推出 StepClaw — 基于 OpenClaw 框架的云端AI助手，集成在阶跃AI App中。用户无需技术部署，一键启动，1-3分钟上线。搭载 Step 3.5 Flash，自动配置技能库，集成自研搜索工具。随后推出桌面端版本，养虾门槛骤降。
+      </div>
+      <span class="tl-tag tag-biz">产品发布</span>
+    </div>
+
+    <div class="tl-item fade-in">
+      <div class="tl-date">2026年3月22日</div>
+      <div class="tl-title">StepClaw 接入微信生态</div>
+      <div class="tl-desc">阶跃龙虾正式接入微信，用户可在微信聊天界面直接向自己的AI助手发指令，完成学习辅助、内容创作、信息查询等任务。</div>
+      <span class="tl-tag tag-biz">生态扩展</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 模型产品矩阵 ===== -->
+<section>
+  <h2 class="section-title fade-in"><span class="emoji">🧠</span>Step 模型产品矩阵</h2>
+  <p class="section-desc fade-in">覆盖语言、视觉、图像、视频、语音五大模态的全体系模型</p>
+
+  <div class="model-grid">
+
+    <div class="model-card fade-in">
+      <h3>Step-1</h3>
+      <div class="gen">第一代 · 2024.3</div>
+      <div class="specs">
+        <span class="spec">千亿参数</span>
+        <span class="spec">语言模型</span>
+      </div>
+      <div class="desc">首款基座语言大模型，标志着阶跃星辰正式进入大模型赛道。</div>
+    </div>
+
+    <div class="model-card fade-in">
+      <h3>Step-1V / 1.5V</h3>
+      <div class="gen">第一代多模态 · 2024.3 / 2024.7</div>
+      <div class="specs">
+        <span class="spec">千亿参数</span>
+        <span class="spec">多模态理解</span>
+        <span class="spec">图文交互</span>
+      </div>
+      <div class="desc">多模态大模型，可理解图像、文字等多种输入，开启阶跃多模态之路。</div>
+    </div>
+
+    <div class="model-card fade-in">
+      <h3>Step-2</h3>
+      <div class="gen">第二代 · 2024.7 正式版</div>
+      <div class="specs">
+        <span class="spec">万亿参数</span>
+        <span class="spec">MoE架构</span>
+        <span class="spec">数学/编程领先</span>
+      </div>
+      <div class="desc">万亿参数语言大模型，在数学、编程等任务中达到行业领先水平。</div>
+    </div>
+
+    <div class="model-card fade-in">
+      <h3>Step-1X / 1X-Edit</h3>
+      <div class="gen">图像生成与编辑 · 2024.7 / 2025.4</div>
+      <div class="specs">
+        <span class="spec">文生图</span>
+        <span class="spec">图像编辑</span>
+        <span class="spec">开源</span>
+      </div>
+      <div class="desc">图像生成与编辑模型，在国风、动漫等风格上表现出色，Step1X-Edit 为开源图像编辑新SOTA。</div>
+    </div>
+
+    <div class="model-card fade-in">
+      <h3>Step-Video-T2V / TI2V</h3>
+      <div class="gen">视频生成 · 2025.2 开源</div>
+      <div class="specs">
+        <span class="spec">300亿参数</span>
+        <span class="spec">文/图生视频</span>
+        <span class="spec">204帧</span>
+        <span class="spec">开源</span>
+      </div>
+      <div class="desc">全球参数量最大的开源视频生成模型，与吉利汽车联合开源，支持5秒高清动态生成。</div>
+    </div>
+
+    <div class="model-card fade-in">
+      <h3>Step-Audio</h3>
+      <div class="gen">语音交互 · 2025.2 开源</div>
+      <div class="specs">
+        <span class="spec">产品级</span>
+        <span class="spec">语音交互</span>
+        <span class="spec">开源</span>
+      </div>
+      <div class="desc">业内首款产品级开源语音交互大模型，支持实时语音对话。</div>
+    </div>
+
+    <div class="model-card fade-in">
+      <h3>Step 3</h3>
+      <div class="gen">第三代 · 2025.7 开源</div>
+      <div class="specs">
+        <span class="spec">321B / 38B激活</span>
+        <span class="spec">MoE</span>
+        <span class="spec">原生多模态</span>
+        <span class="spec">开源</span>
+      </div>
+      <div class="desc">首个全尺寸原生多模态推理模型，兼顾智能与效率，支持国产芯片。联合近10家芯片厂商成立生态联盟。</div>
+    </div>
+
+    <div class="model-card fade-in" style="border-color: var(--accent); box-shadow: 0 0 30px var(--glow);">
+      <h3>⭐ Step 3.5 Flash</h3>
+      <div class="gen">当红王牌 · 2026.2 开源</div>
+      <div class="specs">
+        <span class="spec">1960亿总参</span>
+        <span class="spec">110亿激活</span>
+        <span class="spec">MoE</span>
+        <span class="spec">350 TPS</span>
+        <span class="spec">Agent基座</span>
+        <span class="spec">全链路开源</span>
+      </div>
+      <div class="desc">
+        专为智能体（Agent）场景设计的基座模型。稀疏MoE架构实现极致性价比 — 总参1960亿但推理仅激活110亿参数。
+        发布后迅速登顶 OpenClaw 全球调用量榜首，成为"最受开发者欢迎的龙虾大脑"。
+        全链路开源（预训练权重 + 中训练权重 + Steptron训练框架），开源尺度行业罕见。
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 为什么 OpenClaw 火了才知道 ===== -->
+<section>
+  <div class="why-section fade-in">
+    <h2>🤔 为什么 OpenClaw 火了，很多人才知道阶跃星辰？</h2>
+
+    <ol class="reason-list">
+      <li>
+        <div class="reason-num">1</div>
+        <div class="reason-text">
+          <h4>低调的技术基因</h4>
+          <p>创始人姜大昕是典型的技术出身（微软全球副总裁），公司文化偏向"先做出来，再说出来"。相比同期的大模型六小虎（月之暗面、智谱、MiniMax、百川、零一万物），阶跃星辰是营销最安静的一家。</p>
+        </div>
+      </li>
+      <li>
+        <div class="reason-num">2</div>
+        <div class="reason-text">
+          <h4>To B 为主，C 端不显眼</h4>
+          <p>阶跃星辰的主要收入来自手机厂商、汽车厂商等终端企业（50%+头部国产手机品牌合作），普通消费者接触不到。不像ChatGPT、豆包那样直接面向用户，公众感知度天然偏低。「跃问」App虽然存在，但市场推广力度远不及竞品。</p>
+        </div>
+      </li>
+      <li>
+        <div class="reason-num">3</div>
+        <div class="reason-text">
+          <h4>DeepSeek 的光芒遮蔽</h4>
+          <p>2025-2026年初，DeepSeek凭借极致性价比和话题性成为全民焦点。同为"六小虎"的阶跃星辰被媒体评价为"和DeepSeek一样强但更低调的公司"。注意力经济下，第二名很容易被忽略。</p>
+        </div>
+      </li>
+      <li>
+        <div class="reason-num">4</div>
+        <div class="reason-text">
+          <h4>开源时机精准但晚于竞品</h4>
+          <p>阶跃星辰的大规模开源从2025年2月才开始（视频+语音模型），而竞品们在2024年就已广泛开源。不过2026年2月的 Step 3.5 Flash 全链路开源，一举逆转了局面。</p>
+        </div>
+      </li>
+      <li>
+        <div class="reason-num">5</div>
+        <div class="reason-text">
+          <h4>OpenClaw 是最好的放大器 🦞</h4>
+          <p>
+            OpenClaw（小龙虾）2026年初全球爆火，开发者需要选择"最适合Agent场景的模型"。Step 3.5 Flash 恰好满足了所有需求：快（350TPS）、便宜（110B激活）、强（多模态推理）、开源。
+            <br><br>
+            <b>当全球数百万开发者每天都在用你的模型驱动自己的AI助手时，口碑传播是指数级的。</b>
+            OpenClaw的日榜/月榜就是最好的广告 — 中国大模型包揽前三，阶跃星辰调用量居首。
+            <br><br>
+            这就是为什么"OpenClaw火了，大家才知道阶跃星辰" — 不是阶跃不强，而是它一直在闷头做事，直到产品通过用户自然传播让全世界看到。
+          </p>
+        </div>
+      </li>
+      <li>
+        <div class="reason-num">6</div>
+        <div class="reason-text">
+          <h4>StepClaw 让品牌破圈</h4>
+          <p>2026年3月推出的 StepClaw（阶跃龙虾），让普通用户也能一键养虾。接入微信生态后，品牌认知度飞速提升。从"开发者知道"到"人人都知道"，StepClaw 是那个拐点。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== 产品生态 ===== -->
+<section>
+  <h2 class="section-title fade-in"><span class="emoji">🌐</span>产品与生态</h2>
+  <p class="section-desc fade-in">从模型到产品，从开发者到普通用户</p>
+
+  <div class="info-grid">
+    <div class="info-card fade-in">
+      <h3>💬 跃问（YueWen）</h3>
+      <p>面向C端用户的AI助手App，提供对话、视频生成、图像创作等功能。支持Web和移动端。</p>
+    </div>
+    <div class="info-card fade-in">
+      <h3>🦞 StepClaw（阶跃龙虾）</h3>
+      <p>基于OpenClaw框架的云端AI助手，搭载Step 3.5 Flash。一键部署、7×24在线，已接入微信生态。桌面端+云端双模式。</p>
+    </div>
+    <div class="info-card fade-in">
+      <h3>🔧 开放平台 API</h3>
+      <p>platform.stepfun.com — 提供Step全系模型的API接口，服务企业和开发者。自研搜索工具、实时检索能力集成。</p>
+    </div>
+    <div class="info-card fade-in">
+      <h3>🤝 终端合作生态</h3>
+      <p>与50%+头部国产手机品牌合作AI智能体；与吉利汽车、华勤技术等深度合作；联合华为昇腾等近10家芯片厂商组建模芯生态联盟。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <p>
+    数据来源：新浪科技、科创板日报、澎湃新闻、每日经济新闻、智东西、量子位等公开报道<br>
+    制作时间：2026年3月28日 · 仅供参考，以官方信息为准<br><br>
+    <a href="https://stepfun.com" target="_blank">stepfun.com</a> ·
+    <a href="https://platform.stepfun.com" target="_blank">开放平台</a> ·
+    <a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a>
+  </p>
+</footer>
+
+<script>
+// Scroll fade-in animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
