@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>越深奥的问题越简单？</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* 粒子背景效果 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 标题区域 */
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; width: 100px; }
+            50% { opacity: 1; width: 150px; }
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #7b2cbf, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+        }
+
+        /* 核心观点卡片 */
+        .core-insight {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .core-insight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf, #ff006e);
+        }
+
+        .core-insight p {
+            font-size: 1.3rem;
+            color: #fff;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* 章节样式 */
+        .section {
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        .section:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .section-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .section-content {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 30px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .section-content p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.05rem;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 列表样式 */
+        .insight-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .insight-list li {
+            padding: 15px 0 15px 35px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .insight-list li:last-child {
+            border-bottom: none;
+        }
+
+        .insight-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* 引用块 */
+        .quote-block {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(123, 44, 191, 0.1));
+            border-left: 4px solid #ff006e;
+            padding: 25px 30px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+        }
+
+        .quote-block::before {
+            content: '"';
+            font-size: 4rem;
+            color: rgba(255, 0, 110, 0.3);
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        /* 总结区域 */
+        .summary {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(123, 44, 191, 0.15));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+            position: relative;
+        }
+
+        .summary::after {
+            content: '◆';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00d4ff;
+            font-size: 1.5rem;
+            background: #302b63;
+            padding: 0 15px;
+        }
+
+        .summary h3 {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin-bottom: 20px;
+        }
+
+        .summary p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 2;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 15px;
+            }
+
+            .core-insight {
+                padding: 25px;
+            }
+
+            .section-content {
+                padding: 20px;
+            }
+
+            .summary {
+                padding: 25px;
+            }
+        }
+
+        /* 高亮文字 */
+        .highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .highlight-pink {
+            color: #ff006e;
+            font-weight: 600;
+        }
+
+        /* 交互效果 */
+        .section:hover .section-number {
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <header class="hero">
+            <h1>越深奥的问题越简单？</h1>
+            <p class="subtitle">大道至简 · 返璞归真</p>
+        </header>
+
+        <div class="core-insight">
+            <p>这话戳中了事物的本质，但要拆开说才通透。深奥的是<span class="highlight">表象与求索之路</span>，极简的是<span class="highlight-pink">内核与终极答案</span>。</p>
+        </div>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2>表层：越深奥的终极问题，答案越极简</h2>
+            </div>
+            <div class="section-content">
+                <p>科学、哲学、真理走到最深处，全是极致简单：</p>
+                <ul class="insight-list">
+                    <li><strong>物理</strong>复杂公式堆到底，底层就守着<span class="highlight">能量守恒、时空一体</span>几条铁律</li>
+                    <li><strong>人生</strong>千般纠结，终极答案无非「<span class="highlight-pink">接纳、专注、利他、知足</span>」</li>
+                    <li><strong>技术</strong>越深耕，越懂大道至简：复杂系统的稳定，全靠底层极简逻辑撑着</li>
+                </ul>
+                <div class="quote-block">
+                    深奥，是绕了无数弯路、拆了层层表象，最后剥掉冗余，剩下干净的核心——看着简单，是因为把所有复杂都消化完了。
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2>误区：不是问题本身简单，是「通透后」变简单</h2>
+            </div>
+            <div class="section-content">
+                <p><strong>初学者眼里：</strong>深奥问题全是天书、遍地难点</p>
+                <p><strong>深耕者眼里：</strong>看透规律后，复杂表象一键归宗</p>
+                <p>难的是<span class="highlight-pink">通往答案的过程</span>，不是答案本身。</p>
+                <div class="quote-block">
+                    懂的人说「万物平衡」四个字极简，不懂的人，一辈子摸不透背后的因果。
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2>反过来：肤浅的问题，才容易搞得很复杂</h2>
+            </div>
+            <div class="section-content">
+                <p>没摸到本质时，才会：</p>
+                <ul class="insight-list">
+                    <li>堆砌话术、纠结细枝末节</li>
+                    <li>绕无数圈子</li>
+                    <li>把小事讲得玄乎</li>
+                    <li>把简单问题搞繁琐</li>
+                </ul>
+                <p>越<span class="highlight">浅薄</span>的认知，越喜欢把小事讲得玄乎、把简单问题搞繁琐。</p>
+            </div>
+        </section>
+
+        <div class="summary">
+            <h3>总结</h3>
+            <p>
+                深奥的是<span class="highlight">表象与求索之路</span>，<br>
+                极简的是<span class="highlight-pink">内核与终极答案</span>；<br><br>
+                不是问题天生简单，<br>
+                是看透本质后，<span class="highlight">万物皆归纯粹</span>。
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 生成粒子背景
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

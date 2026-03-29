@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间之河：流动的哲学</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #f0f7ff;
+            line-height: 1.8;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 粒子背景 */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin: 3rem 0 5rem;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .title-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #8e9eab, #eef2f3, #a1c4fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .title-bg {
+            position: absolute;
+            top: -20px;
+            left: -30px;
+            right: -30px;
+            bottom: -20px;
+            background: rgba(16, 42, 67, 0.7);
+            border-radius: 20px;
+            z-index: 1;
+            transform: rotate(-2deg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #c2e9fb;
+            font-weight: 300;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto 5rem;
+        }
+        
+        /* 时间线 */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: linear-gradient(to bottom, #00c6ff, #0072ff);
+            margin-left: -2px;
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(0, 114, 255, 0.5);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 4rem;
+            width: 100%;
+            display: flex;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            justify-content: flex-start;
+        }
+        
+        .timeline-item:nth-child(even) {
+            justify-content: flex-end;
+        }
+        
+        .card {
+            background: rgba(25, 35, 60, 0.7);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: calc(50% - 60px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .timeline-item:nth-child(odd) .card {
+            margin-right: 60px;
+        }
+        
+        .timeline-item:nth-child(even) .card {
+            margin-left: 60px;
+        }
+        
+        .timeline-icon {
+            position: absolute;
+            top: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-icon {
+            right: -75px;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-icon {
+            left: -75px;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #64b5f6;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 12px;
+            color: #ff9e80;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: #e0f7ff;
+        }
+        
+        .quote {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #64b5f6;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            position: relative;
+        }
+        
+        .quote::before {
+            content: """;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            font-size: 5rem;
+            color: rgba(100, 181, 246, 0.2);
+            font-family: Georgia, serif;
+        }
+        
+        .conclusion {
+            background: linear-gradient(45deg, rgba(100, 181, 246, 0.15), rgba(41, 121, 255, 0.1));
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            text-align: center;
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 3rem auto 5rem;
+            max-width: 800px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .conclusion p {
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: #a1c4fd;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.4), transparent);
+            margin: 3rem 0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            color: #8aacc8;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .interactive {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .time-btn {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
+        }
+        
+        .time-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 114, 255, 0.6);
+        }
+        
+        .time-display {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        @media (max-width: 900px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .card {
+                width: calc(100% - 90px);
+                margin-left: 90px !important;
+                margin-right: 0 !important;
+            }
+            
+            .timeline-item:nth-child(even) .card {
+                margin-left: 90px !important;
+            }
+            
+            .timeline-icon {
+                left: -65px !important;
+                right: auto !important;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+                width: calc(100% - 70px);
+                margin-left: 70px !important;
+            }
+            
+            .timeline-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                left: -55px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <div class="container">
+        <header>
+            <div class="title-container">
+                <div class="title-bg"></div>
+                <h1>时间之河</h1>
+            </div>
+            <p class="subtitle">在永恒的流动中，我们既是观察者，也是参与者。时间不是我们拥有的东西，而是我们存在的河流。</p>
+        </header>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="card">
+                    <h2><i class="fas fa-hourglass-start"></i> 时间的本质</h2>
+                    <p>时间是宇宙中最神秘的现象之一。它既是我们衡量变化的尺度，也是变化本身。爱因斯坦的相对论告诉我们，时间是相对的，它会随着速度和重力而变化。</p>
+                    
+                    <div class="quote">
+                        "时间存在的意义就是防止所有事情同时发生。" — 约翰·阿奇博尔德·惠勒
+                    </div>
+                    
+                    <p>在量子层面，时间可能并不像我们感知的那样线性流动。一些物理学家认为，时间可能只是人类意识产生的幻觉，是我们理解宇宙变化的一种方式。</p>
+                </div>
+                <div class="timeline-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="card">
+                    <h2><i class="fas fa-brain"></i> 时间的感知</h2>
+                    <p>我们对时间的感知是主观的、可变的。在快乐的时刻，时间似乎飞逝；在痛苦或无聊时，时间仿佛停滞不前。这种主观体验源于大脑如何处理信息。</p>
+                    
+                    <div class="interactive">
+                        <button class="time-btn" id="fastTime">加速时间</button>
+                        <button class="time-btn" id="slowTime">减速时间</button>
+                    </div>
+                    <div class="time-display" id="timeDisplay">
+                        当前时间感知：正常速度
+                    </div>
+                    
+                    <p>神经科学研究显示，当我们经历新奇的体验时，大脑会处理更多信息，这让我们感觉时间变长了。随着年龄增长，时间似乎加速，可能是因为我们积累的常规体验越来越多。</p>
+                </div>
+                <div class="timeline-icon">
+                    <i class="fas fa-mind-share"></i>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="card">
+                    <h2><i class="fas fa-history"></i> 文化与时间</h2>
+                    <p>不同的文化对时间有着截然不同的理解。西方文化倾向于线性时间观，将时间视为一条直线，从过去延伸到未来。许多东方文化则将时间视为循环的、周期性的。</p>
+                    
+                    <div class="quote">
+                        "过去、现在和未来之间的区别，只不过是一种顽固而持续的幻觉。" — 阿尔伯特·爱因斯坦
+                    </div>
+                    
+                    <p>在工业化社会中，时间被精确地分割和计量，而在农业社会中，时间更多与自然节律相关。这些差异深刻影响着人们的生活节奏和价值观。</p>
+                </div>
+                <div class="timeline-icon">
+                    <i class="fas fa-globe-asia"></i>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="card">
+                    <h2><i class="fas fa-heartbeat"></i> 时间与存在</h2>
+                    <p>我们存在于时间之中，但时间也在我们之中流动。生命本质上是对有限时间的体验过程。认识到时间的有限性，赋予生命以意义和紧迫感。</p>
+                    
+                    <div class="quote">
+                        "时间是你生命中的货币。只有你能决定如何花费它。小心别让他人替你花掉。" — 卡尔·桑德堡
+                    </div>
+                    
+                    <p>存在主义哲学家强调，正是在面对时间的流逝和生命的有限性时，我们才能真正认识自己，做出真实的选择，活出本真的生活。</p>
+                </div>
+                <div class="timeline-icon">
+                    <i class="fas fa-infinity"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="conclusion">
+            <p>时间不是敌人，也不是主人。它是我们存在的舞台，是我们创造意义的画布。<br>在时间之河中，我们既是水滴，也是波浪。</p>
+        </div>
+        
+        <footer>
+            <p>© 2026 时间哲学探索 | 思想如河流，永不止息</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // 粒子背景初始化
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff" },
+                shape: { type: "circle", stroke: { width: 0, color: "#000000" } },
+                opacity: { value: 0.3, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+                size: { value: 3, random: true, anim: { enable: true, speed: 2, size_min: 0.1, sync: false } },
+                line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.1, width: 1 },
+                move: { enable: true, speed: 1, direction: "none", random: true, straight: false, out_mode: "out", bounce: false }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }
+            },
+            retina_detect: true
+        });
+        
+        // 滚动动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+            
+            // 时间感知交互
+            const fastBtn = document.getElementById('fastTime');
+            const slowBtn = document.getElementById('slowTime');
+            const timeDisplay = document.getElementById('timeDisplay');
+            
+            fastBtn.addEventListener('click', () => {
+                timeDisplay.textContent = "当前时间感知：快速流逝（快乐时光）";
+                timeDisplay.style.color = "#64b5f6";
+                document.body.style.animation = "fastPulse 1s infinite";
+            });
+            
+            slowBtn.addEventListener('click', () => {
+                timeDisplay.textContent = "当前时间感知：缓慢流动（专注时刻）";
+                timeDisplay.style.color = "#ff9e80";
+                document.body.style.animation = "slowPulse 3s infinite";
+            });
+            
+            // 添加动态样式
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fastPulse {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+                
+                @keyframes slowPulse {
+                    0% { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); }
+                    50% { background: linear-gradient(135deg, #0a161d, #1a2e38, #243f4d); }
+                    100% { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
