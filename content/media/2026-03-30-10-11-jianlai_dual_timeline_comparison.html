@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>剑来双时间线终极对比 | 齐静春的死局与活棋</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --ink: #0a0a0a;
+                --charcoal: #1a1a1a;
+                --bone: #e5e5e5;
+                --ash: #a3a3a3;
+                --cinnabar: #dc2626;
+                --rust: #991b1b;
+                --gold: #d97706;
+                --jade: #059669;
+            }
+            body {
+                font-family: 'Noto Serif SC', serif;
+                background-color: var(--ink);
+                color: var(--bone);
+                background-image: 
+                    radial-gradient(ellipse at 50% 0%, rgba(220, 38, 38, 0.08) 0%, transparent 50%),
+                    linear-gradient(to bottom, rgba(26, 26, 26, 0.5) 1px, transparent 1px);
+                background-size: 100% 100%, 100% 4px;
+            }
+            .font-calligraphy {
+                font-family: 'ZCOOL XiaoWei', serif;
+            }
+        }
+        @layer components {
+            .scroll-card {
+                background: rgba(26, 26, 26, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 
+                    0 20px 50px rgba(0, 0, 0, 0.8),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            }
+            .timeline-header {
+                position: relative;
+                background: linear-gradient(180deg, rgba(220, 38, 38, 0.1) 0%, transparent 100%);
+                border-bottom: 2px solid rgba(220, 38, 38, 0.3);
+            }
+            .sacrifice-pillar {
+                background: linear-gradient(180deg, rgba(163, 163, 163, 0.1) 0%, rgba(163, 163, 163, 0.05) 100%);
+                border-left: 3px solid rgba(163, 163, 163, 0.3);
+            }
+            .massacre-pillar {
+                background: linear-gradient(180deg, rgba(220, 38, 38, 0.15) 0%, rgba(220, 38, 38, 0.05) 100%);
+                border-left: 3px solid rgba(220, 38, 38, 0.5);
+            }
+            .seal-mark {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 48px;
+                height: 48px;
+                border: 2px solid;
+                border-radius: 4px;
+                font-family: 'ZCOOL XiaoWei', serif;
+                font-size: 1.5rem;
+                font-weight: 900;
+                transform: rotate(-5deg);
+                position: relative;
+            }
+            .seal-mark.sacrifice {
+                color: var(--ash);
+                border-color: rgba(163, 163, 163, 0.5);
+                background: rgba(163, 163, 163, 0.1);
+            }
+            .seal-mark.massacre {
+                color: var(--cinnabar);
+                border-color: rgba(220, 38, 38, 0.6);
+                background: rgba(220, 38, 38, 0.1);
+                box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
+            }
+            .fate-row {
+                transition: all 0.3s ease;
+            }
+            .fate-row:hover {
+                background: rgba(255, 255, 255, 0.02);
+            }
+            .fate-divider {
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            }
+            .highlight-sacrifice {
+                color: #d4d4d4;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            }
+            .highlight-massacre {
+                color: #f87171;
+                text-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+            }
+            .dimension-badge {
+                display: inline-block;
+                padding: 0.25rem 0.75rem;
+                background: rgba(0, 0, 0, 0.5);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                font-size: 0.75rem;
+                letter-spacing: 0.1em;
+                color: var(--ash);
+            }
+            .ultimate-truth {
+                position: relative;
+                background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+                border: 1px solid rgba(220, 38, 38, 0.3);
+            }
+            .ultimate-truth::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, var(--cinnabar), transparent);
+            }
+            .character-arc {
+                position: relative;
+                padding-left: 1rem;
+                border-left: 2px solid rgba(220, 38, 38, 0.3);
+            }
+            .character-arc::before {
+                content: '';
+                position: absolute;
+                left: -5px;
+                top: 0.5rem;
+                width: 8px;
+                height: 8px;
+                background: var(--cinnabar);
+                border-radius: 50%;
+            }
+            .comparison-grid {
+                display: grid;
+                grid-template-columns: 140px 1fr 1fr;
+                gap: 1px;
+                background: rgba(255, 255, 255, 0.05);
+            }
+            .comparison-cell {
+                padding: 1rem;
+                background: rgba(26, 26, 26, 0.98);
+            }
+            .comparison-cell.header {
+                background: rgba(0, 0, 0, 0.8);
+                font-weight: 700;
+                letter-spacing: 0.05em;
+            }
+            @media (max-width: 768px) {
+                .comparison-grid {
+                    grid-template-columns: 100px 1fr 1fr;
+                    font-size: 0.875rem;
+                }
+                .comparison-cell {
+                    padding: 0.75rem 0.5rem;
+                }
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen pb-20">
+    <!-- Header -->
+    <header class="pt-16 pb-12 px-4 text-center relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-red-950/10 to-transparent pointer-events-none"></div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <div class="flex items-center justify-center gap-6 mb-8">
+                <div class="seal-mark sacrifice">殉</div>
+                <div class="h-px w-16 bg-gradient-to-r from-transparent via-stone-600 to-transparent"></div>
+                <div class="text-2xl font-calligraphy text-stone-500">VS</div>
+                <div class="h-px w-16 bg-gradient-to-r from-transparent via-red-800 to-transparent"></div>
+                <div class="seal-mark massacre">杀</div>
+            </div>
+            <h1 class="font-calligraphy text-4xl sm:text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-b from-stone-100 via-stone-300 to-stone-600">
+                剑来双时间线终极对比
+            </h1>
+            <p class="text-lg text-stone-500 tracking-widest">
+                齐静春的死局与活棋
+            </p>
+        </div>
+    </header>
+
+    <!-- Core Premise -->
+    <section class="max-w-5xl mx-auto px-4 mb-16">
+        <div class="scroll-card rounded-lg p-8">
+            <div class="text-center mb-8">
+                <span class="dimension-badge">核心前提</span>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="sacrifice-pillar rounded-lg p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-2xl">⚪</span>
+                        <h3 class="text-lg font-bold text-stone-300">原著献祭线</h3>
+                    </div>
+                    <p class="text-stone-400 leading-relaxed">
+                        齐静春<span class="highlight-sacrifice">自毁道基，两字扛天，舍生殉道</span>；<br>
+                        以死换生，为陈平安铺路，稳三教格局。
+                    </p>
+                </div>
+                <div class="massacre-pillar rounded-lg p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-2xl text-red-500">🔴</span>
+                        <h3 class="text-lg font-bold text-red-400">满血屠圣线</h3>
+                    </div>
+                    <p class="text-stone-400 leading-relaxed">
+                        三字齐全，十四境巅峰<span class="highlight-massacre">屠四圣，保骊珠洞天不灭</span>；<br>
+                        赢了当下，毁了未来。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Lizhu Cave Heaven -->
+    <section class="max-w-6xl mx-auto px-4 mb-12">
+        <div class="timeline-header rounded-t-lg p-6">
+            <div class="flex items-center gap-3">
+                <span class="dimension-badge">维度一</span>
+                <h2 class="text-xl font-bold text-stone-200">骊珠洞天 & 小镇众生</h2>
+            </div>
+        </div>
+        <div class="comparison-grid rounded-b-lg overflow-hidden">
+            <div class="comparison-cell header text-stone-500">维度</div>
+            <div class="comparison-cell header text-center text-stone-400">原著献祭线</div>
+            <div class="comparison-cell header text-center text-red-400">满血屠圣线</div>
+
+            <div class="comparison-cell text-stone-400 font-medium">洞天结局</div>
+            <div class="comparison-cell text-stone-300">
+                碎裂献祭，文脉散落，<span class="text-stone-200">化作机缘</span>
+            </div>
+            <div class="comparison-cell text-red-300">
+                永久稳固，品级抬升，<span class="text-red-200">灵气鼎盛</span>
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">六千百姓</div>
+            <div class="comparison-cell text-stone-300">
+                全员活命，安稳<span class="text-stone-200">轮回转世</span>
+            </div>
+            <div class="comparison-cell text-red-300">
+                全员活命，受<span class="text-red-200">无上文脉庇佑</span>
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">小镇机缘</div>
+            <div class="comparison-cell text-stone-300">
+                散给陈平安、李宝瓶、宋集薪等，<span class="text-stone-200">伏笔遍地</span>
+            </div>
+            <div class="comparison-cell text-red-300">
+                机缘锁死在洞天，<span class="text-red-200">外人拿不到，后续无伏笔</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Chen Ping'an -->
+    <section class="max-w-6xl mx-auto px-4 mb-12">
+        <div class="timeline-header rounded-t-lg p-6 border-amber-900/30">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="dimension-badge border-amber-800 text-amber-600">维度二</span>
+                    <h2 class="text-xl font-bold text-amber-100">陈平安一生轨迹（最关键）</h2>
+                </div>
+                <span class="text-xs text-amber-700 bg-amber-950/30 px-2 py-1 rounded">核心变量</span>
+            </div>
+        </div>
+        <div class="comparison-grid rounded-b-lg overflow-hidden">
+            <div class="comparison-cell header text-stone-500">阶段</div>
+            <div class="comparison-cell header text-center text-stone-400">原著献祭线</div>
+            <div class="comparison-cell header text-center text-red-400">满血屠圣线</div>
+
+            <div class="comparison-cell text-stone-400 font-medium">童年</div>
+            <div class="comparison-cell text-stone-300">
+                泥瓶巷无名少年，<span class="text-stone-200">无人紧盯，暗中受护</span>
+            </div>
+            <div class="comparison-cell text-red-300">
+                天生挂<span class="text-red-200">三界黑名单</span>，三教联手扼杀
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">修行路</div>
+            <div class="comparison-cell text-stone-300">
+                <span class="text-stone-200">步步伏笔</span>，文圣、阿良、左右暗中铺路
+            </div>
+            <div class="comparison-cell text-red-300">
+                修行直接被<span class="text-red-200">天道封印</span>，连筑基都难
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">心性成长</div>
+            <div class="comparison-cell text-stone-300">
+                苦难磨心，养出<span class="text-stone-200">慎独、守善、扛因果</span>的底色
+            </div>
+            <div class="comparison-cell text-red-300">
+                无苦难、无隐忍，<span class="text-red-200">心性撑不起大道</span>
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">最终成就</div>
+            <div class="comparison-cell text-stone-200 font-bold bg-stone-800/30">
+                登顶剑仙，合道万千，<span class="text-white">撑起后半座天下</span>
+            </div>
+            <div class="comparison-cell text-red-200 font-bold bg-red-950/20">
+                大概率<span class="text-red-400">少年夭折</span>，或沦为被软禁的棋子
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Three Teachings -->
+    <section class="max-w-6xl mx-auto px-4 mb-12">
+        <div class="timeline-header rounded-t-lg p-6 border-purple-900/30">
+            <div class="flex items-center gap-3">
+                <span class="dimension-badge border-purple-800 text-purple-400">维度三</span>
+                <h2 class="text-xl font-bold text-purple-100">三教格局 & 文庙势力</h2>
+            </div>
+        </div>
+        <div class="comparison-grid rounded-b-lg overflow-hidden">
+            <div class="comparison-cell header text-stone-500">板块</div>
+            <div class="comparison-cell header text-center text-stone-400">原著献祭线</div>
+            <div class="comparison-cell header text-center text-red-400">满血屠圣线</div>
+
+            <div class="comparison-cell text-stone-400 font-medium">儒门</div>
+            <div class="comparison-cell text-stone-300">
+                <span class="text-stone-200">感念牺牲</span>，暗中庇护文圣一脉
+            </div>
+            <div class="comparison-cell text-red-300">
+                判定齐静春为<span class="text-red-200">叛道者</span>，清算整个亚圣/文圣派系
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">道家门派</div>
+            <div class="comparison-cell text-stone-300">
+                <span class="text-stone-200">维持制衡</span>，暗中借势布局
+            </div>
+            <div class="comparison-cell text-red-300">
+                忌惮三教合一大道，<span class="text-red-200">全面敌对</span>，打压所有相关传人
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">佛家势力</div>
+            <div class="comparison-cell text-stone-300">
+                <span class="text-stone-200">收敛锋芒</span>，不掺和小镇因果
+            </div>
+            <div class="comparison-cell text-red-300">
+                <span class="text-red-200">联手儒道</span>，围剿齐静春道统
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">顶层三祖</div>
+            <div class="comparison-cell text-stone-300">
+                <span class="text-stone-200">默许布局</span>，顺水推舟养后手
+            </div>
+            <div class="comparison-cell text-red-300">
+                <span class="text-red-200">亲自下场</span>锁死三教合一这条路，斩草除根
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Great Wall & War -->
+    <section class="max-w-6xl mx-auto px-4 mb-12">
+        <div class="timeline-header rounded-t-lg p-6 border-emerald-900/30">
+            <div class="flex items-center gap-3">
+                <span class="dimension-badge border-emerald-800 text-emerald-600">维度四</span>
+                <h2 class="text-xl font-bold text-emerald-100">剑气长城 & 蛮荒大战</h2>
+            </div>
+        </div>
+        <div class="comparison-grid rounded-b-lg overflow-hidden">
+            <div class="comparison-cell header text-stone-500">战局</div>
+            <div class="comparison-cell header text-center text-stone-400">原著献祭线</div>
+            <div class="comparison-cell header text-center text-red-400">满血屠圣线</div>
+
+            <div class="comparison-cell text-stone-400 font-medium">大战时间</div>
+            <div class="comparison-cell text-stone-300">
+                按原定节奏拖延，<span class="text-stone-200">给长城蓄力百年</span>
+            </div>
+            <div class="comparison-cell text-red-300">
+                妖族见浩然内乱，<span class="text-red-200">提前百年全面开战</span>
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">阿良/左右</div>
+            <div class="comparison-cell text-stone-300">
+                <span class="text-stone-200">从容成长</span>，守长城，留杀招
+            </div>
+            <div class="comparison-cell text-red-300">
+                被迫提前死战，<span class="text-red-200">战力透支，早早陨落</span>
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">剑气长城</div>
+            <div class="comparison-cell text-stone-300">
+                熬到陈平安接班，<span class="text-stone-200">撑到最终决战</span>
+            </div>
+            <div class="comparison-cell text-red-300">
+                <span class="text-red-200">提前崩碎</span>，妖族打入中土神州腹地
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">浩然防线</div>
+            <div class="comparison-cell text-stone-200 font-bold bg-stone-800/30">
+                <span class="text-white">层层稳固</span>，后手不断
+            </div>
+            <div class="comparison-cell text-red-200 font-bold bg-red-950/20">
+                <span class="text-red-400">全线崩盘</span>，大半神州沦陷
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Qi Jingchun Himself -->
+    <section class="max-w-6xl mx-auto px-4 mb-16">
+        <div class="timeline-header rounded-t-lg p-6 border-yellow-900/30">
+            <div class="flex items-center gap-3">
+                <span class="dimension-badge border-yellow-800 text-yellow-600">维度五</span>
+                <h2 class="text-xl font-bold text-yellow-100">齐静春本人结局</h2>
+            </div>
+        </div>
+        <div class="comparison-grid rounded-b-lg overflow-hidden">
+            <div class="comparison-cell header text-stone-500">归宿</div>
+            <div class="comparison-cell header text-center text-stone-400">原著献祭线</div>
+            <div class="comparison-cell header text-center text-red-400">满血屠圣线</div>
+
+            <div class="comparison-cell text-stone-400 font-medium">肉身神魂</div>
+            <div class="comparison-cell text-stone-300">
+                <span class="text-stone-200">身死道消</span>，留文脉种子，万古留名
+            </div>
+            <div class="comparison-cell text-red-300">
+                战力无敌但被三界孤立，<span class="text-red-200">最终被封印/暗杀</span>
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">道统传承</div>
+            <div class="comparison-cell text-stone-300">
+                「齐」字留世，<span class="text-stone-200">暗中庇佑后世</span>
+            </div>
+            <div class="comparison-cell text-red-300">
+                三教联手<span class="text-red-200">抹除道统</span>，传承彻底断绝
+            </div>
+
+            <div class="comparison-cell text-stone-400 font-medium">历史评价</div>
+            <div class="comparison-cell text-stone-200 font-bold bg-stone-800/30">
+                <span class="text-white">千古第一君子</span>，以身殉道护苍生
+            </div>
+            <div class="comparison-cell text-red-200 font-bold bg-red-950/20">
+                <span class="text-red-400">叛道杀神</span>，搅动三界祸乱的异端
+            </div>
+        </div>
+    </section>
+
+    <!-- Ultimate Truth -->
+    <section class="max-w-4xl mx-auto px-4 mb-20">
+        <div class="ultimate-truth rounded-xl p-8 sm:p-12">
+            <div class="text-center mb-8">
+                <span class="inline-block px-4 py-2 bg-red-950/50 border border-red-800 text-red-400 text-sm font-bold tracking-widest rounded">
+                    一句话终极定调
+                </span>
+            </div>
+
+            <div class="space-y-6 mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center text-stone-400 font-bold flex-shrink-0">1</div>
+                    <p class="text-stone-300 leading-relaxed pt-1">
+                        <span class="text-stone-200 font-bold">原著线：</span>
+                        牺牲一人，成全陈平安，稳住三界，拖赢蛮荒，<span class="text-white">留万古生机</span>；
+                    </p>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 rounded-full bg-red-950/50 border border-red-900 flex items-center justify-center text-red-400 font-bold flex-shrink-0">2</div>
+                    <p class="text-stone-300 leading-relaxed pt-1">
+                        <span class="text-red-400 font-bold">满血线：</span>
+                        赢了当下，毁了未来，杀了伏笔，断了传承，<span class="text-red-300">整个浩然陪葬</span>。
+                    </p>
+                </div>
+            </div>
+
+            <div class="fate-divider mb-8"></div>
+
+            <blockquote class="text-center">
+                <p class="text-xl sm:text-2xl font-calligraphy leading-relaxed text-transparent bg-clip-text bg-gradient-to-b from-stone-100 to-stone-400">
+                    齐静春从一开始就不是打不过，<br>
+                    <span class="text-red-400">是绝对不能赢。</span>
+                </p>
+                <footer class="mt-6 text-stone-500 text-sm">
+                    他的死，是整个剑来世界观里，<br>
+                    <span class="text-stone-300">最高明、最慈悲、最长远的一步棋。</span>
+                </footer>
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-stone-800 text-sm pb-8">
+        <div class="h-px max-w-md mx-auto bg-gradient-to-r from-transparent via-stone-800 to-transparent mb-6"></div>
+        <p>《剑来》世界观推演 · 因果宿命论</p>
+    </footer>
+
+    <script>
+        // Scroll reveal for table rows
+        document.querySelectorAll('.comparison-grid').forEach((grid, gridIndex) => {
+            const rows = grid.querySelectorAll('.comparison-cell:not(.header)');
+            rows.forEach((cell, index) => {
+                cell.style.opacity = '0';
+                cell.style.transform = 'translateY(10px)';
+                cell.style.transition = `all 0.4s ease ${(index % 3) * 0.1}s`;
+                setTimeout(() => {
+                    cell.style.opacity = '1';
+                    cell.style.transform = 'translateY(0)';
+                }, 200 + (gridIndex * 100));
+            });
+        });
+    </script>
+</body>
+</html>

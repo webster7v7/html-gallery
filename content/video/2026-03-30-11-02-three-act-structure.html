@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三幕式结构 · 剧本核心骨架</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #0a0a0a;
+            color: #e8e8e8;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 标题区域 */
+        .hero {
+            text-align: center;
+            padding: 60px 0 50px;
+            border-bottom: 1px solid #222;
+            margin-bottom: 50px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .hero .tag {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: #888;
+            letter-spacing: 0.05em;
+        }
+
+        /* 三幕可视化 */
+        .acts-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0;
+            margin: 40px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .act-block {
+            padding: 40px 30px;
+            position: relative;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .act-1 {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .act-2 {
+            background: linear-gradient(180deg, #16213e 0%, #0f3460 100%);
+        }
+
+        .act-3 {
+            background: linear-gradient(180deg, #0f3460 0%, #e94560 100%);
+        }
+
+        .act-number {
+            font-size: 4rem;
+            font-weight: 900;
+            opacity: 0.15;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            line-height: 1;
+        }
+
+        .act-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .act-subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .act-percent {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            color: #aaa;
+        }
+
+        .act-content {
+            flex: 1;
+        }
+
+        .act-content h4 {
+            font-size: 0.95rem;
+            color: #fff;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .act-content ul {
+            list-style: none;
+        }
+
+        .act-content li {
+            padding: 6px 0;
+            padding-left: 16px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+
+        .act-content li::before {
+            content: "›";
+            position: absolute;
+            left: 0;
+            color: #e94560;
+            font-weight: bold;
+        }
+
+        /* 转折点 */
+        .turning-points {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .point-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .point-card:hover {
+            border-color: #444;
+            transform: translateY(-2px);
+        }
+
+        .point-label {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #e94560;
+            color: #fff;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .point-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .point-card p {
+            color: #888;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .point-card .example {
+            margin-top: 15px;
+            padding: 12px 15px;
+            background: #1a1a1a;
+            border-left: 3px solid #e94560;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        /* 核心法则 */
+        .core-rules {
+            background: #111;
+            border-radius: 16px;
+            padding: 40px;
+            margin: 50px 0;
+            border: 1px solid #222;
+        }
+
+        .core-rules h2 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .core-rules h2::before {
+            content: "◆";
+            color: #e94560;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .rule-item {
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            border: 1px solid #222;
+        }
+
+        .rule-item h4 {
+            color: #e94560;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .rule-item p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* 节拍表 */
+        .beat-sheet {
+            margin: 50px 0;
+        }
+
+        .beat-sheet h2 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .beat-sheet h2::before {
+            content: "▸";
+            color: #e94560;
+        }
+
+        .beats-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .beats-table th {
+            text-align: left;
+            padding: 15px;
+            background: #1a1a1a;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #333;
+        }
+
+        .beats-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #222;
+            color: #bbb;
+            vertical-align: top;
+        }
+
+        .beats-table tr:hover td {
+            background: #111;
+        }
+
+        .page-col {
+            color: #e94560;
+            font-weight: 700;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .beat-name {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid #222;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .acts-visual {
+                grid-template-columns: 1fr;
+            }
+
+            .turning-points {
+                grid-template-columns: 1fr;
+            }
+
+            .act-block {
+                min-height: auto;
+            }
+
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .beats-table {
+                font-size: 0.8rem;
+            }
+
+            .beats-table th,
+            .beats-table td {
+                padding: 12px 10px;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <h1>三幕式结构</h1>
+            <p class="subtitle">电影剧本的核心骨架 · 从古希腊戏剧到好莱坞的叙事密码</p>
+            <span class="tag">Three-Act Structure</span>
+        </header>
+
+        <!-- 三幕可视化 -->
+        <div class="acts-visual">
+            <div class="act-block act-1">
+                <span class="act-number">01</span>
+                <div class="act-subtitle">The Setup</div>
+                <div class="act-title">第一幕 · 建置</div>
+                <span class="act-percent">25% · 页码 1-30</span>
+                <div class="act-content">
+                    <h4>核心任务</h4>
+                    <ul>
+                        <li>介绍主角、世界、日常状态</li>
+                        <li>建立主角的"缺陷"或"需求"</li>
+                        <li>设置赌注（Stakes）</li>
+                        <li>催化剂（Inciting Incident）打破平衡</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="act-block act-2">
+                <span class="act-number">02</span>
+                <div class="act-subtitle">Confrontation</div>
+                <div class="act-title">第二幕 · 对抗</div>
+                <span class="act-percent">50% · 页码 30-90</span>
+                <div class="act-content">
+                    <h4>核心任务</h4>
+                    <ul>
+                        <li>主角进入新世界/接受挑战</li>
+                        <li>一系列升级冲突与障碍</li>
+                        <li>中点（Midpoint）：虚假胜利或失败</li>
+                        <li>灵魂黑夜（All Is Lost）：最大挫折</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="act-block act-3">
+                <span class="act-number">03</span>
+                <div class="act-subtitle">Resolution</div>
+                <div class="act-title">第三幕 · 解决</div>
+                <span class="act-percent">25% · 页码 90-120</span>
+                <div class="act-content">
+                    <h4>核心任务</h4>
+                    <ul>
+                        <li>主角领悟核心真理/改变</li>
+                        <li>最终对决（Climax）：解决核心冲突</li>
+                        <li>展示主角的成长弧线</li>
+                        <li>终场画面（Final Image）：新平衡</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 转折点 -->
+        <div class="turning-points">
+            <div class="point-card">
+                <span class="point-label">Plot Point 1</span>
+                <h3>情节点一 · 进入第二幕</h3>
+                <p>主角做出不可逆转的决定，离开旧世界进入冒险。这是"不归路"，故事真正开始。</p>
+                <div class="example">例：《星球大战》卢克决定离开塔图因，跟随欧比旺去救莱娅公主</div>
+            </div>
+
+            <div class="point-card">
+                <span class="point-label">Plot Point 2</span>
+                <h3>情节点二 · 进入第三幕</h3>
+                <p>主角获得最终所需（信息、勇气、盟友），从绝望中崛起，准备最终对决。</p>
+                <div class="example">例：《黑暗骑士》蝙蝠侠决定承担哈维·丹特的罪行，保护哥谭希望</div>
+            </div>
+        </div>
+
+        <!-- 核心法则 -->
+        <div class="core-rules">
+            <h2>三幕式黄金法则</h2>
+            <div class="rules-grid">
+                <div class="rule-item">
+                    <h4>01 冲突驱动</h4>
+                    <p>每一幕都由冲突推进。没有冲突就没有故事，只有事件。</p>
+                </div>
+                <div class="rule-item">
+                    <h4>02 主角主动</h4>
+                    <p>主角必须主动做出选择，而非被动被事件推着走。</p>
+                </div>
+                <div class="rule-item">
+                    <h4>03 改变必然</h4>
+                    <p>故事结束时，主角必须发生内在或外在的不可逆改变。</p>
+                </div>
+                <div class="rule-item">
+                    <h4>04 赌注清晰</h4>
+                    <p>观众必须清楚知道主角赢/输意味着什么（生死、爱情、尊严）。</p>
+                </div>
+                <div class="rule-item">
+                    <h4>05 节奏控制</h4>
+                    <p>第一幕慢（建置）、第二幕快（升级）、第三幕更快（冲刺）。</p>
+                </div>
+                <div class="rule-item">
+                    <h4>06 主题统一</h4>
+                    <p>三幕必须围绕同一主题展开，每幕从不同角度探讨。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 节拍表 -->
+        <div class="beat-sheet">
+            <h2>标准120分钟电影节拍表</h2>
+            <table class="beats-table">
+                <thead>
+                    <tr>
+                        <th>页码</th>
+                        <th>节拍</th>
+                        <th>功能说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="page-col">p.1</td>
+                        <td class="beat-name">开场画面</td>
+                        <td>展示主角的"之前"状态，与终场形成对比</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.1-10</td>
+                        <td class="beat-name">主题呈现</td>
+                        <td>通过对话或事件暗示电影核心主题</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.10</td>
+                        <td class="beat-name">催化剂</td>
+                        <td>打破主角日常平衡的事件（电话、死亡、发现）</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.10-25</td>
+                        <td class="beat-name">争论/犹豫</td>
+                        <td>主角对冒险的抗拒，展示恐惧或顾虑</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.25</td>
+                        <td class="beat-name">情节点一</td>
+                        <td>主角做出决定，进入新世界（不归路）</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.30-55</td>
+                        <td class="beat-name">游戏时间/B故事</td>
+                        <td>探索新世界，建立关系（爱情/友情线）</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.55</td>
+                        <td class="beat-name">中点</td>
+                        <td>虚假胜利或虚假失败，故事转向</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.55-75</td>
+                        <td class="beat-name">坏人逼近</td>
+                        <td>反派力量加强，主角节节败退</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.75</td>
+                        <td class="beat-name">灵魂黑夜</td>
+                        <td>主角最低谷，失去一切，濒临放弃</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.85</td>
+                        <td class="beat-name">情节点二</td>
+                        <td>主角顿悟/获得力量，准备反击</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.85-105</td>
+                        <td class="beat-name">最终对决准备</td>
+                        <td>整合盟友、资源，制定计划</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.105</td>
+                        <td class="beat-name">高潮</td>
+                        <td>核心冲突解决，主角证明改变</td>
+                    </tr>
+                    <tr>
+                        <td class="page-col">p.105-120</td>
+                        <td class="beat-name">终场画面</td>
+                        <td>展示"之后"状态，与开场形成对照</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="footer">
+            <p>三幕式结构 · Three-Act Structure · 剧本创作核心骨架</p>
+            <p style="margin-top: 8px; font-size: 0.75rem;">参考：亚里士多德《诗学》| Syd Field《电影剧本写作基础》| Blake Snyder《救猫咪》</p>
+        </footer>
+    </div>
+</body>
+</html>

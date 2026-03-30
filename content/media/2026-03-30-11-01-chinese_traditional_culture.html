@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国传统文化 - 五千年文明的精神根脉</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --china-red: #C41E3A;
+                --imperial-gold: #D4AF37;
+                --ink-black: #1a1a1a;
+                --rice-paper: #F5F5DC;
+                --jade-green: #00A86B;
+                --cinnabar: #E34234;
+            }
+            body {
+                font-family: 'Noto Serif SC', serif;
+                background-color: var(--rice-paper);
+                color: var(--ink-black);
+            }
+            .font-calligraphy {
+                font-family: 'Ma Shan Zheng', cursive;
+            }
+        }
+        @layer components {
+            .text-vertical {
+                writing-mode: vertical-rl;
+                text-orientation: upright;
+            }
+            .seal-border {
+                border: 3px solid var(--cinnabar);
+                border-radius: 4px;
+                position: relative;
+            }
+            .seal-border::after {
+                content: '';
+                position: absolute;
+                top: -6px;
+                left: -6px;
+                right: -6px;
+                bottom: -6px;
+                border: 1px solid var(--cinnabar);
+                border-radius: 6px;
+                pointer-events: none;
+            }
+            .ink-wash {
+                background: linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.05) 100%);
+                backdrop-filter: blur(10px);
+            }
+            .card-hover {
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .card-hover:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 40px -10px rgba(196, 30, 58, 0.15);
+            }
+            .tab-active {
+                background: var(--china-red);
+                color: white;
+                border-color: var(--china-red);
+            }
+            .scroll-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scroll-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .grain-texture {
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="grain-texture min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-[#F5F5DC]/90 backdrop-blur-md border-b border-[#D4AF37]/30 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-[#C41E3A] rounded flex items-center justify-center text-white font-calligraphy text-2xl">文</div>
+                    <span class="font-calligraphy text-2xl text-[#1a1a1a]">华夏文脉</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#philosophy" class="hover:text-[#C41E3A] transition-colors">儒释道</a>
+                    <a href="#solar-terms" class="hover:text-[#C41E3A] transition-colors">二十四节气</a>
+                    <a href="#festivals" class="hover:text-[#C41E3A] transition-colors">传统节日</a>
+                    <a href="#arts" class="hover:text-[#C41E3A] transition-colors">书画戏曲</a>
+                    <a href="#heritage" class="hover:text-[#C41E3A] transition-colors">非遗传承</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 px-4 overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-10 w-64 h-64 bg-[#C41E3A] rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-[#D4AF37] rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="inline-block px-4 py-1 bg-[#C41E3A]/10 text-[#C41E3A] rounded-full text-sm font-medium tracking-wider">
+                        五千年文明 · 精神根脉
+                    </div>
+                    <h1 class="font-calligraphy text-5xl md:text-7xl leading-tight text-[#1a1a1a]">
+                        中国传统<br>
+                        <span class="text-[#C41E3A]">文化</span>
+                    </h1>
+                    <p class="text-lg text-gray-700 leading-relaxed max-w-lg">
+                        从先秦诸子的百家争鸣，到唐宋诗词的璀璨星河；从二十四节气的时间智慧，到琴棋书画的生活美学。传统文化是中华民族的「精神基因库」，承载着天人合一的哲学智慧与生活艺术。
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 bg-white border border-[#D4AF37] rounded-lg text-sm">儒家仁爱</span>
+                        <span class="px-4 py-2 bg-white border border-[#D4AF37] rounded-lg text-sm">道法自然</span>
+                        <span class="px-4 py-2 bg-white border border-[#D4AF37] rounded-lg text-sm">禅茶一味</span>
+                        <span class="px-4 py-2 bg-white border border-[#D4AF37] rounded-lg text-sm">节气养生</span>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="aspect-[3/4] bg-gradient-to-br from-[#C41E3A]/20 to-[#D4AF37]/20 rounded-2xl p-8 flex items-center justify-center">
+                        <div class="text-center space-y-4">
+                            <div class="font-calligraphy text-8xl text-[#C41E3A] opacity-80">和</div>
+                            <div class="text-sm text-gray-600 tracking-[0.5em]">天人合一 · 中庸之道</div>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-[#D4AF37]/20 rounded-full blur-2xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section: Three Pillars -->
+    <section id="philosophy" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-calligraphy text-4xl md:text-5xl mb-4">三教合流 · 智慧之源</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">儒、释、道三家思想构成中国传统文化的核心支柱，分别代表入世、出世与超世的三种人生境界</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Confucianism -->
+                <div class="group relative bg-white rounded-2xl p-8 shadow-lg card-hover border-t-4 border-[#C41E3A]">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-[#C41E3A]/5 rounded-bl-full"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-[#C41E3A]/10 rounded-xl flex items-center justify-center mb-6">
+                            <span class="font-calligraphy text-3xl text-[#C41E3A]">儒</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-[#1a1a1a]">儒家 · 仁义礼智</h3>
+                        <p class="text-gray-600 mb-6 text-sm leading-relaxed">
+                            以孔子、孟子为代表，强调「仁爱」为核心，主张积极进取、修身齐家治国平天下。五常「仁、义、礼、智、信」构成中国人的道德根基。
+                        </p>
+                        <div class="space-y-2">
+                            <div class="flex items-center text-sm">
+                                <span class="w-2 h-2 bg-[#C41E3A] rounded-full mr-2"></span>
+                                <span class="text-gray-700">核心：仁、礼、中庸</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <span class="w-2 h-2 bg-[#C41E3A] rounded-full mr-2"></span>
+                                <span class="text-gray-700">经典：《论语》《孟子》</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <span class="w-2 h-2 bg-[#C41E3A] rounded-full mr-2"></span>
+                                <span class="text-gray-700">目标：内圣外王</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Taoism -->
+                <div class="group relative bg-white rounded-2xl p-8 shadow-lg card-hover border-t-4 border-[#00A86B]">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-[#00A86B]/5 rounded-bl-full"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-[#00A86B]/10 rounded-xl flex items-center justify-center mb-6">
+                            <span class="font-calligraphy text-3xl text-[#00A86B]">道</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-[#1a1a1a]">道家 · 道法自然</h3>
+                        <p class="text-gray-600 mb-6 text-sm leading-relaxed">
+                            以老子、庄子为代表，主张「无为而治」，顺应自然规律。强调「道法自然」，追求内心的平静与逍遥，与天地精神相往来。
+                        </p>
+                        <div class="space-y-2">
+                            <div class="flex items-center text-sm">
+                                <span class="w-2 h-2 bg-[#00A86B] rounded-full mr-2"></span>
+                                <span class="text-gray-700">核心：道、无为、自然</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <span class="w-2 h-2 bg-[#00A86B] rounded-full mr-2"></span>
+                                <span class="text-gray-700">经典：《道德经》《庄子》</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <span class="w-2 h-2 bg-[#00A86B] rounded-full mr-2"></span>
+                                <span class="text-gray-700">目标：逍遥游</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buddhism -->
+                <div class="group relative bg-white rounded-2xl p-8 shadow-lg card-hover border-t-4 border-[#D4AF37]">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/5 rounded-bl-full"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-[#D4AF37]/10 rounded-xl flex items-center justify-center mb-6">
+                            <span class="font-calligraphy text-3xl text-[#D4AF37]">释</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-[#1a1a1a]">佛家 · 明心见性</h3>
+                        <p class="text-gray-600 mb-6 text-sm leading-relaxed">
+                            源于古印度，融入中国后形成汉传佛教。主张「因果轮回」，强调慈悲为怀、无私奉献，通过修行达到涅槃解脱，与儒道形成互补。
+                        </p>
+                        <div class="space-y-2">
+                            <div class="flex items-center text-sm">
+                                <span class="w-2 h-2 bg-[#D4AF37] rounded-full mr-2"></span>
+                                <span class="text-gray-700">核心：空、慈悲、因果</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <span class="w-2 h-2 bg-[#D4AF37] rounded-full mr-2"></span>
+                                <span class="text-gray-700">经典：《金刚经》《心经》</span>
+                            </div>
+                            <div class="flex items-center text-sm">
+                                <span class="w-2 h-2 bg-[#D4AF37] rounded-full mr-2"></span>
+                                <span class="text-gray-700">目标：涅槃解脱</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="mt-16 bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="bg-[#1a1a1a] text-white p-4">
+                    <h3 class="font-calligraphy text-2xl text-center">儒释道三家对比</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-4 text-left font-bold">维度</th>
+                                <th class="px-6 py-4 text-center text-[#C41E3A] font-bold">儒家</th>
+                                <th class="px-6 py-4 text-center text-[#00A86B] font-bold">道家</th>
+                                <th class="px-6 py-4 text-center text-[#D4AF37] font-bold">佛家</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium">世界观</td>
+                                <td class="px-6 py-4 text-center">积极进取，建功立业</td>
+                                <td class="px-6 py-4 text-center">顺应自然，无为而治</td>
+                                <td class="px-6 py-4 text-center">人生是苦，追求解脱</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium">人生观</td>
+                                <td class="px-6 py-4 text-center">修身齐家治国平天下</td>
+                                <td class="px-6 py-4 text-center">逍遥自在，返璞归真</td>
+                                <td class="px-6 py-4 text-center">断除烦恼，涅槃寂静</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium">价值观</td>
+                                <td class="px-6 py-4 text-center">仁义礼智信</td>
+                                <td class="px-6 py-4 text-center">道法自然，淡泊名利</td>
+                                <td class="px-6 py-4 text-center">诸恶莫作，众善奉行</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium">修养法</td>
+                                <td class="px-6 py-4 text-center">克己复礼，博学笃行</td>
+                                <td class="px-6 py-4 text-center">心斋坐忘，守静致虚</td>
+                                <td class="px-6 py-4 text-center">戒定慧三学，禅修</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 24 Solar Terms Section -->
+    <section id="solar-terms" class="py-20 px-4 bg-gradient-to-b from-white to-[#F5F5DC]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="font-calligraphy text-4xl md:text-5xl mb-4">二十四节气</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">被誉为「中国的第五大发明」，2016年列入联合国非遗名录。先民观天察地，将太阳周年运动划分为24等份，指导农事与生活。</p>
+            </div>
+
+            <!-- Season Tabs -->
+            <div class="flex justify-center mb-8">
+                <div class="inline-flex bg-white rounded-full p-1 shadow-md">
+                    <button onclick="switchSeason('spring')" id="tab-spring" class="season-tab px-6 py-2 rounded-full text-sm font-medium transition-all tab-active">春</button>
+                    <button onclick="switchSeason('summer')" id="tab-summer" class="season-tab px-6 py-2 rounded-full text-sm font-medium transition-all hover:bg-gray-100">夏</button>
+                    <button onclick="switchSeason('autumn')" id="tab-autumn" class="season-tab px-6 py-2 rounded-full text-sm font-medium transition-all hover:bg-gray-100">秋</button>
+                    <button onclick="switchSeason('winter')" id="tab-winter" class="season-tab px-6 py-2 rounded-full text-sm font-medium transition-all hover:bg-gray-100">冬</button>
+                </div>
+            </div>
+
+            <!-- Solar Terms Grid -->
+            <div id="solar-content" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Generated by JS -->
+            </div>
+
+            <!-- Detail Panel -->
+            <div id="solar-detail" class="mt-8 bg-white rounded-2xl p-8 shadow-lg hidden">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 id="detail-title" class="font-calligraphy text-3xl mb-2"></h3>
+                        <p id="detail-date" class="text-[#C41E3A] font-medium mb-4"></p>
+                        <p id="detail-desc" class="text-gray-700 leading-relaxed mb-4"></p>
+                        <div class="space-y-2">
+                            <div class="flex items-start">
+                                <span class="w-20 text-sm text-gray-500 shrink-0">物候特征：</span>
+                                <span id="detail-phenology" class="text-sm text-gray-700"></span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="w-20 text-sm text-gray-500 shrink-0">农事活动：</span>
+                                <span id="detail-farming" class="text-sm text-gray-700"></span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="w-20 text-sm text-gray-500 shrink-0">民俗习惯：</span>
+                                <span id="detail-custom" class="text-sm text-gray-700"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-6 flex items-center justify-center">
+                        <div class="text-center">
+                            <div id="detail-icon" class="font-calligraphy text-6xl mb-4 text-[#C41E3A]"></div>
+                            <p class="text-sm text-gray-500 italic" id="detail-poem"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Traditional Festivals -->
+    <section id="festivals" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-calligraphy text-4xl md:text-5xl mb-4">传统节日</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">承载着中华民族的历史记忆与伦理情感，是「天人合一」世界观的具体体现</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Spring Festival -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg card-hover">
+                    <div class="h-48 bg-gradient-to-br from-[#C41E3A] to-[#E34234] flex items-center justify-center">
+                        <span class="font-calligraphy text-6xl text-white">春</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">春节 · 正月初一</h3>
+                        <p class="text-sm text-gray-600 mb-4">百节之首，辞旧迎新。贴春联、放鞭炮、吃年夜饭、拜年，承载着团圆与希望。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-[#C41E3A]/10 text-[#C41E3A] text-xs rounded">贴春联</span>
+                            <span class="px-2 py-1 bg-[#C41E3A]/10 text-[#C41E3A] text-xs rounded">守岁</span>
+                            <span class="px-2 py-1 bg-[#C41E3A]/10 text-[#C41E3A] text-xs rounded">红包</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lantern Festival -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg card-hover">
+                    <div class="h-48 bg-gradient-to-br from-[#D4AF37] to-[#FFD700] flex items-center justify-center">
+                        <span class="font-calligraphy text-6xl text-white">元</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">元宵 · 正月十五</h3>
+                        <p class="text-sm text-gray-600 mb-4">上元佳节，赏花灯、猜灯谜、吃汤圆，象征着团圆美满与新春的延续。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-[#D4AF37]/10 text-[#B8860B] text-xs rounded">赏花灯</span>
+                            <span class="px-2 py-1 bg-[#D4AF37]/10 text-[#B8860B] text-xs rounded">猜灯谜</span>
+                            <span class="px-2 py-1 bg-[#D4AF37]/10 text-[#B8860B] text-xs rounded">吃汤圆</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qingming -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg card-hover">
+                    <div class="h-48 bg-gradient-to-br from-[#00A86B] to-[#3CB371] flex items-center justify-center">
+                        <span class="font-calligraphy text-6xl text-white">清</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">清明 · 节气</h3>
+                        <p class="text-sm text-gray-600 mb-4">慎终追远，扫墓祭祖，踏青郊游。体现了中国人「敬天法祖」的伦理观念。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-[#00A86B]/10 text-[#00A86B] text-xs rounded">扫墓</span>
+                            <span class="px-2 py-1 bg-[#00A86B]/10 text-[#00A86B] text-xs rounded">踏青</span>
+                            <span class="px-2 py-1 bg-[#00A86B]/10 text-[#00A86B] text-xs rounded">插柳</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dragon Boat -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg card-hover">
+                    <div class="h-48 bg-gradient-to-br from-[#1E90FF] to-[#4169E1] flex items-center justify-center">
+                        <span class="font-calligraphy text-6xl text-white">端</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">端午 · 五月初五</h3>
+                        <p class="text-sm text-gray-600 mb-4">纪念屈原，赛龙舟、吃粽子、挂艾草。蕴含着深厚的爱国主义情怀。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-[#1E90FF]/10 text-[#1E90FF] text-xs rounded">赛龙舟</span>
+                            <span class="px-2 py-1 bg-[#1E90FF]/10 text-[#1E90FF] text-xs rounded">吃粽子</span>
+                            <span class="px-2 py-1 bg-[#1E90FF]/10 text-[#1E90FF] text-xs rounded">挂艾草</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qixi -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg card-hover">
+                    <div class="h-48 bg-gradient-to-br from-[#FF69B4] to-[#FFB6C1] flex items-center justify-center">
+                        <span class="font-calligraphy text-6xl text-white">七</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">七夕 · 七月初七</h3>
+                        <p class="text-sm text-gray-600 mb-4">乞巧佳节，牛郎织女传说。现代也被称为「中国情人节」，乞巧祈福。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-[#FF69B4]/10 text-[#FF69B4] text-xs rounded">乞巧</span>
+                            <span class="px-2 py-1 bg-[#FF69B4]/10 text-[#FF69B4] text-xs rounded">观星</span>
+                            <span class="px-2 py-1 bg-[#FF69B4]/10 text-[#FF69B4] text-xs rounded">祈福</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mid-autumn -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg card-hover">
+                    <div class="h-48 bg-gradient-to-br from-[#FFD700] to-[#FFA500] flex items-center justify-center">
+                        <span class="font-calligraphy text-6xl text-white">秋</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">中秋 · 八月十五</h3>
+                        <p class="text-sm text-gray-600 mb-4">月圆人团圆，赏月、吃月饼、饮桂花酒。寄托着对团圆美满的向往。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-[#FFD700]/10 text-[#DAA520] text-xs rounded">赏月</span>
+                            <span class="px-2 py-1 bg-[#FFD700]/10 text-[#DAA520] text-xs rounded">月饼</span>
+                            <span class="px-2 py-1 bg-[#FFD700]/10 text-[#DAA520] text-xs rounded">团圆</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Double Ninth -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg card-hover">
+                    <div class="h-48 bg-gradient-to-br from-[#8B4513] to-[#A0522D] flex items-center justify-center">
+                        <span class="font-calligraphy text-6xl text-white">重</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">重阳 · 九月初九</h3>
+                        <p class="text-sm text-gray-600 mb-4">登高望远，赏菊饮酒，敬老尊贤。「九九」谐音「久久」，寓意长寿。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-[#8B4513]/10 text-[#8B4513] text-xs rounded">登高</span>
+                            <span class="px-2 py-1 bg-[#8B4513]/10 text-[#8B4513] text-xs rounded">赏菊</span>
+                            <span class="px-2 py-1 bg-[#8B4513]/10 text-[#8B4513] text-xs rounded">敬老</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Winter Solstice -->
+                <div class="group relative overflow-hidden rounded-2xl bg-white shadow-lg card-hover">
+                    <div class="h-48 bg-gradient-to-br from-[#4A5568] to-[#2D3748] flex items-center justify-center">
+                        <span class="font-calligraphy text-6xl text-white">冬</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">冬至 · 节气</h3>
+                        <p class="text-sm text-gray-600 mb-4">「冬至大如年」，北方吃饺子，南方吃汤圆。标志着阳气始生，阴极阳生。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-[#4A5568]/10 text-[#4A5568] text-xs rounded">吃饺子</span>
+                            <span class="px-2 py-1 bg-[#4A5568]/10 text-[#4A5568] text-xs rounded">祭天</span>
+                            <span class="px-2 py-1 bg-[#4A5568]/10 text-[#4A5568] text-xs rounded">数九</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Arts Section -->
+    <section id="arts" class="py-20 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-calligraphy text-4xl md:text-5xl mb-4">琴棋书画 · 茶道戏曲</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">中国传统艺术是生活美学的集中体现，承载着文人的风雅与匠人的智慧</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Calligraphy -->
+                <div class="bg-[#F5F5DC] rounded-2xl p-8 relative overflow-hidden group hover:shadow-xl transition-all">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-[#1a1a1a]/5 rounded-bl-full"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-[#1a1a1a] rounded-lg flex items-center justify-center mb-6">
+                            <span class="font-calligraphy text-2xl text-white">书</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">书法</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            无言的诗，无行的舞，无图的画，无声的乐。篆隶楷行草五体，承载着汉字的形体美与意境美。
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-[#1a1a1a]/10">
+                            <div class="flex justify-between text-xs text-gray-600">
+                                <span>篆隶楷行草</span>
+                                <span>笔墨纸砚</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Painting -->
+                <div class="bg-[#F5F5DC] rounded-2xl p-8 relative overflow-hidden group hover:shadow-xl transition-all">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-[#C41E3A]/5 rounded-bl-full"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-[#C41E3A] rounded-lg flex items-center justify-center mb-6">
+                            <span class="font-calligraphy text-2xl text-white">画</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">国画</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            讲究「气韵生动」，以山水、花鸟、人物为主要题材。工笔写意两派，留白处皆是意境。
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-[#C41E3A]/10">
+                            <div class="flex justify-between text-xs text-gray-600">
+                                <span>山水花鸟人物</span>
+                                <span>工笔写意</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tea Ceremony -->
+                <div class="bg-[#F5F5DC] rounded-2xl p-8 relative overflow-hidden group hover:shadow-xl transition-all">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-[#00A86B]/5 rounded-bl-full"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-[#00A86B] rounded-lg flex items-center justify-center mb-6">
+                            <span class="font-calligraphy text-2xl text-white">茶</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">茶道</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            起源于中国，盛行于唐宋。品茶不仅是味觉享受，更是修身养性的生活方式，体现「和敬清寂」的精神。
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-[#00A86B]/10">
+                            <div class="flex justify-between text-xs text-gray-600">
+                                <span>绿红乌白黄黑</span>
+                                <span>和敬清寂</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Opera -->
+                <div class="bg-[#F5F5DC] rounded-2xl p-8 relative overflow-hidden group hover:shadow-xl transition-all">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-[#D4AF37]/5 rounded-bl-full"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-[#D4AF37] rounded-lg flex items-center justify-center mb-6">
+                            <span class="font-calligraphy text-2xl text-white">戏</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">戏曲</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            京剧为国粹，融合唱念做打。生旦净末丑五行当，脸谱色彩寓褒贬，水袖身段传情意。
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-[#D4AF37]/10">
+                            <div class="flex justify-between text-xs text-gray-600">
+                                <span>生旦净末丑</span>
+                                <span>唱念做打</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Go -->
+                <div class="bg-[#F5F5DC] rounded-2xl p-8 relative overflow-hidden group hover:shadow-xl transition-all">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-[#8B4513]/5 rounded-bl-full"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-[#8B4513] rounded-lg flex items-center justify-center mb-6">
+                            <span class="font-calligraphy text-2xl text-white">棋</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">围棋</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            纵横十九道，黑白两色子。蕴含阴阳变化之理，体现战略思维与大局观念，是「手谈」的艺术。
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-[#8B4513]/10">
+                            <div class="flex justify-between text-xs text-gray-600">
+                                <span>纵横十九路</span>
+                                <span>黑白阴阳</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guqin -->
+                <div class="bg-[#F5F5DC] rounded-2xl p-8 relative overflow-hidden group hover:shadow-xl transition-all">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-[#4A5568]/5 rounded-bl-full"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-[#4A5568] rounded-lg flex items-center justify-center mb-6">
+                            <span class="font-calligraphy text-2xl text-white">琴</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">古琴</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            四艺之首，七弦十三徽。音色清幽淡雅，是文人抒发胸臆、寄托情怀的重要载体，列入人类非遗。
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-[#4A5568]/10">
+                            <div class="flex justify-between text-xs text-gray-600">
+                                <span>七弦十三徽</span>
+                                <span>高山流水</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intangible Cultural Heritage -->
+    <section id="heritage" class="py-20 px-4 bg-gradient-to-b from-[#1a1a1a] to-[#2d2d2d] text-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-calligraphy text-4xl md:text-5xl mb-4 text-[#D4AF37]">非物质文化遗产</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">截至2024年，中国列入联合国教科文组织非遗名录项目达43个，位居世界第一</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all">
+                    <div class="text-[#C41E3A] font-calligraphy text-3xl mb-3">剪纸</div>
+                    <p class="text-sm text-gray-300">用剪刀或刻刀在纸上剪刻花纹，用于装点生活或配合民俗活动，蕴含丰富的文化历史信息。</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all">
+                    <div class="text-[#D4AF37] font-calligraphy text-3xl mb-3">皮影</div>
+                    <p class="text-sm text-gray-300">用兽皮或纸板做成的人物剪影，在灯光照射下用隔亮布进行演戏，是中国民间古老的传统艺术。</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all">
+                    <div class="text-[#00A86B] font-calligraphy text-3xl mb-3">针灸</div>
+                    <p class="text-sm text-gray-300">中医的重要组成部分，通过经络、腧穴的传导作用来治疗疾病，列入人类非物质文化遗产。</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all">
+                    <div class="text-[#E34234] font-calligraphy text-3xl mb-3">篆刻</div>
+                    <p class="text-sm text-gray-300">以石材为主要材料，以刻刀为工具，以汉字为表象的中国独特艺术形式，距今已有3000多年历史。</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all">
+                    <div class="text-[#FFD700] font-calligraphy text-3xl mb-3">珠算</div>
+                    <p class="text-sm text-gray-300">以算盘为工具进行数字计算的一种方法，被誉为「世界上最古老的计算机」，是中国古代科技成就。</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all">
+                    <div class="text-[#FF69B4] font-calligraphy text-3xl mb-3">云锦</div>
+                    <p class="text-sm text-gray-300">南京云锦木机妆花手工织造技艺，是中国传统的丝制工艺品，有「寸锦寸金」之称。</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all">
+                    <div class="text-[#1E90FF] font-calligraphy text-3xl mb-3">宣纸</div>
+                    <p class="text-sm text-gray-300">传统手工纸的杰出代表，具有「纸寿千年」的美誉，是书法绘画的最佳载体。</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all">
+                    <div class="text-[#FFA500] font-calligraphy text-3xl mb-3">木雕</div>
+                    <p class="text-sm text-gray-300">包括东阳木雕、乐清黄杨木雕、广东潮州金漆木雕等，是中国民间雕刻艺术的精华。</p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <div class="inline-flex items-center space-x-4 bg-white/5 rounded-full px-6 py-3 border border-[#D4AF37]/30">
+                    <span class="text-[#D4AF37] font-calligraphy text-xl">和</span>
+                    <span class="text-gray-300">传承不守旧，创新不离根</span>
+                    <span class="text-[#D4AF37] font-calligraphy text-xl">合</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a1a1a] text-gray-400 py-12 px-4 border-t border-white/10">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="font-calligraphy text-3xl text-[#D4AF37] mb-4">文以载道 · 化成天下</div>
+            <p class="text-sm mb-6">中国传统文化是中华民族的精神命脉，是涵养社会主义核心价值观的重要源泉</p>
+            <div class="flex justify-center space-x-6 text-xs">
+                <span>儒家仁爱</span>
+                <span>·</span>
+                <span>道法自然</span>
+                <span>·</span>
+                <span>禅茶一味</span>
+                <span>·</span>
+                <span>节气养生</span>
+                <span>·</span>
+                <span>琴棋书画</span>
+            </div>
+            <div class="mt-8 pt-8 border-t border-white/10 text-xs text-gray-600">
+                <p> 2026 中国传统文化展示 · 五千年文明的精神根脉</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Solar Terms Data
+        const solarTerms = {
+            spring: [
+                { name: '立春', date: '2月3-5日', icon: '春', desc: '春季开始，万物复苏', phenology: '东风解冻，蛰虫始振，鱼陟负冰', farming: '春耕备播，整地施肥', custom: '咬春吃春饼，打春牛', poem: '阳和起蛰，品物皆春' },
+                { name: '雨水', date: '2月18-20日', icon: '雨', desc: '降雨开始，雨量渐增', phenology: '獭祭鱼，鸿雁来，草木萌动', farming: '麦田施肥，选种备耕', custom: '回娘屋，接寿', poem: '好雨知时节，当春乃发生' },
+                { name: '惊蛰', date: '3月5-7日', icon: '蛰', desc: '春雷乍动，惊醒蛰虫', phenology: '桃始华，仓庚鸣，鹰化为鸠', farming: '春耕大忙，播种育苗', custom: '吃梨，蒙鼓皮，打小人', poem: '微雨众卉新，一雷惊蛰始' },
+                { name: '春分', date: '3月20-22日', icon: '分', desc: '昼夜平分，春季中点', phenology: '玄鸟至，雷乃发声，始电', farming: '植树造林，田间管理', custom: '竖蛋，吃春菜，祭日', poem: '春分雨脚落声微，柳岸斜风带客归' },
+                { name: '清明', date: '4月4-6日', icon: '清', desc: '天清地明，万物洁齐', phenology: '桐始华，田鼠化为鴽，虹始见', farming: '播种高粱，采茶制茶', custom: '扫墓祭祖，踏青插柳', poem: '清明时节雨纷纷，路上行人欲断魂' },
+                { name: '谷雨', date: '4月19-21日', icon: '谷', desc: '雨生百谷，春季结束', phenology: '萍始生，鸣鸠拂其羽，戴胜降于桑', farming: '播种移苗，种瓜点豆', custom: '喝谷雨茶，食香椿，祭海', poem: '谷雨如丝复似尘，煮瓶浮蜡正尝新' }
+            ],
+            summer: [
+                { name: '立夏', date: '5月5-7日', icon: '夏', desc: '夏季开始，万物繁茂', phenology: '蝼蝈鸣，蚯蚓出，王瓜生', farming: '中耕除草，防治病虫', custom: '吃立夏饭，秤人，迎夏', poem: '绿树阴浓夏日长，楼台倒影入池塘' },
+                { name: '小满', date: '5月20-22日', icon: '满', desc: '麦粒渐满，尚未成熟', phenology: '苦菜秀，靡草死，麦秋至', farming: '麦田管理，水稻插秧', custom: '祭车神，食苦菜，抢水', poem: '夜莺啼绿柳，皓月醒长空' },
+                { name: '芒种', date: '6月5-7日', icon: '芒', desc: '麦类成熟，稻谷播种', phenology: '螳螂生，鵙始鸣，反舌无声', farming: '收割小麦，播种晚稻', custom: '煮梅，送花神，安苗', poem: '芒种看今日，螳螂应节生' },
+                { name: '夏至', date: '6月21-22日', icon: '至', desc: '白昼最长，阳气至极', phenology: '鹿角解，蝉始鸣，半夏生', farming: '田间管理，防汛抗旱', custom: '吃面，祭神祀祖，消夏避伏', poem: '夏至一阴生，稍稍夕漏迟' },
+                { name: '小暑', date: '7月6-8日', icon: '暑', desc: '天气渐热，尚未极热', phenology: '温风至，蟋蟀居壁，鹰始挚', farming: '中耕除草，蓄水防旱', custom: '食新，吃饺子，晒书画', poem: '倏忽温风至，因循小暑来' },
+                { name: '大暑', date: '7月22-24日', icon: '热', desc: '一年中最热时期', phenology: '腐草为萤，土润溽暑，大雨时行', farming: '抢收抢种，防洪排涝', custom: '喝暑羊，吃仙草，送大暑船', poem: '赤日几时过，清风无处寻' }
+            ],
+            autumn: [
+                { name: '立秋', date: '8月7-9日', icon: '秋', desc: '秋季开始，暑去凉来', phenology: '凉风至，白露降，寒蝉鸣', farming: '秋收准备，棉花整枝', custom: '贴秋膘，咬秋，晒秋', poem: '睡起秋声无觅处，满阶梧桐月明中' },
+                { name: '处暑', date: '8月22-24日', icon: '处', desc: '暑气结束，天气转凉', phenology: '鹰乃祭鸟，天地始肃，禾乃登', farming: '抢收抢晒，蓄水保墒', custom: '吃鸭子，放河灯，开渔节', poem: '离离暑云散，袅袅凉风起' },
+                { name: '白露', date: '9月7-9日', icon: '露', desc: '天气转凉，露凝而白', phenology: '鸿雁来，玄鸟归，群鸟养羞', farming: '抢收棉花，高粱，谷子', custom: '收清露，饮白露茶，吃龙眼', poem: '蒹葭苍苍，白露为霜' },
+                { name: '秋分', date: '9月22-24日', icon: '分', desc: '昼夜平分，秋季中点', phenology: '雷始收声，蛰虫坯户，水始涸', farming: '秋收秋种，颗粒归仓', custom: '祭月，竖蛋，吃秋菜', poem: '燕将明日去，秋向此时分' },
+                { name: '寒露', date: '10月8-9日', icon: '寒', desc: '气温下降，露水寒冷', phenology: '鸿雁来宾，雀入大水为蛤，菊有黄华', farming: '播种小麦，采摘棉花', custom: '登高，赏菊，吃花糕', poem: '袅袅凉风动，凄凄寒露零' },
+                { name: '霜降', date: '10月23-24日', icon: '霜', desc: '天气渐冷，初霜出现', phenology: '豺乃祭兽，草木黄落，蛰虫咸俯', farming: '收割水稻，耕翻土地', custom: '吃柿子，赏菊，送芋鬼', poem: '霜降水返壑，风落木归山' }
+            ],
+            winter: [
+                { name: '立冬', date: '11月7-8日', icon: '冬', desc: '冬季开始，万物收藏', phenology: '水始冰，地始冻，雉入大水为蜃', farming: '秋收冬藏，兴修水利', custom: '吃饺子，补冬，祭祖', poem: '冻笔新诗懒写，寒炉美酒时温' },
+                { name: '小雪', date: '11月22-23日', icon: '雪', desc: '气温下降，开始降雪', phenology: '虹藏不见，天气上升，闭塞成冬', farming: '麦田管理，贮藏蔬菜', custom: '腌腊肉，吃糍粑，晒鱼干', poem: '花雪随风不厌看，更多还肯失林峦' },
+                { name: '大雪', date: '12月6-8日', icon: '雪', desc: '雪量增大，地面积雪', phenology: '鹖鴠不鸣，虎始交，荔挺出', farming: '加强冬管，积肥造肥', custom: '吃羊肉，腌肉，打雪仗', poem: '大雪满初晨，开门万象新' },
+                { name: '冬至', date: '12月21-23日', icon: '至', desc: '白昼最短，阴极阳生', phenology: '蚯蚓结，麋角解，水泉动', farming: '兴修水利，积肥造肥', custom: '吃饺子/汤圆，祭天，数九', poem: '天时人事日相催，冬至阳生春又来' },
+                { name: '小寒', date: '1月5-7日', icon: '寒', desc: '气候寒冷，尚未极冷', phenology: '雁北乡，鹊始巢，雉始雊', farming: '加强田间管理，防冻', custom: '吃腊八粥，探梅，冰戏', poem: '小寒连大吕，欢鹊垒新巢' },
+                { name: '大寒', date: '1月20-21日', icon: '寒', desc: '一年中最冷时期', phenology: '鸡乳，征鸟厉疾，水泽腹坚', farming: '总结全年，准备春耕', custom: '吃糯米饭，尾牙祭，除尘', poem: '旧雪未及消，新雪又拥户' }
+            ]
+        };
+
+        let currentSeason = 'spring';
+
+        function switchSeason(season) {
+            currentSeason = season;
+
+            // Update tabs
+            document.querySelectorAll('.season-tab').forEach(tab => {
+                tab.classList.remove('tab-active');
+            });
+            document.getElementById(`tab-${season}`).classList.add('tab-active');
+
+            // Update content
+            renderSolarTerms(season);
+        }
+
+        function renderSolarTerms(season) {
+            const container = document.getElementById('solar-content');
+            const terms = solarTerms[season];
+
+            container.innerHTML = terms.map((term, index) => `
+                <div onclick="showSolarDetail('${season}', ${index})" 
+                     class="bg-white rounded-xl p-4 shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-105 border-l-4 ${getSeasonColor(season)}">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-calligraphy text-2xl">${term.icon}</span>
+                        <span class="text-xs text-gray-500">${term.date}</span>
+                    </div>
+                    <h4 class="font-bold text-lg mb-1">${term.name}</h4>
+                    <p class="text-xs text-gray-600 line-clamp-2">${term.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function getSeasonColor(season) {
+            const colors = {
+                spring: 'border-green-500',
+                summer: 'border-red-500',
+                autumn: 'border-yellow-600',
+                winter: 'border-blue-500'
+            };
+            return colors[season];
+        }
+
+        function showSolarDetail(season, index) {
+            const term = solarTerms[season][index];
+            const detail = document.getElementById('solar-detail');
+
+            document.getElementById('detail-title').textContent = term.name;
+            document.getElementById('detail-date').textContent = term.date;
+            document.getElementById('detail-desc').textContent = term.desc;
+            document.getElementById('detail-phenology').textContent = term.phenology;
+            document.getElementById('detail-farming').textContent = term.farming;
+            document.getElementById('detail-custom').textContent = term.custom;
+            document.getElementById('detail-icon').textContent = term.icon;
+            document.getElementById('detail-poem').textContent = term.poem;
+
+            detail.classList.remove('hidden');
+            detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Initialize
+        renderSolarTerms('spring');
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

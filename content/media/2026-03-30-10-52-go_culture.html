@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>围棋与中国传统文化 - 千年智慧之道</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --ink-black: #1a1a1a;
+                --ink-gray: #4a4a4a;
+                --paper-white: #faf8f5;
+                --wood-brown: #8b6f47;
+                --light-wood: #d4c5b0;
+                --go-black: #1a1a1a;
+                --go-white: #f5f5f5;
+                --accent-red: #c41e3a;
+            }
+            body {
+                font-family: 'Noto Sans SC', sans-serif;
+                background-color: var(--paper-white);
+                color: var(--ink-black);
+            }
+            .serif {
+                font-family: 'Noto Serif SC', serif;
+            }
+        }
+        @layer components {
+            .go-stone {
+                box-shadow: 2px 3px 6px rgba(0,0,0,0.3), inset -1px -1px 2px rgba(255,255,255,0.2);
+            }
+            .go-stone-black {
+                background: radial-gradient(circle at 30% 30%, #4a4a4a, #0a0a0a);
+            }
+            .go-stone-white {
+                background: radial-gradient(circle at 30% 30%, #ffffff, #e0e0e0);
+            }
+            .board-grid {
+                background-image: 
+                    linear-gradient(to right, #8b6f47 1px, transparent 1px),
+                    linear-gradient(to bottom, #8b6f47 1px, transparent 1px);
+                background-size: calc(100% / 18) calc(100% / 18);
+            }
+            .star-point::after {
+                content: '';
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                background: #5c4a3d;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .scroll-decoration {
+                background: linear-gradient(to bottom, 
+                    transparent 0%, 
+                    rgba(139, 111, 71, 0.1) 10%, 
+                    rgba(139, 111, 71, 0.1) 90%, 
+                    transparent 100%);
+            }
+            .section-divider {
+                background: linear-gradient(to right, transparent, #8b6f47, transparent);
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen">
+    <!-- Hero Section -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-stone-100 via-stone-50 to-stone-100"></div>
+
+        <!-- Decorative Board Background -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="w-full h-full" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 50px, #000 50px, #000 51px), repeating-linear-gradient(90deg, transparent, transparent 50px, #000 50px, #000 51px);"></div>
+        </div>
+
+        <!-- Floating Stones -->
+        <div class="absolute top-20 left-20 w-16 h-16 rounded-full go-stone go-stone-black opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-32 right-32 w-12 h-12 rounded-full go-stone go-stone-white opacity-20 animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/3 right-20 w-8 h-8 rounded-full go-stone go-stone-black opacity-15 animate-pulse" style="animation-delay: 2s;"></div>
+
+        <div class="relative z-10 text-center px-6 max-w-4xl">
+            <div class="mb-6">
+                <span class="inline-block px-4 py-1 bg-stone-800 text-stone-100 text-sm tracking-widest rounded-full">千年智慧</span>
+            </div>
+            <h1 class="serif text-6xl md:text-8xl font-bold text-stone-800 mb-6 tracking-wider">
+                围棋
+            </h1>
+            <p class="serif text-2xl md:text-3xl text-stone-600 mb-4">与中国传统文化</p>
+            <div class="w-24 h-1 bg-stone-800 mx-auto mb-6"></div>
+            <p class="text-lg text-stone-500 max-w-2xl mx-auto leading-relaxed">
+                尧造围棋，以教子丹朱。黑白之间，天地万象；纵横之中，圣人之道。
+            </p>
+            <div class="mt-12 animate-bounce">
+                <svg class="w-6 h-6 mx-auto text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section 1: 基本规则 -->
+    <section class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="serif text-4xl font-bold text-stone-800 mb-4">围棋基本规则</h2>
+                <div class="section-divider h-px w-32 mx-auto mb-4"></div>
+                <p class="text-stone-500">极简规则，无穷变化</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <!-- Visual Board -->
+                <div class="relative aspect-square max-w-md mx-auto bg-[#dcb35c] rounded-lg shadow-2xl p-4">
+                    <div class="relative w-full h-full board-grid rounded">
+                        <!-- Star Points -->
+                        <div class="absolute star-point" style="top: 22.22%; left: 22.22%;"></div>
+                        <div class="absolute star-point" style="top: 22.22%; left: 50%;"></div>
+                        <div class="absolute star-point" style="top: 22.22%; left: 77.78%;"></div>
+                        <div class="absolute star-point" style="top: 50%; left: 22.22%;"></div>
+                        <div class="absolute star-point" style="top: 50%; left: 50%;"></div>
+                        <div class="absolute star-point" style="top: 50%; left: 77.78%;"></div>
+                        <div class="absolute star-point" style="top: 77.78%; left: 22.22%;"></div>
+                        <div class="absolute star-point" style="top: 77.78%; left: 50%;"></div>
+                        <div class="absolute star-point" style="top: 77.78%; left: 77.78%;"></div>
+
+                        <!-- Sample Stones -->
+                        <div class="absolute w-[9%] h-[9%] rounded-full go-stone go-stone-black" style="top: 44.44%; left: 44.44%;"></div>
+                        <div class="absolute w-[9%] h-[9%] rounded-full go-stone go-stone-white" style="top: 44.44%; left: 55.55%;"></div>
+                        <div class="absolute w-[9%] h-[9%] rounded-full go-stone go-stone-black" style="top: 55.55%; left: 44.44%;"></div>
+                    </div>
+                </div>
+
+                <!-- Rules Content -->
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 border-stone-800">
+                        <h3 class="serif text-xl font-bold mb-3 flex items-center">
+                            <span class="w-8 h-8 bg-stone-800 text-white rounded-full flex items-center justify-center text-sm mr-3">1</span>
+                            棋具与棋盘
+                        </h3>
+                        <p class="text-stone-600 leading-relaxed">
+                            19×19路棋盘，共361个交叉点（暗合一年365天）。黑子181枚，白子180枚，象征阴阳。
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 border-stone-600">
+                        <h3 class="serif text-xl font-bold mb-3 flex items-center">
+                            <span class="w-8 h-8 bg-stone-600 text-white rounded-full flex items-center justify-center text-sm mr-3">2</span>
+                            行棋规则
+                        </h3>
+                        <p class="text-stone-600 leading-relaxed">
+                            黑先白后，交替落子；棋子落定后不可移动。<span class="text-red-600 font-medium">落子无悔</span>，这是围棋的基本礼仪。
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 border-stone-500">
+                        <h3 class="serif text-xl font-bold mb-3 flex items-center">
+                            <span class="w-8 h-8 bg-stone-500 text-white rounded-full flex items-center justify-center text-sm mr-3">3</span>
+                            气与提子
+                        </h3>
+                        <p class="text-stone-600 leading-relaxed">
+                            棋子相邻的空点称为"气"。当棋子（或棋块）的所有气被对方占据，即为"无气"，被提走。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Points Grid -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-stone-100 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-stone-800 text-white flex items-center justify-center text-2xl font-bold serif">
+                        禁
+                    </div>
+                    <h4 class="font-bold text-lg mb-2">禁自杀</h4>
+                    <p class="text-sm text-stone-600">落子后自己立即无气且不能提对方子，该点禁止落子</p>
+                </div>
+                <div class="bg-stone-100 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-stone-700 text-white flex items-center justify-center text-2xl font-bold serif">
+                        劫
+                    </div>
+                    <h4 class="font-bold text-lg mb-2">劫争</h4>
+                    <p class="text-sm text-stone-600">提子后对方不能立即反提，需隔一手（全局同形禁反复）</p>
+                </div>
+                <div class="bg-stone-100 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-stone-600 text-white flex items-center justify-center text-2xl font-bold serif">
+                        胜
+                    </div>
+                    <h4 class="font-bold text-lg mb-2">胜负判定</h4>
+                    <p class="text-sm text-stone-600">终局数子（活子+围空），黑贴3¾子，超过180.5点获胜</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: 文人与影视 -->
+    <section class="py-20 px-6 bg-stone-100">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="serif text-4xl font-bold text-stone-800 mb-4">为何文人与影视皆爱围棋</h2>
+                <div class="section-divider h-px w-32 mx-auto mb-4"></div>
+                <p class="text-stone-500">四艺之本，君子标配</p>
+            </div>
+
+            <!-- Timeline/Features -->
+            <div class="space-y-8">
+                <!-- Feature 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col md:flex-row gap-8 items-center">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-4">
+                            <span class="w-12 h-12 bg-stone-800 text-white rounded-full flex items-center justify-center text-xl serif mr-4">壹</span>
+                            <h3 class="serif text-2xl font-bold">四艺之本，君子标配</h3>
+                        </div>
+                        <p class="text-stone-600 leading-relaxed mb-4">
+                            "琴棋书画"，围棋位列其中，是士大夫修身养性的必修技艺。从魏晋南北朝起，围棋就与玄学、老庄思想结合，被称为"手谈""坐隐"——以棋代语，以棋悟道。
+                        </p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded-full text-sm">手谈</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded-full text-sm">坐隐</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-600 rounded-full text-sm">忘忧</span>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-64 h-40 bg-stone-200 rounded-xl flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🎋</div>
+                            <p class="text-stone-500 text-sm">魏晋名士雅集</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col md:flex-row gap-8 items-center">
+                    <div class="w-full md:w-64 h-40 bg-stone-200 rounded-xl flex items-center justify-center order-2 md:order-1">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">☯️</div>
+                            <p class="text-stone-500 text-sm">黑白即宇宙</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 order-1 md:order-2">
+                        <div class="flex items-center mb-4">
+                            <span class="w-12 h-12 bg-stone-700 text-white rounded-full flex items-center justify-center text-xl serif mr-4">贰</span>
+                            <h3 class="serif text-2xl font-bold">黑白即宇宙，棋如人生</h3>
+                        </div>
+                        <p class="text-stone-600 leading-relaxed mb-4">
+                            黑白喻阴阳，棋盘仿天地。棋理蕴含取舍、大局、忍耐、不争的智慧。苏轼云："胜固欣然，败亦可喜"——输赢皆是修行。
+                        </p>
+                        <blockquote class="border-l-4 border-stone-400 pl-4 italic text-stone-500">
+                            "闲敲棋子落灯花" —— 赵师秀《约客》
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg flex flex-col md:flex-row gap-8 items-center">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-4">
+                            <span class="w-12 h-12 bg-stone-600 text-white rounded-full flex items-center justify-center text-xl serif mr-4">叁</span>
+                            <h3 class="serif text-2xl font-bold">创作意象：静、智、隐、玄</h3>
+                        </div>
+                        <p class="text-stone-600 leading-relaxed mb-4">
+                            在影视作品中，围棋是塑造人物的重要符号：落子速度映射性格，棋风展现城府，对弈场景营造东方美学意境。武侠与权谋剧中，棋盘即战场。
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-stone-50 p-3 rounded-lg text-center">
+                                <span class="text-2xl">🎬</span>
+                                <p class="text-sm text-stone-600 mt-1">《棋魂》</p>
+                            </div>
+                            <div class="bg-stone-50 p-3 rounded-lg text-center">
+                                <span class="text-2xl">🎭</span>
+                                <p class="text-sm text-stone-600 mt-1">《吴清源》</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-64 h-40 bg-stone-200 rounded-xl flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🎭</div>
+                            <p class="text-stone-500 text-sm">影视意象</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historical Figures -->
+            <div class="mt-12 bg-stone-800 text-stone-100 rounded-2xl p-8">
+                <h3 class="serif text-2xl font-bold mb-6 text-center">历史名人与围棋</h3>
+                <div class="grid md:grid-cols-3 gap-6 text-center">
+                    <div>
+                        <div class="text-3xl mb-2">👑</div>
+                        <h4 class="font-bold mb-2">唐代棋待诏</h4>
+                        <p class="text-sm text-stone-300">设"棋待诏"制度，专业棋手陪帝王对弈，持续500余年</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl mb-2">📚</div>
+                        <h4 class="font-bold mb-2">明清四大家</h4>
+                        <p class="text-sm text-stone-300">过百龄《四子谱》、范西屏、施襄夏等将围棋推向巅峰</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl mb-2">✍️</div>
+                        <h4 class="font-bold mb-2">文人雅集</h4>
+                        <p class="text-sm text-stone-300">王安石"棋罢不知人换世"，借棋喻人生哲理</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: 圣人之道 -->
+    <section class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="serif text-4xl font-bold text-stone-800 mb-4">围棋是否映射圣人</h2>
+                <div class="section-divider h-px w-32 mx-auto mb-4"></div>
+                <p class="text-stone-500 text-lg">是，且深度绑定</p>
+            </div>
+
+            <!-- Origin Legend -->
+            <div class="bg-gradient-to-r from-stone-100 to-stone-50 rounded-2xl p-8 mb-12">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="w-24 h-24 bg-stone-800 rounded-full flex items-center justify-center text-4xl flex-shrink-0">
+                        👑
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <h3 class="serif text-2xl font-bold mb-3">起源传说：圣人所创</h3>
+                        <p class="text-stone-600 leading-relaxed mb-4">
+                            《世本》记载："<span class="font-bold text-stone-800">尧造围棋，以教子丹朱</span>"。围棋自诞生之初，便被视为圣人教化之道，非单纯游戏，而是修身齐家治国平天下的隐喻。
+                        </p>
+                        <div class="inline-block bg-white px-6 py-3 rounded-full shadow-md">
+                            <span class="text-stone-800 font-medium">定位：圣人制器，教化之道</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Philosophy Cards -->
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <!-- Confucianism -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow">
+                    <div class="h-2 bg-red-700"></div>
+                    <div class="p-6">
+                        <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center text-3xl mb-4">
+                            📜
+                        </div>
+                        <h3 class="serif text-xl font-bold mb-3 text-red-800">儒家之道</h3>
+                        <ul class="space-y-2 text-stone-600">
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-red-700 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>中庸</strong>：不偏不倚，平衡之道</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-red-700 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>仁礼</strong>：对弈礼仪，落子轻放</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-red-700 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>大局</strong>：不谋全局者，不足谋一域</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-red-700 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>不争</strong>：以围地为目标，非吃子</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Taoism -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow">
+                    <div class="h-2 bg-stone-800"></div>
+                    <div class="p-6">
+                        <div class="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center text-3xl mb-4">
+                            ☯️
+                        </div>
+                        <h3 class="serif text-xl font-bold mb-3">道家之思</h3>
+                        <ul class="space-y-2 text-stone-600">
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-stone-800 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>阴阳</strong>：黑白相生，此消彼长</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-stone-800 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>无为</strong>：不争之争，以柔克刚</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-stone-800 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>坐隐</strong>：物我两忘，逍遥游心</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-stone-800 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>有无</strong>：围空即"有"生于"无"</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Buddhism -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow">
+                    <div class="h-2 bg-amber-600"></div>
+                    <div class="p-6">
+                        <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center text-3xl mb-4">
+                            🧘
+                        </div>
+                        <h3 class="serif text-xl font-bold mb-3 text-amber-800">佛家之境</h3>
+                        <ul class="space-y-2 text-stone-600">
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-amber-600 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>平常心</strong>：胜败不惊，宠辱偕忘</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-amber-600 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>放下</strong>：放下胜负，方得自在</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-amber-600 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>当下</strong>：一步一境，专注此刻</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-amber-600 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                <span><strong>空性</strong>：棋盘本空，因棋而实</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Go Ranks -->
+            <div class="bg-stone-800 text-stone-100 rounded-2xl p-8">
+                <h3 class="serif text-2xl font-bold mb-6 text-center">棋品即人品：古之棋九品</h3>
+                <div class="grid grid-cols-3 md:grid-cols-9 gap-2 text-center text-sm">
+                    <div class="bg-stone-700 rounded-lg p-3">
+                        <div class="font-bold text-amber-400">入神</div>
+                        <div class="text-xs text-stone-400 mt-1">最高境界</div>
+                    </div>
+                    <div class="bg-stone-700 rounded-lg p-3">
+                        <div class="font-bold">坐照</div>
+                        <div class="text-xs text-stone-400 mt-1">第二品</div>
+                    </div>
+                    <div class="bg-stone-700 rounded-lg p-3">
+                        <div class="font-bold">具体</div>
+                        <div class="text-xs text-stone-400 mt-1">第三品</div>
+                    </div>
+                    <div class="bg-stone-700 rounded-lg p-3">
+                        <div class="font-bold">通幽</div>
+                        <div class="text-xs text-stone-400 mt-1">第四品</div>
+                    </div>
+                    <div class="bg-stone-700 rounded-lg p-3">
+                        <div class="font-bold">用智</div>
+                        <div class="text-xs text-stone-400 mt-1">第五品</div>
+                    </div>
+                    <div class="bg-stone-700 rounded-lg p-3">
+                        <div class="font-bold">小巧</div>
+                        <div class="text-xs text-stone-400 mt-1">第六品</div>
+                    </div>
+                    <div class="bg-stone-700 rounded-lg p-3">
+                        <div class="font-bold">斗力</div>
+                        <div class="text-xs text-stone-400 mt-1">第七品</div>
+                    </div>
+                    <div class="bg-stone-700 rounded-lg p-3">
+                        <div class="font-bold">若愚</div>
+                        <div class="text-xs text-stone-400 mt-1">第八品</div>
+                    </div>
+                    <div class="bg-stone-700 rounded-lg p-3">
+                        <div class="font-bold">守拙</div>
+                        <div class="text-xs text-stone-400 mt-1">第九品</div>
+                    </div>
+                </div>
+                <p class="text-center text-stone-400 mt-4 text-sm">棋品对应人格境界，善弈者被视为"近道"、"近圣"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: 术语速查表 -->
+    <section class="py-20 px-6 bg-stone-100">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="serif text-4xl font-bold text-stone-800 mb-4">围棋入门术语速查</h2>
+                <div class="section-divider h-px w-32 mx-auto mb-4"></div>
+                <p class="text-stone-500">看懂棋谱，入门必备</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Term Cards -->
+                <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <span class="w-10 h-10 bg-stone-800 text-white rounded-lg flex items-center justify-center font-bold mr-3">气</span>
+                        <h4 class="font-bold text-lg">气</h4>
+                    </div>
+                    <p class="text-stone-600 text-sm">棋子直线相邻的空点。气尽则死，被提走。</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <span class="w-10 h-10 bg-stone-700 text-white rounded-lg flex items-center justify-center font-bold mr-3">眼</span>
+                        <h4 class="font-bold text-lg">眼</h4>
+                    </div>
+                    <p class="text-stone-600 text-sm">由己方棋子围成的空点。至少两眼方可活棋。</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <span class="w-10 h-10 bg-stone-600 text-white rounded-lg flex items-center justify-center font-bold mr-3">劫</span>
+                        <h4 class="font-bold text-lg">劫</h4>
+                    </div>
+                    <p class="text-stone-600 text-sm">可互提的棋形。提劫后需隔一手方可回提。</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <span class="w-10 h-10 bg-stone-500 text-white rounded-lg flex items-center justify-center font-bold mr-3">官</span>
+                        <h4 class="font-bold text-lg">官子</h4>
+                    </div>
+                    <p class="text-stone-600 text-sm">终局阶段的小范围争夺，价值精确计算。</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <span class="w-10 h-10 bg-stone-400 text-white rounded-lg flex items-center justify-center font-bold mr-3">势</span>
+                        <h4 class="font-bold text-lg">势</h4>
+                    </div>
+                    <p class="text-stone-600 text-sm">棋子的外部影响力，潜力与发展的空间。</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <span class="w-10 h-10 bg-stone-300 text-stone-800 rounded-lg flex items-center justify-center font-bold mr-3">地</span>
+                        <h4 class="font-bold text-lg">地</h4>
+                    </div>
+                    <p class="text-stone-600 text-sm">已确定的领地，可计算的具体目数。</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <span class="w-10 h-10 bg-stone-800 text-white rounded-lg flex items-center justify-center font-bold mr-3">打</span>
+                        <h4 class="font-bold text-lg">打吃</h4>
+                    </div>
+                    <p class="text-stone-600 text-sm">使对方棋子只剩一口气，威胁提子。</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <span class="w-10 h-10 bg-stone-700 text-white rounded-lg flex items-center justify-center font-bold mr-3">长</span>
+                        <h4 class="font-bold text-lg">长/立</h4>
+                    </div>
+                    <p class="text-stone-600 text-sm">向棋盘边缘延伸，巩固己方棋子。</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <span class="w-10 h-10 bg-stone-600 text-white rounded-lg flex items-center justify-center font-bold mr-3">断</span>
+                        <h4 class="font-bold text-lg">断</h4>
+                    </div>
+                    <p class="text-stone-600 text-sm">切断对方棋子联系，分割包围。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="py-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="bg-gradient-to-br from-stone-800 to-stone-900 text-stone-100 rounded-3xl p-12 shadow-2xl">
+                <h2 class="serif text-3xl font-bold mb-6">结语</h2>
+                <p class="text-xl leading-relaxed mb-8 text-stone-300">
+                    围棋是中国哲学的沙盘，也是圣人智慧的化身。
+                </p>
+                <div class="flex justify-center gap-4 mb-8">
+                    <div class="w-12 h-12 rounded-full go-stone go-stone-black"></div>
+                    <div class="w-12 h-12 rounded-full go-stone go-stone-white"></div>
+                </div>
+                <p class="text-stone-400 italic">
+                    "尧造围棋，以教子丹朱。黑白之间，天地万象；纵横之中，圣人之道。"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-8 px-6 text-center">
+        <p class="text-sm">围棋与中国传统文化 | 千年智慧，一局乾坤</p>
+    </footer>
+
+</body>
+</html>

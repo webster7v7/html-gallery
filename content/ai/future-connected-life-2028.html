@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2028万物互联生活图景 | 鸿蒙8 + 5G-A + AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Noto Sans SC', sans-serif; }
+        
+        :root {
+            --primary: #0ea5e9;
+            --secondary: #8b5cf6;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --darker: #020617;
+        }
+        
+        body {
+            background: var(--darker);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        
+        /* 动态背景网格 */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .orb-1 { width: 400px; height: 400px; background: var(--primary); top: 10%; left: -10%; }
+        .orb-2 { width: 300px; height: 300px; background: var(--secondary); bottom: 20%; right: -5%; }
+        .orb-3 { width: 250px; height: 250px; background: var(--accent); top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        
+        /* 时间轴样式 */
+        .timeline-container {
+            position: relative;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary), var(--accent));
+            transform: translateX(-50%);
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            background: var(--dark);
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            box-shadow: 0 0 20px var(--primary);
+        }
+        
+        /* 卡片悬停效果 */
+        .scene-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .scene-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.2);
+        }
+        
+        .scene-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .card-icon {
+            transition: transform 0.4s ease;
+        }
+        
+        /* 标签样式 */
+        .tech-tag {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(14, 165, 233, 0.3);
+        }
+        
+        /* 进度条动画 */
+        @keyframes fillProgress {
+            from { width: 0; }
+            to { width: var(--progress); }
+        }
+        
+        .progress-fill {
+            animation: fillProgress 1.5s ease-out forwards;
+        }
+        
+        /* 脉冲动画 */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(14, 165, 233, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(14, 165, 233, 0.8); }
+        }
+        
+        .pulse-active {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        /* 滚动显示动画 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 时间标签 */
+        .time-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+        }
+        
+        /* 设备互联可视化 */
+        .device-network {
+            position: relative;
+        }
+        
+        .device-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .device-node:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 30px var(--primary);
+        }
+        
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            transform-origin: left center;
+            opacity: 0.6;
+        }
+        
+        /* 响应式时间轴 */
+        @media (max-width: 768px) {
+            .timeline-line { left: 20px; }
+            .timeline-dot { left: 20px; }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="cyber-grid"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- 头部 -->
+    <header class="relative z-10 pt-12 pb-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full tech-tag mb-6">
+                <i class="fas fa-satellite-dish text-cyan-400"></i>
+                <span class="text-sm font-medium text-cyan-300">2028年技术融合预测</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-amber-400 bg-clip-text text-transparent">
+                万物互联时代生活图景
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                鸿蒙8 + 5G-A + AI 三位一体，重新定义人机交互边界
+            </p>
+            
+            <!-- 技术栈展示 -->
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <div class="px-6 py-3 rounded-xl bg-slate-800/50 border border-cyan-500/30 flex items-center gap-3">
+                    <i class="fab fa-android text-2xl text-cyan-400"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-400">操作系统</div>
+                        <div class="font-bold text-cyan-300">HarmonyOS 8</div>
+                    </div>
+                </div>
+                <div class="px-6 py-3 rounded-xl bg-slate-800/50 border border-purple-500/30 flex items-center gap-3">
+                    <i class="fas fa-broadcast-tower text-2xl text-purple-400"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-400">网络基建</div>
+                        <div class="font-bold text-purple-300">5G-A / 5.5G</div>
+                    </div>
+                </div>
+                <div class="px-6 py-3 rounded-xl bg-slate-800/50 border border-amber-500/30 flex items-center gap-3">
+                    <i class="fas fa-brain text-2xl text-amber-400"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-400">智能核心</div>
+                        <div class="font-bold text-amber-300">端侧大模型 AI</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 时间轴预测 -->
+    <section class="relative z-10 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12 text-slate-200">
+                <i class="fas fa-clock-rotate-left text-cyan-400 mr-2"></i>
+                万物互联发展时间线
+            </h2>
+            
+            <div class="timeline-container space-y-12">
+                <div class="timeline-line"></div>
+                
+                <!-- 2024-2025 -->
+                <div class="relative reveal">
+                    <div class="timeline-dot" style="top: 24px;"></div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="md:text-right pr-8">
+                            <div class="time-badge inline-block px-6 py-2 text-white font-bold mb-3">
+                                2024-2025
+                            </div>
+                            <h3 class="text-xl font-bold text-cyan-300 mb-2">5G-A商用元年</h3>
+                            <p class="text-slate-400 text-sm">5.5G网络开始规模商用，下行万兆、上行千兆成为现实。华为等厂商推出全套5.5G设备，300+城市启动部署。</p>
+                        </div>
+                        <div class="pl-8 md:pl-0">
+                            <div class="flex items-center gap-4">
+                                <div class="flex-1 bg-slate-800 rounded-full h-3 overflow-hidden">
+                                    <div class="progress-fill bg-gradient-to-r from-cyan-500 to-cyan-300 h-full rounded-full" style="--progress: 30%;"></div>
+                                </div>
+                                <span class="text-cyan-400 font-mono">30%</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">万物互联就绪度</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2026-2027 -->
+                <div class="relative reveal">
+                    <div class="timeline-dot" style="top: 24px; border-color: #8b5cf6;"></div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="md:order-2 pl-8 md:pl-0 md:pr-8">
+                            <div class="time-badge inline-block px-6 py-2 text-white font-bold mb-3" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">
+                                2026-2027
+                            </div>
+                            <h3 class="text-xl font-bold text-purple-300 mb-2">鸿蒙生态爆发期</h3>
+                            <p class="text-slate-400 text-sm">HarmonyOS 7-8版本迭代，跨设备互联覆盖手机、车机、家居、穿戴设备。AI助手实现多模态感知，AR眼镜进入L3阶段。</p>
+                        </div>
+                        <div class="md:order-1 md:text-right pr-8 md:pr-0 md:pl-8">
+                            <div class="flex items-center gap-4 flex-row-reverse">
+                                <div class="flex-1 bg-slate-800 rounded-full h-3 overflow-hidden">
+                                    <div class="progress-fill bg-gradient-to-r from-purple-500 to-purple-300 h-full rounded-full" style="--progress: 65%;"></div>
+                                </div>
+                                <span class="text-purple-400 font-mono">65%</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">万物互联就绪度</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2028 -->
+                <div class="relative reveal">
+                    <div class="timeline-dot pulse-active" style="top: 24px; border-color: #f59e0b;"></div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="md:text-right pr-8">
+                            <div class="time-badge inline-block px-6 py-2 text-white font-bold mb-3" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">
+                                2028年
+                            </div>
+                            <h3 class="text-xl font-bold text-amber-300 mb-2">全面万物互联</h3>
+                            <p class="text-slate-400 text-sm">6G标准启动，5G-A全面普及。个人AI助手跨设备无缝流转，"一号多端"成为常态。千亿级IoT设备接入，真正的万物互联时代来临。</p>
+                        </div>
+                        <div class="pl-8 md:pl-0">
+                            <div class="flex items-center gap-4">
+                                <div class="flex-1 bg-slate-800 rounded-full h-3 overflow-hidden">
+                                    <div class="progress-fill bg-gradient-to-r from-amber-500 to-red-500 h-full rounded-full" style="--progress: 90%;"></div>
+                                </div>
+                                <span class="text-amber-400 font-mono">90%</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">万物互联就绪度</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2028生活场景 -->
+    <section class="relative z-10 py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-slate-100">
+                    <i class="fas fa-city text-cyan-400 mr-3"></i>
+                    2028年典型生活场景
+                </h2>
+                <p class="text-slate-400">基于鸿蒙8 + 5G-A + AI 技术融合的日常体验</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 场景1: 晨起 -->
+                <div class="scene-card rounded-2xl p-6 reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-2xl">
+                            <i class="fas fa-sun text-white"></i>
+                        </div>
+                        <span class="tech-tag px-3 py-1 rounded-full text-xs font-medium text-cyan-300">07:00</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">AI唤醒管家</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        智能床垫监测到浅睡期，鸿蒙AI助手通过全屋音响轻柔唤醒。窗帘自动开启，咖啡机开始工作，今日日程与天气已同步至AR眼镜。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-bed mr-1"></i>生物传感</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-glasses mr-1"></i>AR显示</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-home mr-1"></i>全屋智能</span>
+                    </div>
+                </div>
+
+                <!-- 场景2: 通勤 -->
+                <div class="scene-card rounded-2xl p-6 reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-2xl">
+                            <i class="fas fa-car text-white"></i>
+                        </div>
+                        <span class="tech-tag px-3 py-1 rounded-full text-xs font-medium text-cyan-300">08:00</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">无缝车载互联</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        手机靠近车门自动解锁，鸿蒙车机同步手机所有应用状态。5G-A网络下，车载AI实时规划路线并预约目的地停车位，视频会议无缝流转至车机大屏。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-wifi mr-1"></i>5G-A</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-exchange-alt mr-1"></i>应用流转</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-robot mr-1"></i>自动驾驶</span>
+                    </div>
+                </div>
+
+                <!-- 场景3: 办公 -->
+                <div class="scene-card rounded-2xl p-6 reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl">
+                            <i class="fas fa-briefcase text-white"></i>
+                        </div>
+                        <span class="tech-tag px-3 py-1 rounded-full text-xs font-medium text-cyan-300">09:30</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">跨端协同办公</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        手机轻碰平板即可共享算力，文档编辑实时同步三端。AI助手自动整理会议录音生成纪要，通过5G-A低延迟同步给远程参会者，延迟&lt;4ms。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-share-alt mr-1"></i>算力共享</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-microphone mr-1"></i>AI纪要</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-bolt mr-1"></i>低延迟</span>
+                    </div>
+                </div>
+
+                <!-- 场景4: 购物 -->
+                <div class="scene-card rounded-2xl p-6 reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-2xl">
+                            <i class="fas fa-shopping-bag text-white"></i>
+                        </div>
+                        <span class="tech-tag px-3 py-1 rounded-full text-xs font-medium text-cyan-300">12:00</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">空间计算购物</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        AR眼镜扫描商品即可显示3D模型与全网比价。AI助手根据健康数据推荐营养搭配，鸿蒙支付实现"看一眼即付"，无需掏出手机。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-cube mr-1"></i>空间计算</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-eye mr-1"></i>视觉支付</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-heartbeat mr-1"></i>健康AI</span>
+                    </div>
+                </div>
+
+                <!-- 场景5: 健身 -->
+                <div class="scene-card rounded-2xl p-6 reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-2xl">
+                            <i class="fas fa-dumbbell text-white"></i>
+                        </div>
+                        <span class="tech-tag px-3 py-1 rounded-full text-xs font-medium text-cyan-300">18:00</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">全息私教指导</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        智能手表+AR眼镜组合，AI私教以全息投影形式纠正动作。运动数据实时同步至家庭大屏，5G-A上传4K运动视频至云端，AI生成个性化训练报告。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-hologram mr-1"></i>全息投影</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-tv mr-1"></i>多屏同步</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-chart-line mr-1"></i>实时分析</span>
+                    </div>
+                </div>
+
+                <!-- 场景6: 居家 -->
+                <div class="scene-card rounded-2xl p-6 reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-2xl">
+                            <i class="fas fa-couch text-white"></i>
+                        </div>
+                        <span class="tech-tag px-3 py-1 rounded-full text-xs font-medium text-cyan-300">20:00</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">沉浸式娱乐</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        手机投屏至智慧屏自动切换8K画质，鸿蒙分布式音响构建全景声场。AI根据观看内容调节灯光氛围，VR/AR内容通过5G-A边缘计算实时渲染。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-tv mr-1"></i>8K投屏</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-vr-cardboard mr-1"></i>XR体验</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-lightbulb mr-1"></i>氛围感知</span>
+                    </div>
+                </div>
+
+                <!-- 场景7: 医疗 -->
+                <div class="scene-card rounded-2xl p-6 reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center text-2xl">
+                            <i class="fas fa-heartbeat text-white"></i>
+                        </div>
+                        <span class="tech-tag px-3 py-1 rounded-full text-xs font-medium text-cyan-300">实时</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">预防式健康管理</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        可穿戴设备24小时监测体征，AI分析异常数据提前预警。远程问诊时，医生通过鸿蒙生态调取全量健康数据，5G-A保障高清视频诊疗无卡顿。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-shield-alt mr-1"></i>预防医学</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-video mr-1"></i>远程诊疗</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-database mr-1"></i>健康档案</span>
+                    </div>
+                </div>
+
+                <!-- 场景8: 出行 -->
+                <div class="scene-card rounded-2xl p-6 reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-2xl">
+                            <i class="fas fa-plane text-white"></i>
+                        </div>
+                        <span class="tech-tag px-3 py-1 rounded-full text-xs font-medium text-cyan-300">周末</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">无感智慧出行</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        鸿蒙AI助手自动规划行程，机票酒店"一碰即传"至行李箱电子标签。机场导航通过AR眼镜实时指引，5G-A网络支持候机厅云游戏4K流畅体验。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-route mr-1"></i>智能规划</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-nfc mr-1"></i>NFC标签</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-gamepad mr-1"></i>云游戏</span>
+                    </div>
+                </div>
+
+                <!-- 场景9: 安防 -->
+                <div class="scene-card rounded-2xl p-6 reveal">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-slate-500 to-gray-500 flex items-center justify-center text-2xl">
+                            <i class="fas fa-shield-alt text-white"></i>
+                        </div>
+                        <span class="tech-tag px-3 py-1 rounded-full text-xs font-medium text-cyan-300">全天候</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">分布式安防</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+                        门锁、摄像头、传感器组成鸿蒙安全网络，AI识别异常行为实时推送。离家模式自动布防，回家模式通过生物识别无感解锁，访客视频对讲流转至任意设备。
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-lock mr-1"></i>生物识别</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-bell mr-1"></i>AI预警</span>
+                        <span class="px-2 py-1 bg-slate-700/50 rounded text-xs text-slate-300"><i class="fas fa-network-wired mr-1"></i>分布式</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术特性对比 -->
+    <section class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 bg-slate-900/30">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-12 text-slate-200">
+                <i class="fas fa-layer-group text-purple-400 mr-2"></i>
+                技术栈能力矩阵
+            </h2>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- 鸿蒙8 -->
+                <div class="bg-gradient-to-b from-slate-800/80 to-slate-900/80 rounded-2xl p-6 border border-cyan-500/20">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+                            <i class="fab fa-android text-2xl text-cyan-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-cyan-300">HarmonyOS 8</h3>
+                            <p class="text-xs text-slate-500">分布式操作系统</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> 跨设备算力共享</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> 应用无缝流转</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> 统一生态标准</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> 星盾安全架构</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> 微内核架构</li>
+                    </ul>
+                </div>
+
+                <!-- 5G-A -->
+                <div class="bg-gradient-to-b from-slate-800/80 to-slate-900/80 rounded-2xl p-6 border border-purple-500/20">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                            <i class="fas fa-broadcast-tower text-2xl text-purple-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-purple-300">5G-A / 5.5G</h3>
+                            <p class="text-xs text-slate-500">万兆网络基建</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-purple-400"></i> 下行10Gbps / 上行1Gbps</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-purple-400"></i> 空口时延 &lt; 4ms</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-purple-400"></i> 千亿级设备连接</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-purple-400"></i> 厘米级定位精度</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-purple-400"></i> 通信感知融合</li>
+                    </ul>
+                </div>
+
+                <!-- AI -->
+                <div class="bg-gradient-to-b from-slate-800/80 to-slate-900/80 rounded-2xl p-6 border border-amber-500/20">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
+                            <i class="fas fa-brain text-2xl text-amber-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-amber-300">端侧大模型 AI</h3>
+                            <p class="text-xs text-slate-500">个人智能助手</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-amber-400"></i> 多模态感知交互</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-amber-400"></i> 端云协同推理</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-amber-400"></i> 跨设备记忆共享</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-amber-400"></i> 实时场景理解</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-amber-400"></i> 个性化服务编排</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关键数据 -->
+    <section class="relative z-10 py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 reveal">
+                    <div class="text-3xl sm:text-4xl font-black text-cyan-400 mb-2">10Gbps</div>
+                    <div class="text-sm text-slate-400">5G-A下行峰值</div>
+                </div>
+                <div class="text-center p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 reveal">
+                    <div class="text-3xl sm:text-4xl font-black text-purple-400 mb-2">&lt;4ms</div>
+                    <div class="text-sm text-slate-400">网络传输时延</div>
+                </div>
+                <div class="text-center p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 reveal">
+                    <div class="text-3xl sm:text-4xl font-black text-amber-400 mb-2">1000亿</div>
+                    <div class="text-sm text-slate-400">设备连接密度/km²</div>
+                </div>
+                <div class="text-center p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 reveal">
+                    <div class="text-3xl sm:text-4xl font-black text-green-400 mb-2">99.9%</div>
+                    <div class="text-sm text-slate-400">万物互联覆盖率</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 总结 -->
+    <section class="relative z-10 py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="p-8 rounded-3xl bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-amber-500/10 border border-slate-700/50">
+                <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-slate-100">万物互联时代临界点</h2>
+                <p class="text-slate-400 leading-relaxed mb-6">
+                    根据行业预测，<strong class="text-cyan-400">2028年将是万物互联全面普及的关键节点</strong>。届时5G-A网络实现全覆盖，6G标准开始落地；鸿蒙生态设备突破10亿，实现真正的"一号多端"无缝体验；端侧AI大模型普及，个人AI助手成为跨设备统一入口。技术三要素的融合将彻底重构人机交互方式，从"人找服务"进化为"服务随人"。
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 text-sm">
+                    <span class="px-4 py-2 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                        <i class="fas fa-calendar-check mr-2"></i>预计2028年全面普及
+                    </span>
+                    <span class="px-4 py-2 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                        <i class="fas fa-users mr-2"></i>覆盖超10亿设备
+                    </span>
+                    <span class="px-4 py-2 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        <i class="fas fa-rocket mr-2"></i>6G标准启动
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="relative z-10 py-8 px-4 text-center text-slate-600 text-sm">
+        <p>数据来源：3GPP标准组织、华为官方发布、中国移动/联通/电信白皮书</p>
+        <p class="mt-2">© 2028万物互联预测报告 | 技术发展存在不确定性，仅供参考</p>
+    </footer>
+
+    <script>
+        // 滚动显示动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 设备节点悬停交互
+        document.querySelectorAll('.device-node').forEach(node => {
+            node.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.2)';
+                this.style.boxShadow = '0 0 30px rgba(14, 165, 233, 0.8)';
+            });
+            node.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何用AI写出顶级剧本 · 完整指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent: #ff6b6b;
+            --accent-secondary: #4ecdc4;
+            --border: #252530;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 60px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .hero-badge::before {
+            content: "◆";
+            color: var(--accent);
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #888 50%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .section-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* 5 Layers Grid */
+        .layers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .layer-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .layer-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .layer-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .layer-card:nth-child(1) .layer-icon { background: var(--gradient-1); }
+        .layer-card:nth-child(2) .layer-icon { background: var(--gradient-2); }
+        .layer-card:nth-child(3) .layer-icon { background: var(--gradient-3); }
+        .layer-card:nth-child(4) .layer-icon { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .layer-card:nth-child(5) .layer-icon { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+
+        .layer-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .layer-goal {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-top: 2px;
+        }
+
+        .layer-content {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .layer-content ul {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .layer-content li {
+            padding: 6px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .layer-content li::before {
+            content: "›";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Prompt Templates */
+        .prompt-section {
+            display: grid;
+            gap: 24px;
+        }
+
+        .prompt-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .prompt-header {
+            padding: 20px 24px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .prompt-tag {
+            padding: 4px 12px;
+            background: var(--accent);
+            color: white;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .prompt-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .prompt-body {
+            padding: 24px;
+        }
+
+        .prompt-code {
+            background: #0d0d12;
+            border: 1px solid #2a2a35;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .prompt-code .comment {
+            color: #6a6a7a;
+        }
+
+        .prompt-code .highlight {
+            color: var(--accent-secondary);
+        }
+
+        .prompt-code .var {
+            color: #ff6b6b;
+        }
+
+        /* Structure Section */
+        .structure-visual {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .act-panel {
+            padding: 40px 30px;
+            min-height: 320px;
+            position: relative;
+        }
+
+        .act-1 {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .act-2 {
+            background: linear-gradient(180deg, #16213e 0%, #0f3460 100%);
+        }
+
+        .act-3 {
+            background: linear-gradient(180deg, #0f3460 0%, #e94560 100%);
+        }
+
+        .act-number {
+            font-size: 5rem;
+            font-weight: 900;
+            opacity: 0.1;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            line-height: 1;
+        }
+
+        .act-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 8px;
+        }
+
+        .act-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .act-percent {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .act-tasks {
+            list-style: none;
+        }
+
+        .act-tasks li {
+            padding: 8px 0;
+            padding-left: 16px;
+            position: relative;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .act-tasks li::before {
+            content: "›";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Workflow */
+        .workflow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .workflow-step {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            position: relative;
+        }
+
+        .workflow-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            padding: 4px 16px;
+            background: var(--gradient-1);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .workflow-step h4 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            margin-top: 8px;
+        }
+
+        .workflow-step p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .workflow-tips {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .workflow-tips strong {
+            color: var(--accent);
+        }
+
+        /* Pitfalls */
+        .pitfalls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .pitfall-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .pitfall-card h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .pitfall-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Tools */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .tool-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover {
+            border-color: var(--accent-secondary);
+        }
+
+        .tool-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .tool-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-core {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0 40px;
+            }
+
+            .structure-visual {
+                grid-template-columns: 1fr;
+            }
+
+            .act-panel {
+                min-height: auto;
+            }
+
+            .section-header {
+                flex-wrap: wrap;
+            }
+
+            .prompt-code {
+                font-size: 0.75rem;
+                padding: 16px;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="container">
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-badge">AI × 剧本创作</div>
+            <h1>如何用AI写出顶级剧本</h1>
+            <p class="hero-subtitle">把AI当作「专业编剧搭档」而非「代笔工具」，掌握提示词工程、经典叙事结构与人机协作工作流</p>
+        </header>
+
+        <!-- 5 Layers -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <h2 class="section-title">AI剧本创作的五层进阶</h2>
+            </div>
+            <div class="layers-grid">
+                <div class="layer-card">
+                    <div class="layer-header">
+                        <div class="layer-icon">💡</div>
+                        <div>
+                            <div class="layer-title">概念开发</div>
+                            <div class="layer-goal">从灵感到完整前提</div>
+                        </div>
+                    </div>
+                    <div class="layer-content">
+                        <ul>
+                            <li>一句话概括 + 三幕定位</li>
+                            <li>主题锚点锁定方向</li>
+                            <li>类型惯例与反套路</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="layer-card">
+                    <div class="layer-header">
+                        <div class="layer-icon">🏗️</div>
+                        <div>
+                            <div class="layer-title">结构搭建</div>
+                            <div class="layer-goal">构建剧本骨架</div>
+                        </div>
+                    </div>
+                    <div class="layer-content">
+                        <ul>
+                            <li>三幕式 / 英雄之旅</li>
+                            <li>八序列 / 救猫咪节拍</li>
+                            <li>情节点与转折点设计</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="layer-card">
+                    <div class="layer-header">
+                        <div class="layer-icon">👤</div>
+                        <div>
+                            <div class="layer-title">人物塑造</div>
+                            <div class="layer-goal">让角色有血有肉</div>
+                        </div>
+                    </div>
+                    <div class="layer-content">
+                        <ul>
+                            <li>反向追问法深挖动机</li>
+                            <li>文化嫁接术增加层次</li>
+                            <li>方言/语言风格区分</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="layer-card">
+                    <div class="layer-header">
+                        <div class="layer-icon">🎬</div>
+                        <div>
+                            <div class="layer-title">场景写作</div>
+                            <div class="layer-goal">视觉化叙事</div>
+                        </div>
+                    </div>
+                    <div class="layer-content">
+                        <ul>
+                            <li>展示而非讲述</li>
+                            <li>为镜头写作（非纸上导演）</li>
+                            <li>潜台词与留白艺术</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="layer-card">
+                    <div class="layer-header">
+                        <div class="layer-icon">✨</div>
+                        <div>
+                            <div class="layer-title">精修迭代</div>
+                            <div class="layer-goal">从合格到卓越</div>
+                        </div>
+                    </div>
+                    <div class="layer-content">
+                        <ul>
+                            <li>AI结构诊断与节拍检查</li>
+                            <li>人工润色情感细节</li>
+                            <li>格式规范与终稿输出</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prompt Templates -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">02</div>
+                <h2 class="section-title">顶级提示词模板（即拷即用）</h2>
+            </div>
+            <div class="prompt-section">
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-tag">概念开发</span>
+                        <span class="prompt-title">从灵感到完整大纲</span>
+                    </div>
+                    <div class="prompt-body">
+                        <div class="prompt-code"><span class="comment"># 复制以下内容到ChatGPT/Claude/DeepSeek</span>
+
+你是一位获得戛纳剧本奖的资深编剧。我需要创作一部<span class="var">[类型]</span>电影。
+
+核心前提：<span class="var">[一句话概括]</span>
+
+请完成：
+1. 用三幕式结构生成大纲表格（开端-发展-高潮），标注每场戏的核心冲突
+2. 列出3-5个情感锚点主题词（如"救赎""代际隔阂"）
+3. 设计主角的"欲望"（外在目标）与"需求"（内在成长）
+4. 指出潜在的第二幕拖沓风险点
+
+输出格式：Markdown表格 + 要点清单</div>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-tag" style="background: var(--accent-secondary);">角色塑造</span>
+                        <span class="prompt-title">区分角色声音</span>
+                    </div>
+                    <div class="prompt-body">
+                        <div class="prompt-code"><span class="comment"># 解决"所有角色说话都像AI"的问题</span>
+
+我剧本中的三个角色对话听起来太像。请帮我区分：
+
+角色A：<span class="var">[退伍军人，沉默寡言，习惯用军事术语思考]</span>
+角色B：<span class="var">[年轻程序员，语速快，喜欢用互联网梗]</span>
+角色C：<span class="var">[老书店老板，说话慢，爱引用古典文学]</span>
+
+场景：<span class="var">[描述场景情境]</span>
+
+请为同一情境写三段对话，要求：
+- 去掉角色名也能辨认是谁在说话
+- 体现各自的词汇选择、节奏、潜台词习惯
+- 每段控制在3-5句内</div>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-tag" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">场景写作</span>
+                        <span class="prompt-title">标准剧本格式生成</span>
+                    </div>
+                    <div class="prompt-body">
+                        <div class="prompt-code"><span class="comment"># 让AI按专业格式输出单场戏</span>
+
+请按标准剧本格式写一场戏：
+
+场景标题：<span class="var">[内/外]+[地点]+[时间]</span>
+角色：<span class="var">[列出出场角色及当前情绪状态]</span>
+核心冲突：<span class="var">[这场戏必须解决什么？谁想要什么？阻碍是什么？]</span>
+视觉重点：<span class="var">[需要强调的意象或动作]</span>
+潜台词：<span class="var">[角色没有说出口的真实动机]</span>
+
+要求：
+- 动作描述精炼，为镜头写作而非纸上导演
+- 对话每轮控制在1-3句，保持节奏
+- 用行为揭示角色，而非直白表述</div>
+                    </div>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <span class="prompt-tag" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">剧本医生</span>
+                        <span class="prompt-title">AI结构诊断</span>
+                    </div>
+                    <div class="prompt-body">
+                        <div class="prompt-code"><span class="comment"># 让AI扮演专业剧本分析师</span>
+
+请分析我刚写的第二幕（附文本）：
+
+1. 指出张力下降的具体页码范围
+2. 检查中点转折是否出现在第50-60页之间
+3. 评估角色弧线清晰度
+4. 计算动作描述 vs 对话的比例（理想60:40）
+5. 给出3条具体的升级建议
+
+分析风格：像《剧本》杂志的专业评论，既指出问题也提供解决方案。</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Structure -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <h2 class="section-title">三幕式结构 · 剧本核心骨架</h2>
+            </div>
+            <div class="structure-visual">
+                <div class="act-panel act-1">
+                    <span class="act-number">01</span>
+                    <div class="act-label">The Setup</div>
+                    <div class="act-title">第一幕 · 建置</div>
+                    <span class="act-percent">25% · 页码 1-30</span>
+                    <ul class="act-tasks">
+                        <li>介绍主角、世界、日常状态</li>
+                        <li>建立主角的"缺陷"或"需求"</li>
+                        <li>设置赌注（Stakes）</li>
+                        <li>催化剂打破平衡</li>
+                        <li>情节点一：进入冒险</li>
+                    </ul>
+                </div>
+                <div class="act-panel act-2">
+                    <span class="act-number">02</span>
+                    <div class="act-label">Confrontation</div>
+                    <div class="act-title">第二幕 · 对抗</div>
+                    <span class="act-percent">50% · 页码 30-90</span>
+                    <ul class="act-tasks">
+                        <li>主角进入新世界/接受挑战</li>
+                        <li>一系列升级冲突与障碍</li>
+                        <li>中点：虚假胜利或失败</li>
+                        <li>灵魂黑夜：最大挫折</li>
+                        <li>情节点二：准备反击</li>
+                    </ul>
+                </div>
+                <div class="act-panel act-3">
+                    <span class="act-number">03</span>
+                    <div class="act-label">Resolution</div>
+                    <div class="act-title">第三幕 · 解决</div>
+                    <span class="act-percent">25% · 页码 90-120</span>
+                    <ul class="act-tasks">
+                        <li>主角领悟核心真理/改变</li>
+                        <li>最终对决解决核心冲突</li>
+                        <li>展示主角的成长弧线</li>
+                        <li>终场画面：新平衡</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Workflow -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">04</div>
+                <h2 class="section-title">人机协作工作流</h2>
+            </div>
+            <div class="workflow">
+                <div class="workflow-step" data-step="STEP 1">
+                    <h4>AI生成初稿</h4>
+                    <p>分步创作，每次生成5-10场戏。使用"角色扮演+任务拆解"模式设定AI身份。</p>
+                    <div class="workflow-tips">
+                        <strong>技巧：</strong>不要一次性要求AI写完整剧本。按幕或按序列分批生成，保持上下文连贯。
+                    </div>
+                </div>
+                <div class="workflow-step" data-step="STEP 2">
+                    <h4>AI结构诊断</h4>
+                    <p>让AI扮演"剧本医生"，检查节拍位置、张力曲线、角色弧线。</p>
+                    <div class="workflow-tips">
+                        <strong>技巧：</strong>提供具体页码要求（如"中点应在p.55-60"），让AI按专业标准评估。
+                    </div>
+                </div>
+                <div class="workflow-step" data-step="STEP 3">
+                    <h4>人工精修</h4>
+                    <p>处理AI无法替代的部分：场景颗粒度、留白艺术、文化校验、情感温度。</p>
+                    <div class="workflow-tips">
+                        <strong>重点：</strong>删除"他心想"等直白表述，改用意象传递；检查地域习俗准确性。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pitfalls -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">05</div>
+                <h2 class="section-title">避坑指南：AI剧本创作的局限</h2>
+            </div>
+            <div class="pitfalls-grid">
+                <div class="pitfall-card">
+                    <h4>潜台词理解有限</h4>
+                    <p>AI擅长文本，但难以把握"未说出口的话"比"说出口的"更重要。需人工添加潜台词层次。</p>
+                </div>
+                <div class="pitfall-card">
+                    <h4>文化细节易错</h4>
+                    <p>历史事件、地域习俗、行业术语需人工校验。AI可能生成"看似合理但完全错误"的细节。</p>
+                </div>
+                <div class="pitfall-card">
+                    <h4>创意天花板</h4>
+                    <p>AI是灵感催化剂，不是原创思想来源。核心创意、独特视角必须来自人类。</p>
+                </div>
+                <div class="pitfall-card">
+                    <h4>情感温度不足</h4>
+                    <p>AI生成的对话逻辑通顺但缺乏"人味"。关键情感场景需人工润色细节。</p>
+                </div>
+                <div class="pitfall-card">
+                    <h4>格式规范问题</h4>
+                    <p>始终导出为PDF（Courier字体）或Final Draft (.fdx) 提交。AI输出需人工调整格式。</p>
+                </div>
+                <div class="pitfall-card">
+                    <h4>第二幕拖沓</h4>
+                    <p>AI最容易在第二幕失去方向。需明确指定中点转折和灵魂黑夜位置。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">06</div>
+                <h2 class="section-title">推荐工具链</h2>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-item">
+                    <div class="tool-name">Final Draft</div>
+                    <div class="tool-desc">行业标准剧本软件</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Celtx</div>
+                    <div class="tool-desc">免费云端剧本工具</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Claude</div>
+                    <div class="tool-desc">长文本分析与创作</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">ChatGPT</div>
+                    <div class="tool-desc">快速迭代与头脑风暴</div>
+                </div>
+                <div class="tool-name">DeepSeek</div>
+                    <div class="tool-desc">中文剧本创作优化</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">创一AI</div>
+                    <div class="tool-desc">中文短剧分步创作</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-core">顶级剧本 = AI的效率 × 人类的洞察</p>
+            <p>用AI处理结构、格式、初稿生成 · 用你处理情感、文化、艺术判断</p>
+        </footer>
+    </div>
+</body>
+</html>

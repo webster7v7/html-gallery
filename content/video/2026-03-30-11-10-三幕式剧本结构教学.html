@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三幕式剧本结构：用AI写出顶级剧本</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+  :root{
+    --bg: #0a0a0f;
+    --card: #12121a;
+    --gold: #ffd700;
+    --gold2: #ffb347;
+    --red: #e74c3c;
+    --blue: #3498db;
+    --green: #2ecc71;
+    --purple: #9b59b6;
+    --orange: #e67e22;
+    --text: #f5f5f5;
+    --muted: #888;
+    --border: #2a2a3a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Noto Sans SC',-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.85;
+  }
+
+  /* Hero */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:2rem;
+    background:linear-gradient(135deg,rgba(255,215,0,0.1),transparent),radial-gradient(ellipse at 50% 0%,rgba(231,76,60,0.15),transparent);
+    position:relative;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffd700' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity:0.5;
+  }
+  .hero h1{
+    font-size:clamp(2rem,5vw,3.5rem);
+    font-weight:900;
+    background:linear-gradient(135deg,var(--gold),var(--gold2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom:1rem;
+    position:relative;
+  }
+  .hero-sub{
+    font-size:1.3rem;
+    color:var(--muted);
+    max-width:700px;
+    margin-bottom:2rem;
+  }
+  .hero-quote{
+    font-size:1.1rem;
+    color:var(--gold);
+    font-style:italic;
+    max-width:600px;
+    border-left:3px solid var(--gold);
+    padding-left:1.5rem;
+    text-align:left;
+  }
+
+  /* Section */
+  section{
+    max-width:1000px;
+    margin:0 auto;
+    padding:4rem 1.5rem;
+  }
+  .stitle{
+    font-size:2rem;
+    font-weight:700;
+    margin-bottom:1rem;
+    display:flex;
+    align-items:center;
+    gap:0.8rem;
+  }
+  .sdesc{
+    color:var(--muted);
+    margin-bottom:2rem;
+    font-size:1.1rem;
+  }
+
+  /* Cards */
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:2rem;
+    margin:1.5rem 0;
+    position:relative;
+  }
+  .card::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:4px;
+    background:linear-gradient(90deg,var(--gold),var(--gold2));
+    border-radius:16px 16px 0 0;
+  }
+  .card h3{
+    font-size:1.4rem;
+    color:var(--gold);
+    margin-bottom:1rem;
+  }
+  .card p, .card li{
+    color:var(--muted);
+    line-height:1.9;
+  }
+  .card ul{
+    padding-left:1.5rem;
+  }
+  .card li{
+    margin-bottom:0.5rem;
+  }
+
+  /* Three Acts */
+  .act-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:1.5rem;
+    margin:2rem 0;
+  }
+  .act-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:2rem;
+    position:relative;
+    overflow:hidden;
+  }
+  .act-card::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:5px;
+  }
+  .act1::before{background:linear-gradient(90deg,var(--blue),var(--purple));}
+  .act2::before{background:linear-gradient(90deg,var(--red),var(--orange));}
+  .act3::before{background:linear-gradient(90deg,var(--green),var(--gold));}
+  
+  .act-num{
+    font-size:4rem;
+    font-weight:900;
+    opacity:0.1;
+    position:absolute;
+    top:0.5rem;
+    right:1rem;
+  }
+  .act1 .act-num{color:var(--blue);}
+  .act2 .act-num{color:var(--red);}
+  .act3 .act-num{color:var(--green);}
+  
+  .act-title{
+    font-size:1.5rem;
+    font-weight:700;
+    margin-bottom:0.5rem;
+  }
+  .act1 .act-title{color:var(--blue);}
+  .act2 .act-title{color:var(--red);}
+  .act3 .act-title{color:var(--green);}
+  
+  .act-sub{
+    font-size:0.9rem;
+    color:var(--muted);
+    margin-bottom:1rem;
+  }
+  .act-content{
+    color:var(--muted);
+    font-size:0.95rem;
+    line-height:1.9;
+  }
+  .act-content strong{
+    color:var(--text);
+  }
+
+  /* Beat Sheet */
+  .beat-item{
+    background:var(--card);
+    border-left:4px solid var(--gold);
+    padding:1.5rem;
+    margin:1rem 0;
+    border-radius:0 12px 12px 0;
+  }
+  .beat-num{
+    display:inline-block;
+    background:var(--gold);
+    color:var(--bg);
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    text-align:center;
+    line-height:28px;
+    font-weight:700;
+    font-size:0.9rem;
+    margin-right:0.8rem;
+  }
+  .beat-name{
+    font-size:1.1rem;
+    font-weight:600;
+    color:var(--text);
+  }
+  .beat-desc{
+    color:var(--muted);
+    margin-top:0.5rem;
+    margin-left:2.5rem;
+  }
+
+  /* AI Prompt */
+  .prompt-box{
+    background:#1a1a2e;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:1.5rem;
+    margin:1rem 0;
+    font-family:'Consolas','Monaco',monospace;
+    font-size:0.9rem;
+    color:#a0a0b0;
+    white-space:pre-wrap;
+    line-height:1.8;
+  }
+  .prompt-box .highlight{
+    color:var(--gold);
+  }
+  .prompt-box .comment{
+    color:#666;
+  }
+
+  /* Tips */
+  .tip-box{
+    background:linear-gradient(135deg,rgba(46,204,113,0.1),rgba(255,215,0,0.05));
+    border:1px solid var(--border);
+    border-left:4px solid var(--green);
+    border-radius:12px;
+    padding:1.5rem;
+    margin:1.5rem 0;
+  }
+  .tip-box h4{
+    color:var(--green);
+    margin-bottom:0.8rem;
+    font-size:1.1rem;
+  }
+  .tip-box p, .tip-box li{
+    color:var(--muted);
+  }
+
+  /* Comparison */
+  .compare-table{
+    width:100%;
+    border-collapse:collapse;
+    margin:1.5rem 0;
+  }
+  .compare-table th,.compare-table td{
+    padding:1rem;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+  }
+  .compare-table th{
+    color:var(--gold);
+    font-weight:600;
+    background:var(--card);
+  }
+  .compare-table td{
+    color:var(--muted);
+  }
+
+  /* Example */
+  .example-box{
+    background:var(--card);
+    border-radius:16px;
+    padding:2rem;
+    margin:1.5rem 0;
+  }
+  .example-title{
+    font-size:1.2rem;
+    color:var(--gold);
+    margin-bottom:1rem;
+    font-weight:600;
+  }
+  .example-content{
+    color:var(--muted);
+    line-height:2;
+  }
+  .example-content strong{
+    color:var(--text);
+  }
+
+  /* Footer */
+  footer{
+    text-align:center;
+    padding:3rem 1rem;
+    color:var(--muted);
+    font-size:0.85rem;
+    border-top:1px solid var(--border);
+  }
+
+  /* Fade in */
+  .fade-in{
+    opacity:0;
+    transform:translateY(25px);
+    transition:opacity .5s,transform .5s;
+  }
+  .fade-in.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>如何用AI写出顶级剧本？</h1>
+  <p class="hero-sub">三幕式结构 — 电影/剧本核心骨架，极简吃透</p>
+  <div class="hero-quote">
+    "好的剧本不是写出来的，是改出来的。<br>
+    但首先，你需要一个不会塌的骨架。"
+  </div>
+</div>
+
+<!-- 什么是三幕式 -->
+<section>
+  <h2 class="stitle fade-in">🎬 什么是三幕式结构？</h2>
+  <p class="sdesc fade-in">好莱坞用了100年的剧本黄金法则</p>
+  
+  <div class="card fade-in">
+    <h3>核心定义</h3>
+    <p>三幕式结构（Three-Act Structure）是剧本创作中最经典、最通用的叙事框架。它将故事分为三个部分：</p>
+    <ul style="margin-top:1rem">
+      <li><strong>第一幕（建置）：</strong>25% — 介绍世界、人物、冲突</li>
+      <li><strong>第二幕（对抗）：</strong>50% — 主角面对挑战、成长转变</li>
+      <li><strong>第三幕（解决）：</strong>25% — 高潮对决、结局收束</li>
+    </ul>
+  </div>
+
+  <div class="card fade-in">
+    <h3>为什么它有效？</h3>
+    <ul>
+      <li><strong>符合人类认知习惯：</strong>开始→发展→结束，大脑天然喜欢这种节奏</li>
+      <li><strong>情感曲线完整：</strong>铺垫→上升→高潮→回落，观众情绪得到充分释放</li>
+      <li><strong>商业验证：</strong>90%以上的好莱坞大片都使用此结构</li>
+      <li><strong>AI友好：</strong>清晰的框架让AI更容易理解和生成高质量内容</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 三幕详解 -->
+<section>
+  <h2 class="stitle fade-in">📖 三幕式详解</h2>
+  <p class="sdesc fade-in">每一幕的核心任务与关键节点</p>
+  
+  <div class="act-grid">
+    <div class="act-card act1 fade-in">
+      <div class="act-num">01</div>
+      <div class="act-title">第一幕：建置</div>
+      <div class="act-sub">占比25% | 页数：1-30页（电影）</div>
+      <div class="act-content">
+        <p><strong>核心任务：</strong>让观众认识这个世界和主角</p>
+        <p style="margin-top:0.8rem"><strong>关键节点：</strong></p>
+        <ul style="margin-left:1rem;margin-top:0.5rem">
+          <li>开场画面 — 展示主角日常生活</li>
+          <li>主题呈现 — 暗示故事核心</li>
+          <li>催化剂 — 打破平衡的事件</li>
+          <li>第一情节点 — 主角必须做出选择</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="act-card act2 fade-in">
+      <div class="act-num">02</div>
+      <div class="act-title">第二幕：对抗</div>
+      <div class="act-sub">占比50% | 页数：30-90页（电影）</div>
+      <div class="act-content">
+        <p><strong>核心任务：</strong>主角面对挑战，经历转变</p>
+        <p style="margin-top:0.8rem"><strong>关键节点：</strong></p>
+        <ul style="margin-left:1rem;margin-top:0.5rem">
+          <li>B故事 — 情感线/副线展开</li>
+          <li>游戏时间 — 主角探索新世界</li>
+          <li>中点 — 虚假胜利或虚假失败</li>
+          <li>一无所有 — 至暗时刻</li>
+          <li>灵魂黑夜 — 内心挣扎</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="act-card act3 fade-in">
+      <div class="act-num">03</div>
+      <div class="act-title">第三幕：解决</div>
+      <div class="act-sub">占比25% | 页数：90-120页（电影）</div>
+      <div class="act-content">
+        <p><strong>核心任务：</strong>高潮对决，给出答案</p>
+        <p style="margin-top:0.8rem"><strong>关键节点：</strong></p>
+        <ul style="margin-left:1rem;margin-top:0.5rem">
+          <li>第三幕衔接点 — 解决方案出现</li>
+          <li>高潮 — 最终对决</li>
+          <li>结局 — 新世界平衡</li>
+          <li>终场画面 — 与开场呼应</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 节拍表 -->
+<section>
+  <h2 class="stitle fade-in">🎯 斯奈德节拍表（15个节拍）</h2>
+  <p class="sdesc fade-in">布莱克·斯奈德在《救猫咪》中细化的15个关键节拍</p>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">1</span>
+    <span class="beat-name">开场画面</span>
+    <div class="beat-desc">展示主角的日常生活，奠定基调。与终场画面形成对比，展示主角的转变。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">2</span>
+    <span class="beat-name">阐明主题</span>
+    <div class="beat-desc">通常由某个角色说出一句看似随意的话，暗示故事的核心主题。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">3</span>
+    <span class="beat-name">铺垫</span>
+    <div class="beat-desc">介绍所有角色、世界规则、主角的缺陷和欲望。让观众了解"现状"。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">4</span>
+    <span class="beat-name">催化剂</span>
+    <div class="beat-desc">打破平衡的事件，主角无法回到过去的生活。必须做出改变。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">5</span>
+    <span class="beat-name">争论</span>
+    <div class="beat-desc">主角犹豫是否要踏上旅程，内心抗拒改变。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">6</span>
+    <span class="beat-name">第二幕衔接点</span>
+    <div class="beat-desc">主角做出选择，正式进入新世界。没有回头路。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">7</span>
+    <span class="beat-name">B故事</span>
+    <div class="beat-desc">情感线/副线开始，通常是爱情、友情或亲情线。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">8</span>
+    <span class="beat-name">游戏时间</span>
+    <div class="beat-desc">主角探索新世界，展示预告片中的精彩场面。观众享受"如果我是主角"的快感。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">9</span>
+    <span class="beat-name">中点</span>
+    <div class="beat-desc">虚假胜利（看似成功）或虚假失败（看似完蛋）。主角的目标或处境发生重大转变。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">10</span>
+    <span class="beat-name">坏人逼近</span>
+    <div class="beat-desc">反派势力加强，主角的压力增大，局势恶化。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">11</span>
+    <span class="beat-name">一无所有</span>
+    <div class="beat-desc">至暗时刻，主角失去一切，看似彻底失败。通常有"死亡"元素（真实的或象征性的）。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">12</span>
+    <span class="beat-name">灵魂黑夜</span>
+    <div class="beat-desc">主角陷入绝望，反思自己的错误，为最后的转变做准备。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">13</span>
+    <span class="beat-name">第三幕衔接点</span>
+    <div class="beat-desc">解决方案出现，主角获得最后的机会。B故事的角色通常在此提供关键帮助。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">14</span>
+    <span class="beat-name">高潮</span>
+    <div class="beat-desc">最终对决，主角应用所学，与反派或困境进行终极对抗。</div>
+  </div>
+  
+  <div class="beat-item fade-in">
+    <span class="beat-num">15</span>
+    <span class="beat-name">终场画面</span>
+    <div class="beat-desc">展示主角的转变，与开场画面形成鲜明对比。新的平衡建立。</div>
+  </div>
+</section>
+
+<!-- AI提示词 -->
+<section>
+  <h2 class="stitle fade-in">🤖 用AI写剧本的提示词模板</h2>
+  <p class="sdesc fade-in">直接复制使用，让AI按三幕式生成剧本</p>
+  
+  <div class="card fade-in">
+    <h3>基础版提示词</h3>
+    <div class="prompt-box"><span class="comment"># 基础三幕式剧本生成</span>
+
+请帮我写一个<span class="highlight">[类型]</span>剧本大纲，使用<span class="highlight">三幕式结构</span>：
+
+<span class="highlight">基本信息：</span>
+- 题材：[科幻/爱情/悬疑/动作等]
+- 时长：[短片10分钟/电影120分钟/剧集单集45分钟]
+- 主角：[人物设定，包括缺陷和欲望]
+- 核心冲突：[主角面临的主要问题]
+
+<span class="highlight">请按以下结构输出：</span>
+
+第一幕（建置）：
+- 开场画面
+- 催化剂事件
+- 第一情节点
+
+第二幕（对抗）：
+- B故事（情感线）
+- 中点（虚假胜利/失败）
+- 一无所有（至暗时刻）
+
+第三幕（解决）：
+- 灵魂黑夜的领悟
+- 高潮对决
+- 终场画面（与开场对比）</div>
+  </div>
+  
+  <div class="card fade-in">
+    <h3>高级版提示词（含15节拍）</h3>
+    <div class="prompt-box"><span class="comment"># 斯奈德节拍表完整版</span>
+
+请用<span class="highlight">斯奈德15节拍表</span>帮我设计一个剧本：
+
+<span class="highlight">故事概念：</span>[一句话概括你的故事]
+
+<span class="highlight">请详细列出15个节拍：</span>
+
+1. <span class="highlight">开场画面</span>：[展示主角的日常，暗示主题]
+2. <span class="highlight">阐明主题</span>：[某人说出主题相关的话]
+3. <span class="highlight">铺垫</span>：[介绍所有角色和规则]
+4. <span class="highlight">催化剂</span>：[打破平衡的事件]
+5. <span class="highlight">争论</span>：[主角的犹豫]
+6. <span class="highlight">第二幕衔接点</span>：[主角做出选择]
+7. <span class="highlight">B故事</span>：[情感线展开]
+8. <span class="highlight">游戏时间</span>：[探索新世界]
+9. <span class="highlight">中点</span>：[虚假胜利/失败]
+10. <span class="highlight">坏人逼近</span>：[反派加强]
+11. <span class="highlight">一无所有</span>：[至暗时刻]
+12. <span class="highlight">灵魂黑夜</span>：[内心挣扎]
+13. <span class="highlight">第三幕衔接点</span>：[解决方案]
+14. <span class="highlight">高潮</span>：[最终对决]
+15. <span class="highlight">终场画面</span>：[展示转变]
+
+<span class="highlight">额外要求：</span>
+- 每个节拍标注预计页数/时长
+- 确保开场与终场形成对比
+- B故事要在第三幕解决</div>
+  </div>
+</section>
+
+<!-- AI使用技巧 -->
+<section>
+  <h2 class="stitle fade-in">💡 AI写剧本的5个技巧</h2>
+  <p class="sdesc fade-in">让AI输出质量翻倍的方法</p>
+  
+  <div class="tip-box fade-in">
+    <h4>1. 先给框架，再填内容</h4>
+    <p>不要直接让AI"写个剧本"。先让它生成三幕式大纲，确认结构合理后，再逐幕展开。</p>
+  </div>
+  
+  <div class="tip-box fade-in">
+    <h4>2. 用经典电影做参考</h4>
+    <p>告诉AI："参考《肖申克的救赎》的结构"或"学习《盗梦空间》的叙事节奏"。AI能理解这些经典案例的模式。</p>
+  </div>
+  
+  <div class="tip-box fade-in">
+    <h4>3. 明确情感曲线</h4>
+    <p>在提示词中加入："确保主角有明显的情感变化弧线"、"让观众在中点感到震惊"等具体要求。</p>
+  </div>
+  
+  <div class="tip-box fade-in">
+    <h4>4. 迭代优化，而非一次性生成</h4>
+    <p>第一版生成后，针对薄弱环节继续提问："第二幕节奏太慢，如何增加紧张感？"、"高潮对决不够震撼，怎么改？"</p>
+  </div>
+  
+  <div class="tip-box fade-in">
+    <h4>5. 检查节拍完整性</h4>
+    <p>生成后让AI自检："对照斯奈德15节拍表，检查是否有遗漏或薄弱的节拍？"</p>
+  </div>
+</section>
+
+<!-- 常见错误 -->
+<section>
+  <h2 class="stitle fade-in">⚠️ 新手常犯的5个错误</h2>
+  <p class="sdesc fade-in">避开这些坑，剧本质量立升</p>
+  
+  <table class="compare-table fade-in">
+    <thead>
+      <tr>
+        <th>❌ 错误做法</th>
+        <th>✅ 正确做法</th>
+        <th>💡 原因</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>第一幕太长，迟迟不进入正题</td>
+        <td>25%内必须出现催化剂</td>
+        <td>观众耐心有限，需要尽快建立冲突</td>
+      </tr>
+      <tr>
+        <td>第二幕松散，没有明确目标</td>
+        <td>主角必须有清晰的"想要"和"需要"</td>
+        <td>没有目标=没有张力=观众走神</td>
+      </tr>
+      <tr>
+        <td>中点太平淡，没有转折</td>
+        <td>中点必须是虚假胜利或虚假失败</td>
+        <td>中点是故事的"心脏"，决定后半程走向</td>
+      </tr>
+      <tr>
+        <td>反派太弱，没有压力</td>
+        <td>反派/困境必须越来越强</td>
+        <td>压力不足=主角成长缺乏说服力</td>
+      </tr>
+      <tr>
+        <td>高潮靠巧合解决</td>
+        <td>主角必须用学到的东西主动解决</td>
+        <td>观众要看到主角的成长和选择</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 经典案例 -->
+<section>
+  <h2 class="stitle fade-in">🎬 经典电影三幕式拆解</h2>
+  <p class="sdesc fade-in">用《肖申克的救赎》理解三幕式</p>
+  
+  <div class="example-box fade-in">
+    <div class="example-title">《肖申克的救赎》三幕式结构</div>
+    <div class="example-content">
+      <p><strong style="color:#3498db">第一幕（建置）：</strong></p>
+      <p>• <strong>开场画面：</strong>安迪被冤枉入狱，从自由世界进入监狱</p>
+      <p>• <strong>催化剂：</strong>被判处终身监禁，人生彻底崩塌</p>
+      <p>• <strong>第一情节点：</strong>决定适应监狱生活，帮狱警报税获得保护</p>
+      
+      <p style="margin-top:1.5rem"><strong style="color:#e74c3c">第二幕（对抗）：</strong></p>
+      <p>• <strong>B故事：</strong>与瑞德的友谊</p>
+      <p>• <strong>中点：</strong>帮典狱长洗钱，获得图书馆资金（虚假胜利）</p>
+      <p>• <strong>一无所有：</strong>得知真相的证人被杀，翻案希望破灭</p>
+      <p>• <strong>灵魂黑夜：</strong>向瑞德讲述希望，瑞德说"希望是危险的东西"</p>
+      
+      <p style="margin-top:1.5rem"><strong style="color:#2ecc71">第三幕（解决）：</strong></p>
+      <p>• <strong>第三幕衔接点：</strong>决定越狱，用19年时间挖隧道</p>
+      <p>• <strong>高潮：</strong>雷雨夜越狱成功</p>
+      <p>• <strong>终场画面：</strong>在墨西哥海滩与瑞德重逢，自由与希望</p>
+    </div>
+  </div>
+  
+  <div class="card fade-in">
+    <h3>其他经典案例</h3>
+    <ul>
+      <li><strong>《阿甘正传》</strong> — 第一幕：腿部支架；终场：儿子上学无需支架</li>
+      <li><strong>《盗梦空间》</strong> — 第一幕：柯布想回家；终场：终于回家（陀螺？）</li>
+      <li><strong>《疯狂动物城》</strong> — 第一幕：兔子想当警察被嘲笑；终场：成为英雄警察</li>
+      <li><strong>《寻梦环游记》</strong> — 第一幕：米格想玩音乐被禁止；终场：家族接纳音乐</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 总结 -->
+<section>
+  <h2 class="stitle fade-in">📝 总结：AI写剧本 checklist</h2>
+  
+  <div class="card fade-in">
+    <h3>创作前</h3>
+    <ul>
+      <li>□ 确定主角的"缺陷"和"欲望"</li>
+      <li>□ 明确核心冲突（想要什么+阻碍是什么）</li>
+      <li>□ 设计开场与终场的对比</li>
+      <li>□ 准备B故事（情感线）</li>
+    </ul>
+  </div>
+  
+  <div class="card fade-in">
+    <h3>使用AI时</h3>
+    <ul>
+      <li>□ 使用三幕式提示词模板</li>
+      <li>□ 先生成大纲，确认结构合理</li>
+      <li>□ 逐幕展开，每幕检查节拍完整性</li>
+      <li>□ 让AI对照经典电影优化</li>
+    </ul>
+  </div>
+  
+  <div class="card fade-in">
+    <h3>创作后自检</h3>
+    <ul>
+      <li>□ 第一幕是否在25%内出现催化剂？</li>
+      <li>□ 中点是否有明显的虚假胜利/失败？</li>
+      <li>□ 主角是否在"一无所有"后真正成长？</li>
+      <li>□ 高潮是否由主角主动解决，而非巧合？</li>
+      <li>□ 终场画面是否与开场形成鲜明对比？</li>
+    </ul>
+  </div>
+  
+  <div class="tip-box fade-in" style="text-align:center;margin-top:2rem">
+    <h4>记住这个公式</h4>
+    <p style="font-size:1.2rem;color:var(--gold)">
+      <strong>好剧本 = 清晰的结构 + 真实的情感 + 主角的成长</strong>
+    </p>
+    <p style="margin-top:1rem">AI可以帮你搭建骨架，但血肉和灵魂，需要你的创意和洞察。</p>
+  </div>
+</section>
+
+<footer>
+  <p>
+    参考资料：《救猫咪》布莱克·斯奈德、好莱坞经典剧本理论<br>
+    制作时间：2026年3月30日 · 用AI写出顶级剧本<br><br>
+    <em>"结构是骨架，情感是血肉，主题是灵魂。"</em>
+  </p>
+</footer>
+
+<script>
+const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.06});
+document.querySelectorAll('.fade-in').forEach(el=>o.observe(el));
+</script>
+</body>
+</html>

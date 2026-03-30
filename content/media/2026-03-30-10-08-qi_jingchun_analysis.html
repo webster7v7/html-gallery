@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>齐静春·本命字推演 | 剑来战力分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --cinnabar: #B91C1C;
+                --ink: #1C1917;
+                --parchment: #F5F5DC;
+                --gold: #D97706;
+                --jade: #059669;
+                --mist: #9CA3AF;
+            }
+            body {
+                font-family: 'Noto Serif SC', serif;
+                background-color: var(--ink);
+                color: var(--parchment);
+                background-image: 
+                    radial-gradient(circle at 20% 50%, rgba(185, 28, 28, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(217, 119, 6, 0.1) 0%, transparent 50%),
+                    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .font-calligraphy {
+                font-family: 'ZCOOL XiaoWei', serif;
+            }
+        }
+        @layer components {
+            .ink-card {
+                background: linear-gradient(135deg, rgba(28, 25, 23, 0.95) 0%, rgba(41, 37, 36, 0.9) 100%);
+                border: 1px solid rgba(185, 28, 28, 0.3);
+                box-shadow: 
+                    0 0 30px rgba(185, 28, 28, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(10px);
+            }
+            .seal-stamp {
+                position: relative;
+                display: inline-block;
+                color: var(--cinnabar);
+                font-weight: 900;
+                letter-spacing: 0.2em;
+                border: 3px solid var(--cinnabar);
+                padding: 0.5rem 1rem;
+                transform: rotate(-3deg);
+                box-shadow: 
+                    0 0 20px rgba(185, 28, 28, 0.4),
+                    inset 0 0 20px rgba(185, 28, 28, 0.1);
+                text-shadow: 0 0 10px rgba(185, 28, 28, 0.6);
+            }
+            .character-badge {
+                width: 80px;
+                height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                font-weight: 900;
+                border-radius: 50%;
+                position: relative;
+                background: radial-gradient(circle, rgba(185, 28, 28, 0.2) 0%, transparent 70%);
+                border: 2px solid;
+                transition: all 0.3s ease;
+            }
+            .character-badge:hover {
+                transform: scale(1.1);
+                box-shadow: 0 0 30px currentColor;
+            }
+            .divider-ink {
+                height: 2px;
+                background: linear-gradient(90deg, transparent, var(--cinnabar), var(--gold), var(--cinnabar), transparent);
+                opacity: 0.6;
+            }
+            .realm-indicator {
+                background: linear-gradient(135deg, rgba(217, 119, 6, 0.2), rgba(185, 28, 28, 0.2));
+                border-left: 4px solid var(--gold);
+            }
+            .damage-bar {
+                height: 8px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+                overflow: hidden;
+                position: relative;
+            }
+            .damage-fill {
+                height: 100%;
+                border-radius: 4px;
+                transition: width 1s ease-out;
+            }
+            .scroll-reveal {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .scroll-reveal.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .tao-pattern {
+                position: absolute;
+                opacity: 0.03;
+                pointer-events: none;
+                font-size: 20rem;
+                font-family: 'ZCOOL XiaoWei', serif;
+                color: white;
+                z-index: 0;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen overflow-x-hidden">
+    <!-- Background Elements -->
+    <div class="tao-pattern top-0 left-0">道</div>
+    <div class="tao-pattern bottom-0 right-0 rotate-180">法</div>
+
+    <!-- Hero Section -->
+    <header class="relative z-10 pt-12 pb-8 px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-block mb-6">
+            <span class="seal-stamp text-sm sm:text-base">硬核推演</span>
+        </div>
+        <h1 class="font-calligraphy text-4xl sm:text-6xl lg:text-7xl font-bold mb-4 bg-gradient-to-b from-red-100 via-red-400 to-red-900 bg-clip-text text-transparent drop-shadow-2xl">
+            齐静春本命字全在
+        </h1>
+        <p class="text-xl sm:text-2xl text-amber-500/80 font-light tracking-widest mb-2">
+            十四境巅峰·半步十五境
+        </p>
+        <div class="flex items-center justify-center gap-4 text-stone-400 text-sm">
+            <span class="px-3 py-1 border border-stone-700 rounded-full">《剑来》战力推演</span>
+            <span class="w-1 h-1 rounded-full bg-stone-600"></span>
+            <span class="px-3 py-1 border border-stone-700 rounded-full">骊珠洞天终局复盘</span>
+        </div>
+    </header>
+
+    <!-- Premise Card -->
+    <section class="relative z-10 max-w-4xl mx-auto px-4 mb-12 scroll-reveal">
+        <div class="ink-card rounded-lg p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-1 h-8 bg-red-700 rounded-full"></div>
+                <h2 class="text-2xl font-bold text-amber-100">推演前提</h2>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4 text-stone-300">
+                <div class="flex items-start gap-3">
+                    <span class="text-red-500 font-bold text-lg">壹</span>
+                    <span>三字全存（齐、静、春）</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-red-500 font-bold text-lg">贰</span>
+                    <span>十四境巅峰，半步十五境</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-red-500 font-bold text-lg">叁</span>
+                    <span>无自毁道基，全力无保留</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-red-500 font-bold text-lg">肆</span>
+                    <span>四圣联手，天道反噬</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion Banner -->
+    <section class="relative z-10 max-w-5xl mx-auto px-4 mb-16 scroll-reveal">
+        <div class="ink-card rounded-xl p-8 sm:p-12 border-red-900/50 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-red-900/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div class="relative z-10">
+                <div class="text-center mb-8">
+                    <span class="inline-block px-4 py-1 bg-red-900/30 text-red-400 text-sm rounded-full border border-red-800/50 mb-4">
+                        直给结论
+                    </span>
+                </div>
+                <div class="grid sm:grid-cols-3 gap-6 text-center">
+                    <div class="p-4 rounded-lg bg-black/20 border border-white/5">
+                        <div class="text-3xl mb-2">⚔️</div>
+                        <div class="text-red-400 font-bold text-lg mb-1">四圣联手</div>
+                        <div class="text-stone-400 text-sm">压根不是对手</div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-black/20 border border-white/5">
+                        <div class="text-3xl mb-2">⚡</div>
+                        <div class="text-amber-400 font-bold text-lg mb-1">天道反噬</div>
+                        <div class="text-stone-400 text-sm">伤不到核心道身</div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-black/20 border border-white/5">
+                        <div class="text-3xl mb-2">🏔️</div>
+                        <div class="text-emerald-400 font-bold text-lg mb-1">骊珠洞天</div>
+                        <div class="text-stone-400 text-sm">稳如铁桶，甚至升格</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Characters Analysis -->
+    <section class="relative z-10 max-w-6xl mx-auto px-4 mb-16 scroll-reveal">
+        <div class="divider-ink mb-8"></div>
+        <h2 class="text-3xl font-bold text-center mb-12 font-calligraphy">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-amber-400 to-red-400">
+                三字齐全·战力碾压
+            </span>
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- 齐 -->
+            <div class="ink-card rounded-lg p-6 text-center group hover:border-red-500/50 transition-all duration-500">
+                <div class="character-badge mx-auto mb-4 text-red-500 border-red-500/50 group-hover:border-red-400 group-hover:text-red-400">
+                    齐
+                </div>
+                <h3 class="text-xl font-bold text-red-400 mb-2">三教归一</h3>
+                <p class="text-stone-400 text-sm mb-4">平掉四圣三教法理，废其大道根基</p>
+                <div class="text-xs text-stone-500 bg-black/30 rounded p-3">
+                    直接对齐天道因果，豁免诛灭规则
+                </div>
+            </div>
+
+            <!-- 静 -->
+            <div class="ink-card rounded-lg p-6 text-center group hover:border-amber-500/50 transition-all duration-500">
+                <div class="character-badge mx-auto mb-4 text-amber-500 border-amber-500/50 group-hover:border-amber-400 group-hover:text-amber-400">
+                    静
+                </div>
+                <h3 class="text-xl font-bold text-amber-400 mb-2">定天地规则</h3>
+                <p class="text-stone-400 text-sm mb-4">锁死四人神通，封死借力天道</p>
+                <div class="text-xs text-stone-500 bg-black/30 rounded p-3">
+                    凝固洞天壁垒，隔绝天罚落地
+                </div>
+            </div>
+
+            <!-- 春 -->
+            <div class="ink-card rounded-lg p-6 text-center group hover:border-emerald-500/50 transition-all duration-500">
+                <div class="character-badge mx-auto mb-4 text-emerald-500 border-emerald-500/50 group-hover:border-emerald-400 group-hover:text-emerald-400">
+                    春
+                </div>
+                <h3 class="text-xl font-bold text-emerald-400 mb-2">生养万物</h3>
+                <p class="text-stone-400 text-sm mb-4">生生不息，回血补阵，磨死四圣</p>
+                <div class="text-xs text-stone-500 bg-black/30 rounded p-3">
+                    续地气、养灵脉，抚平洞天裂痕
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 p-6 ink-card rounded-lg border-l-4 border-red-700">
+            <p class="text-stone-300 leading-relaxed">
+                <span class="text-red-400 font-bold">完整三字 =</span> 
+                三教合一文脉 + 十四境天花板 + 半步十五（接近旧文庙圣人兜底层级）
+            </p>
+            <p class="text-stone-400 text-sm mt-2">
+                原著四圣靠偷袭、借天道大势、啃齐静春自断臂膀的便宜。真硬碰硬，四圣从"围攻压杀"直接变成被摁在洞天里吊打，想退都退不走。
+            </p>
+        </div>
+    </section>
+
+    <!-- Combat Analysis -->
+    <section class="relative z-10 max-w-5xl mx-auto px-4 mb-16 scroll-reveal">
+        <div class="divider-ink mb-8"></div>
+        <h2 class="text-3xl font-bold text-center mb-12 font-calligraphy text-amber-100">
+            分层拆解
+        </h2>
+
+        <!-- VS Four Saints -->
+        <div class="ink-card rounded-lg p-6 sm:p-8 mb-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-red-400">一、四圣联手 vs 满配齐静春</h3>
+                <span class="px-3 py-1 bg-red-900/30 text-red-400 text-xs rounded-full border border-red-800">战力对比</span>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-center gap-4">
+                    <span class="text-stone-400 w-20 text-sm">原著四圣</span>
+                    <div class="flex-1 damage-bar">
+                        <div class="damage-fill bg-stone-600" style="width: 35%"></div>
+                    </div>
+                    <span class="text-stone-500 text-xs w-16 text-right">偷袭/借势</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-red-400 w-20 text-sm font-bold">满配齐静春</span>
+                    <div class="flex-1 damage-bar">
+                        <div class="damage-fill bg-gradient-to-r from-red-600 to-red-400" style="width: 100%"></div>
+                    </div>
+                    <span class="text-red-400 text-xs w-16 text-right font-bold">碾压</span>
+                </div>
+            </div>
+
+            <div class="mt-6 grid sm:grid-cols-2 gap-4 text-sm">
+                <div class="p-3 rounded bg-black/20 border border-white/5">
+                    <span class="text-stone-500 block mb-1">原著四圣配置</span>
+                    <span class="text-stone-300">分家偷鸡、借道压阵、不敢全力死战的下位十四/顶尖十三</span>
+                </div>
+                <div class="p-3 rounded bg-red-950/20 border border-red-900/30">
+                    <span class="text-red-400 block mb-1">满配齐静春</span>
+                    <span class="text-stone-300">三字全开 = 直接平掉三教法理 + 锁死神通 + 生生不息</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Heaven's Retribution -->
+        <div class="ink-card rounded-lg p-6 sm:p-8 mb-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-amber-400">二、天道反噬能否伤他？</h3>
+                <span class="px-3 py-1 bg-amber-900/30 text-amber-400 text-xs rounded-full border border-amber-800">天道推演</span>
+            </div>
+
+            <div class="realm-indicator rounded-lg p-4 mb-4">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">⚡</span>
+                    <div>
+                        <div class="font-bold text-amber-200 mb-1">原著天道能压死残缺齐静春的原因</div>
+                        <div class="text-stone-400 text-sm">自碎静字、弃齐字不用、只残躯扛劫 + 主动以身为饵引雷</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid sm:grid-cols-3 gap-4">
+                <div class="text-center p-4 rounded-lg bg-black/20">
+                    <div class="text-red-400 font-bold text-lg mb-1">「齐」</div>
+                    <div class="text-stone-400 text-xs">对齐天道因果</div>
+                    <div class="text-stone-500 text-xs mt-1">豁免诛灭规则</div>
+                </div>
+                <div class="text-center p-4 rounded-lg bg-black/20">
+                    <div class="text-amber-400 font-bold text-lg mb-1">「静」</div>
+                    <div class="text-stone-400 text-xs">凝固洞天壁垒</div>
+                    <div class="text-stone-500 text-xs mt-1">隔绝天罚落地</div>
+                </div>
+                <div class="text-center p-4 rounded-lg bg-black/20">
+                    <div class="text-purple-400 font-bold text-lg mb-1">半步十五</div>
+                    <div class="text-stone-400 text-xs">触摸超脱门槛</div>
+                    <div class="text-stone-500 text-xs mt-1">一方天地难责</div>
+                </div>
+            </div>
+
+            <div class="mt-4 p-4 rounded-lg bg-gradient-to-r from-amber-900/20 to-transparent border-l-2 border-amber-600">
+                <p class="text-stone-300 text-sm">
+                    <span class="text-amber-400 font-bold">结论：</span>
+                    天道能掀风浪、能压氛围、能震碎周遭山河，但<span class="text-amber-200">破不了他本命道防，杀不了、重伤都难</span>。顶多耗他文运、耗心神。
+                </p>
+            </div>
+        </div>
+
+        <!-- Lizhu Cave Heaven -->
+        <div class="ink-card rounded-lg p-6 sm:p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-emerald-400">三、骊珠洞天结局推演</h3>
+                <span class="px-3 py-1 bg-emerald-900/30 text-emerald-400 text-xs rounded-full border border-emerald-800">洞天保全</span>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-6">
+                <div class="space-y-3">
+                    <div class="text-stone-500 text-sm font-bold mb-2">原著结局（残血）</div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center gap-2 text-stone-400">
+                            <span class="w-1.5 h-1.5 rounded-full bg-stone-600"></span>
+                            碎洞天
+                        </div>
+                        <div class="flex items-center gap-2 text-stone-400">
+                            <span class="w-1.5 h-1.5 rounded-full bg-stone-600"></span>
+                            献祭文脉
+                        </div>
+                        <div class="flex items-center gap-2 text-stone-400">
+                            <span class="w-1.5 h-1.5 rounded-full bg-stone-600"></span>
+                            齐静春身死
+                        </div>
+                        <div class="flex items-center gap-2 text-stone-400">
+                            <span class="w-1.5 h-1.5 rounded-full bg-stone-600"></span>
+                            换陈平安一线生机
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="text-emerald-400 text-sm font-bold mb-2">满配推演（三字全在）</div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center gap-2 text-stone-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            稳住洞天本源，不让崩碎
+                        </div>
+                        <div class="flex items-center gap-2 text-stone-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            春字续地气、养灵脉
+                        </div>
+                        <div class="flex items-center gap-2 text-stone-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            齐字调和内外因果
+                        </div>
+                        <div class="flex items-center gap-2 text-emerald-300 font-bold">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            硬生升格洞天品级
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 p-4 rounded-lg bg-emerald-950/20 border border-emerald-900/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-emerald-400">✦</span>
+                    <span class="text-emerald-400 font-bold">满配结局</span>
+                </div>
+                <p class="text-stone-300 text-sm">
+                    六千百姓全保、灵气不散、机缘不落空、后续小镇劫难直接掐灭。甚至能借机把骊珠洞天从小洞天<span class="text-emerald-300">硬生生加固升格</span>。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Summary -->
+    <section class="relative z-10 max-w-4xl mx-auto px-4 mb-16 scroll-reveal">
+        <div class="divider-ink mb-8"></div>
+        <div class="ink-card rounded-xl p-8 sm:p-12 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-red-900/10 to-transparent"></div>
+            <div class="relative z-10">
+                <div class="inline-block mb-6">
+                    <span class="seal-stamp text-lg">终极总结</span>
+                </div>
+                <blockquote class="text-xl sm:text-2xl font-bold leading-relaxed text-transparent bg-clip-text bg-gradient-to-b from-stone-100 to-stone-400 font-calligraphy">
+                    "残血断手，是齐静春故意送死布局；<br>
+                    满血满配三字全开，<br>
+                    <span class="text-red-400">四圣不够打，天道杀不动，骊珠洞天稳如铁桶。</span>"
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 text-center pb-12 text-stone-600 text-sm">
+        <div class="divider-ink mb-6 max-w-xs mx-auto"></div>
+        <p>基于《剑来》原著战力体系推演</p>
+        <p class="mt-1 text-stone-700">纯设定分析，不涉及现实</p>
+    </footer>
+
+    <script>
+        // Scroll reveal animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Damage bar animation on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.damage-fill').forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
