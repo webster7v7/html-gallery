@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>海鸥飞翔 · 动态SVG插画</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(145deg, #1b4d6e 0%, #0f2c40 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(10, 30, 45, 0.5);
+            backdrop-filter: blur(3px);
+            border-radius: 48px;
+            padding: 20px 20px 24px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 150, 0.3);
+        }
+        .canvas-container {
+            background: radial-gradient(circle at 20% 40%, #2d6e8f, #1c4e6c);
+            border-radius: 32px;
+            padding: 8px;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.4), 0 10px 20px rgba(0,0,0,0.3);
+        }
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        svg:hover {
+            transform: scale(1.01);
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 18px;
+            color: #e2f0fa;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .title h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #F9F3D9, #B7E0FF);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.2px;
+        }
+        .badge {
+            background: #ffb347;
+            padding: 4px 12px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1e2f3a;
+            box-shadow: inset 0 1px 0 #ffe0a3, 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .legend {
+            font-size: 0.7rem;
+            background: rgba(0,0,0,0.35);
+            padding: 5px 14px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 0.7rem;
+            color: #9bbad0;
+            border-top: 1px solid #336688;
+            padding-top: 12px;
+        }
+        @media (max-width: 680px) {
+            .card { padding: 14px; }
+            .title h2 { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="canvas-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+            <defs>
+                <!-- 天空渐变 -->
+                <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#3c9fd9"/>
+                    <stop offset="35%" stop-color="#6ebce6"/>
+                    <stop offset="100%" stop-color="#c2e4f5"/>
+                </linearGradient>
+                <!-- 海面渐变 -->
+                <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#2087b5"/>
+                    <stop offset="40%" stop-color="#146b93"/>
+                    <stop offset="100%" stop-color="#0a405b"/>
+                </linearGradient>
+                <!-- 太阳光晕 -->
+                <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#FFF7C4" stop-opacity="1"/>
+                    <stop offset="40%" stop-color="#FFE270" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#FFB347" stop-opacity="0"/>
+                </radialGradient>
+                <!-- 海鸥翅膀渐变 -->
+                <linearGradient id="wingGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="100%" stop-color="#e8edf2"/>
+                </linearGradient>
+            </defs>
+
+            <!-- 天空背景 -->
+            <rect width="800" height="500" fill="url(#skyGrad)"/>
+
+            <!-- 太阳和光晕 -->
+            <circle cx="680" cy="80" r="70" fill="url(#sunGlow)"/>
+            <circle cx="680" cy="80" r="32" fill="#FFF9CF" stroke="#FFD966" stroke-width="2"/>
+            
+            <!-- 飘浮的云朵（缓慢移动） -->
+            <g fill="white" opacity="0.85">
+                <ellipse cx="120" cy="100" rx="65" ry="28">
+                    <animateTransform attributeName="transform" type="translate" values="0,0; 30,0; 0,0" dur="28s" repeatCount="indefinite"/>
+                </ellipse>
+                <ellipse cx="160" cy="90" rx="45" ry="25">
+                    <animateTransform attributeName="transform" type="translate" values="0,0; 25,0; 0,0" dur="26s" repeatCount="indefinite"/>
+                </ellipse>
+                <ellipse cx="90" cy="95" rx="40" ry="20">
+                    <animateTransform attributeName="transform" type="translate" values="0,0; 20,0; 0,0" dur="30s" repeatCount="indefinite"/>
+                </ellipse>
+                <ellipse cx="550" cy="140" rx="70" ry="30">
+                    <animateTransform attributeName="transform" type="translate" values="0,0; -20,0; 0,0" dur="25s" repeatCount="indefinite"/>
+                </ellipse>
+                <ellipse cx="620" cy="130" rx="50" ry="22">
+                    <animateTransform attributeName="transform" type="translate" values="0,0; -15,0; 0,0" dur="27s" repeatCount="indefinite"/>
+                </ellipse>
+            </g>
+
+            <!-- 远处的海鸟（小） -->
+            <g fill="#2c3e50" opacity="0.6">
+                <path d="M480,150 Q490,143 500,150 Q510,143 520,150 Q510,147 500,155 Q490,147 480,150Z">
+                    <animateTransform attributeName="transform" type="translate" values="0,0; -8, -3; 0,0" dur="3s" repeatCount="indefinite"/>
+                </path>
+                <path d="M530,170 Q537,164 545,170 Q553,164 560,170 Q553,167 545,174 Q537,167 530,170Z">
+                    <animateTransform attributeName="transform" type="translate" values="0,0; -6, -2; 0,0" dur="3.5s" repeatCount="indefinite"/>
+                </path>
+                <path d="M450,180 Q457,175 463,180 Q469,175 476,180 Q469,177 463,184 Q457,177 450,180Z">
+                    <animateTransform attributeName="transform" type="translate" values="0,0; -5, -3; 0,0" dur="2.8s" repeatCount="indefinite"/>
+                </path>
+            </g>
+
+            <!-- 海洋 (下半部分) -->
+            <path d="M0,340 Q100,330 200,340 Q300,350 400,340 Q500,330 600,340 Q700,350 800,340 L800,500 L0,500 Z" fill="url(#oceanGrad)"/>
+            <!-- 波浪高光 -->
+            <path d="M0,360 Q80,352 160,360 Q240,368 320,360 Q400,352 480,360 Q560,368 640,360 Q720,352 800,360" fill="none" stroke="#8ecfef" stroke-width="2" opacity="0.5">
+                <animate attributeName="d" values="M0,360 Q80,352 160,360 Q240,368 320,360 Q400,352 480,360 Q560,368 640,360 Q720,352 800,360;
+                                                   M0,363 Q80,370 160,363 Q240,356 320,363 Q400,370 480,363 Q560,356 640,363 Q720,370 800,363;
+                                                   M0,360 Q80,352 160,360 Q240,368 320,360 Q400,352 480,360 Q560,368 640,360 Q720,352 800,360" dur="4s" repeatCount="indefinite"/>
+            </path>
+            <path d="M0,390 Q90,382 180,390 Q270,398 360,390 Q450,382 540,390 Q630,398 720,390 Q760,386 800,390" fill="none" stroke="#72bcdb" stroke-width="1.5" opacity="0.4">
+                <animate attributeName="d" values="M0,390 Q90,382 180,390 Q270,398 360,390 Q450,382 540,390 Q630,398 720,390 Q760,386 800,390;
+                                                   M0,393 Q90,400 180,393 Q270,386 360,393 Q450,400 540,393 Q630,386 720,393 Q760,389 800,393;
+                                                   M0,390 Q90,382 180,390 Q270,398 360,390 Q450,382 540,390 Q630,398 720,390 Q760,386 800,390" dur="5s" repeatCount="indefinite"/>
+            </path>
+
+            <!-- ========= 主海鸥（动态翅膀扇动） ========= -->
+            <g id="main-seagull">
+                <!-- 整体轻微上下漂浮 -->
+                <animateTransform attributeName="transform" type="translate" values="0,0; 0,-6; 0,0" dur="2.2s" repeatCount="indefinite"/>
+                
+                <!-- 左翼（绕根部旋转扇动） -->
+                <g>
+                    <animateTransform attributeName="transform" type="rotate" values="-8 370 210; 20 370 210; -8 370 210" dur="0.65s" repeatCount="indefinite"/>
+                    <path d="M370,210 L290,160 L285,170 Z" fill="url(#wingGrad)" stroke="#b0c0ce" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M370,210 L310,185 L305,195 Z" fill="#f0f4f8" stroke="#b0c0ce" stroke-width="1" stroke-linejoin="round"/>
+                    <!-- 初级飞羽细节 -->
+                    <path d="M295,162 L285,168 M305,180 L297,188" stroke="#8d9aa8" stroke-width="1" fill="none"/>
+                </g>
+                
+                <!-- 右翼（对称扇动） -->
+                <g>
+                    <animateTransform attributeName="transform" type="rotate" values="8 430 210; -20 430 210; 8 430 210" dur="0.65s" repeatCount="indefinite"/>
+                    <path d="M430,210 L510,160 L515,170 Z" fill="url(#wingGrad)" stroke="#b0c0ce" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M430,210 L490,185 L495,195 Z" fill="#f0f4f8" stroke="#b0c0ce" stroke-width="1" stroke-linejoin="round"/>
+                    <path d="M505,162 L515,168 M495,180 L503,188" stroke="#8d9aa8" stroke-width="1" fill="none"/>
+                </g>
+                
+                <!-- 身体（流线型） -->
+                <ellipse cx="400" cy="220" rx="38" ry="18" fill="#ffffff" stroke="#b0c0ce" stroke-width="1.5"/>
+                
+                <!-- 尾巴 -->
+                <path d="M435,222 L460,228 L455,218 Z" fill="#ffffff" stroke="#b0c0ce" stroke-width="1.2" stroke-linejoin="round"/>
+                
+                <!-- 头部 -->
+                <circle cx="368" cy="210" r="14" fill="#ffffff" stroke="#b0c0ce" stroke-width="1.5"/>
+                
+                <!-- 喙（黄色带红点） -->
+                <path d="M354,208 L332,211 L354,214 Z" fill="#F5A623" stroke="#D38C34" stroke-width="1.2" stroke-linejoin="round"/>
+                <circle cx="336" cy="211" r="1.5" fill="#D0021B"/>
+                
+                <!-- 眼睛 -->
+                <circle cx="362" cy="207" r="3" fill="#1e2f3a"/>
+                <circle cx="361" cy="206" r="1" fill="white"/>
+                
+                <!-- 黑色翼尖（左） -->
+                <path d="M285,168 L283,173 L292,172" fill="#2c3e50" opacity="0.8"/>
+                <!-- 黑色翼尖（右） -->
+                <path d="M515,168 L517,173 L508,172" fill="#2c3e50" opacity="0.8"/>
+                
+                <!-- 腹部阴影（淡淡） -->
+                <ellipse cx="400" cy="226" rx="28" ry="8" fill="#dce5ed" opacity="0.4"/>
+            </g>
+            
+            <!-- 第二只海鸥（稍远，尺寸较小，独立扇动） -->
+            <g transform="translate(560, 80) scale(0.55)">
+                <animateTransform attributeName="transform" type="translate" values="560,80; 540,75; 560,80" dur="3s" repeatCount="indefinite" additive="replace"/>
+                <g>
+                    <animateTransform attributeName="transform" type="rotate" values="-6 0 0; 15 0 0; -6 0 0" dur="0.7s" repeatCount="indefinite"/>
+                    <path d="M0,0 L-55,-35 L-58,-28 Z" fill="#f4f8fc" stroke="#a0b0bc" stroke-width="1.2"/>
+                    <path d="M0,0 L-40,-20 L-43,-14 Z" fill="#eef3f8"/>
+                </g>
+                <g>
+                    <animateTransform attributeName="transform" type="rotate" values="6 0 0; -15 0 0; 6 0 0" dur="0.7s" repeatCount="indefinite"/>
+                    <path d="M0,0 L55,-35 L58,-28 Z" fill="#f4f8fc" stroke="#a0b0bc" stroke-width="1.2"/>
+                    <path d="M0,0 L40,-20 L43,-14 Z" fill="#eef3f8"/>
+                </g>
+                <ellipse cx="0" cy="5" rx="25" ry="12" fill="#ffffff" stroke="#a0b0bc" stroke-width="1"/>
+                <circle cx="-18" cy="0" r="9" fill="#ffffff" stroke="#a0b0bc" stroke-width="1"/>
+                <path d="M-28,-2 L-40,0 L-28,2 Z" fill="#F5A623"/>
+                <circle cx="-31" cy="0" r="1" fill="#1e2f3a"/>
+            </g>
+            
+            <!-- 第三只海鸥（极小，远处） -->
+            <g transform="translate(250, 130) scale(0.35)">
+                <animateTransform attributeName="transform" type="translate" values="250,130; 235,125; 250,130" dur="3.8s" repeatCount="indefinite" additive="replace"/>
+                <g>
+                    <animateTransform attributeName="transform" type="rotate" values="-10 0 0; 18 0 0; -10 0 0" dur="0.55s" repeatCount="indefinite"/>
+                    <path d="M0,0 L-50,-28 L-52,-22 Z" fill="#eef2f7" stroke="#9aabbb" stroke-width="1"/>
+                </g>
+                <g>
+                    <animateTransform attributeName="transform" type="rotate" values="10 0 0; -18 0 0; 10 0 0" dur="0.55s" repeatCount="indefinite"/>
+                    <path d="M0,0 L50,-28 L52,-22 Z" fill="#eef2f7" stroke="#9aabbb" stroke-width="1"/>
+                </g>
+                <ellipse cx="0" cy="3" rx="20" ry="10" fill="#ffffff"/>
+                <circle cx="-14" cy="-1" r="7" fill="#ffffff"/>
+            </g>
+
+            <!-- 少许光点 / 海面反光 -->
+            <g fill="#FFFBEA" opacity="0.4">
+                <circle cx="120" cy="430" r="2"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="2s" repeatCount="indefinite"/></circle>
+                <circle cx="280" cy="450" r="1.5"><animate attributeName="opacity" values="0.3;0.7;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
+                <circle cx="500" cy="420" r="2"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="1.8s" repeatCount="indefinite"/></circle>
+                <circle cx="670" cy="460" r="1.5"><animate attributeName="opacity" values="0.2;0.8;0.2" dur="3s" repeatCount="indefinite"/></circle>
+                <circle cx="380" cy="470" r="2.2"><animate attributeName="opacity" values="0.3;0.6;0.3" dur="2.2s" repeatCount="indefinite"/></circle>
+            </g>
+            
+            <!-- 底部署名装饰 -->
+            <text x="400" y="490" font-family="'Segoe UI', 'Poppins', sans-serif" font-size="14" fill="#D9F0FF" text-anchor="middle" font-weight="500" opacity="0.8" letter-spacing="2">
+                ✦ 海鸥飞翔 · 海风与自由 ✦
+            </text>
+        </svg>
+    </div>
+    <div class="info">
+        <div class="title">
+            <h2>🕊️ 海鸥飞翔 · 动态翅膀</h2>
+            <div class="badge">扇动动画 · 漂浮云浪</div>
+        </div>
+        <div class="legend">
+            🌊 动态海面波纹 &nbsp;|&nbsp; ☀️ 晨光海鸥 &nbsp;|&nbsp; 三只同飞
+        </div>
+    </div>
+    <div class="footer">
+        ⚡ 主海鸥翅膀持续扇动 | 身体上下起伏 | 波浪与云层缓慢移动 | 纯SVG动画
+    </div>
+</div>
+</body>
+</html>
