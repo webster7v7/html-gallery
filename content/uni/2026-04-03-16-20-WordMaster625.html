@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>625词走遍天下 | 趣味单词库 · 沉浸式学英语</title>
+    <!-- Google Font & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f9f3e6 0%, #fff4e8 100%);
+            color: #2e2a28;
+            padding: 2rem 1.5rem;
+        }
+
+        /* 整体容器 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 头部区域 */
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #e67e22, #f1c40f, #2ecc71);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+        }
+        .hero .sub {
+            font-size: 1.2rem;
+            color: #7f6b5c;
+            max-width: 650px;
+            margin: 0.5rem auto 0;
+            background: rgba(255,255,240,0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 80px;
+            padding: 0.5rem 1.2rem;
+            display: inline-block;
+        }
+        .badge-625 {
+            background: #ffb347;
+            color: #2c2c2c;
+            border-radius: 40px;
+            padding: 0.2rem 1rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* 控制栏: 搜索+折叠 */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 248, 235, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .search-box {
+            flex: 2;
+            min-width: 220px;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 48px;
+            padding: 0.3rem 1rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            border: 1px solid #ffe0bf;
+        }
+        .search-box i {
+            color: #e67e22;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        .search-box input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 0.6rem 0;
+            font-size: 1rem;
+            outline: none;
+            font-weight: 500;
+        }
+        .search-box input::placeholder {
+            color: #c0aa8a;
+            font-weight: 400;
+        }
+        .toggle-group {
+            display: flex;
+            gap: 12px;
+        }
+        .toggle-group button {
+            background: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            color: #6b4c3b;
+            border: 1px solid #ffd9b5;
+        }
+        .toggle-group button:hover {
+            background: #ffedd5;
+            transform: scale(0.97);
+            color: #c25d1a;
+        }
+        .stats {
+            font-size: 0.85rem;
+            background: #f1e1d0;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+
+        /* 分类网格布局 */
+        .categories-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* 单个分类卡片 */
+        .category-card {
+            background: rgba(255, 255, 245, 0.85);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            overflow: hidden;
+            transition: all 0.25s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,225,185,0.6);
+        }
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.8rem;
+            background: #fff7ef;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 2px solid #ffe1be;
+        }
+        .category-header:hover {
+            background: #fff0e2;
+        }
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .category-title i {
+            font-size: 1.7rem;
+            color: #e67e22;
+            width: 2rem;
+        }
+        .category-title span {
+            background: #f2d9c4;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #aa6f3c;
+        }
+        .toggle-icon {
+            font-size: 1.4rem;
+            color: #c27e3a;
+            transition: transform 0.3s;
+        }
+        .category-content {
+            padding: 1.5rem 1.8rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.8rem 1rem;
+            transition: all 0.2s;
+        }
+        /* 单词卡片样式 */
+        .word-card {
+            background: white;
+            border-radius: 1.2rem;
+            padding: 0.7rem 0.8rem;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            cursor: default;
+            border-left: 5px solid #ffb347;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .word-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 18px -8px rgba(0,0,0,0.15);
+            background: #fffcf5;
+            border-left-color: #e67e22;
+        }
+        .word-en {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #2c3e2f;
+            letter-spacing: -0.2px;
+            word-break: break-word;
+        }
+        .word-zh {
+            font-size: 0.8rem;
+            color: #b86f2c;
+            margin-top: 5px;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+        /* 空状态提示 */
+        .no-match {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem;
+            color: #bf8f62;
+            font-style: italic;
+        }
+        /* 数字特殊小调整 */
+        .category-content.small-grid {
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #a4876a;
+            border-top: 1px solid #ffe0c0;
+            padding-top: 2rem;
+        }
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .category-header { padding: 0.8rem 1rem; }
+            .category-content { padding: 1rem; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            .hero h1 { font-size: 2.2rem; }
+            .toolbar { flex-direction: column; align-items: stretch; border-radius: 28px; }
+            .toggle-group { justify-content: center; }
+        }
+        .highlight {
+            background-color: #ffe5b4;
+            border-radius: 12px;
+            padding: 0 2px;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <div class="badge-625"><i class="fas fa-language"></i> 625高频词 · 走遍天下</div>
+        <h1>📖 单词奇境 · Word Wonderland</h1>
+        <div class="sub"><i class="fas fa-magic"></i> 生动分类 · 趣味卡片 · 过目不忘</div>
+        <div style="margin-top: 12px; font-size: 0.85rem;">✨ 点击分类展开/折叠 | 搜索中英文 ✨</div>
+    </div>
+    <div class="toolbar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="🔍 输入单词或中文... 例如: dog, 快乐, apple">
+        </div>
+        <div class="toggle-group">
+            <button id="expandAllBtn"><i class="fas fa-plus-circle"></i> 全部展开</button>
+            <button id="collapseAllBtn"><i class="fas fa-minus-circle"></i> 全部折叠</button>
+        </div>
+        <div class="stats" id="statsDisplay">🎯 加载单词中...</div>
+    </div>
+
+    <div class="categories-grid" id="categoriesContainer"></div>
+    <footer>
+        <i class="fas fa-heart" style="color:#e67e22;"></i> 625个日常核心词 · 搭配记忆魔法 | 跟着麦克老师轻松学英语 <br>
+        🎧 每天看一遍，单词自然印在脑海
+    </footer>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // 根据PDF内容整理的625单词库（精确覆盖所有类别）
+    // --------------------------------------------------------------
+    const wordsData = {
+        "🐾 动物 · Animals": [
+            "Dog|狗", "Cat|猫", "Fish|鱼", "Bird|鸟", "Cow|牛", "Pig|猪", "Mouse|老鼠", "Horse|马", "Wing|翅膀", "Animal|动物"
+        ],
+        "🚗 交通 · Transportation": [
+            "Train|火车", "Plane|飞机", "Car|汽车", "Truck|卡车", "Bicycle|自行车", "Bus|公共汽车", "Boat|小艇", "Ship|船", "Tire|轮胎", "Gasoline|汽油", "Engine|引擎", "Ticket|票", "Transportation|交通"
+        ],
+        "📍 地点 · Locations": [
+            "City|城市", "House|住宅", "Apartment|公寓", "Street/Road|街道/道路", "Airport|机场", "Train station|火车站", "Bridge|桥", "Hotel|酒店", "Restaurant|餐厅", "Farm|农场", "Court|法院", "School|学校", "Office|办公室", "Room|房间", "Town|城镇", "University|大学", "Club|俱乐部", "Bar|酒吧", "Park|公园", "Camp|营地", "Store/Shop|商场", "Theater|剧院", "Library|图书馆", "Hospital|医院", "Church|教堂", "Market|市场", "Country|国家", "Building|建筑", "Ground|地面", "Space|太空", "Bank|银行", "Location|地点"
+        ],
+        "👗 服装 · Clothing": [
+            "Hat|帽子", "Dress|连衣裙", "Suit|西装", "Skirt|裙子", "Shirt|衬衫", "T-shirt|T恤", "Pants|裤子", "Shoes|鞋子", "Pocket|口袋", "Coat|外套", "Stain|污渍", "Clothing|服装"
+        ],
+        "🎨 颜色 · Colors": [
+            "Red|红色", "Green|绿色", "Blue|蓝色", "Yellow|黄色", "Brown|棕色", "Pink|粉红色", "Orange|橙色", "Black|黑色", "White|白色", "Gray|灰色", "Color|颜色"
+        ],
+        "👨‍👩‍👧 人物 · People": [
+            "Son|儿子", "Daughter|女儿", "Mother|母亲", "Father|父亲", "Parent|父母", "Baby|婴儿", "Man|男人", "Woman|女人", "Brother|兄弟", "Sister|姐妹", "Family|家庭", "Grandfather|祖父", "Grandmother|祖母", "Husband|丈夫", "Wife|妻子", "King|国王", "Queen|女王", "President|总统", "Neighbor|邻居", "Boy|男孩", "Girl|女孩", "Child|孩子", "Adult|成人", "Human|人类", "Friend|朋友", "Victim|受害者", "Player|玩家", "Fan|粉丝", "Crowd|人群", "Person|人物"
+        ],
+        "💼 工作 · Jobs": [
+            "Teacher|老师", "Student|学生", "Lawyer|律师", "Doctor|医生", "Patient|病人", "Waiter|服务员", "Secretary|秘书", "Priest|牧师", "Police|警察", "Army|军队", "Soldier|军人", "Artist|艺术家", "Author|作者", "Manager|经理", "Reporter|记者", "Actor|演员", "Job|工作"
+        ],
+        "🌍 社会 · Society": [
+            "Religion|宗教", "Heaven|天堂", "Hell|地狱", "Death|死亡", "Medicine|医学", "Money|金钱", "Dollar|美元", "Bill|帐单", "Marriage|婚姻", "Wedding|婚礼", "Team|团队", "Race|种族", "Sex|性行为", "Gender|性别", "Murder|谋杀", "Prison|监狱", "Technology|科技", "Energy|能源", "War|战争", "Peace|和平", "Attack|攻击", "Election|选举", "Magazine|杂志", "Newspaper|报纸", "Poison|毒药", "Gun|枪支", "Sport|体育", "Race (Sport)|赛跑", "Exercise|运动", "Ball|球", "Game|游戏", "Price|价格", "Contract|合同", "Drug|毒品", "Sign|迹象", "Science|科学", "God|上帝"
+        ],
+        "🎵 艺术 · Art": [
+            "Band|乐队", "Song|歌曲", "Instrument|乐器", "Music|音乐", "Movie|电影", "Art|艺术"
+        ],
+        "🥤 饮料 · Beverages": [
+            "Coffee|咖啡", "Tea|茶", "Wine|葡萄酒", "Beer|啤酒", "Juice|果汁", "Water|水", "Milk|牛奶", "Beverage|饮料"
+        ],
+        "🍕 食物 · Food": [
+            "Egg|鸡蛋", "Cheese|奶酪", "Bread|面包", "Soup|汤", "Cake|蛋糕", "Chicken|鸡肉", "Pork|猪肉", "Beef|牛肉", "Apple|苹果", "Banana|香蕉", "Orange|橘子", "Lemon|柠檬", "Corn|玉米", "Rice|大米", "Oil|油", "Seed|种子", "Knife|刀子", "Spoon|勺子", "Fork|叉子", "Plate|盘子", "Cup|杯子", "Breakfast|早餐", "Lunch|午餐", "Dinner|晚餐", "Sugar|食糖", "Salt|盐", "Bottle|瓶子", "Food|食物"
+        ],
+        "🏠 家内 · Home": [
+            "Table|桌子", "Chair|椅子", "Bed|床", "Dream|梦", "Window|窗口", "Door|门", "Bedroom|卧室", "Kitchen|厨房", "Bathroom|浴室", "Pencil|铅笔", "Pen|笔", "Photograph|相片", "Soap|肥皂", "Book|书", "Page|页面", "Key|钥匙", "Paint|油漆", "Letter|信件", "Note|笔记", "Wall|墙壁", "Paper|纸张", "Floor|地板", "Ceiling|天花板", "Roof|屋顶", "Pool|游泳池", "Lock|锁", "Telephone|电话", "Garden|花园", "Yard|院子", "Needle|针", "Bag|包", "Box|盒子", "Gift|礼物", "Card|卡片", "Ring|戒指", "Tool|工具"
+        ],
+        "📱 电子产品 · Electronics": [
+            "Clock|时钟", "Lamp|电灯", "Fan|风扇", "Cell Phone|手机", "Network|网络", "Computer|电脑", "Program|电脑程序", "Laptop|笔记本电脑", "Screen|屏幕", "Camera|照相机", "Television|电视机", "Radio|收音机"
+        ],
+        "🌿 大自然 · Nature": [
+            "Sea|海", "Ocean|海洋", "River|河", "Mountain|山", "Rain|雨", "Snow|雪", "Tree|树", "Sun|太阳", "Moon|月亮", "World|世界", "Earth|地球", "Forest|树林", "Sky|天空", "Plant|植物", "Wind|风", "Soil|土地", "Flower|花", "Valley|山谷", "Root|根", "Lake|湖", "Star|星星", "Grass|草", "Leaf|叶子", "Air|空气", "Sand|沙子", "Beach|海滩", "Wave|波浪", "Fire|火", "Ice|冰", "Island|岛屿", "Hill|山丘", "Heat|热量", "Nature|大自然"
+        ],
+        "🧱 材料 · Materials": [
+            "Glass|玻璃", "Metal|金属", "Plastic|塑料", "Wood|木材", "Stone|石头", "Diamond|钻石", "Clay|粘土", "Dust|灰尘", "Gold|金", "Copper|铜", "Silver|银", "Material|材料"
+        ],
+        "📐 数学/测量 · Math": [
+            "Meter|米", "Centimeter|厘米", "Kilogram|公斤", "Inch|英寸", "Foot|英尺", "Pound|磅", "Half|一半", "Circle|圆形", "Square|正方形", "Temperature|温度", "Date|日期", "Weight|重量", "Edge|边缘", "Corner|角落"
+        ],
+        "✨ 其他名词 · Other Nouns": [
+            "Map|地图", "Dot|点", "Consonant|辅音", "Vowel|元音", "Light|光", "Sound|声音", "Yes|是", "No|不是", "Piece|一块", "Pain|疼痛", "Injury|伤害", "Hole|洞", "Image|图像", "Pattern|花样"
+        ],
+        "🧭 方向 · Directions": [
+            "Top|顶部", "Bottom|底部", "Side|侧面", "Front|前面", "Back|后面", "Outside|外面", "Inside|里面", "Up|上面", "Down|下面", "Left|左边", "Right|右边", "Straight|直", "North|北部", "South|南部", "East|东部", "West|西部", "Direction|方向"
+        ],
+        "🍂 季节 · Seasons": [
+            "Summer|夏天", "Spring|春天", "Winter|冬天", "Fall|秋天", "Season|季节"
+        ],
+        "🔢 数字 · Numbers": [
+            "Zero|零","One|一","Two|二","Three|三","Four|四","Five|五","Six|六","Seven|七","Eight|八","Nine|九","Ten|十",
+            "Eleven|十一","Twelve|十二","Thirteen|十三","Fourteen|十四","Fifteen|十五","Sixteen|十六","Seventeen|十七","Eighteen|十八","Nineteen|十九","Twenty|二十",
+            "Twenty-one|二十一","Twenty-two|二十二","Thirty|三十","Thirty-one|三十一","Thirty-two|三十二","Forty|四十","Fifty|五十","Sixty|六十","Seventy|七十","Eighty|八十","Ninety|九十",
+            "One hundred|一百","One thousand|一千","Ten thousand|一万","One hundred thousand|十万","Million|一百万","Billion|十亿",
+            "First|第一","Second|第二","Third|第三","Fourth|第四","Fifth|第五"
+        ],
+        "📅 月份 · Months": [
+            "January|一月","February|二月","March|三月","April|四月","May|五月","June|六月","July|七月","August|八月","September|九月","October|十月","November|十一月","December|十二月"
+        ],
+        "📆 星期 · Days": [
+            "Monday|星期一","Tuesday|星期二","Wednesday|星期三","Thursday|星期四","Friday|星期五","Saturday|星期六","Sunday|星期日"
+        ],
+        "⏰ 时间 · Time": [
+            "Year|年","Month|月","Week|周","Day|日","Hour|小时","Minute|分钟","Second|秒","Morning|早晨","Afternoon|下午","Evening|傍晚","Night|晚上","Time|时间"
+        ],
+        "🏃 动词 · Verbs": [
+            "Work|工作","Play|玩耍","Walk|走路","Run|跑步","Drive|驾驶","Fly|飞行","Swim|游泳","Go|去","Stop|停","Follow|跟随","Think|想","Speak|讲","Say|说","Eat|吃","Drink|喝","Kill|杀","Die|死","Smile|微笑","Laugh|笑","Cry|哭","Buy|买","Pay|付费","Sell|卖","Shoot|射击","Learn|学习","Jump|跳跃","Smell|闻","Hear|倾听","Listen|聆听","Taste|品尝","Touch|触摸","See|观看","Watch|看","Kiss|亲吻","Burn|燃烧","Melt|熔化","Dig|挖掘","Explode|爆炸","Sit|坐","Stand|站","Love|爱","Pass by|路过","Cut|切割","Fight|战斗","Lie down|躺下","Dance|跳舞","Sleep|睡觉","Wake up|醒来","Sing|唱歌","Count|计算","Marry|结婚","Pray|祈祷","Win|获胜","Lose|失败","Mix|混合","Stir|搅拌","Bend|弯身","Wash|清洗","Cook|烹饪","Open|打开","Close|关闭","Write|写作","Call|呼叫","Turn|转动","Build|建造","Teach|教导","Grow|生长","Draw|绘画","Feed|喂食","Catch|抓","Throw|扔","Clean|清理","Find|寻找","Fall|摔倒","Push|推","Pull|拉","Carry|携带","Break|打破","Wear|穿","Hang|挂","Shake|摇晃","Sign|签","Beat|打","Lift|抬"
+        ],
+        "✨ 形容词 · Adjectives": [
+            "Long|长","Short|短","Tall|高","Short (vs tall)|矮","Wide|宽","Narrow|窄","Big|大","Large|大","Small|小","Little|小","Slow|慢","Fast|快","Hot|热","Cold|冷","Warm|温","Cool|凉爽","New|新","Old|旧","Young|年轻","Old (vs young)|老","Good|好","Bad|坏","Wet|湿","Dry|干","Sick|病","Healthy|健康","Loud|响亮","Quiet|安静","Happy|开心","Sad|伤心","Beautiful|美丽","Ugly|丑陋","Deaf|聋哑","Blind|失明","Nice|友好","Mean|刻薄","Rich|富有","Poor|贫穷","Thick|厚","Thin|薄","Expensive|昂贵","Cheap|便宜","Flat|平","Curved|弯曲","Male|雄","Female|雌","Tight|紧","Loose|松","High|高","Low|低","Soft|软","Hard|硬","Deep|深","Shallow|浅","Clean|干净","Dirty|肮脏","Strong|强大","Weak|软弱","Dead|死","Alive|活","Heavy|重","Light|轻","Dark|暗","Light (bright)|亮","Nuclear|核能","Famous|著名"
+        ]
+    };
+
+    // 统计总单词数
+    let totalWords = 0;
+    for (let cat in wordsData) {
+        totalWords += wordsData[cat].length;
+    }
+
+    // 渲染函数 (支持搜索高亮)
+    let currentSearchTerm = "";
+
+    function highlightText(text, term) {
+        if (!term.trim()) return text;
+        const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return text.replace(regex, `<mark class="highlight">$1</mark>`);
+    }
+
+    function renderCategories(filterTerm = "") {
+        const container = document.getElementById('categoriesContainer');
+        container.innerHTML = '';
+        let visibleWordCount = 0;
+
+        for (let [category, words] of Object.entries(wordsData)) {
+            // 过滤单词
+            let filteredWords = words;
+            if (filterTerm.trim() !== "") {
+                const termLower = filterTerm.toLowerCase();
+                filteredWords = words.filter(pair => {
+                    const [en, zh] = pair.split('|');
+                    return en.toLowerCase().includes(termLower) || zh.toLowerCase().includes(termLower);
+                });
+            }
+            if (filteredWords.length === 0 && filterTerm) continue; // 无匹配不显示分类区块
+
+            visibleWordCount += filteredWords.length;
+
+            // 构建卡片html
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'category-card';
+            const categoryId = `cat-${category.replace(/\s/g, '')}`;
+            // 是否默认展开：没有搜索词时全部展开；搜索词时自动展开所有匹配分类以便查找
+            const defaultOpen = (filterTerm.trim() !== "") ? true : true;  // 初始全部展开更友好，但用户可以折叠
+            const contentDisplay = defaultOpen ? 'grid' : 'none';
+            const iconRotate = defaultOpen ? 'rotate(0deg)' : 'rotate(-90deg)';
+
+            let wordsHtml = '';
+            filteredWords.forEach(pair => {
+                let [en, zh] = pair.split('|');
+                let displayEn = filterTerm ? highlightText(en, filterTerm) : en;
+                let displayZh = filterTerm ? highlightText(zh, filterTerm) : zh;
+                wordsHtml += `
+                    <div class="word-card">
+                        <div class="word-en">${displayEn}</div>
+                        <div class="word-zh">${displayZh}</div>
+                    </div>
+                `;
+            });
+            if (filteredWords.length === 0) {
+                wordsHtml = '<div class="no-match">✨ 没有匹配的单词，试试其他词 ✨</div>';
+            }
+
+            cardDiv.innerHTML = `
+                <div class="category-header" data-cat="${categoryId}">
+                    <div class="category-title">
+                        <i class="fas ${getIconForCategory(category)}"></i>
+                        <span>${category}</span>
+                        <span class="badge-count">${filteredWords.length}</span>
+                    </div>
+                    <i class="fas fa-chevron-down toggle-icon" style="transform: ${iconRotate};"></i>
+                </div>
+                <div class="category-content" id="${categoryId}" style="display: ${contentDisplay};">
+                    ${wordsHtml}
+                </div>
+            `;
+            container.appendChild(cardDiv);
+        }
+
+        document.getElementById('statsDisplay').innerHTML = `📚 当前显示 ${visibleWordCount} / ${totalWords} 个核心词 &nbsp;|&nbsp; 🎯 轻松记忆`;
+        
+        // 绑定折叠事件
+        document.querySelectorAll('.category-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const contentId = header.getAttribute('data-cat');
+                const contentDiv = document.getElementById(contentId);
+                const icon = header.querySelector('.toggle-icon');
+                if (contentDiv.style.display === 'none' || getComputedStyle(contentDiv).display === 'none') {
+                    contentDiv.style.display = 'grid';
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    contentDiv.style.display = 'none';
+                    icon.style.transform = 'rotate(-90deg)';
+                }
+            });
+        });
+    }
+
+    function getIconForCategory(catName) {
+        if (catName.includes('动物')) return 'fa-paw';
+        if (catName.includes('交通')) return 'fa-car';
+        if (catName.includes('地点')) return 'fa-location-dot';
+        if (catName.includes('服装')) return 'fa-shirt';
+        if (catName.includes('颜色')) return 'fa-palette';
+        if (catName.includes('人物')) return 'fa-users';
+        if (catName.includes('工作')) return 'fa-briefcase';
+        if (catName.includes('社会')) return 'fa-globe';
+        if (catName.includes('艺术')) return 'fa-music';
+        if (catName.includes('饮料')) return 'fa-mug-hot';
+        if (catName.includes('食物')) return 'fa-utensils';
+        if (catName.includes('家内')) return 'fa-house';
+        if (catName.includes('电子')) return 'fa-mobile-alt';
+        if (catName.includes('大自然')) return 'fa-leaf';
+        if (catName.includes('材料')) return 'fa-cube';
+        if (catName.includes('数学')) return 'fa-calculator';
+        if (catName.includes('其他名词')) return 'fa-tag';
+        if (catName.includes('方向')) return 'fa-compass';
+        if (catName.includes('季节')) return 'fa-cloud-sun';
+        if (catName.includes('数字')) return 'fa-hashtag';
+        if (catName.includes('月份')) return 'fa-calendar-alt';
+        if (catName.includes('星期')) return 'fa-calendar-week';
+        if (catName.includes('时间')) return 'fa-clock';
+        if (catName.includes('动词')) return 'fa-running';
+        if (catName.includes('形容词')) return 'fa-smile';
+        return 'fa-bookmark';
+    }
+
+    // 搜索功能
+    const searchInput = document.getElementById('searchInput');
+    function handleSearch() {
+        currentSearchTerm = searchInput.value.trim();
+        renderCategories(currentSearchTerm);
+    }
+    searchInput.addEventListener('input', handleSearch);
+    
+    // 全部展开/折叠
+    function expandAll() {
+        document.querySelectorAll('.category-content').forEach(content => {
+            content.style.display = 'grid';
+        });
+        document.querySelectorAll('.toggle-icon').forEach(icon => {
+            icon.style.transform = 'rotate(0deg)';
+        });
+    }
+    function collapseAll() {
+        document.querySelectorAll('.category-content').forEach(content => {
+            content.style.display = 'none';
+        });
+        document.querySelectorAll('.toggle-icon').forEach(icon => {
+            icon.style.transform = 'rotate(-90deg)';
+        });
+    }
+    document.getElementById('expandAllBtn').addEventListener('click', expandAll);
+    document.getElementById('collapseAllBtn').addEventListener('click', collapseAll);
+
+    // 初始渲染
+    renderCategories("");
+</script>
+</body>
+</html>
