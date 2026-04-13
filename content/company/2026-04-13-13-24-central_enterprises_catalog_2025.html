@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中央企业名录 2025 | State-owned Central Enterprises</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'china-red': '#DE2910',
+                        'china-red-dark': '#B91C1C',
+                        'gold': '#FFD700',
+                        'gold-light': '#FEF3C7',
+                        'navy': '#1E3A5F',
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif SC"', 'serif'],
+                        sans: ['"Noto Sans SC"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .enterprise-card {
+            transition: all 0.3s ease;
+        }
+        .enterprise-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(222, 41, 16, 0.15);
+            border-color: #DE2910;
+        }
+        .category-badge {
+            background: linear-gradient(135deg, #DE2910 0%, #B91C1C 100%);
+        }
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(222, 41, 16, 0.1);
+        }
+        .timeline-dot {
+            box-shadow: 0 0 0 4px rgba(222, 41, 16, 0.2);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .number-badge {
+            background: linear-gradient(135deg, #1E3A5F 0%, #2C5282 100%);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="font-sans text-gray-800 min-h-screen">
+
+    <!-- Hero Section -->
+    <header class="relative bg-gradient-to-br from-china-red via-china-red-dark to-navy text-white overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+
+        <div class="relative container mx-auto px-4 py-16 md:py-24">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-block mb-4 px-4 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium border border-white/20">
+                    截至2025年7月 · 国务院国资委监管
+                </div>
+                <h1 class="font-serif text-4xl md:text-6xl font-bold mb-6 tracking-tight">
+                    中央企业名录
+                    <span class="block text-gold mt-2 text-3xl md:text-5xl">Central Enterprises</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+                    国务院国资委监管的中央企业完整名单，共计<span class="font-bold text-gold text-2xl mx-1">100</span>家<br>
+                    关系国家安全和国民经济命脉的重要骨干企业
+                </p>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-3xl mx-auto">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+                        <div class="text-3xl font-bold text-gold">100</div>
+                        <div class="text-sm text-gray-200">央企总数</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+                        <div class="text-3xl font-bold text-gold">95万亿</div>
+                        <div class="text-sm text-gray-200">资产总额(元)</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+                        <div class="text-3xl font-bold text-gold">2.5万亿</div>
+                        <div class="text-sm text-gray-200">年利润总额</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+                        <div class="text-3xl font-bold text-gold">100%</div>
+                        <div class="text-sm text-gray-200">关键领域覆盖</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wave Separator -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg class="w-full h-12 fill-gray-50" viewBox="0 0 1440 74" preserveAspectRatio="none">
+                <path d="M0,0 C240,70 480,70 720,35 C960,0 1200,0 1440,35 L1440,74 L0,74 Z"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Search & Filter Section -->
+    <section class="container mx-auto px-4 -mt-8 relative z-10 mb-8">
+        <div class="glass-panel rounded-2xl shadow-xl p-6 max-w-4xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1 relative">
+                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="搜索企业名称..." 
+                           class="search-input w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-china-red focus:outline-none transition-colors">
+                </div>
+                <select id="categoryFilter" class="px-4 py-3 rounded-xl border border-gray-200 focus:border-china-red focus:outline-none bg-white cursor-pointer">
+                    <option value="all">全部分类</option>
+                    <option value="nuclear">核工业与军工</option>
+                    <option value="energy">能源电力</option>
+                    <option value="resources">资源矿产</option>
+                    <option value="equipment">装备制造</option>
+                    <option value="transport">交通运输</option>
+                    <option value="telecom">通信科技</option>
+                    <option value="construction">建筑基建</option>
+                    <option value="investment">投资服务</option>
+                    <option value="agriculture">农林医药</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pb-16 max-w-6xl">
+
+        <!-- Category Legend -->
+        <div class="mb-8 flex flex-wrap gap-2 justify-center text-sm">
+            <span class="px-3 py-1 rounded-full bg-red-100 text-red-800 border border-red-200">核工业与军工</span>
+            <span class="px-3 py-1 rounded-full bg-orange-100 text-orange-800 border border-orange-200">能源电力</span>
+            <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-200">通信科技</span>
+            <span class="px-3 py-1 rounded-full bg-green-100 text-green-800 border border-green-200">资源矿产</span>
+            <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-800 border border-purple-200">装备制造</span>
+            <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200">交通运输</span>
+        </div>
+
+        <!-- Enterprises Grid -->
+        <div id="enterprisesContainer" class="space-y-6">
+            <!-- Content will be injected by JavaScript -->
+        </div>
+
+        <!-- Features Section -->
+        <section class="mt-16 grid md:grid-cols-2 gap-8">
+            <div class="glass-panel rounded-2xl p-8 shadow-lg">
+                <h2 class="font-serif text-2xl font-bold text-navy mb-6 flex items-center">
+                    <span class="w-1 h-8 bg-china-red mr-3 rounded-full"></span>
+                    央企分类特点
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 rounded-full bg-china-red mt-2 flex-shrink-0"></div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">能源资源类</h3>
+                            <p class="text-sm text-gray-600">中石油、中石化、中海油、国家电网等，保障国家能源安全</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 rounded-full bg-china-red mt-2 flex-shrink-0"></div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">装备制造与军工类</h3>
+                            <p class="text-sm text-gray-600">航天科技、航天科工、航空工业等，承担国防安全重任</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 rounded-full bg-china-red mt-2 flex-shrink-0"></div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">基础设施建设类</h3>
+                            <p class="text-sm text-gray-600">中国建筑、中国中铁、中国铁建等全球知名基建企业</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-8 shadow-lg">
+                <h2 class="font-serif text-2xl font-bold text-navy mb-6 flex items-center">
+                    <span class="w-1 h-8 bg-china-red mr-3 rounded-full"></span>
+                    2025年最新动态
+                </h2>
+                <div class="relative border-l-2 border-gray-200 ml-3 space-y-6">
+                    <div class="relative pl-8">
+                        <div class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-china-red timeline-dot"></div>
+                        <div class="text-sm text-gray-500 mb-1">2025年7月</div>
+                        <h3 class="font-bold text-gray-900">中国长安汽车集团成立</h3>
+                        <p class="text-sm text-gray-600 mt-1">国务院国资委正式发布公告，中国长安汽车集团有限公司列入央企名录，成为第100家央企，朱华荣任党委书记、董事长。</p>
+                    </div>
+                    <div class="relative pl-8">
+                        <div class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-gray-300"></div>
+                        <div class="text-sm text-gray-500 mb-1">2025年</div>
+                        <h3 class="font-bold text-gray-900">中国雅江集团有限公司成立</h3>
+                        <p class="text-sm text-gray-600 mt-1">新成立的电力央企，完善国家能源布局。</p>
+                    </div>
+                    <div class="relative pl-8">
+                        <div class="absolute -left-2 top-1 w-4 h-4 rounded-full bg-gray-300"></div>
+                        <div class="text-sm text-gray-500 mb-1">2023-2025</div>
+                        <h3 class="font-bold text-gray-900">重组整合历程</h3>
+                        <p class="text-sm text-gray-600 mt-1">从2023年的97家，经过多次重组整合，到2025年7月达到100家。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Economic Contribution -->
+        <section class="mt-8 glass-panel rounded-2xl p-8 shadow-lg">
+            <h2 class="font-serif text-2xl font-bold text-navy mb-6 text-center">央企经济贡献</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="p-6 rounded-xl bg-gradient-to-br from-red-50 to-orange-50 border border-red-100">
+                    <div class="text-4xl font-bold text-china-red mb-2">95万亿元</div>
+                    <div class="text-gray-700 font-medium">资产总额突破</div>
+                    <div class="text-sm text-gray-500 mt-1">截至2025年</div>
+                </div>
+                <div class="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
+                    <div class="text-4xl font-bold text-blue-700 mb-2">5.1万亿元</div>
+                    <div class="text-gray-700 font-medium">固定资产投资</div>
+                    <div class="text-sm text-gray-500 mt-1">2025年完成</div>
+                </div>
+                <div class="p-6 rounded-xl bg-gradient-to-br from-green-50 to-teal-50 border border-green-100">
+                    <div class="text-4xl font-bold text-green-700 mb-2">28家</div>
+                    <div class="text-gray-700 font-medium">科技创新优秀企业</div>
+                    <div class="text-sm text-gray-500 mt-1">2024年度获评</div>
+                </div>
+            </div>
+            <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-gray-700">
+                <strong class="text-yellow-800">注：</strong>除国务院国资委监管的100家实业类央企外，还有财政部履行出资人职责的<span class="font-semibold">中央金融企业（27家）</span>和<span class="font-semibold">中央文化企业（113家）</span>。通常所说的"央企"主要指国务院国资委监管的这100家企业。
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy text-white py-12 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="font-serif text-2xl font-bold mb-4">中央企业名录 2025</div>
+            <p class="text-gray-400 text-sm max-w-2xl mx-auto">
+                数据截至2025年7月，由国务院国资委监管。央企在国民经济中占据重要地位，
+                主要分布在关系国家安全和国民经济命脉的关键领域。
+            </p>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-sm text-gray-500">
+                信息来源：国务院国资委官方公告 · 仅供参考
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+            class="fixed bottom-8 right-8 bg-china-red text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-china-red-dark z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+
+    <script>
+        // Enterprise Data
+        const enterpriseData = [
+            { range: "1-10家：核工业与军工类", category: "nuclear", items: [
+                {name: "中国核工业集团有限公司", num: 1, desc: "核工业"},
+                {name: "中国航天科技集团有限公司", num: 2, desc: "航天科技"},
+                {name: "中国航天科工集团有限公司", num: 3, desc: "航天科工"},
+                {name: "中国航空工业集团有限公司", num: 4, desc: "航空工业"},
+                {name: "中国船舶集团有限公司", num: 5, desc: "船舶制造"},
+                {name: "中国兵器工业集团有限公司", num: 6, desc: "兵器工业"},
+                {name: "中国兵器装备集团有限公司", num: 7, desc: "兵器装备"},
+                {name: "中国电子科技集团有限公司", num: 8, desc: "电子科技"},
+                {name: "中国航空发动机集团有限公司", num: 9, desc: "航空发动机"},
+                {name: "中国融通资产管理集团有限公司", num: 10, desc: "资产管理"}
+            ]},
+            { range: "11-20家：能源与电力类", category: "energy", items: [
+                {name: "中国石油天然气集团有限公司", num: 11, desc: "石油天然气"},
+                {name: "中国石油化工集团有限公司", num: 12, desc: "石油化工"},
+                {name: "中国海洋石油集团有限公司", num: 13, desc: "海洋石油"},
+                {name: "国家石油天然气管网集团有限公司", num: 14, desc: "油气管网"},
+                {name: "国家电网有限公司", num: 15, desc: "电网运营"},
+                {name: "中国南方电网有限责任公司", num: 16, desc: "南方电网"},
+                {name: "中国华能集团有限公司", num: 17, desc: "电力生产"},
+                {name: "中国大唐集团有限公司", num: 18, desc: "电力生产"},
+                {name: "中国华电集团有限公司", num: 19, desc: "电力生产"},
+                {name: "国家电力投资集团有限公司", num: 20, desc: "电力投资"}
+            ]},
+            { range: "21-30家：电力与资源类", category: "energy", items: [
+                {name: "中国长江三峡集团有限公司", num: 21, desc: "水电开发"},
+                {name: "中国雅江集团有限公司", num: 22, desc: "电力央企", new: true},
+                {name: "国家能源投资集团有限责任公司", num: 23, desc: "能源投资"},
+                {name: "中国电信集团有限公司", num: 24, desc: "电信运营"},
+                {name: "中国联合网络通信集团有限公司", num: 25, desc: "联通运营"},
+                {name: "中国移动通信集团有限公司", num: 26, desc: "移动运营"},
+                {name: "中国卫星网络集团有限公司", num: 27, desc: "卫星网络"},
+                {name: "中国电子信息产业集团有限公司", num: 28, desc: "电子信息"},
+                {name: "中国第一汽车集团有限公司", num: 29, desc: "汽车制造"},
+                {name: "东风汽车集团有限公司", num: 30, desc: "汽车制造"}
+            ]},
+            { range: "31-40家：装备与制造类", category: "equipment", items: [
+                {name: "中国一重集团有限公司", num: 31, desc: "重型装备"},
+                {name: "中国机械工业集团有限公司", num: 32, desc: "机械工业"},
+                {name: "哈尔滨电气集团有限公司", num: 33, desc: "电气设备"},
+                {name: "中国东方电气集团有限公司", num: 34, desc: "电气设备"},
+                {name: "鞍钢集团有限公司", num: 35, desc: "钢铁制造"},
+                {name: "中国宝武钢铁集团有限公司", num: 36, desc: "钢铁制造"},
+                {name: "中国矿产资源集团有限公司", num: 37, desc: "矿产资源"},
+                {name: "中国铝业集团有限公司", num: 38, desc: "铝业生产"},
+                {name: "中国远洋海运集团有限公司", num: 39, desc: "远洋运输"},
+                {name: "中国航空集团有限公司", num: 40, desc: "航空运输"}
+            ]},
+            { range: "41-50家：航空与综合类", category: "transport", items: [
+                {name: "中国东方航空集团有限公司", num: 41, desc: "航空运输"},
+                {name: "中国南方航空集团有限公司", num: 42, desc: "航空运输"},
+                {name: "中国中化控股有限责任公司", num: 43, desc: "化工贸易"},
+                {name: "中粮集团有限公司", num: 44, desc: "粮油食品"},
+                {name: "中国五矿集团有限公司", num: 45, desc: "金属矿产"},
+                {name: "中国通用技术（集团）控股有限责任公司", num: 46, desc: "通用技术"},
+                {name: "中国建筑集团有限公司", num: 47, desc: "建筑工程"},
+                {name: "中国储备粮管理集团有限公司", num: 48, desc: "粮食储备"},
+                {name: "中国南水北调集团有限公司", num: 49, desc: "水利建设"},
+                {name: "国家开发投资集团有限公司", num: 50, desc: "投资开发"}
+            ]},
+            { range: "51-60家：投资与服务类", category: "investment", items: [
+                {name: "招商局集团有限公司", num: 51, desc: "综合交通"},
+                {name: "华润（集团）有限公司", num: 52, desc: "多元化控股"},
+                {name: "中国旅游集团有限公司[香港中旅（集团）有限公司]", num: 53, desc: "旅游服务"},
+                {name: "中国商用飞机有限责任公司", num: 54, desc: "飞机制造"},
+                {name: "中国节能环保集团有限公司", num: 55, desc: "节能环保"},
+                {name: "中国国际工程咨询有限公司", num: 56, desc: "工程咨询"},
+                {name: "中国诚通控股集团有限公司", num: 57, desc: "资产经营"},
+                {name: "中国中煤能源集团有限公司", num: 58, desc: "煤炭能源"},
+                {name: "中国煤炭科工集团有限公司", num: 59, desc: "煤科工"},
+                {name: "中国机械科学研究总院集团有限公司", num: 60, desc: "机械科研"}
+            ]},
+            { range: "61-70家：科技与材料类", category: "resources", items: [
+                {name: "中国钢研科技集团有限公司", num: 61, desc: "钢铁研究"},
+                {name: "中国化学工程集团有限公司", num: 62, desc: "化学工程"},
+                {name: "中国盐业集团有限公司", num: 63, desc: "盐业生产"},
+                {name: "中国建材集团有限公司", num: 64, desc: "建筑材料"},
+                {name: "中国有色矿业集团有限公司", num: 65, desc: "有色矿业"},
+                {name: "中国稀土集团有限公司", num: 66, desc: "稀土产业"},
+                {name: "中国资源循环集团有限公司", num: 67, desc: "资源循环"},
+                {name: "中国有研科技集团有限公司", num: 68, desc: "科技研究"},
+                {name: "矿冶科技集团有限公司", num: 69, desc: "矿冶科技"},
+                {name: "中国国际技术智力合作集团有限公司", num: 70, desc: "人力资源"}
+            ]},
+            { range: "71-80家：交通与建设类", category: "construction", items: [
+                {name: "中国建筑科学研究院有限公司", num: 71, desc: "建筑科研"},
+                {name: "中国中车集团有限公司", num: 72, desc: "轨道交通"},
+                {name: "中国长安汽车集团有限公司", num: 73, desc: "汽车制造", new: true, highlight: true},
+                {name: "中国铁路通信信号集团有限公司", num: 74, desc: "铁路信号"},
+                {name: "中国铁路工程集团有限公司", num: 75, desc: "铁路工程"},
+                {name: "中国铁道建筑集团有限公司", num: 76, desc: "铁道建筑"},
+                {name: "中国交通建设集团有限公司", num: 77, desc: "交通建设"},
+                {name: "中国信息通信科技集团有限公司", num: 78, desc: "信息通信"},
+                {name: "中国农业发展集团有限公司", num: 79, desc: "农业发展"},
+                {name: "中国林业集团有限公司", num: 80, desc: "林业产业"}
+            ]},
+            { range: "81-90家：医药与综合类", category: "agriculture", items: [
+                {name: "中国医药集团有限公司", num: 81, desc: "医药健康"},
+                {name: "中国保利集团有限公司", num: 82, desc: "多元化"},
+                {name: "中国建设科技有限公司", num: 83, desc: "建设科技"},
+                {name: "中国冶金地质总局", num: 84, desc: "地质勘查"},
+                {name: "中国煤炭地质总局", num: 85, desc: "地质勘查"},
+                {name: "新兴际华集团有限公司", num: 86, desc: "冶金铸造"},
+                {name: "中国民航信息集团有限公司", num: 87, desc: "民航信息"},
+                {name: "中国航空油料集团有限公司", num: 88, desc: "航空油料"},
+                {name: "中国航空器材集团有限公司", num: 89, desc: "航空器材"},
+                {name: "中国电力建设集团有限公司", num: 90, desc: "电力建设"}
+            ]},
+            { range: "91-100家：能源与服务类", category: "energy", items: [
+                {name: "中国能源建设集团有限公司", num: 91, desc: "能源建设"},
+                {name: "中国安能建设集团有限公司", num: 92, desc: "应急救援"},
+                {name: "中国黄金集团有限公司", num: 93, desc: "黄金产业"},
+                {name: "中国广核集团有限公司", num: 94, desc: "核能发电"},
+                {name: "华侨城集团有限公司", num: 95, desc: "文化旅游"},
+                {name: "南光（集团）有限公司[中国南光集团有限公司]", num: 96, desc: "日用消费"},
+                {name: "中国电气装备集团有限公司", num: 97, desc: "电气装备"},
+                {name: "中国物流集团有限公司", num: 98, desc: "物流服务"},
+                {name: "中国国新控股有限责任公司", num: 99, desc: "国有资本"},
+                {name: "中国检验认证（集团）有限公司", num: 100, desc: "检验认证"}
+            ]}
+        ];
+
+        // Render Functions
+        function renderEnterprises(filterText = '', categoryFilter = 'all') {
+            const container = document.getElementById('enterprisesContainer');
+            container.innerHTML = '';
+
+            enterpriseData.forEach((group, index) => {
+                if (categoryFilter !== 'all' && group.category !== categoryFilter) return;
+
+                const filteredItems = group.items.filter(item => 
+                    item.name.toLowerCase().includes(filterText.toLowerCase()) ||
+                    item.desc.includes(filterText)
+                );
+
+                if (filteredItems.length === 0) return;
+
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'animate-fade-in';
+                groupDiv.style.animationDelay = `${index * 0.05}s`;
+
+                const headerColor = getCategoryColor(group.category);
+
+                groupDiv.innerHTML = `
+                    <div class="glass-panel rounded-2xl shadow-md overflow-hidden mb-6">
+                        <div class="${headerColor} px-6 py-4 flex justify-between items-center cursor-pointer" onclick="toggleGroup(${index})">
+                            <h3 class="font-serif text-lg font-bold text-white flex items-center gap-2">
+                                <span class="bg-white/20 px-2 py-1 rounded text-sm">${group.range.split('：')[0]}</span>
+                                ${group.range.split('：')[1]}
+                            </h3>
+                            <svg id="arrow-${index}" class="w-5 h-5 text-white transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div id="content-${index}" class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${filteredItems.map(item => `
+                                <div class="enterprise-card bg-white rounded-xl p-4 border border-gray-100 relative overflow-hidden group ${item.highlight ? 'ring-2 ring-china-red ring-offset-2' : ''}">
+                                    ${item.new ? '<span class="absolute top-0 right-0 bg-china-red text-white text-xs px-2 py-1 rounded-bl-lg">2025新成立</span>' : ''}
+                                    <div class="flex items-start gap-3">
+                                        <span class="number-badge text-white text-sm font-bold w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            ${item.num}
+                                        </span>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="font-bold text-gray-900 text-sm leading-tight mb-1 group-hover:text-china-red transition-colors">${item.name}</h4>
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">${item.desc}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(groupDiv);
+            });
+
+            if (container.innerHTML === '') {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p>未找到匹配的企业</p>
+                    </div>
+                `;
+            }
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                'nuclear': 'bg-gradient-to-r from-red-700 to-red-900',
+                'energy': 'bg-gradient-to-r from-orange-600 to-red-600',
+                'resources': 'bg-gradient-to-r from-green-600 to-teal-600',
+                'equipment': 'bg-gradient-to-r from-purple-600 to-indigo-600',
+                'transport': 'bg-gradient-to-r from-blue-600 to-blue-800',
+                'telecom': 'bg-gradient-to-r from-cyan-600 to-blue-600',
+                'construction': 'bg-gradient-to-r from-gray-600 to-gray-800',
+                'investment': 'bg-gradient-to-r from-yellow-600 to-orange-600',
+                'agriculture': 'bg-gradient-to-r from-green-700 to-green-900'
+            };
+            return colors[category] || 'bg-gradient-to-r from-gray-600 to-gray-800';
+        }
+
+        function toggleGroup(index) {
+            const content = document.getElementById(`content-${index}`);
+            const arrow = document.getElementById(`arrow-${index}`);
+            if (content.style.display === 'none') {
+                content.style.display = 'grid';
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.display = 'none';
+                arrow.style.transform = 'rotate(-90deg)';
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderEnterprises(e.target.value, document.getElementById('categoryFilter').value);
+        });
+
+        document.getElementById('categoryFilter').addEventListener('change', (e) => {
+            renderEnterprises(document.getElementById('searchInput').value, e.target.value);
+        });
+
+        // Back to Top Button Visibility
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                btn.classList.remove('opacity-0');
+                btn.classList.add('opacity-100');
+            } else {
+                btn.classList.remove('opacity-100');
+                btn.classList.add('opacity-0');
+            }
+        });
+
+        // Initialize
+        renderEnterprises();
+    </script>
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>China Auto Industry Pyramid | 中国汽车产业金字塔</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pyramid-level {
+            clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .pyramid-level:hover {
+            transform: translateY(-8px) scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .brand-card {
+            transition: all 0.3s ease;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bg-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+        }
+
+        .shimmer {
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.1) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .expandable-content.active {
+            max-height: 2000px;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        .category-badge {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .category-badge:hover::before {
+            left: 100%;
+        }
+
+        .stats-counter {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-slate-900 text-white min-h-screen bg-pattern">
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden pt-12 pb-8 px-4">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 opacity-90"></div>
+        <div class="relative z-10 max-w-6xl mx-auto text-center">
+            <div class="inline-block mb-4 px-4 py-1 rounded-full bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/30 text-red-300 text-sm font-medium">
+                2025 最新版 · 国务院国资委官方分类
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-4 tracking-tight">
+                <span class="bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+                    China Auto
+                </span>
+                <br>
+                <span class="bg-gradient-to-r from-red-400 via-orange-400 to-amber-400 bg-clip-text text-transparent">
+                    Industry Pyramid
+                </span>
+            </h1>
+            <p class="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                中国汽车产业金字塔全景图：央企、地方国企、民营企业三大阵营完整名录
+            </p>
+            <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+                <div class="glass-effect px-4 py-2 rounded-lg">
+                    <span class="text-slate-400">央企</span>
+                    <span class="ml-2 text-red-400 font-bold">3家</span>
+                </div>
+                <div class="glass-effect px-4 py-2 rounded-lg">
+                    <span class="text-slate-400">地方国企</span>
+                    <span class="ml-2 text-orange-400 font-bold">3家+</span>
+                </div>
+                <div class="glass-effect px-4 py-2 rounded-lg">
+                    <span class="text-slate-400">民营企业</span>
+                    <span class="ml-2 text-emerald-400 font-bold">10家+</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Pyramid Visualization -->
+    <main class="max-w-5xl mx-auto px-4 py-8">
+
+        <!-- Level 1: Central SOEs (Top) -->
+        <div class="mb-2 relative group cursor-pointer" onclick="toggleSection('central-soes')">
+            <div class="pyramid-level bg-gradient-to-b from-red-600 via-red-700 to-red-800 p-6 md:p-8 relative overflow-hidden">
+                <div class="shimmer absolute inset-0"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                    <div class="text-center md:text-left mb-4 md:mb-0">
+                        <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                            <span class="text-3xl">🏛️</span>
+                            <h2 class="text-2xl md:text-3xl font-black">央企</h2>
+                            <span class="category-badge bg-red-500/30 px-3 py-1 rounded-full text-xs font-bold border border-red-400/50">中央管理</span>
+                        </div>
+                        <p class="text-red-200 text-sm">国务院国资委直接监管 · 副部级央企</p>
+                    </div>
+                    <div class="flex gap-4 text-center">
+                        <div class="glass-effect px-4 py-2 rounded-lg">
+                            <div class="text-2xl font-bold">3</div>
+                            <div class="text-xs text-red-200">家集团</div>
+                        </div>
+                        <div class="glass-effect px-4 py-2 rounded-lg">
+                            <div class="text-2xl font-bold">850万+</div>
+                            <div class="text-xs text-red-200">年销量</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-center gap-6 text-sm font-medium">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>中国一汽</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>东风汽车</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>长安汽车</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Central SOEs Detail Section -->
+        <div id="central-soes" class="expandable-content mb-8">
+            <div class="grid md:grid-cols-3 gap-4 mt-4">
+                <!-- FAW -->
+                <div class="brand-card bg-gradient-to-br from-red-900/50 to-slate-800/50 border border-red-500/30 rounded-xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">中国一汽</h3>
+                            <p class="text-red-300 text-sm">FAW Group</p>
+                        </div>
+                        <span class="bg-red-500/20 text-red-300 text-xs px-2 py-1 rounded border border-red-500/30">央企#29</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>吉林长春</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-white font-bold">330.2万辆</span></p>
+                        <p><span class="text-slate-500">自主品牌：</span>红旗、奔腾、解放</p>
+                        <p><span class="text-slate-500">合资品牌：</span>一汽-大众、一汽丰田</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-red-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-red-500/10 text-red-300 px-2 py-1 rounded">红旗H9</span>
+                            <span class="text-xs bg-red-500/10 text-red-300 px-2 py-1 rounded">奔腾B70</span>
+                            <span class="text-xs bg-red-500/10 text-red-300 px-2 py-1 rounded">解放卡车</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dongfeng -->
+                <div class="brand-card bg-gradient-to-br from-red-900/50 to-slate-800/50 border border-red-500/30 rounded-xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">东风汽车</h3>
+                            <p class="text-red-300 text-sm">Dongfeng Motor</p>
+                        </div>
+                        <span class="bg-red-500/20 text-red-300 text-xs px-2 py-1 rounded border border-red-500/30">央企#30</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>湖北武汉</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-white font-bold">247.3万辆</span></p>
+                        <p><span class="text-slate-500">自主品牌：</span>岚图、风神、风行、猛士</p>
+                        <p><span class="text-slate-500">合资品牌：</span>东风日产、东风本田</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-red-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-red-500/10 text-red-300 px-2 py-1 rounded">岚图梦想家</span>
+                            <span class="text-xs bg-red-500/10 text-red-300 px-2 py-1 rounded">猛士917</span>
+                            <span class="text-xs bg-red-500/10 text-red-300 px-2 py-1 rounded">风神系列</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Changan -->
+                <div class="brand-card bg-gradient-to-br from-red-900/50 to-slate-800/50 border border-red-500/30 rounded-xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">长安汽车</h3>
+                            <p class="text-red-300 text-sm">Changan Automobile</p>
+                        </div>
+                        <span class="bg-red-500/20 text-red-300 text-xs px-2 py-1 rounded border border-red-500/30">央企#73</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>重庆</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-white font-bold">291.3万辆</span></p>
+                        <p><span class="text-slate-500">自主品牌：</span>长安、深蓝、阿维塔、启源</p>
+                        <p><span class="text-slate-500">合资品牌：</span>长安福特、长安马自达</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-red-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-red-500/10 text-red-300 px-2 py-1 rounded">深蓝S07</span>
+                            <span class="text-xs bg-red-500/10 text-red-300 px-2 py-1 rounded">阿维塔12</span>
+                            <span class="text-xs bg-red-500/10 text-red-300 px-2 py-1 rounded">启源A07</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 2: Local SOEs (Middle) -->
+        <div class="mb-2 relative group cursor-pointer" onclick="toggleSection('local-soes')">
+            <div class="pyramid-level bg-gradient-to-b from-orange-500 via-orange-600 to-orange-700 p-6 md:p-8 relative overflow-hidden" style="clip-path: polygon(3% 0%, 97% 0%, 100% 100%, 0% 100%);">
+                <div class="shimmer absolute inset-0"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                    <div class="text-center md:text-left mb-4 md:mb-0">
+                        <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                            <span class="text-3xl">🏢</span>
+                            <h2 class="text-2xl md:text-3xl font-black">国企</h2>
+                            <span class="category-badge bg-orange-500/30 px-3 py-1 rounded-full text-xs font-bold border border-orange-400/50">地方管理</span>
+                        </div>
+                        <p class="text-orange-200 text-sm">地方政府国资委监管 · 省级/市级国企</p>
+                    </div>
+                    <div class="flex gap-4 text-center">
+                        <div class="glass-effect px-4 py-2 rounded-lg">
+                            <div class="text-2xl font-bold">3+</div>
+                            <div class="text-xs text-orange-200">家集团</div>
+                        </div>
+                        <div class="glass-effect px-4 py-2 rounded-lg">
+                            <div class="text-2xl font-bold">785万+</div>
+                            <div class="text-xs text-orange-200">年销量</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-center gap-6 text-sm font-medium">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>上汽集团</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>广汽集团</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>北汽集团</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>奇瑞控股</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Local SOEs Detail Section -->
+        <div id="local-soes" class="expandable-content mb-8">
+            <div class="grid md:grid-cols-2 gap-4 mt-4">
+                <!-- SAIC -->
+                <div class="brand-card bg-gradient-to-br from-orange-900/50 to-slate-800/50 border border-orange-500/30 rounded-xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">上汽集团</h3>
+                            <p class="text-orange-300 text-sm">SAIC Motor</p>
+                        </div>
+                        <span class="bg-orange-500/20 text-orange-300 text-xs px-2 py-1 rounded border border-orange-500/30">上海市属</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>上海</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-white font-bold">438.7万辆</span></p>
+                        <p><span class="text-slate-500">自主品牌：</span>荣威、名爵MG、大通、智己</p>
+                        <p><span class="text-slate-500">合资品牌：</span>上汽大众、上汽通用</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-orange-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">智己L7</span>
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">名爵MG4</span>
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">荣威D7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GAC -->
+                <div class="brand-card bg-gradient-to-br from-orange-900/50 to-slate-800/50 border border-orange-500/30 rounded-xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">广汽集团</h3>
+                            <p class="text-orange-300 text-sm">GAC Group</p>
+                        </div>
+                        <span class="bg-orange-500/20 text-orange-300 text-xs px-2 py-1 rounded border border-orange-500/30">广州市属</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>广东广州</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-white font-bold">172.1万辆</span></p>
+                        <p><span class="text-slate-500">自主品牌：</span>广汽传祺、广汽埃安、昊铂</p>
+                        <p><span class="text-slate-500">合资品牌：</span>广汽本田、广汽丰田</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-orange-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">传祺M8</span>
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">埃安Y</span>
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">昊铂GT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAIC -->
+                <div class="brand-card bg-gradient-to-br from-orange-900/50 to-slate-800/50 border border-orange-500/30 rounded-xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">北汽集团</h3>
+                            <p class="text-orange-300 text-sm">BAIC Group</p>
+                        </div>
+                        <span class="bg-orange-500/20 text-orange-300 text-xs px-2 py-1 rounded border border-orange-500/30">北京市属</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>北京</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-white font-bold">175.2万辆</span></p>
+                        <p><span class="text-slate-500">自主品牌：</span>北京汽车、极狐ARCFOX、北汽新能源</p>
+                        <p><span class="text-slate-500">合资品牌：</span>北京奔驰、北京现代</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-orange-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">极狐阿尔法S</span>
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">北京BJ40</span>
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">享界S9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chery -->
+                <div class="brand-card bg-gradient-to-br from-orange-900/50 to-slate-800/50 border border-orange-500/30 rounded-xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">奇瑞控股</h3>
+                            <p class="text-orange-300 text-sm">Chery Holding</p>
+                        </div>
+                        <span class="bg-orange-500/20 text-orange-300 text-xs px-2 py-1 rounded border border-orange-500/30">芜湖市属</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>安徽芜湖</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-white font-bold">280.3万辆</span></p>
+                        <p><span class="text-slate-500">自主品牌：</span>奇瑞、捷途、星途、iCAR、智界</p>
+                        <p><span class="text-slate-500">出口冠军：</span>连续23年中国乘用车出口第一</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-orange-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">瑞虎9</span>
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">捷途旅行者</span>
+                            <span class="text-xs bg-orange-500/10 text-orange-300 px-2 py-1 rounded">星纪元ET</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Local SOEs -->
+            <div class="mt-4 glass-effect rounded-xl p-4">
+                <h4 class="text-orange-300 font-bold mb-3">其他地方国企车企</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-orange-500/20">
+                        <div class="font-bold text-white">江淮汽车</div>
+                        <div class="text-slate-400 text-xs">JAC · 合肥市属</div>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-orange-500/20">
+                        <div class="font-bold text-white">江铃汽车</div>
+                        <div class="text-slate-400 text-xs">JMC · 南昌市属</div>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-orange-500/20">
+                        <div class="font-bold text-white">海马汽车</div>
+                        <div class="text-slate-400 text-xs">Haima · 海南省属</div>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-orange-500/20">
+                        <div class="font-bold text-white">华晨汽车</div>
+                        <div class="text-slate-400 text-xs">Brilliance · 辽宁省属</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 3: Private Enterprises (Base) -->
+        <div class="mb-2 relative group cursor-pointer" onclick="toggleSection('private-enterprises')">
+            <div class="pyramid-level bg-gradient-to-b from-emerald-500 via-emerald-600 to-emerald-700 p-6 md:p-8 relative overflow-hidden" style="clip-path: polygon(0% 0%, 100% 0%, 95% 100%, 5% 100%);">
+                <div class="shimmer absolute inset-0"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                    <div class="text-center md:text-left mb-4 md:mb-0">
+                        <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                            <span class="text-3xl">🚀</span>
+                            <h2 class="text-2xl md:text-3xl font-black">民企</h2>
+                            <span class="category-badge bg-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold border border-emerald-400/50">自主创业</span>
+                        </div>
+                        <p class="text-emerald-200 text-sm">民营资本主导 · 市场化运营</p>
+                    </div>
+                    <div class="flex gap-4 text-center">
+                        <div class="glass-effect px-4 py-2 rounded-lg">
+                            <div class="text-2xl font-bold">10+</div>
+                            <div class="text-xs text-emerald-200">家集团</div>
+                        </div>
+                        <div class="glass-effect px-4 py-2 rounded-lg">
+                            <div class="text-2xl font-bold">1200万+</div>
+                            <div class="text-xs text-emerald-200">年销量</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm font-medium">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>比亚迪</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>吉利控股</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>长城汽车</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>理想汽车</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>蔚来</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full"></span>小鹏</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Private Enterprises Detail Section -->
+        <div id="private-enterprises" class="expandable-content">
+            <!-- Tier 1: Giants -->
+            <div class="grid md:grid-cols-3 gap-4 mt-4">
+                <!-- BYD -->
+                <div class="brand-card bg-gradient-to-br from-emerald-900/50 to-slate-800/50 border border-emerald-500/30 rounded-xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-emerald-500 text-slate-900 text-xs font-bold px-3 py-1 rounded-bl-lg">销量冠军</div>
+                    <div class="flex items-start justify-between mb-4 mt-2">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">比亚迪</h3>
+                            <p class="text-emerald-300 text-sm">BYD</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>广东深圳</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-emerald-400 font-bold text-lg">460.2万辆</span></p>
+                        <p><span class="text-slate-500">定位：</span>全球新能源汽车领导者</p>
+                        <p><span class="text-slate-500">品牌矩阵：</span>比亚迪、腾势、仰望、方程豹</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-emerald-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">仰望U8</span>
+                            <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">腾势D9</span>
+                            <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">方程豹5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Geely -->
+                <div class="brand-card bg-gradient-to-br from-emerald-900/50 to-slate-800/50 border border-emerald-500/30 rounded-xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">吉利控股</h3>
+                            <p class="text-emerald-300 text-sm">Geely Holding</p>
+                        </div>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-1 rounded border border-emerald-500/30">世界500强</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>浙江杭州</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-white font-bold">359.8万辆</span></p>
+                        <p><span class="text-slate-500">品牌矩阵：</span>吉利、领克、极氪、沃尔沃、路特斯</p>
+                        <p><span class="text-slate-500">特色：</span>全球化布局最完善的中国车企</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-emerald-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">极氪001</span>
+                            <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">领克08</span>
+                            <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">银河E8</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Great Wall -->
+                <div class="brand-card bg-gradient-to-br from-emerald-900/50 to-slate-800/50 border border-emerald-500/30 rounded-xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">长城汽车</h3>
+                            <p class="text-emerald-300 text-sm">Great Wall Motor</p>
+                        </div>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-1 rounded border border-emerald-500/30">SUV专家</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p><span class="text-slate-500">总部：</span>河北保定</p>
+                        <p><span class="text-slate-500">2025销量：</span><span class="text-white font-bold">132.3万辆</span></p>
+                        <p><span class="text-slate-500">品牌矩阵：</span>哈弗、WEY、坦克、欧拉、长城炮</p>
+                        <p><span class="text-slate-500">特色：</span>SUV和皮卡领域领导者</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-emerald-500/20">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">坦克300</span>
+                            <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">哈弗H6</span>
+                            <span class="text-xs bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded">欧拉好猫</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier 2: New Forces -->
+            <div class="mt-4">
+                <h4 class="text-emerald-300 font-bold mb-3 flex items-center gap-2">
+                    <span class="w-1 h-6 bg-emerald-500 rounded-full"></span>
+                    造车新势力 New Forces
+                </h4>
+                <div class="grid md:grid-cols-4 gap-3">
+                    <!-- Li Auto -->
+                    <div class="brand-card bg-slate-800/50 border border-emerald-500/20 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-white">理想汽车</h5>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Li Auto</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-2">增程式SUV领导者</p>
+                        <div class="text-xs text-emerald-300">2025销量: 50万+</div>
+                    </div>
+
+                    <!-- NIO -->
+                    <div class="brand-card bg-slate-800/50 border border-emerald-500/20 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-white">蔚来汽车</h5>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">NIO</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-2">高端纯电+换电模式</p>
+                        <div class="text-xs text-emerald-300">2025销量: 22万+</div>
+                    </div>
+
+                    <!-- XPeng -->
+                    <div class="brand-card bg-slate-800/50 border border-emerald-500/20 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-white">小鹏汽车</h5>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">XPeng</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-2">智能驾驶技术先锋</p>
+                        <div class="text-xs text-emerald-300">2025销量: 19万+</div>
+                    </div>
+
+                    <!-- Leapmotor -->
+                    <div class="brand-card bg-slate-800/50 border border-emerald-500/20 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-white">零跑汽车</h5>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Leapmotor</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-2">性价比纯电专家</p>
+                        <div class="text-xs text-emerald-300">2025销量: 29万+</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier 3: Other Private -->
+            <div class="mt-4 glass-effect rounded-xl p-4">
+                <h4 class="text-emerald-300 font-bold mb-3">其他重要民营车企</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-white">赛力斯</div>
+                        <div class="text-slate-400 text-xs">Seres · 华为智选车</div>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-white">小米汽车</div>
+                        <div class="text-slate-400 text-xs">Xiaomi Auto · 2024入局</div>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-white">哪吒汽车</div>
+                        <div class="text-slate-400 text-xs">NETA · 合众新能源</div>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-white">创维汽车</div>
+                        <div class="text-slate-400 text-xs">Skyworth · 开沃新能源</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="mt-12 glass-effect rounded-2xl p-6 md:p-8">
+            <h3 class="text-2xl font-bold text-center mb-8 bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                2025年中国汽车市场格局总览
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="p-4 rounded-xl bg-gradient-to-b from-red-500/20 to-transparent border border-red-500/30">
+                    <div class="text-3xl font-black text-red-400 stats-counter">3</div>
+                    <div class="text-sm text-slate-300 mt-1">汽车央企</div>
+                    <div class="text-xs text-slate-500 mt-1">国务院国资委直管</div>
+                </div>
+                <div class="p-4 rounded-xl bg-gradient-to-b from-orange-500/20 to-transparent border border-orange-500/30">
+                    <div class="text-3xl font-black text-orange-400 stats-counter">6+</div>
+                    <div class="text-sm text-slate-300 mt-1">地方国企</div>
+                    <div class="text-xs text-slate-500 mt-1">省市国资委监管</div>
+                </div>
+                <div class="p-4 rounded-xl bg-gradient-to-b from-emerald-500/20 to-transparent border border-emerald-500/30">
+                    <div class="text-3xl font-black text-emerald-400 stats-counter">15+</div>
+                    <div class="text-sm text-slate-300 mt-1">民营企业</div>
+                    <div class="text-xs text-slate-500 mt-1">市场化运营</div>
+                </div>
+                <div class="p-4 rounded-xl bg-gradient-to-b from-blue-500/20 to-transparent border border-blue-500/30">
+                    <div class="text-3xl font-black text-blue-400 stats-counter">3400万+</div>
+                    <div class="text-sm text-slate-300 mt-1">总销量规模</div>
+                    <div class="text-xs text-slate-500 mt-1">2025年预计</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-slate-500 text-sm pb-8">
+            <p>数据来源：国务院国资委、中国汽车工业协会、各车企官方公告 | 2025年4月更新</p>
+            <p class="mt-2">注：部分企业正在战略重组中，分类可能动态调整</p>
+        </footer>
+    </main>
+
+    <script>
+        function toggleSection(id) {
+            const element = document.getElementById(id);
+            const isActive = element.classList.contains('active');
+
+            // Close all sections first
+            document.querySelectorAll('.expandable-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Open clicked section if it wasn't active
+            if (!isActive) {
+                element.classList.add('active');
+            }
+        }
+
+        // Auto-open first section on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('central-soes').classList.add('active');
+            }, 500);
+        });
+
+        // Add scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.brand-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
