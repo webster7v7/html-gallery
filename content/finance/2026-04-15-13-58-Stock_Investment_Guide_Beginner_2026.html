@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock_Investment_Guide_Beginner_2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'sans-serif'],
+                    },
+                    colors: {
+                        'stock-red': '#ef4444',
+                        'stock-green': '#22c55e',
+                        'gold': '#f59e0b',
+                        'dark': '#0f172a',
+                        'card': '#1e293b',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.2);
+        }
+        .risk-badge {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: pulse 2s infinite;
+        }
+        .chart-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 3s ease-out forwards;
+        }
+        @keyframes draw {
+            to { stroke-dashoffset: 0; }
+        }
+        .tab-active {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+        .step-number {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+        }
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="text-gray-100 font-sans overflow-x-hidden">
+    <div class="scroll-indicator" id="scrollBar"></div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Animated Background -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-gold/20 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-stock-red/20 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+        </div>
+
+        <!-- Stock Chart SVG Background -->
+        <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 1200 800">
+            <path d="M0,400 Q100,350 200,380 T400,300 T600,350 T800,250 T1000,300 T1200,200" 
+                  fill="none" stroke="#f59e0b" stroke-width="3" class="chart-line"/>
+            <path d="M0,450 Q100,400 200,430 T400,350 T600,400 T800,300 T1000,350 T1200,250" 
+                  fill="none" stroke="#22c55e" stroke-width="2" class="chart-line" style="animation-delay: 0.5s"/>
+        </svg>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 animate-fade-in">
+                <span class="w-2 h-2 bg-stock-green rounded-full animate-pulse"></span>
+                <span class="text-sm text-gray-300">2026年中国大陆居民适用</span>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-black mb-6 animate-slide-up">
+                <span class="gradient-text">0基础小白</span><br>
+                <span class="text-white">股票投资指南</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto animate-slide-up" style="animation-delay: 0.2s">
+                从零开始，安全合规地开启你的投资之旅
+            </p>
+
+            <div class="risk-badge inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-bold mb-12 animate-slide-up" style="animation-delay: 0.4s">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                股市有风险，投资需谨慎
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto animate-slide-up" style="animation-delay: 0.6s">
+                <div class="glass rounded-2xl p-6 text-center card-hover">
+                    <div class="text-3xl font-bold text-stock-green mb-2">A股</div>
+                    <div class="text-gray-400">国内市场</div>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center card-hover">
+                    <div class="text-3xl font-bold text-gold mb-2">港股通</div>
+                    <div class="text-gray-400">50万门槛</div>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center card-hover">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">QDII</div>
+                    <div class="text-gray-400">基金投资</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Warning Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass rounded-3xl p-8 md:p-12 border-l-4 border-stock-red">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-full bg-stock-red/20 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-stock-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-stock-red mb-4">重要风险提示</h2>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-stock-red">•</span>
+                                <span>股票投资有风险，可能亏损本金</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-stock-red">•</span>
+                                <span>不要把急用钱或全部积蓄投入</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-stock-red">•</span>
+                                <span>建议先学习基础知识，从小额开始</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-stock-red">•</span>
+                                <span>先用"模拟交易"练习，再实盘操作</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Tabs -->
+    <section class="py-10 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="showTab('a-share')" id="tab-a-share" class="tab-btn tab-active px-8 py-4 rounded-full font-bold text-lg transition-all">
+                    A股入门
+                </button>
+                <button onclick="showTab('hk-stock')" id="tab-hk-stock" class="tab-btn px-8 py-4 rounded-full font-bold text-lg bg-card text-gray-400 hover:text-white transition-all">
+                    港股/美股
+                </button>
+                <button onclick="showTab('tips')" id="tab-tips" class="tab-btn px-8 py-4 rounded-full font-bold text-lg bg-card text-gray-400 hover:text-white transition-all">
+                    实用建议
+                </button>
+            </div>
+
+            <!-- A-Share Content -->
+            <div id="content-a-share" class="tab-content">
+                <div class="glass rounded-3xl p-8 md:p-12 mb-8">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">为什么选择A股？</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                作为纯小白，<span class="text-gold font-bold">A股是最简单、安全、合规的起点</span>。
+                                用人民币直接买卖，无需换汇，交易时间固定，App操作简单。
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-stock-green/20 flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-stock-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-gray-300">人民币交易，无需换汇</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-stock-green/20 flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-stock-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-gray-300">交易时间固定（工作日9:30-15:00）</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-stock-green/20 flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-stock-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-gray-300">有涨跌停板保护机制</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-stock-green/20 flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-stock-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-gray-300">年满18岁，身份证即可开户</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="glass rounded-2xl p-6 border border-gold/30">
+                                <h3 class="text-xl font-bold text-gold mb-4">开户流程</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-4">
+                                        <div class="step-number w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                                        <div>
+                                            <div class="font-semibold">下载炒股App</div>
+                                            <div class="text-sm text-gray-400">支持一键开户多家券商</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="step-number w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                                        <div>
+                                            <div class="font-semibold">实名认证</div>
+                                            <div class="text-sm text-gray-400">准备身份证、银行卡</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="step-number w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                                        <div>
+                                            <div class="font-semibold">绑定银行卡入金</div>
+                                            <div class="text-sm text-gray-400">银证转账，几分钟完成</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="step-number w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">4</div>
+                                        <div>
+                                            <div class="font-semibold">开始交易</div>
+                                            <div class="text-sm text-gray-400">建议先买宽基指数ETF</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App Rankings -->
+                <h3 class="text-2xl font-bold mb-6 text-center">2026年A股炒股App推荐排行</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Rank 1 -->
+                    <div class="glass rounded-2xl p-6 card-hover border-t-4 border-gold relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-gold/20 rounded-bl-full"></div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gold flex items-center justify-center text-dark font-black text-xl">1</div>
+                            <div>
+                                <h4 class="text-xl font-bold">新浪财经</h4>
+                                <span class="text-xs text-gold">综合最强</span>
+                            </div>
+                        </div>
+                        <ul class="text-sm text-gray-400 space-y-2">
+                            <li>• 开户最快（3分钟左右）</li>
+                            <li>• 资讯全、行情准</li>
+                            <li>• 新手友好度高</li>
+                            <li>• 一站式从开户到学习</li>
+                        </ul>
+                    </div>
+
+                    <!-- Rank 2 -->
+                    <div class="glass rounded-2xl p-6 card-hover border-t-4 border-gray-400 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-gray-400/20 rounded-bl-full"></div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-400 flex items-center justify-center text-dark font-black text-xl">2</div>
+                            <div>
+                                <h4 class="text-xl font-bold">同花顺</h4>
+                                <span class="text-xs text-gray-400">专业看盘</span>
+                            </div>
+                        </div>
+                        <ul class="text-sm text-gray-400 space-y-2">
+                            <li>• 行情工具最专业</li>
+                            <li>• Level-2数据好</li>
+                            <li>• 模拟炒股功能强</li>
+                            <li>• 适合看盘和练习</li>
+                        </ul>
+                    </div>
+
+                    <!-- Rank 3 -->
+                    <div class="glass rounded-2xl p-6 card-hover border-t-4 border-orange-700 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-orange-700/20 rounded-bl-full"></div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-orange-700 flex items-center justify-center text-white font-black text-xl">3</div>
+                            <div>
+                                <h4 class="text-xl font-bold">东方财富</h4>
+                                <span class="text-xs text-orange-400">社区活跃</span>
+                            </div>
+                        </div>
+                        <ul class="text-sm text-gray-400 space-y-2">
+                            <li>• 社区活跃度高</li>
+                            <li>• 基金/理财功能全</li>
+                            <li>• 自家券商方便</li>
+                            <li>• 适合边学边交流</li>
+                        </ul>
+                    </div>
+
+                    <!-- Rank 4 -->
+                    <div class="glass rounded-2xl p-6 card-hover border-t-4 border-blue-500">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">4</div>
+                            <div>
+                                <h4 class="text-lg font-bold">雪球</h4>
+                            </div>
+                        </div>
+                        <ul class="text-sm text-gray-400 space-y-2">
+                            <li>• 社交社区强</li>
+                            <li>• 可跟投大V组合</li>
+                            <li>• 学习氛围好</li>
+                        </ul>
+                    </div>
+
+                    <!-- Rank 5 -->
+                    <div class="glass rounded-2xl p-6 card-hover border-t-4 border-purple-500 md:col-span-2 lg:col-span-2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold">5</div>
+                            <div>
+                                <h4 class="text-lg font-bold">其他推荐</h4>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-400">
+                            <div class="glass rounded-lg p-3 text-center">大智慧</div>
+                            <div class="glass rounded-lg p-3 text-center">涨乐财富通</div>
+                            <div class="glass rounded-lg p-3 text-center">华泰证券</div>
+                            <div class="glass rounded-lg p-3 text-center">各大券商App</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendation Box -->
+                <div class="mt-8 glass rounded-2xl p-6 bg-gradient-to-r from-gold/10 to-stock-red/10 border border-gold/30">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-gold mb-2">小白建议</h4>
+                            <p class="text-gray-300">先用<span class="text-gold font-semibold">新浪财经</span>或<span class="text-gold font-semibold">同花顺</span>开户 + 模拟交易练习1-3个月，再实盘小额操作（几千元起步）。建议先买宽基指数ETF，如<span class="text-stock-green">沪深300</span>、<span class="text-stock-green">科创50</span>，分散风险。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HK/US Stock Content -->
+            <div id="content-hk-stock" class="tab-content hidden">
+                <div class="glass rounded-3xl p-8 md:p-12 mb-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-full bg-stock-red/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-stock-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-3xl font-bold">境外股票现状（2026年）</h2>
+                    </div>
+
+                    <div class="bg-stock-red/10 border border-stock-red/30 rounded-xl p-6 mb-8">
+                        <p class="text-gray-300 leading-relaxed">
+                            受外汇管制和监管影响，<span class="text-stock-red font-bold">直接开户境外券商（如老虎国际、富途）对纯大陆身份证用户已非常严格或基本关闭</span>，不再像以前那么容易。合规优先，灰色操作风险高（账户冻结、资金问题等）。
+                        </p>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-6 gradient-text">合规投资方式</h3>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 港股通 -->
+                        <div class="glass rounded-2xl p-6 card-hover border-l-4 border-blue-500">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold">沪港通/深港通</h4>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between items-center py-2 border-b border-gray-700">
+                                    <span class="text-gray-400">资产门槛</span>
+                                    <span class="text-gold font-bold">50万元</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-gray-700">
+                                    <span class="text-gray-400">开通条件</span>
+                                    <span class="text-gray-300">20交易日日均资产≥50万</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-gray-700">
+                                    <span class="text-gray-400">交易方式</span>
+                                    <span class="text-stock-green">人民币直接交易</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2">
+                                    <span class="text-gray-400">可投资标的</span>
+                                    <span class="text-gray-300">腾讯、阿里等合格港股</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 p-3 bg-blue-500/10 rounded-lg text-xs text-blue-300">
+                                在A股券商App搜索"港股通"申请
+                            </div>
+                        </div>
+
+                        <!-- QDII -->
+                        <div class="glass rounded-2xl p-6 card-hover border-l-4 border-stock-green">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-stock-green flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold">QDII基金/ETF</h4>
+                                <span class="px-2 py-1 bg-stock-green/20 text-stock-green text-xs rounded-full">推荐小白</span>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between items-center py-2 border-b border-gray-700">
+                                    <span class="text-gray-400">投资门槛</span>
+                                    <span class="text-stock-green font-bold">100元起</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-gray-700">
+                                    <span class="text-gray-400">管理方式</span>
+                                    <span class="text-gray-300">专业基金经理管理</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-gray-700">
+                                    <span class="text-gray-400">外汇额度</span>
+                                    <span class="text-stock-green">不占5万美元额度</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2">
+                                    <span class="text-gray-400">投资范围</span>
+                                    <span class="text-gray-300">港股、美股、全球市场</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 p-3 bg-stock-green/10 rounded-lg text-xs text-stock-green">
+                                在东方财富、同花顺搜索"QDII"
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Table -->
+                    <div class="mt-8 overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="text-left py-3 px-4 text-gray-400">投资方式</th>
+                                    <th class="text-center py-3 px-4 text-gray-400">门槛</th>
+                                    <th class="text-center py-3 px-4 text-gray-400">风险</th>
+                                    <th class="text-center py-3 px-4 text-gray-400">适合人群</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-800">
+                                    <td class="py-3 px-4 font-semibold">港股通</td>
+                                    <td class="py-3 px-4 text-center text-gold">50万</td>
+                                    <td class="py-3 px-4 text-center"><span class="text-yellow-500">中</span></td>
+                                    <td class="py-3 px-4 text-center text-gray-400">有一定资金量</td>
+                                </tr>
+                                <tr class="border-b border-gray-800">
+                                    <td class="py-3 px-4 font-semibold">QDII基金</td>
+                                    <td class="py-3 px-4 text-center text-stock-green">100元</td>
+                                    <td class="py-3 px-4 text-center"><span class="text-stock-green">低</span></td>
+                                    <td class="py-3 px-4 text-center text-gray-400">0基础小白</td>
+                                </tr>
+                                <tr class="border-b border-gray-800">
+                                    <td class="py-3 px-4 font-semibold text-stock-red">境外直接开户</td>
+                                    <td class="py-3 px-4 text-center text-stock-red">极高</td>
+                                    <td class="py-3 px-4 text-center"><span class="text-stock-red">高</span></td>
+                                    <td class="py-3 px-4 text-center text-gray-400">有境外身份者</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Content -->
+            <div id="content-tips" class="tab-content hidden">
+                <div class="glass rounded-3xl p-8 md:p-12">
+                    <h2 class="text-3xl font-bold mb-8 gradient-text">小白实用建议</h2>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Learning Phase -->
+                        <div class="space-y-6">
+                            <div class="glass rounded-2xl p-6 border-l-4 border-gold">
+                                <h3 class="text-xl font-bold text-gold mb-4 flex items-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                    学习阶段（1-3个月）
+                                </h3>
+                                <ul class="space-y-3 text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-gold">1.</span>
+                                        <span>用App的<span class="text-gold">模拟盘</span>练习</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-gold">2.</span>
+                                        <span>看免费课程（雪球/东财社区、B站）</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-gold">3.</span>
+                                        <span>了解基本概念：K线、成交量、市盈率</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="glass rounded-2xl p-6 border-l-4 border-stock-green">
+                                <h3 class="text-xl font-bold text-stock-green mb-4 flex items-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    资金管理
+                                </h3>
+                                <ul class="space-y-3 text-gray-300">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-stock-green">•</span>
+                                        <span>只用<span class="text-stock-green font-semibold">闲钱</span>投资</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-stock-green">•</span>
+                                        <span>单笔不超过总资金的<span class="text-stock-green font-semibold">10-20%</span></span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-stock-green">•</span>
+                                        <span>设置<span class="text-stock-green font-semibold">止损点</span></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="glass rounded-2xl p-6 border-l-4 border-stock-red">
+                                <h3 class="text-xl font-bold text-stock-red mb-4 flex items-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    风险提醒
+                                </h3>
+                                <ul class="space-y-3 text-gray-300 text-sm">
+                                    <li>• 股市波动大，过去表现不代表未来</li>
+                                    <li>• 境外投资涉及汇率风险、时差</li>
+                                    <li>• 税务申报（CRS可能上报）</li>
+                                    <li>• 遵守每年5万美元换汇额度</li>
+                                </ul>
+                            </div>
+
+                            <div class="glass rounded-2xl p-6 border-l-4 border-purple-500">
+                                <h3 class="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                                    </svg>
+                                    工具补充
+                                </h3>
+                                <ul class="space-y-3 text-gray-300 text-sm">
+                                    <li>• 用雪球看社区观点，但别盲目跟风</li>
+                                    <li>• 结合东方财富查数据</li>
+                                    <li>• 关注财经新闻和政策动向</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Ranking -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">小白友好度总结排行</h2>
+            <div class="space-y-4">
+                <div class="glass rounded-2xl p-6 flex items-center gap-6 card-hover border-l-4 border-gold">
+                    <div class="w-16 h-16 rounded-full bg-gold flex items-center justify-center text-dark font-black text-2xl">1</div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-gold">A股国内</h3>
+                        <p class="text-gray-400">新浪财经/同花顺/东方财富 - 开户+交易+学习一体化，最推荐</p>
+                    </div>
+                    <div class="text-stock-green font-bold">★★★★★</div>
+                </div>
+
+                <div class="glass rounded-2xl p-6 flex items-center gap-6 card-hover border-l-4 border-blue-500">
+                    <div class="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white font-black text-2xl">2</div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-blue-400">港股通</h3>
+                        <p class="text-gray-400">已有A股账户后直接申请（50万资产门槛）</p>
+                    </div>
+                    <div class="text-yellow-500 font-bold">★★★★☆</div>
+                </div>
+
+                <div class="glass rounded-2xl p-6 flex items-center gap-6 card-hover border-l-4 border-stock-green">
+                    <div class="w-16 h-16 rounded-full bg-stock-green flex items-center justify-center text-white font-black text-2xl">3</div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-stock-green">QDII基金</h3>
+                        <p class="text-gray-400">国内券商/基金平台买全球股票基金（最低门槛）</p>
+                    </div>
+                    <div class="text-stock-green font-bold">★★★★★</div>
+                </div>
+
+                <div class="glass rounded-2xl p-6 flex items-center gap-6 card-hover border-l-4 border-gray-600 opacity-60">
+                    <div class="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center text-white font-black text-2xl">4</div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-gray-400">境外直接开户</h3>
+                        <p class="text-gray-500">难度高，仅适合有境外身份者（盈透、嘉信等）</p>
+                    </div>
+                    <div class="text-gray-500 font-bold">★★☆☆☆</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="glass rounded-2xl p-8 mb-8">
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <svg class="w-8 h-8 text-stock-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <span class="text-xl font-bold text-stock-red">最终提醒</span>
+                </div>
+                <p class="text-gray-400 leading-relaxed">
+                    以上是基于2026年公开政策和平台情况的通用建议，不是个性化投资推荐。政策可能变化，
+                    <span class="text-gold">请直接在App或官网查看最新开户条件</span>，或咨询券商客服/银行。
+                    投资前评估自身风险承受力，必要时找专业理财顾问或律师确认合规。
+                </p>
+            </div>
+            <p class="text-gray-600 text-sm">
+                © 2026 股票投资指南 | 股市有风险，入市需谨慎
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Show selected content
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+
+            // Update button styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('bg-card', 'text-gray-400');
+            });
+
+            document.getElementById('tab-' + tabName).classList.add('tab-active');
+            document.getElementById('tab-' + tabName).classList.remove('bg-card', 'text-gray-400');
+        }
+
+        // Scroll indicator
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (scrollTop / scrollHeight) * 100;
+            document.getElementById('scrollBar').style.width = scrolled + '%';
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
