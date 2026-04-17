@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenSource Windows Arsenal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #16161f;
+            --bg-hover: #1e1e2e;
+            --accent: #00d4aa;
+            --accent-dim: #00d4aa33;
+            --accent-glow: #00d4aa66;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --border: #2a2a3a;
+            --star: #ffd700;
+            --danger: #ff4757;
+            --success: #2ed573;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'Space Grotesk', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 动态背景 */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0, 212, 170, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(100, 100, 255, 0.03) 0%, transparent 50%);
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* 头部 */
+        header {
+            position: relative;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-glow);
+            border-radius: 100px;
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .badge::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 搜索与筛选 */
+        .controls {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1.5rem 1rem 3rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-dim);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            opacity: 0.6;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* 主体内容 */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .category {
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .category-title {
+            font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .category-count {
+            margin-left: auto;
+            padding: 0.3rem 0.8rem;
+            background: var(--bg-secondary);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 工具卡片 */
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-glow);
+            box-shadow: 0 20px 40px -10px rgba(0, 212, 170, 0.1);
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .tool-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stars {
+            color: var(--star);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .replace-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--danger);
+            margin-bottom: 0.75rem;
+        }
+
+        .tool-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-tag {
+            padding: 0.3rem 0.7rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .tool-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .tool-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .download-link:hover {
+            background: #00b894;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* 快速选择表格 */
+        .quick-guide {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-guide::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .quick-guide h2 {
+            font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        thead {
+            background: var(--bg-primary);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr {
+            transition: background 0.3s ease;
+        }
+
+        tr:hover {
+            background: var(--bg-hover);
+        }
+
+        td:first-child {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        td:nth-child(2) {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* 动画 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* 隐藏类 */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.5s ease-out both;
+        }
+
+        /* 响应式 */
+        @media (max-width: 640px) {
+            header {
+                padding: 4rem 1.5rem 3rem;
+            }
+
+            .stats {
+                gap: 1.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            main {
+                padding: 0 1rem 3rem;
+            }
+
+            .tool-card {
+                padding: 1.25rem;
+            }
+
+            .quick-guide {
+                padding: 2rem 1rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="bg-mesh"></div>
+    <div class="noise"></div>
+
+    <header>
+        <div class="header-content">
+            <div class="badge">Windows 开源工具箱</div>
+            <h1>OpenSource Windows Arsenal</h1>
+            <p class="subtitle">精选 Windows 平台优质开源替代工具，免费无广告、功能完整、社区活跃的生产力利器</p>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">20+</div>
+                    <div class="stat-label">精选工具</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">分类场景</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">开源免费</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索工具名称、功能或替代对象...">
+        </div>
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">全部</button>
+            <button class="filter-btn" data-filter="office">办公生产力</button>
+            <button class="filter-btn" data-filter="design">图像设计</button>
+            <button class="filter-btn" data-filter="media">媒体播放</button>
+            <button class="filter-btn" data-filter="system">系统工具</button>
+            <button class="filter-btn" data-filter="security">安全隐私</button>
+            <button class="filter-btn" data-filter="dev">开发工具</button>
+            <button class="filter-btn" data-filter="utility">其他实用</button>
+        </div>
+    </div>
+
+    <main>
+        <!-- 办公生产力类 -->
+        <section class="category" data-category="office">
+            <div class="category-header">
+                <div class="category-icon">📄</div>
+                <h2 class="category-title">办公生产力类</h2>
+                <span class="category-count">3 款工具</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card" data-search="libreoffice office word excel powerpoint 办公套件">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            LibreOffice
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Microsoft Office</div>
+                    <div class="tool-desc">全能办公套件，包含 Writer（文字处理）、Calc（电子表格）、Impress（演示文稿）、Draw（矢量绘图）、Base（数据库）、Math（公式编辑）。100%开源免费，完美兼容 Office 格式。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">跨平台</span>
+                        <span class="feature-tag">兼容 Office</span>
+                        <span class="feature-tag">内置模板</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">日常办公 / 学生 / 小企业</span>
+                        <a href="https://www.libreoffice.org/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="onlyoffice 协作 在线 云办公 microsoft 365 google docs">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            OnlyOffice
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Microsoft 365</div>
+                    <div class="tool-desc">云协作办公平台，界面与 Office 高度相似，支持实时多人协作、版本控制与云存储集成。可本地部署，协作体验接近 Google Docs。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">实时协作</span>
+                        <span class="feature-tag">本地部署</span>
+                        <span class="feature-tag">版本控制</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">团队协作 / 远程办公</span>
+                        <a href="https://www.onlyoffice.com/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="sumatrapdf pdf 阅读器 adobe epub mobi 轻量">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            SumatraPDF
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Adobe Acrobat Reader</div>
+                    <div class="tool-desc">毫秒级启动的轻量 PDF 阅读器，支持 EPUB、MOBI 等电子书格式。内存占用仅几 MB，无广告干扰，支持批注和文本选择。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">毫秒启动</span>
+                        <span class="feature-tag">多格式支持</span>
+                        <span class="feature-tag">极简体验</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">日常阅读 / 极简主义者</span>
+                        <a href="https://www.sumatrapdfreader.org/free-pdf-reader.html" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 图像与设计类 -->
+        <section class="category" data-category="design">
+            <div class="category-header">
+                <div class="category-icon">🎨</div>
+                <h2 class="category-title">图像与设计类</h2>
+                <span class="category-count">3 款工具</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card" data-search="gimp photoshop 图像编辑 图层 滤镜 插件">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            GIMP
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Adobe Photoshop</div>
+                    <div class="tool-desc">专业级开源图像编辑器，功能接近 Photoshop。支持图层编辑、滤镜效果、选区工具、图像修复与批量处理，插件生态丰富，兼容所有主流图像格式。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">图层编辑</span>
+                        <span class="feature-tag">插件扩展</span>
+                        <span class="feature-tag">批量处理</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">照片编辑 / 海报设计 / 图标制作</span>
+                        <a href="https://www.gimp.org/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="inkscape illustrator 矢量绘图 svg 路径 插画">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Inkscape
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Adobe Illustrator</div>
+                    <div class="tool-desc">专业级矢量图形设计工具，支持路径编辑、文本排版与 SVG 格式。开源社区活跃，适合创建可无限缩放的图形作品。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">矢量绘图</span>
+                        <span class="feature-tag">SVG 原生支持</span>
+                        <span class="feature-tag">无限缩放</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">Logo 设计 / 插画 / 网页图形</span>
+                        <a href="https://inkscape.org/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="krita 数字绘画 笔刷 数位板 动画 clip studio paint">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Krita
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Photoshop / Clip Studio Paint</div>
+                    <div class="tool-desc">专为数字绘画设计的开源软件，笔刷系统丰富，支持压感和倾斜感应。内置图层管理与动画制作功能，是插画师与概念设计师的利器。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">笔刷自定义</span>
+                        <span class="feature-tag">压感支持</span>
+                        <span class="feature-tag">动画制作</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">插画 / 漫画 / 概念设计</span>
+                        <a href="https://krita.org/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 媒体播放与编辑类 -->
+        <section class="category" data-category="media">
+            <div class="category-header">
+                <div class="category-icon">🎬</div>
+                <h2 class="category-title">媒体播放与编辑类</h2>
+                <span class="category-count">3 款工具</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card" data-search="vlc media player 播放器 视频 音频 dvd 流媒体">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            VLC Media Player
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Windows Media Player / PotPlayer</div>
+                    <div class="tool-desc">全能媒体播放器，无需额外解码器即可播放几乎所有音视频格式。支持 DVD/Blu-ray 播放、流媒体、格式转换与字幕同步。零广告、零捆绑。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">全格式支持</span>
+                        <span class="feature-tag">零广告</span>
+                        <span class="feature-tag">低资源占用</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">所有用户 / 格式兼容终结者</span>
+                        <a href="https://www.videolan.org/vlc/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="audacity 音频编辑 录音 降噪 多轨道 混音">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Audacity
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Adobe Audition / GoldWave</div>
+                    <div class="tool-desc">操作简单但功能强大的音频编辑器，支持多轨道录音、音频剪辑、降噪处理与效果插件（EQ、压缩等）。完全满足非专业音频编辑需求。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">多轨道录音</span>
+                        <span class="feature-tag">降噪处理</span>
+                        <span class="feature-tag">批量处理</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">播客 / 音频剪辑 / 语音处理</span>
+                        <a href="https://www.audacityteam.org/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="shotcut 视频编辑 剪辑 转场 字幕 4k">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Shotcut
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Adobe Premiere Pro / 剪映专业版</div>
+                    <div class="tool-desc">界面友好的开源视频编辑器，支持多轨道编辑、转场效果、滤镜、字幕添加与 4K 导出。无水印，适合入门级视频创作者。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">4K 支持</span>
+                        <span class="feature-tag">无水印</span>
+                        <span class="feature-tag">友好界面</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">家庭视频 / 短视频制作</span>
+                        <a href="https://shotcut.org/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 系统工具类 -->
+        <section class="category" data-category="system">
+            <div class="category-header">
+                <div class="category-icon">⚙️</div>
+                <h2 class="category-title">系统工具类</h2>
+                <span class="category-count">4 款工具</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card" data-search="7-zip nanazip 压缩 解压 rar zip 7z 加密">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            7-Zip / NanaZip
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 WinRAR / Bandizip</div>
+                    <div class="tool-desc">支持几乎所有压缩格式（ZIP、RAR、7Z 等），提供高压缩率与加密压缩。完全免费无广告，代码透明。NanaZip 是 7-Zip 的现代化分支，适配 Windows 11 设计。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">全格式支持</span>
+                        <span class="feature-tag">高压缩率</span>
+                        <span class="feature-tag">加密压缩</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">所有用户 / 替代付费压缩软件</span>
+                        <a href="https://www.7-zip.org/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="everything 文件搜索 秒搜 ntfs 正则 快速定位">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Everything
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Windows 搜索</div>
+                    <div class="tool-desc">基于 NTFS 索引的秒级全盘搜索工具，支持正则表达式与网络共享搜索。启动快、结果即时显示，资源占用极低，大幅提升文件查找效率。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">秒级搜索</span>
+                        <span class="feature-tag">正则表达式</span>
+                        <span class="feature-tag">极低占用</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">文件管理 / 效率提升</span>
+                        <a href="https://www.voidtools.com/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="geekuninstaller 卸载 清理 残留 注册表 强制卸载">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            GeekUninstaller
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Windows 卸载 / CCleaner</div>
+                    <div class="tool-desc">彻底卸载软件并清理残留文件和注册表项。轻量级（仅 1MB），无广告，支持批量卸载与强制卸载顽固软件，显示详细卸载信息。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">彻底清理</span>
+                        <span class="feature-tag">批量卸载</span>
+                        <span class="feature-tag">强制模式</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">系统清理 / 卸载不留痕</span>
+                        <a href="https://geekuninstaller.com/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="explorerpatcher windows 11 任务栏 开始菜单 经典界面">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            ExplorerPatcher
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代付费界面美化工具</div>
+                    <div class="tool-desc">恢复 Win10 风格任务栏与经典开始菜单，自定义文件资源管理器界面。开源免费，无需安装额外软件，直接修改系统界面，性能影响极小。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">恢复经典</span>
+                        <span class="feature-tag">无需安装</span>
+                        <span class="feature-tag">性能无损</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">Win11 界面定制 / 怀旧用户</span>
+                        <a href="https://github.com/valinet/ExplorerPatcher" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 安全隐私类 -->
+        <section class="category" data-category="security">
+            <div class="category-header">
+                <div class="category-icon">🔒</div>
+                <h2 class="category-title">安全隐私类</h2>
+                <span class="category-count">2 款工具</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card" data-search="bitwarden keepassxc 密码管理 自动填充 跨设备 加密">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Bitwarden / KeePassXC
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 LastPass / 1Password</div>
+                    <div class="tool-desc">Bitwarden 支持云同步（端到端加密），跨设备无缝体验；KeePassXC 完全本地存储，不依赖云端，适合极度注重隐私的用户。两者均为开源透明。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">端到端加密</span>
+                        <span class="feature-tag">密码生成</span>
+                        <span class="feature-tag">自动填充</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">密码安全 / 账号管理</span>
+                        <a href="https://bitwarden.com/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="clamwin 杀毒 病毒扫描 实时保护 轻量">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            ClamWin
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Windows Defender / 付费杀毒</div>
+                    <div class="tool-desc">开源免费杀毒软件，提供病毒扫描、实时保护、自动更新病毒库与自定义扫描规则。资源占用低，无广告，适合作为辅助杀毒工具。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">实时保护</span>
+                        <span class="feature-tag">低占用</span>
+                        <span class="feature-tag">无广告</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">系统安全 / 性能敏感用户</span>
+                        <a href="https://www.clamwin.com/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 开发工具类 -->
+        <section class="category" data-category="dev">
+            <div class="category-header">
+                <div class="category-icon">💻</div>
+                <h2 class="category-title">开发工具类</h2>
+                <span class="category-count">2 款工具</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card" data-search="visual studio code vscode 代码编辑器 ide 插件 git">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Visual Studio Code
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Sublime Text / 付费 IDE</div>
+                    <div class="tool-desc">微软官方开源代码编辑器，支持几乎所有编程语言。语法高亮、智能提示、Git 集成与极其丰富的插件生态，轻量高效，支持远程开发。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">全语言支持</span>
+                        <span class="feature-tag">插件生态</span>
+                        <span class="feature-tag">远程开发</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">程序员 / 网页设计 / 脚本编写</span>
+                        <a href="https://code.visualstudio.com/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="notepad++ 文本编辑 记事本 代码片段 正则 宏">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Notepad++
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Windows 记事本 / UltraEdit</div>
+                    <div class="tool-desc">轻量级文本编辑器（仅几 MB），启动速度极快。支持多标签编辑、语法高亮、正则表达式、编码转换与宏录制，适合快速编辑文本与代码片段。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">多标签</span>
+                        <span class="feature-tag">正则表达式</span>
+                        <span class="feature-tag">宏录制</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">文本编辑 / 配置文件修改</span>
+                        <a href="https://notepad-plus-plus.org/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 其他实用工具 -->
+        <section class="category" data-category="utility">
+            <div class="category-header">
+                <div class="category-icon">🧰</div>
+                <h2 class="category-title">其他实用工具</h2>
+                <span class="category-count">3 款工具</span>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card" data-search="audacity 音频 录音 降噪 播客">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Audacity
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Adobe Audition</div>
+                    <div class="tool-desc">（重复推荐）多轨道录音、音频剪辑、降噪处理与效果插件。操作简单，适合初学者与播客制作。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">音频编辑</span>
+                        <span class="feature-tag">降噪</span>
+                        <span class="feature-tag">批量处理</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">播客 / 音频处理</span>
+                        <a href="https://www.audacityteam.org/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="thunderbird 邮件客户端 outlook 邮箱 日历 rss">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            Thunderbird
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代 Microsoft Outlook / Windows Mail</div>
+                    <div class="tool-desc">开源邮件客户端，支持多邮箱管理、邮件过滤、日历功能与 RSS 订阅。隐私保护好，无广告干扰，支持扩展自定义界面。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">多邮箱</span>
+                        <span class="feature-tag">RSS 订阅</span>
+                        <span class="feature-tag">隐私保护</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">多邮箱管理 / 隐私用户</span>
+                        <a href="https://www.thunderbird.net/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-search="keepass 密码管理 本地 aes 加密 云端">
+                    <div class="tool-header">
+                        <div class="tool-name">
+                            KeePass
+                            <span class="stars">⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    <div class="replace-tag">替代云端密码管理器</div>
+                    <div class="tool-desc">完全本地存储密码数据库，采用 AES 加密，支持插件扩展与密码导出。不依赖云端，安全性极高，开源代码可审计。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">完全本地</span>
+                        <span class="feature-tag">AES 加密</span>
+                        <span class="feature-tag">可审计</span>
+                    </div>
+                    <div class="tool-footer">
+                        <span class="tool-meta">极度注重隐私 / 离线用户</span>
+                        <a href="https://keepass.info/" class="download-link" target="_blank">下载 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 快速选择指南 -->
+        <section class="quick-guide">
+            <h2>⚡ 快速选择指南</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>使用场景</th>
+                            <th>最佳推荐</th>
+                            <th>核心优势</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>日常办公</td>
+                            <td>LibreOffice</td>
+                            <td>全能替代 Office，无订阅费，兼容所有文档格式</td>
+                        </tr>
+                        <tr>
+                            <td>图像编辑</td>
+                            <td>GIMP</td>
+                            <td>功能接近 Photoshop，插件丰富，免费无广告</td>
+                        </tr>
+                        <tr>
+                            <td>压缩解压</td>
+                            <td>7-Zip</td>
+                            <td>支持所有格式，高压缩率，完全免费</td>
+                        </tr>
+                        <tr>
+                            <td>文件搜索</td>
+                            <td>Everything</td>
+                            <td>秒级搜索，资源占用低，替代 Windows 搜索</td>
+                        </tr>
+                        <tr>
+                            <td>密码管理</td>
+                            <td>Bitwarden</td>
+                            <td>跨设备同步，端到端加密，开源透明</td>
+                        </tr>
+                        <tr>
+                            <td>代码编辑</td>
+                            <td>VS Code</td>
+                            <td>轻量高效，支持所有编程语言，插件生态强大</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>OpenSource Windows Arsenal · 为自由软件生态贡献力量</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">所有工具均为开源免费 · 建议从官方网站下载以确保安全</p>
+    </footer>
+
+    <script>
+        // 搜索功能
+        const searchInput = document.getElementById('searchInput');
+        const toolCards = document.querySelectorAll('.tool-card');
+        const categories = document.querySelectorAll('.category');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            toolCards.forEach(card => {
+                const searchData = card.getAttribute('data-search').toLowerCase();
+                const textContent = card.textContent.toLowerCase();
+
+                if (searchData.includes(query) || textContent.includes(query)) {
+                    card.classList.remove('hidden');
+                    card.classList.add('fade-in');
+                } else {
+                    card.classList.add('hidden');
+                    card.classList.remove('fade-in');
+                }
+            });
+
+            // 隐藏空分类
+            categories.forEach(cat => {
+                const visibleCards = cat.querySelectorAll('.tool-card:not(.hidden)');
+                if (visibleCards.length === 0 && query !== '') {
+                    cat.classList.add('hidden');
+                } else {
+                    cat.classList.remove('hidden');
+                }
+            });
+
+            // 如果搜索为空，重置分类显示
+            if (query === '') {
+                categories.forEach(cat => cat.classList.remove('hidden'));
+                document.querySelector('.quick-guide').classList.remove('hidden');
+            } else {
+                document.querySelector('.quick-guide').classList.add('hidden');
+            }
+        });
+
+        // 分类筛选
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+
+                // 更新按钮状态
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // 清空搜索框
+                searchInput.value = '';
+
+                // 筛选显示
+                categories.forEach(cat => {
+                    if (filter === 'all' || cat.getAttribute('data-category') === filter) {
+                        cat.classList.remove('hidden');
+                        cat.classList.add('fade-in');
+                    } else {
+                        cat.classList.add('hidden');
+                        cat.classList.remove('fade-in');
+                    }
+                });
+
+                // 快速指南只在"全部"时显示
+                const quickGuide = document.querySelector('.quick-guide');
+                if (filter === 'all') {
+                    quickGuide.classList.remove('hidden');
+                } else {
+                    quickGuide.classList.add('hidden');
+                }
+            });
+        });
+
+        // 卡片点击涟漪效果
+        toolCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.download-link')) return;
+
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: 20px;
+                    height: 20px;
+                    background: var(--accent-glow);
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%) scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                    left: ${x}px;
+                    top: ${y}px;
+                `;
+
+                card.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // 添加涟漪动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: translate(-50%, -50%) scale(20);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 滚动显示动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        categories.forEach(cat => {
+            cat.style.opacity = '0';
+            cat.style.transform = 'translateY(30px)';
+            cat.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(cat);
+        });
+
+        // 快速指南动画
+        const quickGuide = document.querySelector('.quick-guide');
+        quickGuide.style.opacity = '0';
+        quickGuide.style.transform = 'translateY(30px)';
+        quickGuide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(quickGuide);
+    </script>
+</body>
+</html>
