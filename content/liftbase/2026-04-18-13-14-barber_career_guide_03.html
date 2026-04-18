@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber Career Guide - 理发师职业全指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'sans-serif'],
+                    },
+                    colors: {
+                        barber: {
+                            50: '#fdf8f6',
+                            100: '#f2e8e5',
+                            200: '#eaddd7',
+                            300: '#e0c6bb',
+                            400: '#d4a593',
+                            500: '#c28b6e',
+                            600: '#a67155',
+                            700: '#8a5d45',
+                            800: '#704b39',
+                            900: '#5c3d30',
+                        },
+                        gold: {
+                            400: '#d4af37',
+                            500: '#c5a028',
+                            600: '#b8941f',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'scale-in': 'scaleIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.9)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #fdf8f6 0%, #f5ebe6 100%);
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .timeline-line {
+            background: linear-gradient(to bottom, #c28b6e, #d4af37, #c28b6e);
+        }
+
+        .salary-bar {
+            background: linear-gradient(90deg, #c28b6e 0%, #d4af37 100%);
+            transition: width 1.5s ease-out;
+        }
+
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -15px rgba(92, 61, 48, 0.3);
+        }
+
+        .section-divider {
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            height: 2px;
+        }
+
+        .icon-circle {
+            background: linear-gradient(135deg, #c28b6e 0%, #d4af37 100%);
+            box-shadow: 0 10px 20px -5px rgba(194, 139, 110, 0.4);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 1.5s ease-out;
+        }
+
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .scissor-animation {
+            animation: snip 2s ease-in-out infinite;
+        }
+
+        @keyframes snip {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-15deg); }
+        }
+
+        .number-counter {
+            font-variant-numeric: tabular-nums;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f2e8e5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c28b6e;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a67155;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="text-barber-900 antialiased">
+    <div class="grain-overlay"></div>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-barber-900 via-barber-800 to-barber-700"></div>
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-gold-400 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-barber-400 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="mb-8 inline-block">
+                <i class="fas fa-cut text-6xl md:text-8xl text-gold-400 scissor-animation"></i>
+            </div>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 tracking-tight leading-tight">
+                从<span class="text-gold-400">小白</span>到<span class="text-gold-400">大师</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-barber-200 font-light mb-4 max-w-2xl mx-auto">
+                理发师职业全指南 · 消费者避坑手册
+            </p>
+            <div class="flex items-center justify-center gap-4 text-barber-300 text-sm md:text-base">
+                <span class="flex items-center gap-2"><i class="fas fa-user-tie"></i> 职业规划</span>
+                <span class="w-1 h-1 bg-barber-400 rounded-full"></span>
+                <span class="flex items-center gap-2"><i class="fas fa-coins"></i> 收入揭秘</span>
+                <span class="w-1 h-1 bg-barber-400 rounded-full"></span>
+                <span class="flex items-center gap-2"><i class="fas fa-shield-alt"></i> 避坑指南</span>
+            </div>
+
+            <div class="mt-12 animate-bounce">
+                <i class="fas fa-chevron-down text-2xl text-gold-400"></i>
+            </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#fdf8f6] to-transparent"></div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-16 space-y-24">
+
+        <!-- Section 1: Growth Path -->
+        <section class="scroll-trigger opacity-0">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1 bg-barber-100 text-barber-700 rounded-full text-sm font-medium mb-4">
+                    <i class="fas fa-road mr-2"></i>成长路径
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold text-barber-900 mb-4">理发师的进阶之路</h2>
+                <p class="text-barber-600 max-w-2xl mx-auto">从零基础到独当一面，每一个阶段都需要时间的沉淀与技术的打磨</p>
+            </div>
+
+            <div class="relative">
+                <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 timeline-line rounded-full"></div>
+
+                <div class="space-y-12">
+                    <!-- Step 1 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-barber-800 mb-2">入门培训</h3>
+                                <p class="text-barber-600 text-sm leading-relaxed">
+                                    选择专业培训学校，课程周期从<span class="font-bold text-barber-800">2周快剪班到6个月全能班</span>不等。采用"理论+实操"模式，费用几千元到上万元。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 icon-circle rounded-full flex items-center justify-center text-white font-bold text-lg z-10 border-4 border-white">
+                            1
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block">
+                            <span class="text-5xl font-black text-barber-200">02周-6月</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12 hidden md:block text-right">
+                            <span class="text-5xl font-black text-barber-200">1-3年</span>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 icon-circle rounded-full flex items-center justify-center text-white font-bold text-lg z-10 border-4 border-white">
+                            2
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 mt-4 md:mt-0">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-barber-800 mb-2">店内实践</h3>
+                                <p class="text-barber-600 text-sm leading-relaxed">
+                                    以<span class="font-bold text-barber-800">助理或学徒</span>身份入行，从洗头、打扫等基础工作做起，观察学习资深发型师的技术与沟通技巧。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-barber-800 mb-2">考取证书</h3>
+                                <p class="text-barber-600 text-sm leading-relaxed">
+                                    获取国家<span class="font-bold text-barber-800">职业技能等级证书</span>，分为五个等级，是衡量技术水平的官方依据和行业敲门砖。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 icon-circle rounded-full flex items-center justify-center text-white font-bold text-lg z-10 border-4 border-white">
+                            3
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block">
+                            <span class="text-5xl font-black text-barber-200">五级认证</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12 hidden md:block text-right">
+                            <span class="text-5xl font-black text-barber-200">持续积累</span>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 icon-circle rounded-full flex items-center justify-center text-white font-bold text-lg z-10 border-4 border-white">
+                            4
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 mt-4 md:mt-0">
+                            <div class="glass-card p-6 rounded-2xl hover-lift">
+                                <h3 class="text-xl font-bold text-barber-800 mb-2">职业晋升</h3>
+                                <div class="flex flex-wrap gap-2 mt-3">
+                                    <span class="px-3 py-1 bg-barber-100 text-barber-700 rounded-full text-xs">学徒/助理</span>
+                                    <i class="fas fa-arrow-right text-barber-300 self-center text-xs"></i>
+                                    <span class="px-3 py-1 bg-barber-100 text-barber-700 rounded-full text-xs">初级发型师</span>
+                                    <i class="fas fa-arrow-right text-barber-300 self-center text-xs"></i>
+                                    <span class="px-3 py-1 bg-barber-200 text-barber-800 rounded-full text-xs font-bold">中级发型师</span>
+                                    <i class="fas fa-arrow-right text-barber-300 self-center text-xs"></i>
+                                    <span class="px-3 py-1 bg-gold-400 text-white rounded-full text-xs font-bold">高级/总监</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 2: Business & Tax -->
+        <section class="scroll-trigger opacity-0">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card rounded-3xl p-8 hover-lift border-l-4 border-barber-500">
+                    <div class="w-14 h-14 bg-barber-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-store text-2xl text-barber-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-barber-900 mb-4">为何是个体工商户？</h3>
+                    <p class="text-barber-600 leading-relaxed mb-4">
+                        对于个人经营的小规模理发店，<span class="font-bold text-barber-800">个体工商户</span>是最常见的注册形式。注册流程简单、管理成本低，非常适合以个人或家庭为单位的小本生意。
+                    </p>
+                    <div class="flex items-center gap-2 text-sm text-barber-500">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span>注册简便</span>
+                        <i class="fas fa-check-circle text-green-500 ml-3"></i>
+                        <span>成本低廉</span>
+                        <i class="fas fa-check-circle text-green-500 ml-3"></i>
+                        <span>家庭经营友好</span>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-3xl p-8 hover-lift border-l-4 border-gold-400">
+                    <div class="w-14 h-14 bg-gold-400/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-calculator text-2xl text-gold-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-barber-900 mb-4">税务优惠政策</h3>
+                    <p class="text-barber-600 leading-relaxed mb-4">
+                        理发店作为经营主体，<span class="font-bold text-barber-800">有依法纳税的义务</span>。但目前有税收优惠政策：
+                    </p>
+                    <div class="bg-gradient-to-r from-gold-400/10 to-barber-100 rounded-xl p-4 border border-gold-400/20">
+                        <p class="text-sm text-barber-800 font-medium">
+                            <i class="fas fa-star text-gold-500 mr-2"></i>
+                            2023年1月1日至2027年12月31日，个体工商户年应纳税所得额<span class="text-gold-600 font-bold">不超过200万元</span>的部分，可享受<span class="text-gold-600 font-bold">个人所得税减半征收</span>。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Salary -->
+        <section class="scroll-trigger opacity-0">
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-1 bg-gold-400/10 text-gold-600 rounded-full text-sm font-medium mb-4">
+                    <i class="fas fa-chart-line mr-2"></i>收入揭秘
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold text-barber-900 mb-4">理发师收入水平</h2>
+                <p class="text-barber-600">收入差异巨大，由"底薪 + 业绩提成 + 奖金"构成</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 md:p-10 overflow-hidden">
+                <div class="space-y-8">
+                    <!-- Overall -->
+                    <div class="relative">
+                        <div class="flex justify-between items-end mb-2">
+                            <div>
+                                <span class="text-sm font-medium text-barber-500">整体市场</span>
+                                <h4 class="text-lg font-bold text-barber-900">主流薪资区间</h4>
+                            </div>
+                            <span class="text-2xl font-black text-barber-800">4,500 - 8,000<span class="text-sm font-normal text-barber-500 ml-1">元/月</span></span>
+                        </div>
+                        <div class="w-full bg-barber-100 rounded-full h-4 overflow-hidden">
+                            <div class="salary-bar h-full rounded-full" style="width: 0%" data-width="65%"></div>
+                        </div>
+                        <p class="text-xs text-barber-500 mt-2"><i class="fas fa-info-circle mr-1"></i>65.3%的岗位集中在此区间</p>
+                    </div>
+
+                    <!-- Junior -->
+                    <div class="relative">
+                        <div class="flex justify-between items-end mb-2">
+                            <div>
+                                <span class="text-sm font-medium text-barber-500">初级 (1-3年)</span>
+                                <h4 class="text-lg font-bold text-barber-900">新手起步</h4>
+                            </div>
+                            <span class="text-2xl font-black text-barber-800">3,000 - 6,600<span class="text-sm font-normal text-barber-500 ml-1">元/月</span></span>
+                        </div>
+                        <div class="w-full bg-barber-100 rounded-full h-4 overflow-hidden">
+                            <div class="salary-bar h-full rounded-full opacity-80" style="width: 0%" data-width="45%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Mid -->
+                    <div class="relative">
+                        <div class="flex justify-between items-end mb-2">
+                            <div>
+                                <span class="text-sm font-medium text-barber-500">中级 (成都示例)</span>
+                                <h4 class="text-lg font-bold text-barber-900">熟练技师</h4>
+                            </div>
+                            <span class="text-2xl font-black text-barber-800">5,500 - 9,000<span class="text-sm font-normal text-barber-500 ml-1">元/月</span></span>
+                        </div>
+                        <div class="w-full bg-barber-100 rounded-full h-4 overflow-hidden">
+                            <div class="salary-bar h-full rounded-full opacity-90" style="width: 0%" data-width="60%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Senior -->
+                    <div class="relative p-6 bg-gradient-to-r from-barber-800 to-barber-700 rounded-2xl text-white">
+                        <div class="flex justify-between items-end mb-2">
+                            <div>
+                                <span class="text-sm font-medium text-barber-200">高级/大师 (一线城市)</span>
+                                <h4 class="text-lg font-bold text-white">顶尖收入</h4>
+                            </div>
+                            <span class="text-3xl font-black text-gold-400">15,000 - 50,000+<span class="text-sm font-normal text-barber-200 ml-1">元/月</span></span>
+                        </div>
+                        <div class="w-full bg-barber-600 rounded-full h-4 overflow-hidden">
+                            <div class="bg-gradient-to-r from-gold-400 to-gold-500 h-full rounded-full" style="width: 0%" data-width="100%"></div>
+                        </div>
+                        <p class="text-xs text-barber-300 mt-2"><i class="fas fa-crown mr-1"></i>取决于技术、口碑和客户资源，明星发型师月入数万属正常</p>
+                    </div>
+
+                    <!-- Men Specialist -->
+                    <div class="relative">
+                        <div class="flex justify-between items-end mb-2">
+                            <div>
+                                <span class="text-sm font-medium text-barber-500">男士理发师</span>
+                                <h4 class="text-lg font-bold text-barber-900">细分领域</h4>
+                            </div>
+                            <span class="text-2xl font-black text-barber-800">8,000 - 16,000<span class="text-sm font-normal text-barber-500 ml-1">元/月</span></span>
+                        </div>
+                        <div class="w-full bg-barber-100 rounded-full h-4 overflow-hidden">
+                            <div class="salary-bar h-full rounded-full" style="width: 0%" data-width="75%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-4 bg-barber-50 rounded-xl border border-barber-200">
+                    <p class="text-sm text-barber-600 text-center">
+                        <i class="fas fa-lightbulb text-gold-500 mr-2"></i>
+                        收入上限很大程度上取决于<span class="font-bold text-barber-800">个人IP和客户积累</span>，技术只是基础，经营思维决定天花板。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 4: Pain Points -->
+        <section class="scroll-trigger opacity-0">
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-1 bg-red-50 text-red-600 rounded-full text-sm font-medium mb-4">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>行业痛点
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold text-barber-900 mb-4">为什么总遇不满意？</h2>
+                <p class="text-barber-600">高达<span class="font-bold text-red-500 text-xl">77.5%</span>的受访者有过类似体验</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl p-6 hover-lift border-t-4 border-red-400">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-bullhorn text-red-500 text-xl"></i>
+                        </div>
+                        <span class="text-3xl font-black text-red-500">62.9%</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-barber-900 mb-2">过度推销</h3>
+                    <p class="text-sm text-barber-600">服务过程中不断推销产品和办卡，这是消费者最反感的行为，严重影响体验。</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 hover-lift border-t-4 border-orange-400">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-comments text-orange-500 text-xl"></i>
+                        </div>
+                        <span class="text-3xl font-black text-orange-500">53.8%</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-barber-900 mb-2">沟通鸿沟</h3>
+                    <p class="text-sm text-barber-600">"听不懂或不按顾客需求来"是第二大槽点，缺乏将抽象描述转化为具体操作的能力。</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 hover-lift border-t-4 border-yellow-400">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-tools text-yellow-600 text-xl"></i>
+                        </div>
+                        <span class="text-3xl font-black text-yellow-600">48.2%</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-barber-900 mb-2">技术参差</h3>
+                    <p class="text-sm text-barber-600">近一半受访者认为技术"马马虎虎"。缺乏统一服务标准，从业者水平良莠不齐。</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 hover-lift border-t-4 border-barber-400 md:col-span-2 lg:col-span-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-barber-50 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-palette text-barber-500 text-xl"></i>
+                        </div>
+                        <span class="text-2xl font-black text-barber-500">审美差异</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-barber-900 mb-2">审美不同频</h3>
+                    <p class="text-sm text-barber-600">直接套用"标准模板"，缺乏个性化设计，无法根据顾客气质定制发型。</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 hover-lift border-t-4 border-barber-500 md:col-span-2 lg:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-barber-50 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-tag text-barber-600 text-xl"></i>
+                        </div>
+                        <span class="text-2xl font-black text-barber-600">~50%</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-barber-900 mb-2">价格与价值不符</h3>
+                    <p class="text-sm text-barber-600">约半数人认为定价虚高、乱收费。很多理发店收费不菲，但服务和技术并未达到相应水准，导致消费者产生被"割韭菜"的感觉。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Evaluation -->
+        <section class="scroll-trigger opacity-0">
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium mb-4">
+                    <i class="fas fa-clipboard-check mr-2"></i>能力评估
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold text-barber-900 mb-4">如何评估理发师水平？</h2>
+                <p class="text-barber-600">一个优秀的理发师应该具备这四个维度的能力</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="group relative">
+                    <div class="glass-card rounded-3xl p-6 text-center hover-lift h-full border-b-4 border-blue-400">
+                        <div class="w-20 h-20 mx-auto bg-blue-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-comment-dots text-3xl text-blue-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-barber-900 mb-3">沟通力</h3>
+                        <p class="text-sm text-barber-600 leading-relaxed">
+                            能精准理解你的需求，并用专业语言解释他的方案，确保双方达成共识。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="group relative">
+                    <div class="glass-card rounded-3xl p-6 text-center hover-lift h-full border-b-4 border-purple-400">
+                        <div class="w-20 h-20 mx-auto bg-purple-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-cut text-3xl text-purple-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-barber-900 mb-3">技术力</h3>
+                        <p class="text-sm text-barber-600 leading-relaxed">
+                            基本功扎实，剪刀运用娴熟，能处理不同发质，并合理控制染烫时间。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="group relative">
+                    <div class="glass-card rounded-3xl p-6 text-center hover-lift h-full border-b-4 border-pink-400">
+                        <div class="w-20 h-20 mx-auto bg-pink-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-eye text-3xl text-pink-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-barber-900 mb-3">审美力</h3>
+                        <p class="text-sm text-barber-600 leading-relaxed">
+                            能根据你的脸型、气质设计发型，而非生搬硬套模板，追求个性化。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="group relative">
+                    <div class="glass-card rounded-3xl p-6 text-center hover-lift h-full border-b-4 border-green-400">
+                        <div class="w-20 h-20 mx-auto bg-green-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-heart text-3xl text-green-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-barber-900 mb-3">服务力</h3>
+                        <p class="text-sm text-barber-600 leading-relaxed">
+                            服务过程专注，不强行推销，注重顾客的整体感受和舒适体验。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 6: Tips -->
+        <section class="scroll-trigger opacity-0">
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-1 bg-green-50 text-green-600 rounded-full text-sm font-medium mb-4">
+                    <i class="fas fa-magic mr-2"></i>实战技巧
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold text-barber-900 mb-4">找到靠谱理发师的秘诀</h2>
+                <p class="text-barber-600">从寻找渠道到沟通话术，手把手教你避坑</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Where to find -->
+                <div class="glass-card rounded-3xl p-8">
+                    <h3 class="text-2xl font-bold text-barber-900 mb-6 flex items-center">
+                        <span class="w-10 h-10 bg-barber-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-search-location text-barber-600"></i>
+                        </span>
+                        去哪里找？
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 bg-white/50 rounded-xl hover:bg-white transition-colors">
+                            <div class="w-8 h-8 bg-barber-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fas fa-eye text-barber-700 text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-barber-800">观察筛选</h4>
+                                <p class="text-sm text-barber-600 mt-1">路过理发店时，留意店内发型师的自身形象和正在修剪的发型。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 bg-white/50 rounded-xl hover:bg-white transition-colors">
+                            <div class="w-8 h-8 bg-barber-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fas fa-user-friends text-barber-700 text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-barber-800">朋友推荐</h4>
+                                <p class="text-sm text-barber-600 mt-1">最靠谱的方式，但要确保朋友的审美与你相近。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 bg-white/50 rounded-xl hover:bg-white transition-colors">
+                            <div class="w-8 h-8 bg-barber-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fas fa-mobile-alt text-barber-700 text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-barber-800">线上参考</h4>
+                                <p class="text-sm text-barber-600 mt-1">在大众点评/小红书搜"城市+发型+避雷"，查看真实评价和返图。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How to communicate -->
+                <div class="glass-card rounded-3xl p-8">
+                    <h3 class="text-2xl font-bold text-barber-900 mb-6 flex items-center">
+                        <span class="w-10 h-10 bg-gold-400/10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-comments text-gold-600"></i>
+                        </span>
+                        怎么沟通？
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-gold-400/5 to-transparent rounded-xl border-l-2 border-gold-400">
+                            <div class="w-8 h-8 bg-gold-400/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="text-gold-700 font-bold text-sm">1</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-barber-800">准备参考图</h4>
+                                <p class="text-sm text-barber-600 mt-1">带2-3张喜欢的发型图，说明具体细节（刘海弧度、层次感），比口头描述更直观。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 bg-white/50 rounded-xl">
+                            <div class="w-8 h-8 bg-barber-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="text-barber-700 font-bold text-sm">2</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-barber-800">反向提问</h4>
+                                <p class="text-sm text-barber-600 mt-1">先问"你觉得我适合什么样的短发？"，从回答中判断他的专业度和审美。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 bg-white/50 rounded-xl">
+                            <div class="w-8 h-8 bg-barber-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="text-barber-700 font-bold text-sm">3</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-barber-800">明确边界</h4>
+                                <p class="text-sm text-barber-600 mt-1">清楚告知"雷区"："绝对不要剪太短"、"不染不烫"。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 bg-white/50 rounded-xl">
+                            <div class="w-8 h-8 bg-barber-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="text-barber-700 font-bold text-sm">4</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-barber-800">动态确认</h4>
+                                <p class="text-sm text-barber-600 mt-1">在关键节点（剪完长度、修完层次）主动请理发师停一下，通过镜子确认。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 bg-red-50 rounded-xl border-l-2 border-red-300">
+                            <div class="w-8 h-8 bg-red-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fas fa-ban text-red-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-red-800">主动拒绝推销</h4>
+                                <p class="text-sm text-red-700 mt-1">微笑但坚定："谢谢，我今天只想先剪好头发。"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer CTA -->
+        <section class="scroll-trigger opacity-0">
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-barber-800 to-barber-900 p-8 md:p-16 text-center">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gold-400 rounded-full blur-3xl opacity-10 -mr-20 -mt-20"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-barber-400 rounded-full blur-3xl opacity-10 -ml-20 -mb-20"></div>
+
+                <i class="fas fa-cut text-5xl text-gold-400 mb-6 inline-block"></i>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">愿你每一次理发都心满意足</h2>
+                <p class="text-barber-200 max-w-2xl mx-auto text-lg">
+                    理解理发师这个职业的辛苦，也掌握作为消费者的主动权。<br>
+                    好的发型，始于专业的技术，成于有效的沟通。
+                </p>
+
+                <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm text-barber-300">
+                    <span class="px-4 py-2 bg-white/10 rounded-full">
+                        <i class="fas fa-check mr-2 text-gold-400"></i>明确需求
+                    </span>
+                    <span class="px-4 py-2 bg-white/10 rounded-full">
+                        <i class="fas fa-check mr-2 text-gold-400"></i>观察技术
+                    </span>
+                    <span class="px-4 py-2 bg-white/10 rounded-full">
+                        <i class="fas fa-check mr-2 text-gold-400"></i>果断拒绝
+                    </span>
+                    <span class="px-4 py-2 bg-white/10 rounded-full">
+                        <i class="fas fa-check mr-2 text-gold-400"></i>享受服务
+                    </span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-barber-900 text-barber-300 py-12 mt-24">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <i class="fas fa-cut text-gold-400"></i>
+                <span class="font-bold text-white">Barber Career Guide</span>
+            </div>
+            <p class="text-sm opacity-60">理发师职业全指南 · 数据来源：行业调研与市场统计</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                    entry.target.classList.remove('opacity-0');
+
+                    // Animate salary bars
+                    const bars = entry.target.querySelectorAll('[data-width]');
+                    bars.forEach(bar => {
+                        setTimeout(() => {
+                            bar.style.width = bar.getAttribute('data-width');
+                        }, 300);
+                    });
+
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-trigger').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('header');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
