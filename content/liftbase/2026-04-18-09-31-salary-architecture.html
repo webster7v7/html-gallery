@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Architecture | 薪资结构体系精要</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Noto Serif SC"', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        void: '#050508',
+                        ink: '#0a0a0f',
+                        parchment: '#f5f0e8',
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        jade: {
+                            400: '#34d399',
+                            500: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-ink text-gray-300 font-sans antialiased overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-400;
+            }
+            h1, h2, h3, h4 {
+                @apply font-serif text-parchment;
+            }
+        }
+        @layer components {
+            .text-gradient {
+                @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-400 via-amber-200 to-gold-600;
+            }
+            .card-glow {
+                @apply relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm transition-all duration-500;
+                box-shadow: 0 0 0 1px rgba(251, 191, 36, 0), inset 0 1px 0 0 rgba(255,255,255,0.05);
+            }
+            .card-glow:hover {
+                @apply border-gold-500/20 bg-white/[0.04];
+                box-shadow: 0 0 40px -10px rgba(251, 191, 36, 0.15), inset 0 1px 0 0 rgba(255,255,255,0.1);
+                transform: translateY(-4px);
+            }
+            .spotlight {
+                background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(251,191,36,0.06), transparent 40%);
+            }
+            .number-roll {
+                font-variant-numeric: tabular-nums;
+            }
+        }
+        @layer utilities {
+            .animation-delay-100 { animation-delay: 100ms; }
+            .animation-delay-200 { animation-delay: 200ms; }
+            .animation-delay-300 { animation-delay: 300ms; }
+            .animation-delay-500 { animation-delay: 500ms; }
+        }
+    </style>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        @keyframes reveal-up {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delay { animation: float 6s ease-in-out 3s infinite; }
+        .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .mesh-bg {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(251,191,36,0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(16,185,129,0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(59,130,246,0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(245,158,11,0.05) 0px, transparent 50%);
+        }
+        .grid-lines {
+            background-size: 60px 60px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+        }
+        .progress-bar {
+            transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tab-active {
+            @apply text-gold-400 border-gold-500/50 bg-gold-500/10;
+        }
+        .tab-inactive {
+            @apply text-gray-500 border-transparent hover:text-gray-300 hover:bg-white/5;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="relative">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-ink/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold-500 to-amber-700 flex items-center justify-center">
+                    <span class="text-ink font-serif font-bold text-lg">薪</span>
+                </div>
+                <span class="font-serif text-parchment font-semibold tracking-wide">Salary Architecture</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                <a href="#composition" class="hover:text-gold-400 transition-colors">组成体系</a>
+                <a href="#principles" class="hover:text-gold-400 transition-colors">设计原则</a>
+                <a href="#industries" class="hover:text-gold-400 transition-colors">行业差异</a>
+                <a href="#trends" class="hover:text-gold-400 transition-colors">2026趋势</a>
+                <a href="#practice" class="hover:text-gold-400 transition-colors">实践指南</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+        <div class="absolute inset-0 mesh-bg opacity-60"></div>
+        <div class="absolute inset-0 grid-lines"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl animate-pulse-glow"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-jade-500/10 rounded-full blur-3xl animate-pulse-glow animation-delay-500"></div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-500/20 bg-gold-500/5 text-gold-400 text-sm font-medium mb-8 animate-[reveal-up_1s_ease-out]">
+                <span class="w-2 h-2 rounded-full bg-gold-400 animate-pulse"></span>
+                Compensation Framework 2025-2026
+            </div>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] mb-6 tracking-tight">
+                <span class="block text-parchment">薪资结构</span>
+                <span class="block text-gradient mt-2">体系精要</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-12 animate-[reveal-up_1s_ease-out_0.3s_both]">
+                从固定薪酬到长期激励，拆解现代企业薪酬管理的底层逻辑与前沿趋势。<br class="hidden md:block">
+                一份关于价值分配的科学指南。
+            </p>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto animate-[reveal-up_1s_ease-out_0.5s_both]">
+                <div class="card-glow p-6 rounded-2xl">
+                    <div class="text-3xl font-serif font-bold text-gold-400 number-roll" data-target="70">0</div>
+                    <div class="text-sm text-gray-500 mt-1">固定薪资占比(%)</div>
+                </div>
+                <div class="card-glow p-6 rounded-2xl">
+                    <div class="text-3xl font-serif font-bold text-jade-400 number-roll" data-target="30">0</div>
+                    <div class="text-sm text-gray-500 mt-1">浮动激励占比(%)</div>
+                </div>
+                <div class="card-glow p-6 rounded-2xl">
+                    <div class="text-3xl font-serif font-bold text-blue-400 number-roll" data-target="3">0</div>
+                    <div class="text-sm text-gray-500 mt-1">核心组成部分</div>
+                </div>
+                <div class="card-glow p-6 rounded-2xl">
+                    <div class="text-3xl font-serif font-bold text-purple-400 number-roll" data-target="2026">0</div>
+                    <div class="text-sm text-gray-500 mt-1">年度趋势基准</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Core Composition -->
+    <section id="composition" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">三大核心组成</h2>
+                <p class="text-gray-400 text-lg max-w-2xl">薪资结构是企业薪酬管理体系的核心，由固定薪资、浮动薪资和福利激励三大部分构成，形成系统化的价值分配框架。</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6" id="cards-container">
+                <!-- Fixed Salary -->
+                <div class="card-glow p-8 rounded-3xl group reveal">
+                    <div class="spotlight absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/20 to-gold-600/5 border border-gold-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <svg class="w-7 h-7 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-parchment">固定薪资</h3>
+                        <p class="text-gray-400 mb-6 leading-relaxed">员工收入的安全垫与稳定器，是其他薪酬计算的基础锚点。</p>
+
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-gold-400 mt-2 shrink-0"></div>
+                                <div>
+                                    <div class="text-parchment font-medium">基本工资</div>
+                                    <div class="text-sm text-gray-500 mt-0.5">依据岗位价值与个人能力确定，通常占工资性收入的 60%-70%</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-gold-400 mt-2 shrink-0"></div>
+                                <div>
+                                    <div class="text-parchment font-medium">岗位津贴</div>
+                                    <div class="text-sm text-gray-500 mt-0.5">对特殊岗位或艰苦工作环境的补偿，如夜班、高温补贴</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-white/5">
+                            <div class="flex items-center justify-between text-sm mb-2">
+                                <span class="text-gray-400">占比权重</span>
+                                <span class="text-gold-400 font-bold">60-70%</span>
+                            </div>
+                            <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-gold-600 to-gold-400 rounded-full progress-bar" style="width: 0%" data-width="65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Variable Salary -->
+                <div class="card-glow p-8 rounded-3xl group reveal animation-delay-100">
+                    <div class="spotlight absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-jade-500/20 to-jade-600/5 border border-jade-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <svg class="w-7 h-7 text-jade-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-parchment">浮动薪资</h3>
+                        <p class="text-gray-400 mb-6 leading-relaxed">与绩效直接挂钩的激励性薪酬，驱动员工创造价值与突破目标。</p>
+
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-jade-400 mt-2 shrink-0"></div>
+                                <div>
+                                    <div class="text-parchment font-medium">绩效奖金</div>
+                                    <div class="text-sm text-gray-500 mt-0.5">与考核结果直接挂钩，通常占工资性收入的 30%-40%</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-jade-400 mt-2 shrink-0"></div>
+                                <div>
+                                    <div class="text-parchment font-medium">提成奖金</div>
+                                    <div class="text-sm text-gray-500 mt-0.5">针对特定业务赛道的专项奖励，如销售提成、降本增效奖</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-jade-400 mt-2 shrink-0"></div>
+                                <div>
+                                    <div class="text-parchment font-medium">年终奖</div>
+                                    <div class="text-sm text-gray-500 mt-0.5">基于企业经营状况与员工全年表现发放的年度奖励</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-white/5">
+                            <div class="flex items-center justify-between text-sm mb-2">
+                                <span class="text-gray-400">占比权重</span>
+                                <span class="text-jade-400 font-bold">30-40%</span>
+                            </div>
+                            <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-jade-600 to-jade-400 rounded-full progress-bar" style="width: 0%" data-width="35%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefits -->
+                <div class="card-glow p-8 rounded-3xl group reveal animation-delay-200">
+                    <div class="spotlight absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/5 border border-blue-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <svg class="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-parchment">福利与长期激励</h3>
+                        <p class="text-gray-400 mb-6 leading-relaxed">超越现金报酬的全面保障体系，绑定核心人才与企业长期发展。</p>
+
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 shrink-0"></div>
+                                <div>
+                                    <div class="text-parchment font-medium">法定福利</div>
+                                    <div class="text-sm text-gray-500 mt-0.5">五险一金、带薪休假等法律强制保障</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 shrink-0"></div>
+                                <div>
+                                    <div class="text-parchment font-medium">补充福利</div>
+                                    <div class="text-sm text-gray-500 mt-0.5">补充医疗保险、交通/餐饮/通讯补贴等</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 shrink-0"></div>
+                                <div>
+                                    <div class="text-parchment font-medium">长期激励</div>
+                                    <div class="text-sm text-gray-500 mt-0.5">股权激励、期权计划、虚拟股权等核心人才绑定工具</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-white/5">
+                            <div class="flex items-center justify-between text-sm mb-2">
+                                <span class="text-gray-400">战略价值</span>
+                                <span class="text-blue-400 font-bold">核心绑定</span>
+                            </div>
+                            <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full progress-bar" style="width: 0%" data-width="85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ratio Visualization -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-500/[0.02] to-transparent"></div>
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">固定与浮动的黄金比例</h2>
+                <p class="text-gray-400 text-lg">不同企业阶段与岗位性质的配置策略</p>
+            </div>
+
+            <div class="space-y-6 reveal">
+                <!-- Startup -->
+                <div class="card-glow p-6 rounded-2xl">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="md:w-48 shrink-0">
+                            <div class="text-parchment font-bold text-lg">初创企业</div>
+                            <div class="text-sm text-gray-500 mt-1">高浮动，低成本，强激励</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="h-10 bg-white/5 rounded-lg overflow-hidden flex relative">
+                                <div class="h-full bg-gold-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="40%">固定 40%</div>
+                                <div class="h-full bg-jade-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="40%">浮动 40%</div>
+                                <div class="h-full bg-blue-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="20%">期权 20%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mature -->
+                <div class="card-glow p-6 rounded-2xl">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="md:w-48 shrink-0">
+                            <div class="text-parchment font-bold text-lg">成熟企业</div>
+                            <div class="text-sm text-gray-500 mt-1">高固定，稳预期，保留存</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="h-10 bg-white/5 rounded-lg overflow-hidden flex relative">
+                                <div class="h-full bg-gold-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="70%">固定 70%</div>
+                                <div class="h-full bg-jade-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="25%">浮动 25%</div>
+                                <div class="h-full bg-blue-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="5%">期权 5%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales -->
+                <div class="card-glow p-6 rounded-2xl">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="md:w-48 shrink-0">
+                            <div class="text-parchment font-bold text-lg">销售岗位</div>
+                            <div class="text-sm text-gray-500 mt-1">强结果导向，业绩即薪酬</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="h-10 bg-white/5 rounded-lg overflow-hidden flex relative">
+                                <div class="h-full bg-gold-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="40%">固定 40%</div>
+                                <div class="h-full bg-jade-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="55%">提成 55%</div>
+                                <div class="h-full bg-blue-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="5%">福利 5%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back Office -->
+                <div class="card-glow p-6 rounded-2xl">
+                    <div class="flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="md:w-48 shrink-0">
+                            <div class="text-parchment font-bold text-lg">后勤岗位</div>
+                            <div class="text-sm text-gray-500 mt-1">流程支撑，稳定性优先</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="h-10 bg-white/5 rounded-lg overflow-hidden flex relative">
+                                <div class="h-full bg-gold-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="92%">固定 92%</div>
+                                <div class="h-full bg-jade-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="5%">绩效 5%</div>
+                                <div class="h-full bg-blue-500/80 flex items-center justify-center text-ink font-bold text-sm progress-bar" style="width: 0%" data-width="3%">福利 3%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design Principles -->
+    <section id="principles" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">设计核心原则</h2>
+                <p class="text-gray-400 text-lg max-w-2xl">科学的薪资结构设计需要平衡多重维度，确保激励有效且可持续。</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card-glow p-8 rounded-3xl reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center shrink-0 text-gold-400 font-serif font-bold text-xl">01</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-parchment mb-2">按劳分配与价值导向</h3>
+                            <p class="text-gray-400 leading-relaxed">薪酬结构应体现岗位价值与实际贡献，确保薪酬与员工贡献相匹配。岗位价值评估是设计基础，常用方法包括岗位评价法与市场薪酬调查。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-glow p-8 rounded-3xl reveal animation-delay-100">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-jade-500/10 border border-jade-500/20 flex items-center justify-center shrink-0 text-jade-400 font-serif font-bold text-xl">02</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-parchment mb-2">内外公平性平衡</h3>
+                            <p class="text-gray-400 leading-relaxed">内部公平性确保同岗同级差异合理；外部竞争力要求薪酬与行业市场保持一致，确保人才吸引力与留存率。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-glow p-8 rounded-3xl reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0 text-blue-400 font-serif font-bold text-xl">03</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-parchment mb-2">固定与浮动科学配置</h3>
+                            <p class="text-gray-400 leading-relaxed">基本薪酬占比应高于奖金与津贴之和，发挥定额劳动报酬的基础作用。具体比例根据企业阶段、岗位性质灵活调整。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-glow p-8 rounded-3xl reveal animation-delay-100">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0 text-purple-400 font-serif font-bold text-xl">04</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-parchment mb-2">法律合规底线</h3>
+                            <p class="text-gray-400 leading-relaxed">严格遵守《劳动法》《劳动合同法》等法规，确保最低工资、加班费计算、社保缴纳等符合法律约束，规避用工风险。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industry Comparison -->
+    <section id="industries" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/[0.02] to-transparent"></div>
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="mb-12 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">行业与岗位差异</h2>
+                <p class="text-gray-400 text-lg">不同行业因商业模式与人才竞争格局，呈现截然不同的薪酬结构特征。</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-2 mb-8 reveal" id="industry-tabs">
+                <button class="tab-btn tab-active px-5 py-2.5 rounded-full border text-sm font-medium transition-all" data-tab="tech">高科技行业</button>
+                <button class="tab-btn tab-inactive px-5 py-2.5 rounded-full border text-sm font-medium transition-all" data-tab="manufacturing">制造业</button>
+                <button class="tab-btn tab-inactive px-5 py-2.5 rounded-full border text-sm font-medium transition-all" data-tab="service">服务业</button>
+                <button class="tab-btn tab-inactive px-5 py-2.5 rounded-full border text-sm font-medium transition-all" data-tab="finance">金融业</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="card-glow rounded-3xl p-8 md:p-12 reveal" id="industry-content">
+                <div id="tech-content" class="tab-pane">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-3xl font-bold text-parchment mb-4">高科技行业</h3>
+                            <p class="text-gray-400 leading-relaxed mb-6">偏重长期激励，股权和期权占较高比例。AI技能人才可获得高达 56% 的薪资溢价 [^3^]。企业普遍采用"现金+股权"的双轮驱动模式绑定核心研发人才。</p>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">固定薪资占比</span>
+                                    <span class="text-parchment font-bold">50-60%</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">绩效/项目奖金</span>
+                                    <span class="text-parchment font-bold">20-30%</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">股权/期权激励</span>
+                                    <span class="text-gold-400 font-bold">15-25%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="aspect-square rounded-2xl bg-gradient-to-br from-gold-500/10 to-transparent border border-gold-500/10 p-8 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-6xl font-serif font-bold text-gradient mb-2">56%</div>
+                                    <div class="text-gray-400">AI技能薪资溢价</div>
+                                    <div class="mt-4 text-xs text-gray-500">Source: NACE Job Outlook 2026 [^3^]</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="manufacturing-content" class="tab-pane hidden">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-3xl font-bold text-parchment mb-4">制造业</h3>
+                            <p class="text-gray-400 leading-relaxed mb-6">更注重固定薪酬和加班工资，浮动薪酬比例较低。薪酬结构强调稳定性和可预测性，技能等级与工龄是重要的薪酬决定因素。</p>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">固定薪资占比</span>
+                                    <span class="text-parchment font-bold">80-90%</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">加班费/倒班补贴</span>
+                                    <span class="text-parchment font-bold">8-12%</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">绩效奖金</span>
+                                    <span class="text-parchment font-bold">5-10%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="aspect-square rounded-2xl bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/10 p-8 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-6xl font-serif font-bold text-blue-400 mb-2">85%</div>
+                                    <div class="text-gray-400">固定薪酬占比中位数</div>
+                                    <div class="mt-4 text-xs text-gray-500">强调稳定性与可预测性</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="service-content" class="tab-pane hidden">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-3xl font-bold text-parchment mb-4">服务业</h3>
+                            <p class="text-gray-400 leading-relaxed mb-6">普遍采用"底薪+提成"模式，激励员工提升服务质量与销售业绩。薪酬弹性大，与业务淡旺季高度相关。</p>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">基本工资（底薪）</span>
+                                    <span class="text-parchment font-bold">40-50%</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">销售/服务提成</span>
+                                    <span class="text-gold-400 font-bold">30-40%</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">绩效奖金</span>
+                                    <span class="text-parchment font-bold">10-20%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="aspect-square rounded-2xl bg-gradient-to-br from-jade-500/10 to-transparent border border-jade-500/10 p-8 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-6xl font-serif font-bold text-jade-400 mb-2">40%</div>
+                                    <div class="text-gray-400">提成占比峰值</div>
+                                    <div class="mt-4 text-xs text-gray-500">高弹性激励模式</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="finance-content" class="tab-pane hidden">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-3xl font-bold text-parchment mb-4">金融业</h3>
+                            <p class="text-gray-400 leading-relaxed mb-6">人工成本中工资总额占比 64.56%，保险费用占比 20.93%，住房费用占比 6.61%。高管薪酬与长期业绩紧密挂钩，递延支付机制普遍。</p>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">工资总额</span>
+                                    <span class="text-parchment font-bold">64.56%</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">保险费用</span>
+                                    <span class="text-parchment font-bold">20.93%</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span class="text-gray-400">住房/公积金</span>
+                                    <span class="text-parchment font-bold">6.61%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="aspect-square rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/10 p-8 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-6xl font-serif font-bold text-purple-400 mb-2">64.56%</div>
+                                    <div class="text-gray-400">工资总额占比</div>
+                                    <div class="mt-4 text-xs text-gray-500">人工成本结构高度标准化</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2026 Trends -->
+    <section id="trends" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-16 reveal">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs font-bold mb-4">TRENDS 2025-2026</div>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">前沿趋势与挑战</h2>
+                <p class="text-gray-400 text-lg max-w-2xl">AI 重构、薪酬透明化与技能本位薪酬正在重塑全球薪资结构格局 [^3^][^4^][^5^]。</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card-glow rounded-3xl p-8 reveal group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500/20 to-orange-500/5 border border-rose-500/20 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-parchment mb-3">哑铃型结构转型</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">AI 大模型深度应用推动薪资结构从金字塔型向哑铃型转变：中间层重复性技术工种减少，资源向顶端创新人才与底端高触达服务人才倾斜。</p>
+                    <div class="flex items-center gap-2 text-xs text-rose-400 font-medium">
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                        AI 重构岗位价值分布
+                    </div>
+                </div>
+
+                <div class="card-glow rounded-3xl p-8 reveal animation-delay-100 group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/5 border border-cyan-500/20 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-parchment mb-3">薪酬透明化 2.0</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">从简单的薪资范围披露转向全面的总回报透明化（Total Rewards Transparency）。公开薪资等级与晋升机制可使员工流失率降低 20%。</p>
+                    <div class="flex items-center gap-2 text-xs text-cyan-400 font-medium">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                        信任与留存率双提升
+                    </div>
+                </div>
+
+                <div class="card-glow rounded-3xl p-8 reveal animation-delay-200 group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/5 border border-violet-500/20 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-parchment mb-3">技能本位薪酬</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">70% 雇主已采用技能本位招聘 [^3^]。薪酬与技能认证、能力提升直接挂钩，而非仅依赖职级或工龄。内部流动路径与技能获取深度绑定。</p>
+                    <div class="flex items-center gap-2 text-xs text-violet-400 font-medium">
+                        <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+                        Skills-Based Pay
+                    </div>
+                </div>
+
+                <div class="card-glow rounded-3xl p-8 reveal group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-yellow-500/5 border border-amber-500/20 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-parchment mb-3">绩效薪酬精准化</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">2026 年企业普遍调薪预算稳定在 3.2%-3.6% [^3^]。组织正从"普涨"转向基于绩效的精准差异化投资，强化绩效与薪酬的可见关联。</p>
+                    <div class="flex items-center gap-2 text-xs text-amber-400 font-medium">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                        Pay-for-Performance
+                    </div>
+                </div>
+
+                <div class="card-glow rounded-3xl p-8 reveal animation-delay-100 group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/5 border border-emerald-500/20 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-parchment mb-3">地域差异收敛</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">核心岗位全国统一薪酬标准趋势明显。在非核心城市工作的从业者，因生活成本差异，实际薪酬竞争力反而更为均衡甚至优越。</p>
+                    <div class="flex items-center gap-2 text-xs text-emerald-400 font-medium">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                        全国统一薪酬标准
+                    </div>
+                </div>
+
+                <div class="card-glow rounded-3xl p-8 reveal animation-delay-200 group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500/20 to-rose-500/5 border border-pink-500/20 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-parchment mb-3">全面回报体验</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">福利与非现金元素成为差异化竞争核心。31% 员工因缺乏福利灵活性而离职 [^3^]。 wellness、学习发展、弹性工作成为总报酬的重要组成部分。</p>
+                    <div class="flex items-center gap-2 text-xs text-pink-400 font-medium">
+                        <span class="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
+                        Total Rewards Strategy
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practice Guide -->
+    <section id="practice" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-jade-500/[0.02] to-transparent"></div>
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="mb-16 text-center reveal">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">实践行动指南</h2>
+                <p class="text-gray-400 text-lg">从岗位评估到动态调整，构建科学薪酬体系的五个关键步骤。</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="card-glow rounded-2xl p-6 reveal cursor-pointer group" onclick="this.classList.toggle('active')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 font-serif font-bold shrink-0 group-hover:bg-gold-500/20 transition-colors">1</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-parchment">建立科学的岗位评估体系</h3>
+                            <p class="text-gray-400 text-sm mt-1 hidden group-[.active]:block transition-all">通过岗位分析、岗位评价形成岗位说明书与工作规范，为薪酬设计提供客观基础。采用要素计点法或海氏评估法量化岗位价值。</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-500 group-hover:text-gold-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card-glow rounded-2xl p-6 reveal cursor-pointer group" onclick="this.classList.toggle('active')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 font-serif font-bold shrink-0 group-hover:bg-gold-500/20 transition-colors">2</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-parchment">定期市场薪酬调研</h3>
+                            <p class="text-gray-400 text-sm mt-1 hidden group-[.active]:block transition-all">利用 HR 系统与专业工具（如 i人事、Mercer、Aon）获取市场薪酬数据，至少每年 review 一次，确保外部竞争力。高波动岗位需更频繁监测。</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-500 group-hover:text-gold-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card-glow rounded-2xl p-6 reveal cursor-pointer group" onclick="this.classList.toggle('active')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 font-serif font-bold shrink-0 group-hover:bg-gold-500/20 transition-colors">3</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-parchment">设计灵活的薪酬调整机制</h3>
+                            <p class="text-gray-400 text-sm mt-1 hidden group-[.active]:block transition-all">建立定期调薪（年度绩效联动）与特殊调薪（关键人才保留）双通道。调薪预算向高绩效、核心技能、关键岗位倾斜，避免"花生酱式"平均分配。</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-500 group-hover:text-gold-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card-glow rounded-2xl p-6 reveal cursor-pointer group" onclick="this.classList.toggle('active')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 font-serif font-bold shrink-0 group-hover:bg-gold-500/20 transition-colors">4</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-parchment">强化绩效与薪酬关联</h3>
+                            <p class="text-gray-400 text-sm mt-1 hidden group-[.active]:block transition-all">设计多维度绩效指标（财务、客户、过程、成长），避免过度关注短期目标。采用更频繁的校准流程（calibration）减少评级膨胀，确保差异化有意义。</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-500 group-hover:text-gold-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="card-glow rounded-2xl p-6 reveal cursor-pointer group" onclick="this.classList.toggle('active')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 font-serif font-bold shrink-0 group-hover:bg-gold-500/20 transition-colors">5</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-parchment">动态迭代与合规审查</h3>
+                            <p class="text-gray-400 text-sm mt-1 hidden group-[.active]:block transition-all">薪酬体系需随市场、战略、AI 技术演进动态调整。同步进行年度薪酬公平性审计（Pay Equity Audit），监控性别、种族等差异，降低法律与声誉风险。</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-500 group-hover:text-gold-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold-500 to-amber-700 flex items-center justify-center">
+                    <span class="text-ink font-serif font-bold text-lg">薪</span>
+                </div>
+                <span class="font-serif text-parchment font-semibold">Salary Architecture</span>
+            </div>
+            <div class="text-sm text-gray-500">
+                基于现代企业薪酬管理理论与实践整理 · 2025-2026
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Spotlight effect
+        document.querySelectorAll('.card-glow').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+            });
+        });
+
+        // Intersection Observer for reveals
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+
+                    // Animate progress bars
+                    entry.target.querySelectorAll('.progress-bar').forEach(bar => {
+                        setTimeout(() => {
+                            bar.style.width = bar.dataset.width;
+                        }, 200);
+                    });
+
+                    // Animate numbers
+                    entry.target.querySelectorAll('.number-roll').forEach(el => {
+                        const target = parseInt(el.dataset.target);
+                        const duration = 2000;
+                        const start = performance.now();
+
+                        function update(currentTime) {
+                            const elapsed = currentTime - start;
+                            const progress = Math.min(elapsed / duration, 1);
+                            const easeOut = 1 - Math.pow(1 - progress, 3);
+                            el.textContent = Math.floor(easeOut * target);
+                            if (progress < 1) requestAnimationFrame(update);
+                        }
+                        requestAnimationFrame(update);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Industry Tabs
+        const tabs = document.querySelectorAll('.tab-btn');
+        const panes = document.querySelectorAll('.tab-pane');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+
+                tabs.forEach(t => {
+                    t.classList.remove('tab-active');
+                    t.classList.add('tab-inactive');
+                });
+                tab.classList.remove('tab-inactive');
+                tab.classList.add('tab-active');
+
+                panes.forEach(pane => {
+                    pane.classList.add('hidden');
+                });
+                document.getElementById(`${target}-content`).classList.remove('hidden');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
