@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>束状纹理烫完全指南 | 细软发质护理手册</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Noto Sans SC', 'sans-serif'],
+                        'serif': ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        'hair-dark': '#1a1a2e',
+                        'hair-gold': '#d4a574',
+                        'hair-copper': '#b87333',
+                        'hair-cream': '#f5f0e8',
+                        'hair-warm': '#e8ddd4',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #1a1a2e 0%, #d4a574 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .wave-bg {
+            background: linear-gradient(180deg, #f5f0e8 0%, #e8ddd4 50%, #f5f0e8 100%);
+        }
+        .hair-strand {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #d4a574, transparent);
+            opacity: 0.3;
+            animation: sway 4s ease-in-out infinite;
+        }
+        @keyframes sway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, #d4a574, #b87333);
+        }
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .care-icon {
+            transition: all 0.3s ease;
+        }
+        .care-icon:hover {
+            transform: scale(1.1);
+            color: #d4a574;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="bg-hair-cream text-hair-dark font-sans overflow-x-hidden">
+
+    <!-- Floating Hair Strands Background -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="hair-strand" style="height: 200px; left: 10%; top: 10%; animation-delay: 0s;"></div>
+        <div class="hair-strand" style="height: 150px; left: 25%; top: 30%; animation-delay: 1s;"></div>
+        <div class="hair-strand" style="height: 180px; left: 75%; top: 20%; animation-delay: 2s;"></div>
+        <div class="hair-strand" style="height: 220px; left: 85%; top: 50%; animation-delay: 0.5s;"></div>
+        <div class="hair-strand" style="height: 160px; left: 15%; top: 60%; animation-delay: 1.5s;"></div>
+        <div class="hair-strand" style="height: 190px; left: 60%; top: 70%; animation-delay: 2.5s;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-card px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-serif font-bold gradient-text">Hair Guide</div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#comparison" class="hover:text-hair-gold transition-colors">对比指南</a>
+                <a href="#pricing" class="hover:text-hair-gold transition-colors">价格参考</a>
+                <a href="#fine-hair" class="hover:text-hair-gold transition-colors">细软发质</a>
+                <a href="#care" class="hover:text-hair-gold transition-colors">护理方案</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 z-10">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div class="animate-slide-up">
+                <div class="text-sm font-medium text-hair-gold mb-4 tracking-widest">PROFESSIONAL HAIR GUIDE</div>
+                <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight">
+                    束状纹理烫<br>
+                    <span class="gradient-text">完全指南</span>
+                </h1>
+                <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                    从选择到护理，为细软发质量身定制的烫发圣经。掌握韩系束状纹理的核心技巧，打造持久蓬松的自然造型。
+                </p>
+                <div class="flex gap-4">
+                    <a href="#comparison" class="px-8 py-4 bg-hair-dark text-white rounded-full font-medium hover:bg-hair-copper transition-all transform hover:scale-105">
+                        开始探索
+                    </a>
+                    <a href="#fine-hair" class="px-8 py-4 border-2 border-hair-dark rounded-full font-medium hover:bg-hair-dark hover:text-white transition-all">
+                        细软发质专区
+                    </a>
+                </div>
+            </div>
+            <div class="relative animate-float">
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.haircitymm.com/47177e7564ff6067817de628f123ae5c679bc534.png" 
+                         alt="束状纹理烫效果图" 
+                         class="w-full h-auto object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                </div>
+                <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-2xl shadow-xl">
+                    <div class="text-3xl font-bold text-hair-copper">4.9</div>
+                    <div class="text-xs text-gray-500">用户满意度</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section id="comparison" class="py-24 wave-bg relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold mb-4">束状纹理烫 vs 摩根烫</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">两种解决扁塌问题的烫发方式，核心区别在哪里？一张表帮你理清思路。</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- 束状纹理烫卡片 -->
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-hair-gold/20 rounded-full -mr-16 -mt-16"></div>
+                    <div class="relative z-10">
+                        <div class="text-hair-gold text-sm font-bold mb-2">BEAM TEXTURE PERM</div>
+                        <h3 class="text-2xl font-bold mb-4">束状纹理烫</h3>
+                        <img src="https://kimi-web-img.moonshot.cn/img/www.haircitymm.com/034e4e6704999935e94bddcbe015ca3a7ffd01c8.png" 
+                             alt="束状纹理烫" 
+                             class="w-full h-48 object-cover rounded-xl mb-4">
+                        <p class="text-gray-600 text-sm">全头有线条感，呈现一缕一缕的束状纹理，韩系/日系风格首选。</p>
+                    </div>
+                </div>
+
+                <!-- 摩根烫卡片 -->
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gray-300/30 rounded-full -mr-16 -mt-16"></div>
+                    <div class="relative z-10">
+                        <div class="text-gray-500 text-sm font-bold mb-2">MORGAN PERM</div>
+                        <h3 class="text-2xl font-bold mb-4">摩根烫</h3>
+                        <div class="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl mb-4 flex items-center justify-center">
+                            <span class="text-gray-400 text-6xl">👤</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">仅垫高发根，发尾保持直发，追求"无痕"蓬松效果。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对比表格 -->
+            <div class="glass-card rounded-3xl overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-hair-dark text-white">
+                        <tr>
+                            <th class="px-6 py-4 text-left font-medium">对比维度</th>
+                            <th class="px-6 py-4 text-center font-medium text-hair-gold">束状纹理烫</th>
+                            <th class="px-6 py-4 text-center font-medium">摩根烫</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-white/50 transition-colors">
+                            <td class="px-6 py-4 font-medium">烫发范围</td>
+                            <td class="px-6 py-4 text-center text-hair-copper font-medium">发根+发中+发尾（全头）</td>
+                            <td class="px-6 py-4 text-center">主要集中在发根</td>
+                        </tr>
+                        <tr class="hover:bg-white/50 transition-colors">
+                            <td class="px-6 py-4 font-medium">视觉效果</td>
+                            <td class="px-6 py-4 text-center">束状纹理，有流向感，凌乱自然</td>
+                            <td class="px-6 py-4 text-center">头顶蓬松，发尾直发</td>
+                        </tr>
+                        <tr class="hover:bg-white/50 transition-colors">
+                            <td class="px-6 py-4 font-medium">适合长度</td>
+                            <td class="px-6 py-4 text-center">5-12cm以上中长发</td>
+                            <td class="px-6 py-4 text-center">短发或不想改变发尾</td>
+                        </tr>
+                        <tr class="hover:bg-white/50 transition-colors">
+                            <td class="px-6 py-4 font-medium">适合人群</td>
+                            <td class="px-6 py-4 text-center">想要造型感、氛围感的男生</td>
+                            <td class="px-6 py-4 text-center">只想解决贴头皮问题</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-8 p-6 bg-hair-gold/10 rounded-2xl border-l-4 border-hair-gold">
+                <p class="text-hair-dark font-medium">
+                    💡 <strong>一句话总结：</strong>想要"刚洗完头随手抓一下"的慵懒帅气感，选<strong>束状纹理</strong>；只想头顶不塌、发尾保持直发，选<strong>摩根烫</strong>。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold mb-4">价格参考指南</h2>
+                <p class="text-gray-600">不同档次的价格区间与服务内容对比</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 学生党 -->
+                <div class="price-card glass-card rounded-3xl p-8 transition-all duration-300">
+                    <div class="text-sm text-gray-500 mb-2">高性价比</div>
+                    <div class="text-4xl font-bold text-hair-dark mb-2">¥150-300</div>
+                    <div class="text-hair-gold font-medium mb-6">学生党首选</div>
+                    <ul class="space-y-3 text-sm text-gray-600 mb-8">
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 二三线城市/学校周边</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 美团/抖音团购套餐</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 包含剪发和基础造型</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 基础药水品质</li>
+                    </ul>
+                    <div class="px-4 py-2 bg-green-50 text-green-700 rounded-full text-xs font-medium text-center">
+                        省钱小贴士：关注新客体验价
+                    </div>
+                </div>
+
+                <!-- 主流选择 -->
+                <div class="price-card glass-card rounded-3xl p-8 transition-all duration-300 border-2 border-hair-gold relative">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-hair-gold text-white px-4 py-1 rounded-full text-xs font-bold">
+                        最受欢迎
+                    </div>
+                    <div class="text-sm text-gray-500 mb-2">中端主流</div>
+                    <div class="text-4xl font-bold text-hair-dark mb-2">¥300-600</div>
+                    <div class="text-hair-gold font-medium mb-6">品质之选</div>
+                    <ul class="space-y-3 text-sm text-gray-600 mb-8">
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 一线城市社区店/连锁品牌</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 发型师经验丰富</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 施华蔻等品牌药水</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 服务细致周到</li>
+                    </ul>
+                    <div class="px-4 py-2 bg-hair-gold/20 text-hair-copper rounded-full text-xs font-medium text-center">
+                        性价比最优区间
+                    </div>
+                </div>
+
+                <!-- 高端 -->
+                <div class="price-card glass-card rounded-3xl p-8 transition-all duration-300">
+                    <div class="text-sm text-gray-500 mb-2">高端定制</div>
+                    <div class="text-4xl font-bold text-hair-dark mb-2">¥800-1500+</div>
+                    <div class="text-hair-gold font-medium mb-6">奢华体验</div>
+                    <ul class="space-y-3 text-sm text-gray-600 mb-8">
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 高端商圈沙龙</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 知名设计师主理</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 个性化定制方案</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 进口高端药水</li>
+                    </ul>
+                    <div class="px-4 py-2 bg-purple-50 text-purple-700 rounded-full text-xs font-medium text-center">
+                        对发质损伤最小
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fine Hair Section -->
+    <section id="fine-hair" class="py-24 wave-bg relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold mb-4">细软发质烫发专区</h2>
+                <p class="text-gray-600">易翻车？掌握这些关键时间点与判断标准</p>
+            </div>
+
+            <!-- 软化时间指南 -->
+            <div class="glass-card rounded-3xl p-8 mb-12">
+                <h3 class="text-2xl font-bold mb-6 flex items-center">
+                    <span class="w-10 h-10 bg-hair-gold rounded-full flex items-center justify-center text-white mr-3">1</span>
+                    软化时间标准
+                </h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white rounded-xl border-l-4 border-green-500">
+                            <div class="font-bold text-green-700 mb-1">健康细软发质</div>
+                            <div class="text-2xl font-bold text-hair-dark">15-25 分钟</div>
+                            <div class="text-sm text-gray-500">家用/温和药水：10-20分钟</div>
+                        </div>
+                        <div class="p-4 bg-white rounded-xl border-l-4 border-orange-500">
+                            <div class="font-bold text-orange-700 mb-1">受损细软发质</div>
+                            <div class="text-2xl font-bold text-hair-dark">8-15 分钟</div>
+                            <div class="text-sm text-gray-500">必须边做边测，宁少勿多</div>
+                        </div>
+                    </div>
+                    <div class="bg-hair-dark text-white rounded-xl p-6">
+                        <h4 class="font-bold mb-4 text-hair-gold">✅ 关键判断（必须做）</h4>
+                        <p class="text-sm mb-4">取几根头发轻拉测试：</p>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <span class="text-green-400 mr-2">✓</span>
+                                <span>能拉长 <strong>1.5-2倍</strong>、缓慢回弹、<strong>不断</strong> → 软化达标</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-400 mr-2">✗</span>
+                                <span>一拉就断 → 已过度，<strong>立即冲水</strong></span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-yellow-400 mr-2">!</span>
+                                <span>拉不动、回弹快 → 时间不够</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 加热时间指南 -->
+            <div class="glass-card rounded-3xl p-8 mb-12">
+                <h3 class="text-2xl font-bold mb-6 flex items-center">
+                    <span class="w-10 h-10 bg-hair-copper rounded-full flex items-center justify-center text-white mr-3">2</span>
+                    加热时间标准
+                </h3>
+                <div class="text-sm text-gray-500 mb-4">核心原则：<strong>低温、短时间、多次检查</strong></div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl p-6 text-center">
+                        <div class="text-hair-gold font-bold mb-2">健康细软发</div>
+                        <div class="text-3xl font-bold text-hair-dark mb-2">90-100℃</div>
+                        <div class="text-sm text-gray-600">加热 5-8 分钟</div>
+                        <div class="text-xs text-gray-400 mt-2">冷却 3-5 分钟</div>
+                        <div class="text-xs text-green-600 mt-1">可重复1次，总计≤15分钟</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center">
+                        <div class="text-orange-600 font-bold mb-2">轻微受损</div>
+                        <div class="text-3xl font-bold text-hair-dark mb-2">80-90℃</div>
+                        <div class="text-sm text-gray-600">加热 4-6 分钟</div>
+                        <div class="text-xs text-gray-400 mt-2">冷却 3 分钟</div>
+                        <div class="text-xs text-orange-600 mt-1">一般只加热1次</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center">
+                        <div class="text-red-600 font-bold mb-2">严重受损</div>
+                        <div class="text-3xl font-bold text-hair-dark mb-2">≤80℃</div>
+                        <div class="text-sm text-gray-600">加热 3-5 分钟</div>
+                        <div class="text-xs text-gray-400 mt-2">不建议二次加热</div>
+                        <div class="text-xs text-red-600 mt-1">极易受损，谨慎操作</div>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 bg-red-50 rounded-xl border-l-4 border-red-500">
+                    <p class="text-red-700 text-sm">
+                        <strong>⚠️ 细软发必避坑：</strong>不要120℃+高温猛烤（会直接烫焦、变棉、断发）；不要加热超过15分钟（卷会死板、毛躁、不持久）；加热完<strong>必须冷却定型</strong>。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 细软发质风险提示 -->
+            <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-3xl p-8 border border-orange-200">
+                <h3 class="text-xl font-bold mb-4 text-orange-800">⚠️ 细软发质最容易踩的坑</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-orange-700 mb-2">易假性软化</h4>
+                        <p class="text-sm text-gray-600">表面软了、内部没到位 → 烫后易直、没弹性</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-orange-700 mb-2">易过度</h4>
+                        <p class="text-sm text-gray-600">超过25分钟很容易<strong>绵、断、塌、毛躁</strong></p>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-white rounded-xl">
+                    <p class="text-sm text-gray-700">
+                        <strong>💡 建议：</strong>如果你是典型的细软塌发质，且头发较短（&lt;5cm），<strong>摩根烫</strong>其实是比束状纹理烫更安全、更稳妥的选择。如果执意要烫束状纹理，一定要找擅长处理细软发的资深发型师。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Care Section -->
+    <section id="care" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold mb-4">烫后护理完整流程</h2>
+                <p class="text-gray-600">卷度持久、不毛、不塌的养护秘诀</p>
+            </div>
+
+            <!-- 时间线 -->
+            <div class="relative">
+                <div class="absolute left-8 top-0 bottom-0 w-1 timeline-line rounded-full hidden md:block"></div>
+
+                <div class="space-y-8">
+                    <!-- 48小时黄金期 -->
+                    <div class="relative flex flex-col md:flex-row gap-8">
+                        <div class="hidden md:flex flex-col items-center">
+                            <div class="w-16 h-16 bg-hair-gold rounded-full flex items-center justify-center text-white text-2xl font-bold z-10">48h</div>
+                            <div class="flex-1 w-1 timeline-line"></div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 flex-1">
+                            <h3 class="text-xl font-bold mb-3">刚烫完 48 小时黄金期</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-center"><span class="text-red-500 mr-2">✗</span> 别洗头、别扎紧、别夹直板</li>
+                                <li class="flex items-center"><span class="text-red-500 mr-2">✗</span> 别把头发别耳后（会压出折痕）</li>
+                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 睡觉可松松编成麻花辫，减少毛躁</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 洗头 -->
+                    <div class="relative flex flex-col md:flex-row gap-8">
+                        <div class="hidden md:flex flex-col items-center">
+                            <div class="w-16 h-16 bg-hair-copper rounded-full flex items-center justify-center text-white text-xl z-10">🚿</div>
+                            <div class="flex-1 w-1 timeline-line"></div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 flex-1">
+                            <h3 class="text-xl font-bold mb-3">洗头怎么洗（决定卷度寿命）</h3>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex items-center"><span class="text-blue-500 mr-2">💧</span> 水温：<strong>温水，别烫</strong></div>
+                                    <div class="flex items-center"><span class="text-purple-500 mr-2">🧴</span> 洗发水：滋润/修护型</div>
+                                    <div class="flex items-center"><span class="text-red-500 mr-2">✗</span> 别用强力去油、控油款</div>
+                                </div>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex items-center"><span class="text-green-500 mr-2">✓</span> 手法：只洗头皮，发尾轻带过</div>
+                                    <div class="flex items-center"><span class="text-orange-500 mr-2">⏰</span> 频率：2-3天洗一次</div>
+                                    <div class="flex items-center"><span class="text-red-500 mr-2">✗</span> 不要来回猛搓</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 护发 -->
+                    <div class="relative flex flex-col md:flex-row gap-8">
+                        <div class="hidden md:flex flex-col items-center">
+                            <div class="w-16 h-16 bg-pink-400 rounded-full flex items-center justify-center text-white text-xl z-10">💆</div>
+                            <div class="flex-1 w-1 timeline-line"></div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 flex-1">
+                            <h3 class="text-xl font-bold mb-3">护发关键（细软发重点）</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <span class="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center text-pink-600 text-xs mr-3 mt-0.5">1</span>
+                                    <p class="text-sm text-gray-600">每次洗头必用<strong>护发素</strong>，只抹发中到发尾</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center text-pink-600 text-xs mr-3 mt-0.5">2</span>
+                                    <p class="text-sm text-gray-600">每周1次<strong>发膜</strong>，停留5-10分钟洗掉</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center text-red-600 text-xs mr-3 mt-0.5">✗</span>
+                                    <p class="text-sm text-gray-600">别把护发素/发膜抹到发根，会塌、会油</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 吹头发 -->
+                    <div class="relative flex flex-col md:flex-row gap-8">
+                        <div class="hidden md:flex flex-col items-center">
+                            <div class="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center text-white text-xl z-10">💨</div>
+                            <div class="flex-1 w-1 timeline-line"></div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 flex-1">
+                            <h3 class="text-xl font-bold mb-3">吹头发（最影响卷度）</h3>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                <div class="space-y-2">
+                                    <div class="flex items-center"><span class="text-blue-500 mr-2">1</span> 毛巾<strong>按压</strong>吸水，别搓</div>
+                                    <div class="flex items-center"><span class="text-blue-500 mr-2">2</span> 吹到<strong>半干</strong>抹弹力素/造型乳</div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex items-center"><span class="text-blue-500 mr-2">3</span> <strong>中低温</strong>，手指绕卷吹干</div>
+                                    <div class="flex items-center"><span class="text-blue-500 mr-2">4</span> 全干后<strong>冷风定型</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 日常造型 -->
+                    <div class="relative flex flex-col md:flex-row gap-8">
+                        <div class="hidden md:flex flex-col items-center">
+                            <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center text-white text-xl z-10">✨</div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 flex-1">
+                            <h3 class="text-xl font-bold mb-3">日常造型（细软发必学）</h3>
+                            <div class="flex flex-wrap gap-4">
+                                <div class="bg-white px-4 py-2 rounded-full text-sm">
+                                    <span class="text-purple-500">🧴</span> 弹力素 + 护发精油
+                                </div>
+                                <div class="bg-white px-4 py-2 rounded-full text-sm">
+                                    <span class="text-blue-500">👋</span> 抓捏发尾，不要梳开
+                                </div>
+                                <div class="bg-white px-4 py-2 rounded-full text-sm">
+                                    <span class="text-red-500">✗</span> 别用太硬的发胶
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 避坑清单 -->
+            <div class="mt-12 glass-card rounded-3xl p-8">
+                <h3 class="text-2xl font-bold mb-6 text-center">🚫 绝对要避开的坑</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-red-50 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🔥</div>
+                        <div class="text-sm font-medium text-red-700">别频繁用直板夹、卷发棒</div>
+                    </div>
+                    <div class="bg-red-50 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🧴</div>
+                        <div class="text-sm font-medium text-red-700">别用高浓度去屑、控油洗发水</div>
+                    </div>
+                    <div class="bg-red-50 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🪮</div>
+                        <div class="text-sm font-medium text-red-700">别梳成直发再扎起来</div>
+                    </div>
+                    <div class="bg-red-50 rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🧽</div>
+                        <div class="text-sm font-medium text-red-700">别用毛巾暴力搓头发</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维持时间 -->
+            <div class="mt-8 text-center">
+                <div class="inline-block glass-card rounded-2xl px-8 py-4">
+                    <span class="text-gray-600">细软发质烫得好+护理到位，维持时间：</span>
+                    <span class="font-bold text-hair-dark ml-2">小卷 3-4个月 | 大波浪 2个月左右</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-hair-dark text-white py-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="text-2xl font-serif font-bold mb-4">Hair Guide</div>
+            <p class="text-gray-400 text-sm mb-6">专业美发知识，助你找到最适合的发型方案</p>
+            <div class="text-xs text-gray-500">
+                内容仅供参考，具体烫发效果因人而异，建议咨询专业发型师
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-slide-up');
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
