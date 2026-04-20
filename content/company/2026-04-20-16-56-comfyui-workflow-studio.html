@@ -1,0 +1,829 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Studio - ComfyUI Workflow Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --color-bg: #0a0a0f;
+                --color-surface: #12121a;
+                --color-surface-elevated: #1a1a24;
+                --color-border: rgba(255,255,255,0.06);
+                --color-text-primary: #f5f5f7;
+                --color-text-secondary: rgba(255,255,255,0.5);
+                --color-text-muted: rgba(255,255,255,0.3);
+                --color-accent: #e8e4dc;
+                --color-accent-warm: #d4cfc7;
+                --color-glow: rgba(232,228,220,0.08);
+                --font-serif: 'Noto Serif SC', serif;
+                --font-sans: 'Inter', sans-serif;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family: var(--font-sans);
+                background-color: var(--color-bg);
+                color: var(--color-text-primary);
+                overflow-x: hidden;
+            }
+            ::selection {
+                background: rgba(232,228,220,0.2);
+                color: var(--color-text-primary);
+            }
+        }
+        @layer components {
+            .text-gradient {
+                background: linear-gradient(135deg, #f5f5f7 0%, #a1a1aa 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .glass {
+                background: rgba(18, 18, 26, 0.7);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid var(--color-border);
+            }
+            .glow-border {
+                position: relative;
+            }
+            .glow-border::before {
+                content: '';
+                position: absolute;
+                inset: -1px;
+                border-radius: inherit;
+                padding: 1px;
+                background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent, rgba(255,255,255,0.05));
+                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                pointer-events: none;
+            }
+            .noise-bg {
+                position: relative;
+            }
+            .noise-bg::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+                pointer-events: none;
+                opacity: 0.4;
+            }
+            .reveal {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .reveal.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .stagger-1 { transition-delay: 0.1s; }
+            .stagger-2 { transition-delay: 0.2s; }
+            .stagger-3 { transition-delay: 0.3s; }
+            .stagger-4 { transition-delay: 0.4s; }
+            .stagger-5 { transition-delay: 0.5s; }
+            
+            .hover-lift {
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            }
+            .hover-lift:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            }
+            
+            .line-draw {
+                position: relative;
+                display: inline-block;
+            }
+            .line-draw::after {
+                content: '';
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+                width: 0;
+                height: 1px;
+                background: linear-gradient(90deg, var(--color-accent), transparent);
+                transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .line-draw:hover::after {
+                width: 100%;
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            
+            @keyframes pulse-glow {
+                0%, 100% { opacity: 0.4; }
+                50% { opacity: 0.8; }
+            }
+            .animate-pulse-glow {
+                animation: pulse-glow 4s ease-in-out infinite;
+            }
+            
+            .magnetic-btn {
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[120px] animate-pulse-glow"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-white/[0.015] rounded-full blur-[100px] animate-pulse-glow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-white/20 transition-colors">
+                        <span class="font-serif text-lg font-bold text-[var(--color-accent)]">Y</span>
+                    </div>
+                    <span class="font-serif text-lg font-semibold tracking-tight text-[var(--color-text-primary)]">Your Studio</span>
+                </a>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#hero" class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors line-draw">首页</a>
+                    <a href="#services" class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors line-draw">服务</a>
+                    <a href="#process" class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors line-draw">方案</a>
+                    <a href="#values" class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors line-draw">关于</a>
+                    <a href="#cta" class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors line-draw">联系</a>
+                </div>
+                
+                <!-- CTA -->
+                <div class="hidden md:block">
+                    <a href="#cta" class="magnetic-btn inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-full text-sm font-medium text-[var(--color-text-primary)] transition-all duration-300">
+                        立即咨询
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden glass mx-4 mt-2 rounded-2xl p-6 space-y-4">
+            <a href="#hero" class="block text-base text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] py-2">首页</a>
+            <a href="#services" class="block text-base text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] py-2">服务</a>
+            <a href="#process" class="block text-base text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] py-2">方案</a>
+            <a href="#values" class="block text-base text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] py-2">关于</a>
+            <a href="#cta" class="block text-base text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] py-2">联系</a>
+            <div class="pt-4 border-t border-white/10">
+                <a href="#cta" class="block w-full text-center py-3 bg-white/5 border border-white/10 rounded-xl text-sm font-medium">咨询</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 noise-bg">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-radial from-white/[0.03] to-transparent rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center">
+            <div class="reveal">
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium tracking-widest uppercase text-[var(--color-text-secondary)] mb-8">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400/80 animate-pulse"></span>
+                    ComfyUI Workflow Studio
+                </span>
+            </div>
+            
+            <h1 class="reveal stagger-1 font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.1] tracking-tight mb-8">
+                <span class="text-gradient">让 ComfyUI，</span><br>
+                <span class="text-[var(--color-text-primary)]">真正开始工作。</span>
+            </h1>
+            
+            <p class="reveal stagger-2 text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed mb-4">
+                为真实业务场景定制 AI 工作流。从部署、排障到流程搭建与交付优化，重新整理你的生成流程。
+            </p>
+            
+            <p class="reveal stagger-2 text-sm text-[var(--color-text-muted)] mb-12 hidden sm:block">
+                稳定、清晰、可复用的 ComfyUI 工作流方案
+            </p>
+            
+            <div class="reveal stagger-3 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                <a href="#services" class="magnetic-btn group inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-text-primary)] text-[var(--color-bg)] rounded-full font-medium text-sm hover:bg-white transition-all duration-300 shadow-lg shadow-white/10">
+                    了解服务
+                    <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+                <a href="#cta" class="magnetic-btn inline-flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-[var(--color-text-primary)] rounded-full font-medium text-sm hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                    立即咨询
+                </a>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="reveal stagger-4 absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+                <span class="text-[10px] tracking-widest uppercase text-[var(--color-text-muted)]">Scroll</span>
+                <div class="w-px h-12 bg-gradient-to-b from-white/30 to-transparent"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intro Statement -->
+    <section class="relative py-32 lg:py-40 noise-bg">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <div class="reveal">
+                <h2 class="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[var(--color-text-primary)] mb-8 leading-tight">
+                    不只是能运行。
+                </h2>
+                <p class="text-2xl sm:text-3xl text-[var(--color-text-secondary)] font-light mb-8">
+                    而是更稳定，更清晰，也更适合持续使用。
+                </p>
+                <p class="text-base text-[var(--color-text-muted)] max-w-xl mx-auto leading-relaxed">
+                    很多流程能跑起来，但很难真正进入业务。我们关注的是长期可用，而不只是临时成功。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Feature Sections -->
+    <section class="relative py-20">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 space-y-32">
+            <!-- Section 1: Workflow -->
+            <div class="reveal grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div class="order-2 lg:order-1">
+                    <span class="text-xs font-medium tracking-widest uppercase text-[var(--color-text-muted)] mb-4 block">01</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text-primary)] mb-6 leading-tight">
+                        从混乱，<br>到流程。
+                    </h3>
+                    <p class="text-lg text-[var(--color-text-secondary)] leading-relaxed mb-4">
+                        处理环境、节点、模型与兼容问题，把零散尝试整理成可执行的工作系统。
+                    </p>
+                    <p class="text-sm text-[var(--color-text-muted)] leading-relaxed">
+                        减少反复排障，降低试错成本，让流程更容易维护和复用。
+                    </p>
+                </div>
+                <div class="order-1 lg:order-2 relative">
+                    <div class="aspect-square rounded-3xl bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 p-8 flex items-center justify-center hover-lift glow-border">
+                        <div class="grid grid-cols-3 gap-3 w-full max-w-xs">
+                            <div class="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-6 h-6 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+                            <div class="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-6 h-6 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+                            <div class="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-6 h-6 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m4.22-10.22l4.24-4.24M6.34 6.34L2.1 2.1m17.8 17.8l-4.24-4.24M6.34 17.66l-4.24 4.24M23 12h-6m-6 0H1m20.24-4.24l-4.24 4.24M6.34 6.34l4.24 4.24"/></svg></div>
+                            <div class="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-6 h-6 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+                            <div class="aspect-square rounded-xl bg-white/[0.08] border border-white/20 flex items-center justify-center shadow-lg shadow-white/5"><svg class="w-6 h-6 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                            <div class="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-6 h-6 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+                            <div class="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-6 h-6 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                            <div class="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-6 h-6 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+                            <div class="aspect-square rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-6 h-6 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Custom -->
+            <div class="reveal grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div class="relative">
+                    <div class="aspect-[4/3] rounded-3xl bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 p-8 flex items-center justify-center hover-lift glow-border overflow-hidden">
+                        <div class="relative w-full h-full">
+                            <div class="absolute top-4 left-4 w-24 h-32 rounded-lg bg-white/5 border border-white/10 rotate-[-6deg]"></div>
+                            <div class="absolute top-8 left-12 w-24 h-32 rounded-lg bg-white/[0.08] border border-white/15 rotate-[3deg] shadow-xl"></div>
+                            <div class="absolute top-12 left-20 w-24 h-32 rounded-lg bg-white/[0.06] border border-white/10 rotate-[-2deg]"></div>
+                            <div class="absolute bottom-8 right-8 flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm">
+                                <svg class="w-4 h-4 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                                <span class="text-xs text-[var(--color-text-primary)]">定制完成</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-xs font-medium tracking-widest uppercase text-[var(--color-text-muted)] mb-4 block">02</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text-primary)] mb-6 leading-tight">
+                        为你的场景<br>而定制。
+                    </h3>
+                    <p class="text-lg text-[var(--color-text-secondary)] leading-relaxed mb-4">
+                        电商图、产品视觉、写真风格、批量出图。每一套流程，都围绕实际目标搭建。
+                    </p>
+                    <p class="text-sm text-[var(--color-text-muted)] leading-relaxed">
+                        不是套模板，而是根据用途、设备条件和交付目标做取舍。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Section 3: Efficiency -->
+            <div class="reveal grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div class="order-2 lg:order-1">
+                    <span class="text-xs font-medium tracking-widest uppercase text-[var(--color-text-muted)] mb-4 block">03</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text-primary)] mb-6 leading-tight">
+                        更少试错。<br>更快可用。
+                    </h3>
+                    <p class="text-lg text-[var(--color-text-secondary)] leading-relaxed mb-4">
+                        把时间留给结果，而不是留给节点冲突和反复调参。
+                    </p>
+                    <p class="text-sm text-[var(--color-text-muted)] leading-relaxed">
+                        从部署到优化，优先解决真正影响交付的问题。
+                    </p>
+                </div>
+                <div class="order-1 lg:order-2 relative">
+                    <div class="aspect-square rounded-3xl bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 p-8 flex items-center justify-center hover-lift glow-border">
+                        <div class="relative w-48 h-48">
+                            <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="70" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <span class="block text-3xl font-bold text-[var(--color-text-primary)]">75%</span>
+                                    <span class="block text-[10px] text-[var(--color-text-muted)] mt-1">时间节省</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="relative py-32 noise-bg">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="reveal text-center mb-20">
+                <span class="inline-block text-xs font-medium tracking-widest uppercase text-[var(--color-text-muted)] mb-4">Services</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">服务内容</h2>
+                <p class="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+                    围绕部署、定制、优化与交付，提供完整的 ComfyUI 工作流支持。
+                </p>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="reveal stagger-1 group relative p-8 rounded-2xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500 hover-lift glow-border">
+                    <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-white/10 transition-colors">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-3">部署与排障</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">本地环境、云端部署、依赖安装、报错处理与兼容调整。</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="reveal stagger-2 group relative p-8 rounded-2xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500 hover-lift glow-border">
+                    <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-white/10 transition-colors">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-3">工作流定制</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">围绕具体场景搭建 ComfyUI 流程，提升可用性与适配度。</p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="reveal stagger-3 group relative p-8 rounded-2xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500 hover-lift glow-border">
+                    <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-white/10 transition-colors">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m4.22-10.22l4.24-4.24M6.34 6.34L2.1 2.1m17.8 17.8l-4.24-4.24M6.34 17.66l-4.24 4.24M23 12h-6m-6 0H1m20.24-4.24l-4.24 4.24M6.34 6.34l4.24 4.24"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-3">流程优化</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">优化结构、参数与输出逻辑，让结果更稳定、更接近预期。</p>
+                </div>
+                
+                <!-- Card 4 -->
+                <div class="reveal stagger-4 group relative p-8 rounded-2xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-500 hover-lift glow-border">
+                    <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-white/10 transition-colors">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-3">交付支持</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">提供工作流文件、依赖清单、使用说明与原范围内协助。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Large Statement 1 -->
+    <section class="relative py-32 lg:py-40">
+        <div class="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+            <div class="reveal">
+                <h2 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[var(--color-text-primary)] mb-8 leading-[1.1]">
+                    工作流，<br>不该只适合演示。
+                </h2>
+                <p class="text-2xl sm:text-3xl text-[var(--color-text-secondary)] font-light mb-6">
+                    它应该能复用，能交接，也能交付。
+                </p>
+                <p class="text-base text-[var(--color-text-muted)] max-w-xl mx-auto">
+                    真正有价值的，不是一次出图，而是一套能持续工作的流程。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Large Statement 2 -->
+    <section class="relative py-32 lg:py-40 noise-bg">
+        <div class="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+            <div class="reveal">
+                <h2 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[var(--color-text-primary)] mb-8 leading-[1.1]">
+                    把复杂<br>留在背后。
+                </h2>
+                <p class="text-xl sm:text-2xl text-[var(--color-text-secondary)] leading-relaxed max-w-3xl mx-auto mb-6">
+                    你看到的是更简单的使用方式，更明确的交付结构，和更少的不确定性。
+                </p>
+                <p class="text-sm text-[var(--color-text-muted)]">
+                    技术细节可以复杂，但使用体验应该清楚。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section id="values" class="relative py-32">
+        <div class="max-w-5xl mx-auto px-6 lg:px-8">
+            <div class="reveal text-center mb-20">
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-4">为什么这样合作</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="reveal stagger-1 text-center p-8">
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-7 h-7 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-[var(--color-text-primary)] mb-3">稳定</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">减少环境、节点与参数带来的波动。</p>
+                </div>
+                
+                <div class="reveal stagger-2 text-center p-8">
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-7 h-7 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-[var(--color-text-primary)] mb-3">复用</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">让流程能长期使用，而不是一次性方案。</p>
+                </div>
+                
+                <div class="reveal stagger-3 text-center p-8">
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-7 h-7 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-[var(--color-text-primary)] mb-3">清晰</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">明确范围、交付、修改与售后边界，降低返工成本。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audience Section -->
+    <section class="relative py-32 noise-bg">
+        <div class="max-w-5xl mx-auto px-6 lg:px-8">
+            <div class="reveal text-center mb-16">
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">适合真正要落地的人</h2>
+                <p class="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+                    如果你已经不满足于"偶尔能出一张"，这类服务会更适合你。
+                </p>
+            </div>
+            
+            <div class="reveal flex flex-wrap justify-center gap-3">
+                <span class="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-sm text-[var(--color-text-secondary)] hover:border-white/20 hover:text-[var(--color-text-primary)] transition-all duration-300 cursor-default">品牌团队</span>
+                <span class="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-sm text-[var(--color-text-secondary)] hover:border-white/20 hover:text-[var(--color-text-primary)] transition-all duration-300 cursor-default">电商商家</span>
+                <span class="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-sm text-[var(--color-text-secondary)] hover:border-white/20 hover:text-[var(--color-text-primary)] transition-all duration-300 cursor-default">摄影与视觉工作室</span>
+                <span class="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-sm text-[var(--color-text-secondary)] hover:border-white/20 hover:text-[var(--color-text-primary)] transition-all duration-300 cursor-default">内容生产团队</span>
+                <span class="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-sm text-[var(--color-text-secondary)] hover:border-white/20 hover:text-[var(--color-text-primary)] transition-all duration-300 cursor-default">个人创作者</span>
+                <span class="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-sm text-[var(--color-text-secondary)] hover:border-white/20 hover:text-[var(--color-text-primary)] transition-all duration-300 cursor-default">需要标准化流程的小团队</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="relative py-32">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="reveal text-center mb-20">
+                <span class="inline-block text-xs font-medium tracking-widest uppercase text-[var(--color-text-muted)] mb-4">Process</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-4">合作流程</h2>
+            </div>
+            
+            <div class="relative">
+                <!-- Connection Line -->
+                <div class="absolute top-12 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent hidden lg:block"></div>
+                
+                <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-8">
+                    <div class="reveal stagger-1 relative text-center lg:text-left">
+                        <div class="w-12 h-12 rounded-xl bg-[var(--color-surface)] border border-white/10 flex items-center justify-center mb-6 mx-auto lg:mx-0 relative z-10">
+                            <span class="text-sm font-bold text-[var(--color-accent)]">01</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-2">需求沟通</h3>
+                        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">明确目标、场景、设备条件与参考方向。</p>
+                    </div>
+                    
+                    <div class="reveal stagger-2 relative text-center lg:text-left">
+                        <div class="w-12 h-12 rounded-xl bg-[var(--color-surface)] border border-white/10 flex items-center justify-center mb-6 mx-auto lg:mx-0 relative z-10">
+                            <span class="text-sm font-bold text-[var(--color-accent)]">02</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-2">方案确认</h3>
+                        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">确认服务范围、交付内容、周期与报价。</p>
+                    </div>
+                    
+                    <div class="reveal stagger-3 relative text-center lg:text-left">
+                        <div class="w-12 h-12 rounded-xl bg-[var(--color-surface)] border border-white/10 flex items-center justify-center mb-6 mx-auto lg:mx-0 relative z-10">
+                            <span class="text-sm font-bold text-[var(--color-accent)]">03</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-2">执行推进</h3>
+                        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">完成部署、搭建、测试与阶段优化。</p>
+                    </div>
+                    
+                    <div class="reveal stagger-4 relative text-center lg:text-left">
+                        <div class="w-12 h-12 rounded-xl bg-[var(--color-surface)] border border-white/10 flex items-center justify-center mb-6 mx-auto lg:mx-0 relative z-10">
+                            <span class="text-sm font-bold text-[var(--color-accent)]">04</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-2">交付验收</h3>
+                        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">整理交付材料，并按确认目标完成验收。</p>
+                    </div>
+                    
+                    <div class="reveal stagger-5 relative text-center lg:text-left">
+                        <div class="w-12 h-12 rounded-xl bg-[var(--color-surface)] border border-white/10 flex items-center justify-center mb-6 mx-auto lg:mx-0 relative z-10">
+                            <span class="text-sm font-bold text-[var(--color-accent)]">05</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[var(--color-text-primary)] mb-2">售后支持</h3>
+                        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">在约定范围内提供基础协助。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deliverables Section -->
+    <section class="relative py-32 noise-bg">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8">
+            <div class="reveal text-center mb-16">
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-4">交付的不只是文件</h2>
+            </div>
+            
+            <div class="reveal space-y-4">
+                <div class="group flex items-center gap-4 p-5 rounded-xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
+                    <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                    <span class="text-[var(--color-text-primary)]">ComfyUI 工作流文件</span>
+                </div>
+                
+                <div class="group flex items-center gap-4 p-5 rounded-xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
+                    <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    </div>
+                    <span class="text-[var(--color-text-primary)]">节点与模型依赖清单</span>
+                </div>
+                
+                <div class="group flex items-center gap-4 p-5 rounded-xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
+                    <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <span class="text-[var(--color-text-primary)]">使用说明</span>
+                </div>
+                
+                <div class="group flex items-center gap-4 p-5 rounded-xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
+                    <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    </div>
+                    <span class="text-[var(--color-text-primary)]">演示结果</span>
+                </div>
+                
+                <div class="group flex items-center gap-4 p-5 rounded-xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
+                    <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 10l5 5-5 5"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>
+                    </div>
+                    <span class="text-[var(--color-text-primary)]">必要的远程协助</span>
+                </div>
+                
+                <div class="group flex items-center gap-4 p-5 rounded-xl bg-[var(--color-surface)] border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
+                    <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-[var(--color-accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <span class="text-[var(--color-text-primary)]">原范围内支持</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="relative py-32">
+        <div class="max-w-3xl mx-auto px-6 lg:px-8">
+            <div class="reveal text-center mb-16">
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-4">常见问题</h2>
+            </div>
+            
+            <div class="reveal space-y-4">
+                <div class="faq-item rounded-xl bg-[var(--color-surface)] border border-white/[0.06] overflow-hidden">
+                    <button class="faq-trigger w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors">
+                        <span class="text-[var(--color-text-primary)] font-medium pr-4">只做 ComfyUI 吗？</span>
+                        <svg class="faq-icon w-5 h-5 text-[var(--color-text-muted)] flex-shrink-0 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6">
+                        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">目前主要围绕 ComfyUI 工作流相关服务，包括部署、排障、定制、优化与交付支持。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item rounded-xl bg-[var(--color-surface)] border border-white/[0.06] overflow-hidden">
+                    <button class="faq-trigger w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors">
+                        <span class="text-[var(--color-text-primary)] font-medium pr-4">可以远程协助吗？</span>
+                        <svg class="faq-icon w-5 h-5 text-[var(--color-text-muted)] flex-shrink-0 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6">
+                        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">可以，支持远程排查、部署、调试和交付说明。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item rounded-xl bg-[var(--color-surface)] border border-white/[0.06] overflow-hidden">
+                    <button class="faq-trigger w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors">
+                        <span class="text-[var(--color-text-primary)] font-medium pr-4">能完全复刻参考图吗？</span>
+                        <svg class="faq-icon w-5 h-5 text-[var(--color-text-muted)] flex-shrink-0 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6">
+                        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">AI 结果受素材、模型、参数和设备影响。更适合做尽量接近目标且可稳定复用的方案。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item rounded-xl bg-[var(--color-surface)] border border-white/[0.06] overflow-hidden">
+                    <button class="faq-trigger w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors">
+                        <span class="text-[var(--color-text-primary)] font-medium pr-4">适合团队合作吗？</span>
+                        <svg class="faq-icon w-5 h-5 text-[var(--color-text-muted)] flex-shrink-0 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6">
+                        <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">可以。涉及批量生产、多人协作、标准化流程时，通常更适合定制服务。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="relative py-32 lg:py-40 noise-bg">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-white/[0.03] to-transparent rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <div class="reveal">
+                <h2 class="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[var(--color-text-primary)] mb-8 leading-tight">
+                    现在，<br>让流程进入正轨。
+                </h2>
+                <p class="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto leading-relaxed mb-4">
+                    如果你正在处理部署、稳定性、批量生产或交付问题，我们可以先从你的实际需求开始。
+                </p>
+                <p class="text-sm text-[var(--color-text-muted)] mb-12 max-w-xl mx-auto">
+                    联系前建议准备：目标效果、参考案例、运行环境、设备配置、期望交付方式。
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#" class="magnetic-btn group inline-flex items-center gap-2 px-8 py-4 bg-[var(--color-text-primary)] text-[var(--color-bg)] rounded-full font-medium text-sm hover:bg-white transition-all duration-300 shadow-lg shadow-white/10">
+                        联系咨询
+                        <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                    <a href="#" class="magnetic-btn inline-flex items-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-[var(--color-text-primary)] rounded-full font-medium text-sm hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                        获取方案
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative py-20 border-t border-white/[0.06]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-20">
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+                            <span class="font-serif text-lg font-bold text-[var(--color-accent)]">Y</span>
+                        </div>
+                        <span class="font-serif text-lg font-semibold tracking-tight">Your Studio</span>
+                    </div>
+                    <p class="text-sm text-[var(--color-text-muted)] max-w-sm leading-relaxed">
+                        为真实业务场景定制 ComfyUI 工作流。
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-[var(--color-text-primary)] mb-6 tracking-wide">联系方式</h4>
+                    <ul class="space-y-3">
+                        <li class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer">微信：你的微信</li>
+                        <li class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer">邮箱：你的邮箱</li>
+                        <li class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer">飞书：你的飞书</li>
+                        <li class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer">公众号：你的公众号</li>
+                        <li class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer">闲鱼：你的闲鱼链接</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-16 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-[var(--color-text-muted)]">© 2026 Your Studio. All rights reserved.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">隐私政策</a>
+                    <a href="#" class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors">服务条款</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        });
+
+        // Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('glass');
+                navbar.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+            } else {
+                navbar.classList.remove('glass');
+                navbar.style.borderBottom = 'none';
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const item = trigger.parentElement;
+                const content = item.querySelector('.faq-content');
+                const icon = trigger.querySelector('.faq-icon');
+                const isOpen = !content.classList.contains('hidden');
+                
+                // Close all others
+                document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.faq-icon').forEach(i => i.style.transform = 'rotate(0deg)');
+                
+                if (!isOpen) {
+                    content.classList.remove('hidden');
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Magnetic button effect
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
