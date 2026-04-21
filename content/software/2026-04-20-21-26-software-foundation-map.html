@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>软件底层基础图谱</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: #0d1a2b;
+      --panel: rgba(11, 24, 39, 0.72);
+      --panel-strong: rgba(17, 34, 53, 0.92);
+      --line: rgba(146, 181, 214, 0.14);
+      --text: #eaf4ff;
+      --muted: #9db3cb;
+      --warm: #ffb44c;
+      --cyan: #64d8ff;
+      --green: #7df0bf;
+      --rose: #ff8f77;
+      --shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --max: 1240px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Segoe UI Variable Display", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(100, 216, 255, 0.16), transparent 22%),
+        radial-gradient(circle at 86% 14%, rgba(255, 180, 76, 0.15), transparent 24%),
+        radial-gradient(circle at 78% 78%, rgba(125, 240, 191, 0.12), transparent 20%),
+        linear-gradient(180deg, #04101d 0%, #07111f 30%, #091727 100%);
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(circle at center, black 46%, transparent 100%);
+      opacity: 0.4;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(var(--max), calc(100vw - 32px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(5, 14, 24, 0.62);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .topbar-inner {
+      width: min(var(--max), calc(100vw - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(100, 216, 255, 0.28), rgba(255, 180, 76, 0.28));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      padding: 8px 14px;
+      color: var(--muted);
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: 180ms ease;
+    }
+
+    .nav a:hover {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .hero {
+      padding: 72px 0 36px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-main,
+    .hero-side,
+    .panel,
+    .layer-card,
+    .section-card,
+    .tool-card,
+    .insight-card,
+    .footer-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -40% auto;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(255, 180, 76, 0.15), transparent 66%);
+      transform: rotate(18deg);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      color: var(--cyan);
+      background: rgba(100, 216, 255, 0.08);
+      border: 1px solid rgba(100, 216, 255, 0.16);
+      font-size: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.15;
+    }
+
+    h1 {
+      margin-top: 18px;
+      font-size: clamp(40px, 6vw, 76px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-main p {
+      max-width: 58ch;
+      color: #c9d9ea;
+      font-size: 17px;
+      margin: 20px 0 28px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hero-side {
+      padding: 26px;
+      background:
+        linear-gradient(180deg, rgba(11, 24, 39, 0.95), rgba(11, 24, 39, 0.7)),
+        radial-gradient(circle at top right, rgba(100, 216, 255, 0.12), transparent 44%);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      justify-content: space-between;
+    }
+
+    .hero-side h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .mini-item {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .mini-item strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #f5fbff;
+    }
+
+    .mini-item span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section {
+      padding: 26px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 62ch;
+    }
+
+    .architecture {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .layer-card {
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      min-height: 250px;
+    }
+
+    .layer-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 38%);
+      pointer-events: none;
+    }
+
+    .layer-index {
+      display: inline-flex;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #09111d;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--warm));
+      margin-bottom: 16px;
+    }
+
+    .layer-card h3 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .layer-card p {
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag,
+    .filter-btn {
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #d8e9f8;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      cursor: pointer;
+      transition: 180ms ease;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      color: #08111d;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--warm), #ffd06a);
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .tool-card {
+      padding: 22px;
+      border-radius: var(--radius-lg);
+      transition: transform 180ms ease, border-color 180ms ease, opacity 180ms ease;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .tool-card.hidden {
+      display: none;
+    }
+
+    .tool-type {
+      color: var(--cyan);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .tool-card h3 {
+      margin-top: 8px;
+      font-size: 22px;
+    }
+
+    .tool-card p {
+      margin: 12px 0 16px;
+      color: var(--muted);
+    }
+
+    .tool-examples {
+      color: #dbe8f4;
+      font-size: 14px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+    }
+
+    .section-card {
+      padding: 24px;
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .insight-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: none;
+    }
+
+    .insight-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .insight-card p,
+    .section-card p,
+    .section-card li {
+      color: var(--muted);
+    }
+
+    ul.clean {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    ul.clean li {
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+    }
+
+    .footer {
+      padding: 24px 0 68px;
+    }
+
+    .footer-box {
+      padding: 26px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+      background:
+        linear-gradient(135deg, rgba(255, 180, 76, 0.12), rgba(100, 216, 255, 0.1)),
+        var(--panel-strong);
+    }
+
+    .footer-box p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      color: #08111d;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--warm), #ffd272);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1080px) {
+      .hero,
+      .split,
+      .architecture,
+      .tool-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-main {
+        grid-column: span 2;
+      }
+
+      .split > *:first-child,
+      .split > *:last-child {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner,
+      .section-head,
+      .footer-box {
+        display: block;
+      }
+
+      .nav {
+        margin-top: 12px;
+        justify-content: flex-start;
+      }
+
+      .hero,
+      .architecture,
+      .tool-grid,
+      .split,
+      .matrix,
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .layer-card,
+      .section-card,
+      .tool-card,
+      .footer-box {
+        border-radius: 22px;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+
+      .cta {
+        margin-top: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge">01</div>
+        <div>软件底层基础图谱</div>
+      </div>
+      <nav class="nav">
+        <a href="#layers">分层</a>
+        <a href="#atlas">工具图谱</a>
+        <a href="#judgement">判断标准</a>
+        <a href="#stack">推荐组合</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <article class="hero-main">
+        <div class="eyebrow">从零散清单到可理解的软件底座</div>
+        <h1>看见软件世界<br />真正的基础骨架</h1>
+        <p>
+          这不是简单的软件名单，而是一张“底层能力地图”。
+          结合你给出的 4 份笔记，我把系统核心、网络传输、多媒体编解码、AI 推理、
+          开发工具链、终端窗口、容器与存储这些内容重新组织成更清晰的结构，让“哪些属于底层”以及“为什么重要”一眼就能看懂。
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <strong>8 大域</strong>
+            <span>覆盖底层设施的主要能力面</span>
+          </div>
+          <div class="stat">
+            <strong>4 层视角</strong>
+            <span>从内核到上层工具的分层理解</span>
+          </div>
+          <div class="stat">
+            <strong>高频优先</strong>
+            <span>突出几乎所有环境都常见的核心组件</span>
+          </div>
+        </div>
+      </article>
+
+      <aside class="hero-side">
+        <div>
+          <h3>这页在讲什么</h3>
+          <div class="mini-list">
+            <div class="mini-item">
+              <strong>底层不是“冷门”</strong>
+              <span>它通常是系统运行、构建、通信、渲染与推理的最低公共支撑。</span>
+            </div>
+            <div class="mini-item">
+              <strong>工具越基础，复用越广</strong>
+              <span>例如 `coreutils`、`openssl`、`git`、`curl`、`cmake`、`sqlite`。</span>
+            </div>
+            <div class="mini-item">
+              <strong>判断标准比清单更重要</strong>
+              <span>无 GUI、可编排、被上层依赖、跨项目出现频率高，往往就是底层信号。</span>
+            </div>
+          </div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">System</span>
+          <span class="tag">Network</span>
+          <span class="tag">Media</span>
+          <span class="tag">AI Runtime</span>
+          <span class="tag">Toolchain</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="layers">
+      <div class="section-head">
+        <div>
+          <h2>四层分解</h2>
+          <p>把你原始笔记里的条目重新按“越靠下越基础，越靠上越接近使用场景”的方式组织，避免只记住名字，不知道它们彼此关系。</p>
+        </div>
+      </div>
+      <div class="architecture">
+        <article class="layer-card">
+          <div class="layer-index">L1</div>
+          <h3>系统核心层</h3>
+          <p>操作系统真正的地基，负责启动、调度、设备、权限、文件系统与运行时根基。</p>
+          <div class="tag-row">
+            <span class="tag">Kernel</span>
+            <span class="tag">glibc / musl</span>
+            <span class="tag">systemd</span>
+            <span class="tag">X11 / Wayland</span>
+          </div>
+        </article>
+        <article class="layer-card">
+          <div class="layer-index">L2</div>
+          <h3>基础能力层</h3>
+          <p>网络、压缩、加密、IO、日志、音视频与数据库等“通用底层能力模块”。</p>
+          <div class="tag-row">
+            <span class="tag">curl</span>
+            <span class="tag">OpenSSL</span>
+            <span class="tag">zlib / zstd</span>
+            <span class="tag">SQLite</span>
+          </div>
+        </article>
+        <article class="layer-card">
+          <div class="layer-index">L3</div>
+          <h3>运行与构建层</h3>
+          <p>把代码变成可执行程序，并能调试、部署、追踪、复现问题的那一整套工具链。</p>
+          <div class="tag-row">
+            <span class="tag">GCC / LLVM</span>
+            <span class="tag">CMake</span>
+            <span class="tag">GDB</span>
+            <span class="tag">Git</span>
+          </div>
+        </article>
+        <article class="layer-card">
+          <div class="layer-index">L4</div>
+          <h3>场景执行层</h3>
+          <p>AI 推理、本地媒体处理、终端工作流、容器与虚拟化，是底层能力面向具体任务的落点。</p>
+          <div class="tag-row">
+            <span class="tag">ggml</span>
+            <span class="tag">FFmpeg / GStreamer</span>
+            <span class="tag">tmux</span>
+            <span class="tag">QEMU / Docker</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="atlas">
+      <div class="section-head">
+        <div>
+          <h2>工具图谱</h2>
+          <p>这里不是原样堆列表，而是提炼出最有代表性的类别与样本。点下面的标签可以快速筛选。</p>
+        </div>
+      </div>
+      <div class="filters" aria-label="筛选类别">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="system">系统</button>
+        <button class="filter-btn" data-filter="network">网络</button>
+        <button class="filter-btn" data-filter="media">多媒体</button>
+        <button class="filter-btn" data-filter="ai">AI</button>
+        <button class="filter-btn" data-filter="dev">开发</button>
+        <button class="filter-btn" data-filter="terminal">终端</button>
+      </div>
+
+      <div class="tool-grid">
+        <article class="tool-card" data-group="system">
+          <div class="tool-type">System Core</div>
+          <h3>系统与运行环境</h3>
+          <p>负责开机、进程、设备、文件系统和最基本的用户态运行基础，属于“没有它就没有后面一切”的层级。</p>
+          <div class="tool-examples">代表：Linux Kernel、glibc、musl、systemd、coreutils、util-linux</div>
+        </article>
+
+        <article class="tool-card" data-group="network">
+          <div class="tool-type">Transport</div>
+          <h3>网络与传输</h3>
+          <p>下载、同步、远程登录、DNS、抓包与防火墙都在这里，是服务器和分布式协作的血管系统。</p>
+          <div class="tool-examples">代表：curl、wget、OpenSSH、rsync、iproute2、iptables、tcpdump</div>
+        </article>
+
+        <article class="tool-card" data-group="media">
+          <div class="tool-type">Media Runtime</div>
+          <h3>多媒体与渲染</h3>
+          <p>音视频编解码、播放管线、图像处理和 2D/3D 渲染的底层基础，很多播放器、编辑器和浏览器都依赖它们。</p>
+          <div class="tool-examples">代表：FFmpeg、GStreamer、SDL2、PipeWire、ImageMagick、Mesa</div>
+        </article>
+
+        <article class="tool-card" data-group="ai">
+          <div class="tool-type">Inference Stack</div>
+          <h3>AI 推理与张量运行时</h3>
+          <p>模型格式、算子执行、硬件加速与跨平台推理环境，构成今天本地 AI 生态的基础骨架。</p>
+          <div class="tool-examples">代表：ggml、ONNX Runtime、PyTorch、TensorFlow、cuDNN、OpenVINO</div>
+        </article>
+
+        <article class="tool-card" data-group="dev">
+          <div class="tool-type">Build Chain</div>
+          <h3>开发、构建与调试</h3>
+          <p>代码要变成程序，要能复现、调试、链接、发布，靠的就是编译器、构建系统与版本控制工具链。</p>
+          <div class="tool-examples">代表：GCC、Clang、LLVM、CMake、Make、GDB、Git、pkg-config</div>
+        </article>
+
+        <article class="tool-card" data-group="terminal">
+          <div class="tool-type">CLI Workflow</div>
+          <h3>终端与窗口工作流</h3>
+          <p>终端不只是输入命令，它本身就是高效工作环境。会话复用、文本编辑、模糊查找和窗口管理都很关键。</p>
+          <div class="tool-examples">代表：tmux、ncurses、Neovim、fzf、Kitty、Alacritty、i3、sway</div>
+        </article>
+
+        <article class="tool-card" data-group="system">
+          <div class="tool-type">Storage</div>
+          <h3>存储、压缩与文件系统</h3>
+          <p>压缩库、归档工具、块设备与文件系统构成“数据怎么被保存、移动和恢复”的底层支撑。</p>
+          <div class="tool-examples">代表：zlib、zstd、xz、tar、dd、losetup、ext4、btrfs、zfs</div>
+        </article>
+
+        <article class="tool-card" data-group="dev">
+          <div class="tool-type">Observe</div>
+          <h3>观测、追踪与性能分析</h3>
+          <p>一旦系统变慢、崩溃或行为异常，真正能追到根上的往往不是 GUI，而是这些偏底层的诊断工具。</p>
+          <div class="tool-examples">代表：strace、ltrace、perf、sar、vmstat、iostat、valgrind</div>
+        </article>
+
+        <article class="tool-card" data-group="terminal">
+          <div class="tool-type">Data Plumbing</div>
+          <h3>文本与数据处理</h3>
+          <p>底层工作常常以流和文本为中心，能快速变换数据、查找文件、过滤日志，就能把大量重复劳动自动化。</p>
+          <div class="tool-examples">代表：sed、awk、grep、ripgrep、fd、jq、yq、find</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="judgement">
+      <div class="split">
+        <article class="section-card">
+          <div class="section-head">
+            <div>
+              <h2>如何判断一个软件是不是“底层”</h2>
+              <p>你给的几份笔记里，其实已经隐含了一个非常清晰的判断逻辑。我把它提炼成 4 个问题。</p>
+            </div>
+          </div>
+          <div class="matrix">
+            <div class="insight-card">
+              <strong>1. 它是否被大量上层软件依赖？</strong>
+              <p>如果很多应用、框架或服务都建立在它之上，它更像基础设施，而不是单点应用。</p>
+            </div>
+            <div class="insight-card">
+              <strong>2. 它是否主要提供“能力”而非“界面”？</strong>
+              <p>越偏底层，越常见 CLI、库、协议、运行时、服务进程，而不是重 UI 产品。</p>
+            </div>
+            <div class="insight-card">
+              <strong>3. 它是否靠近系统资源？</strong>
+              <p>调度、内存、设备、网络、文件系统、GPU、音视频编解码，越靠近这些越偏底层。</p>
+            </div>
+            <div class="insight-card">
+              <strong>4. 它是否能跨场景复用？</strong>
+              <p>通用性越强，越可能成为“基础骨架级”工具，比如 OpenSSL、Git、SQLite。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-head">
+            <div>
+              <h2>高频核心集合</h2>
+              <p>如果只保留最常出现、最值得优先理解的一批，那么下面这些几乎可以视为“底层基础必修课”。</p>
+            </div>
+          </div>
+          <ul class="clean">
+            <li><strong>系统骨架：</strong>Kernel、glibc / musl、systemd、coreutils、procps、util-linux</li>
+            <li><strong>网络骨架：</strong>curl、OpenSSH、iproute2、wget、rsync、openssl</li>
+            <li><strong>开发骨架：</strong>git、gcc / clang、cmake、make、gdb</li>
+            <li><strong>数据骨架：</strong>sqlite3、zlib、zstd、tar、jq</li>
+            <li><strong>媒体骨架：</strong>ffmpeg、sdl2、pipewire、libjpeg / libpng</li>
+            <li><strong>AI 骨架：</strong>ggml、onnx runtime、cuda / rocm、pytorch</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="stack">
+      <div class="split">
+        <article class="section-card">
+          <div class="section-head">
+            <div>
+              <h2>按场景理解组合</h2>
+              <p>比背名字更有效的是，知道不同任务会天然调用哪一层底座。</p>
+            </div>
+          </div>
+          <ul class="clean">
+            <li><strong>极简 Linux / 服务器：</strong>coreutils、systemd、OpenSSH、curl、rsync、journalctl、tmux</li>
+            <li><strong>本地 AI 部署：</strong>ggml、ONNX Runtime、CUDA / ROCm、Python、OpenSSL、sqlite</li>
+            <li><strong>多媒体工作站：</strong>FFmpeg、GStreamer、SDL2、PipeWire、Mesa、ImageMagick</li>
+            <li><strong>开发环境：</strong>git、gcc / clang、cmake、gdb、ripgrep、fd、jq</li>
+          </ul>
+        </article>
+
+        <article class="section-card">
+          <div class="section-head">
+            <div>
+              <h2>一句话总结</h2>
+              <p>你这 4 份内容的本质，不是在列软件，而是在回答一个更底层的问题：</p>
+            </div>
+          </div>
+          <div class="insight-card">
+            <strong>软件世界真正稳定的，不是应用层产品，而是那些安静支撑一切的基础组件。</strong>
+            <p>
+              它们经常没有炫目的界面，却决定了系统是否能启动、程序是否能编译、网络是否能通信、
+              媒体是否能解码、模型是否能推理。理解这些底层组件，等于理解现代软件工业的基础骨架。
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-box">
+        <div>
+          <h2>已经整理成可直接打开的单页 HTML</h2>
+          <p>适合继续扩写成知识库首页、学习导图页，或者再加动画、搜索、折叠目录做成更完整的专题站。</p>
+        </div>
+        <a class="cta" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">回到顶部</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".tool-card");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        buttons.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+
+        cards.forEach((card) => {
+          const group = card.dataset.group;
+          const show = filter === "all" || filter === group;
+          card.classList.toggle("hidden", !show);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
