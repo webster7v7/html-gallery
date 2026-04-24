@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seedance 2.0 Open Source Impact Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: rgba(20, 20, 35, 0.7);
+            --border-glow: rgba(99, 102, 241, 0.3);
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b0;
+            --accent-cyan: #00f0ff;
+            --accent-purple: #a855f7;
+            --accent-red: #ef4444;
+            --accent-orange: #f97316;
+            --accent-green: #10b981;
+            --gradient-hero: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --gradient-accent: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            --font-main: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite linear;
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-10vh) translateX(100px); opacity: 0; }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: var(--gradient-hero);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.2rem;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-red);
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-badge::before {
+            content: '⚡';
+            font-size: 1rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .hero-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 40px rgba(0, 240, 255, 0.1);
+        }
+
+        .summary-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 0.3rem;
+        }
+
+        .summary-card p {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 24px;
+            height: 40px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .scroll-indicator span::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 2px;
+            animation: scrollDown 2s infinite;
+        }
+
+        @keyframes scrollDown {
+            0%, 100% { top: 6px; opacity: 1; }
+            50% { top: 18px; opacity: 0; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Section Styles */
+        .section {
+            position: relative;
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-number {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section h2 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .impact-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--card-accent, var(--gradient-accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .impact-card:hover::before {
+            opacity: 1;
+        }
+
+        .impact-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-glow);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px var(--card-glow, rgba(99, 102, 241, 0.1));
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            background: var(--card-bg, rgba(99, 102, 241, 0.1));
+            border: 1px solid var(--card-border, rgba(99, 102, 241, 0.2));
+        }
+
+        .impact-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .impact-card p, .impact-card li {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.9;
+        }
+
+        .impact-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .impact-card li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .impact-card li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--card-accent-color, var(--accent-cyan));
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .highlight-box {
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 3px solid var(--accent-red);
+            padding: 1rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #fca5a5;
+        }
+
+        /* Section 1: ByteDance - Red Theme */
+        .section-bytedance .impact-card {
+            --card-accent: linear-gradient(90deg, #ef4444, #f97316);
+            --card-glow: rgba(239, 68, 68, 0.15);
+            --card-bg: rgba(239, 68, 68, 0.1);
+            --card-border: rgba(239, 68, 68, 0.2);
+            --card-accent-color: #ef4444;
+        }
+
+        .section-bytedance h2 {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Section 2: Users - Cyan/Green Theme */
+        .section-users .impact-card {
+            --card-accent: linear-gradient(90deg, #10b981, #00f0ff);
+            --card-glow: rgba(0, 240, 255, 0.15);
+            --card-bg: rgba(0, 240, 255, 0.1);
+            --card-border: rgba(0, 240, 255, 0.2);
+            --card-accent-color: #00f0ff;
+        }
+
+        .section-users h2 {
+            background: linear-gradient(135deg, #10b981, #00f0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pros-card {
+            --card-accent: linear-gradient(90deg, #10b981, #34d399);
+            --card-glow: rgba(16, 185, 129, 0.15);
+            --card-bg: rgba(16, 185, 129, 0.1);
+            --card-border: rgba(16, 185, 129, 0.2);
+            --card-accent-color: #10b981;
+        }
+
+        .cons-card {
+            --card-accent: linear-gradient(90deg, #f59e0b, #f97316);
+            --card-glow: rgba(245, 158, 11, 0.15);
+            --card-bg: rgba(245, 158, 11, 0.1);
+            --card-border: rgba(245, 158, 11, 0.2);
+            --card-accent-color: #f59e0b;
+        }
+
+        /* Section 3: Industry - Purple Theme */
+        .section-industry .impact-card {
+            --card-accent: linear-gradient(90deg, #a855f7, #ec4899);
+            --card-glow: rgba(168, 85, 247, 0.15);
+            --card-bg: rgba(168, 85, 247, 0.1);
+            --card-border: rgba(168, 85, 247, 0.2);
+            --card-accent-color: #a855f7;
+        }
+
+        .section-industry h2 {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Section 4: Global - Blue Theme */
+        .section-global .impact-card {
+            --card-accent: linear-gradient(90deg, #3b82f6, #06b6d4);
+            --card-glow: rgba(59, 130, 246, 0.15);
+            --card-bg: rgba(59, 130, 246, 0.1);
+            --card-border: rgba(59, 130, 246, 0.2);
+            --card-accent-color: #3b82f6;
+        }
+
+        .section-global h2 {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Supplement Section */
+        .section-supplement {
+            background: linear-gradient(180deg, transparent 0%, rgba(168, 85, 247, 0.05) 50%, transparent 100%);
+        }
+
+        .section-supplement .impact-card {
+            --card-accent: linear-gradient(90deg, #f59e0b, #f97316);
+            --card-glow: rgba(245, 158, 11, 0.15);
+            --card-bg: rgba(245, 158, 11, 0.1);
+            --card-border: rgba(245, 158, 11, 0.2);
+            --card-accent-color: #f59e0b;
+        }
+
+        .section-supplement h2 {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Timeline / Quote */
+        .quote-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            margin: 4rem auto;
+            max-width: 900px;
+            position: relative;
+            backdrop-filter: blur(20px);
+        }
+
+        .quote-block::before {
+            content: '"';
+            font-size: 6rem;
+            line-height: 1;
+            color: var(--accent-cyan);
+            opacity: 0.3;
+            position: absolute;
+            top: 1rem;
+            left: 2rem;
+            font-family: Georgia, serif;
+        }
+
+        .quote-block p {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-block .author {
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer .tag {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 100px;
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 4rem 1.5rem;
+            }
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .impact-card {
+                padding: 1.5rem;
+            }
+            .quote-block {
+                padding: 2rem 1.5rem;
+            }
+            .quote-block::before {
+                font-size: 4rem;
+                top: 0.5rem;
+                left: 1rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Particles -->
+    <div class="bg-particles" id="particles"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">DISRUPTION ALERT</div>
+            <h1>Seedance 2.0<br>开源冲击波</h1>
+            <p class="hero-subtitle">
+                如果核心权重 + 完整推理代码 + 训练框架全部公开<br>
+                AI视频生成行业将迎来颠覆性地震
+            </p>
+            <div class="hero-summary">
+                <div class="summary-card">
+                    <div class="icon">💥</div>
+                    <h3>短期格局</h3>
+                    <p>全民狂欢</p>
+                </div>
+                <div class="summary-card">
+                    <div class="icon">🏗️</div>
+                    <h3>长期走向</h3>
+                    <p>行业重构</p>
+                </div>
+                <div class="summary-card">
+                    <div class="icon">⚔️</div>
+                    <h3>核心冲击</h3>
+                    <p>字节受创</p>
+                </div>
+                <div class="summary-card">
+                    <div class="icon">🌍</div>
+                    <h3>全球影响</h3>
+                    <p>格局重塑</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator" onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Section 1: ByteDance -->
+    <section class="section section-bytedance" id="s1">
+        <div class="section-header fade-in">
+            <span class="section-number">01 / IMPACT ON BYTEDANCE</span>
+            <h2>对字节跳动：毁灭性的商业与战略打击</h2>
+            <p class="section-desc">最直接、最惨烈的后果，核心变现渠道与技术壁垒一夜清零</p>
+        </div>
+        <div class="cards-grid">
+            <div class="impact-card fade-in">
+                <div class="card-icon">💸</div>
+                <h3>核心变现渠道瞬间崩塌</h3>
+                <ul>
+                    <li>即梦AI会员、火山引擎API付费、豆包视频生成增值服务将<strong style="color:#ef4444">90%以上失效</strong></li>
+                    <li>普通用户可在本地部署生成1080P/16秒无水印视频，企业客户可自建集群批量生成</li>
+                    <li>短剧、广告、影视等B端高价值客户将大量流失</li>
+                    <li>累计超<strong style="color:#ef4444">50亿美元</strong>的研发投入几乎无法收回</li>
+                </ul>
+            </div>
+            <div class="impact-card fade-in">
+                <div class="card-icon">🔓</div>
+                <h3>全球领先的技术壁垒一夜清零</h3>
+                <ul>
+                    <li>竞争对手可直接<strong style="color:#ef4444">逆向工程并复制</strong>字节的全部核心技术</li>
+                    <li>双分支扩散变换器、RewardDance奖励对齐、多镜头叙事引擎等独家创新被无偿获取</li>
+                    <li>开源社区将在3-6个月内推出<strong style="color:#ef4444">性能超越官方的优化版本</strong></li>
+                    <li>字节将失去技术领先地位与先发优势</li>
+                </ul>
+            </div>
+            <div class="impact-card fade-in">
+                <div class="card-icon">🎭</div>
+                <h3>品牌与生态控制权彻底丧失</h3>
+                <ul>
+                    <li>各种"去审核版""破解版""魔改版"会泛滥全网</li>
+                    <li>字节无法控制生成内容的质量和安全</li>
+                    <li>恶性深度伪造事件将直接冲击<strong style="color:#ef4444">品牌声誉</strong></li>
+                    <li>社区快速分叉出多个独立版本，字节失去对模型发展方向的主导权</li>
+                </ul>
+                <div class="highlight-box">
+                    类似Stable Diffusion的核心开发早已脱离Stability AI，字节将面临同样的失控命运。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote -->
+    <div class="quote-block fade-in">
+        <p>短期全民狂欢，长期行业重构，<br>字节毁灭性打击</p>
+        <div class="author">— Seedance 2.0 开源格局预判</div>
+    </div>
+
+    <!-- Section 2: Users -->
+    <section class="section section-users" id="s2">
+        <div class="section-header fade-in">
+            <span class="section-number">02 / IMPACT ON USERS</span>
+            <h2>对普通用户：短期最大受益者，但长期隐患重重</h2>
+            <p class="section-desc">零成本使用全球顶尖视频生成技术，但内容安全与版权风险同步放大</p>
+        </div>
+        <div class="pros-cons">
+            <div class="impact-card pros-card fade-in">
+                <div class="card-icon">✅</div>
+                <h3>绝对利好</h3>
+                <ul>
+                    <li><strong>零成本使用全球顶尖视频生成技术</strong>：RTX 4060及以上显卡即可本地运行</li>
+                    <li>无时长、次数、分辨率限制，无需科学上网，无需付费会员</li>
+                    <li><strong>完全自由的定制化能力</strong>：可训练自己的LoRA、嵌入模型，生成专属风格视频</li>
+                    <li>可修改代码添加官方没有的功能（无限时长生成、镜头转场控制、3D视频输出）</li>
+                    <li>ComfyUI、Stable Diffusion WebUI会第一时间接入，一键安装包24小时内铺满全网</li>
+                </ul>
+            </div>
+            <div class="impact-card cons-card fade-in">
+                <div class="card-icon">⚠️</div>
+                <h3>不可忽视的隐患</h3>
+                <ul>
+                    <li><strong>内容安全彻底失控</strong>：深度伪造政治人物、名人不雅视频、虚假新闻呈指数级增长</li>
+                    <li>诈骗分子可利用该技术制作逼真的视频诈骗，普通人更容易受骗</li>
+                    <li><strong>生成质量参差不齐</strong>：各种魔改版模型效果千差万别，甚至植入恶意代码、挖矿程序</li>
+                    <li><strong>版权纠纷风险转移</strong>：用户使用开源模型生成的内容若涉及侵权，法律责任完全由用户自己承担</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Industry -->
+    <section class="section section-industry" id="s3">
+        <div class="section-header fade-in">
+            <span class="section-number">03 / INDUSTRY IMPACT</span>
+            <h2>对AI视频行业：短期爆发，长期内卷</h2>
+            <p class="section-desc">行业门槛归零带来应用大爆发，但底层创新动力可能枯竭</p>
+        </div>
+        <div class="cards-grid">
+            <div class="impact-card fade-in">
+                <div class="card-icon">🚀</div>
+                <h3>短期：行业门槛归零，应用大爆发</h3>
+                <ul>
+                    <li>数千家中小公司涌入赛道，基于Seedance 2.0开发垂直领域应用</li>
+                    <li>短剧自动生成、电商产品视频、教育课件动画、虚拟数字人等方向全面开花</li>
+                    <li>价格降到原来的<strong style="color:#a855f7">1/10甚至更低</strong></li>
+                    <li>个人创作者迎来黄金时代：一人完成以前需要一个团队的视频制作</li>
+                    <li>短视频、自媒体行业生产效率提升<strong style="color:#a855f7">10倍以上</strong></li>
+                </ul>
+            </div>
+            <div class="impact-card fade-in">
+                <div class="card-icon">📉</div>
+                <h3>长期：底层创新动力枯竭，同质化内卷</h3>
+                <ul>
+                    <li>所有公司站在同一起跑线，<strong style="color:#a855f7">无人愿意再投入巨资研发下一代基础模型</strong></li>
+                    <li>竞争从"技术比拼"变成"运营比拼"和"价格战"</li>
+                    <li>产品高度同质化，最终只有少数头部公司能活下来</li>
+                    <li>行业发展速度大幅放缓：Stable Diffusion开源后图像生成领域底层创新几乎停滞</li>
+                </ul>
+                <div class="highlight-box" style="border-left-color:#a855f7; background:rgba(168,85,247,0.08); color:#d8b4fe;">
+                    最近两年的进步主要来自于社区的小修小补，而非底层架构突破。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Global -->
+    <section class="section section-global" id="s4">
+        <div class="section-header fade-in">
+            <span class="section-number">04 / GLOBAL LANDSCAPE</span>
+            <h2>对全球科技格局：影响力空前提升，但监管趋严</h2>
+            <p class="section-desc">中国首次在核心AI领域拥有全球主导权，但也将面临更严厉的国际监管</p>
+        </div>
+        <div class="cards-grid">
+            <div class="impact-card fade-in">
+                <div class="card-icon">🏆</div>
+                <h3>中国AI技术影响力空前提升</h3>
+                <ul>
+                    <li>中国将首次在一个核心AI领域拥有<strong style="color:#3b82f6">全球主导权</strong></li>
+                    <li>Seedance 2.0会成为全球AI视频生成的事实标准</li>
+                    <li>类似于Stable Diffusion之于图像生成的地位</li>
+                    <li>提升中国在全球开源社区的话语权与技术领导力</li>
+                </ul>
+            </div>
+            <div class="impact-card fade-in">
+                <div class="card-icon">🛡️</div>
+                <h3>更严厉的全球监管</h3>
+                <ul>
+                    <li>欧美国家将以"国家安全""内容安全"为由出台更严格的AI监管法规</li>
+                    <li>可能禁止中国开源AI模型在欧美地区的使用</li>
+                    <li>技术出口管制与合规成本将显著增加</li>
+                    <li>地缘政治因素将深度介入技术生态发展</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supplement Section -->
+    <section class="section section-supplement" id="s5">
+        <div class="section-header fade-in">
+            <span class="section-number">SUPPLEMENT / ALTERNATIVE SCENARIO</span>
+            <h2>补充：如果是"限制性开源"</h2>
+            <p class="section-desc">非完全开源模式下的影响将大幅缩小，但字节几乎不可能采取此策略</p>
+        </div>
+        <div class="cards-grid">
+            <div class="impact-card fade-in">
+                <div class="card-icon">🔐</div>
+                <h3>限制性开源模式（类似Llama）</h3>
+                <ul>
+                    <li>个人用户可免费非商业使用，但企业用户仍需付费获得商业授权</li>
+                    <li>仅开源推理代码和部分权重，核心训练代码和完整权重不公开</li>
+                    <li>既能扩大生态影响力，又能保留一定的商业价值</li>
+                    <li>目前大模型公司最常用的策略</li>
+                </ul>
+            </div>
+            <div class="impact-card fade-in">
+                <div class="card-icon">📊</div>
+                <h3>字节为何几乎不可能采用</h3>
+                <ul>
+                    <li>视频生成的商业价值<strong style="color:#f59e0b">远高于文本和图像</strong></li>
+                    <li>完全闭源带来的收益远远大于开源带来的生态收益</li>
+                    <li>核心技术的护城河效应在视频领域尤为显著</li>
+                    <li>API调用与增值服务的变现空间巨大</li>
+                </ul>
+                <div class="highlight-box" style="border-left-color:#f59e0b; background:rgba(245,158,11,0.08); color:#fcd34d;">
+                    视频生成是AI领域当前最具商业潜力的赛道之一，字节没有动力放弃独占优势。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Quote -->
+    <div class="quote-block fade-in">
+        <p>如果未来有第三方泄露了Seedance 2.0的权重，<br>行业格局将在72小时内发生不可逆的剧变。</p>
+        <div class="author">— 开源冲击的终极推演</div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="tag">Seedance 2.0 Impact Analysis</div>
+        <p>基于公开信息与技术推演整理 · 仅供参考</p>
+        <p style="margin-top:0.5rem; opacity:0.6;">© 2026 Analysis Report</p>
+    </footer>
+
+    <script>
+        // Generate background particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            const size = 1 + Math.random() * 3;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

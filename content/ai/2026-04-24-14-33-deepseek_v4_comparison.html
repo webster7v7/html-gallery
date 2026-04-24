@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek V4 Release & Benchmark Comparison</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        ds: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        },
+                        accent: {
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e',
+                            violet: '#8b5cf6',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: #0a0f1a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #06b6d4 50%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-text-2 {
+            background: linear-gradient(135deg, #f59e0b 0%, #f43f5e 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 8px 40px rgba(56, 189, 248, 0.15);
+            transform: translateY(-4px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .table-glass {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .table-glass th {
+            background: rgba(56, 189, 248, 0.1);
+            border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .table-glass td {
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .table-glass tr:hover td {
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .highlight-best {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #34d399;
+            font-weight: 700;
+        }
+
+        .highlight-ds {
+            background: rgba(56, 189, 248, 0.15) !important;
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        .hero-bg {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.3), transparent);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-cyan { background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
+        .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-rose { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+        .badge-violet { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); }
+
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+            transition: left 0.5s;
+        }
+
+        .stat-card:hover::after {
+            left: 100%;
+        }
+
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #0ea5e9, #06b6d4);
+            transition: width 1s ease-out;
+        }
+
+        .model-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .price-tag {
+            font-family: 'Inter', monospace;
+            font-weight: 700;
+        }
+
+        .price-highlight {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-card border-b border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-sm"></i>
+                    </div>
+                    <span class="font-bold text-lg tracking-tight">DeepSeek <span class="text-cyan-400">V4</span></span>
+                </div>
+                <div class="hidden md:flex items-center gap-6 text-sm text-slate-400">
+                    <a href="#overview" class="hover:text-cyan-400 transition-colors">概览</a>
+                    <a href="#pricing" class="hover:text-cyan-400 transition-colors">价格</a>
+                    <a href="#benchmarks" class="hover:text-cyan-400 transition-colors">基准测试</a>
+                    <a href="#scenarios" class="hover:text-cyan-400 transition-colors">场景</a>
+                </div>
+                <div class="badge badge-cyan">
+                    <i class="fas fa-fire"></i>
+                    2026.04.24 发布
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-screen flex items-center justify-center relative pt-16">
+        <div class="absolute inset-0 grid-pattern opacity-50"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 animate-fade-in-up">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-sm text-slate-300">预览版已发布 · 完全开源 · MIT 协议</span>
+                </div>
+
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6 animate-fade-in-up" style="animation-delay: 0.1s">
+                    <span class="gradient-text">DeepSeek V4</span>
+                </h1>
+
+                <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-4 animate-fade-in-up" style="animation-delay: 0.2s">
+                    开源模型的绝对天花板
+                </p>
+                <p class="text-lg text-slate-500 max-w-2xl mx-auto mb-12 animate-fade-in-up" style="animation-delay: 0.3s">
+                    与 GPT-5.4、Claude Opus 4.6、Gemini 3.1 Pro 全方位对比
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4 animate-fade-in-up" style="animation-delay: 0.4s">
+                    <a href="#benchmarks" class="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all hover:-translate-y-1">
+                        <i class="fas fa-chart-line mr-2"></i>查看基准测试
+                    </a>
+                    <a href="#pricing" class="px-8 py-4 rounded-xl glass-card text-slate-300 font-semibold hover:border-cyan-400/30 transition-all hover:-translate-y-1">
+                        <i class="fas fa-tags mr-2"></i>价格对比
+                    </a>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 max-w-4xl mx-auto animate-fade-in-up" style="animation-delay: 0.5s">
+                    <div class="glass-card rounded-2xl p-6 stat-card">
+                        <div class="text-3xl font-black text-cyan-400 mb-1">1.6T</div>
+                        <div class="text-sm text-slate-500">总参数 (Pro)</div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 stat-card">
+                        <div class="text-3xl font-black text-emerald-400 mb-1">1M</div>
+                        <div class="text-sm text-slate-500">Token 上下文</div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 stat-card">
+                        <div class="text-3xl font-black text-amber-400 mb-1">1/50</div>
+                        <div class="text-sm text-slate-500">相对价格</div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 stat-card">
+                        <div class="text-3xl font-black text-violet-400 mb-1">3206</div>
+                        <div class="text-sm text-slate-500">Codeforces</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-slate-600 text-xl"></i>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="scroll-reveal">
+                <div class="text-center mb-16">
+                    <span class="badge badge-cyan mb-4"><i class="fas fa-rocket"></i>发布信息</span>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4">双版本配置</h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto">针对不同场景优化的两个版本，满足从极致性能到高性价比的多元需求</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Pro Card -->
+                <div class="glass-card rounded-3xl p-8 scroll-reveal relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"></div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-2xl font-bold">DeepSeek-V4-Pro</h3>
+                                <p class="text-slate-400 text-sm mt-1">对标顶级闭源旗舰</p>
+                            </div>
+                            <div class="badge badge-cyan">旗舰版</div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-3 border-b border-slate-800">
+                                <span class="text-slate-400">总参数</span>
+                                <span class="text-xl font-bold text-cyan-400">1.6 万亿</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-slate-800">
+                                <span class="text-slate-400">激活参数</span>
+                                <span class="text-xl font-bold">490 亿</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-slate-800">
+                                <span class="text-slate-400">训练 Token</span>
+                                <span class="text-xl font-bold">33 万亿</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3">
+                                <span class="text-slate-400">上下文窗口</span>
+                                <span class="text-xl font-bold text-emerald-400">1M</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 rounded-xl bg-cyan-500/5 border border-cyan-500/20">
+                            <div class="flex items-center gap-2 text-cyan-400 text-sm font-medium">
+                                <i class="fas fa-check-circle"></i>
+                                最大输出 384K Token
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flash Card -->
+                <div class="glass-card rounded-3xl p-8 scroll-reveal relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                    <div class="relative">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-2xl font-bold">DeepSeek-V4-Flash</h3>
+                                <p class="text-slate-400 text-sm mt-1">极致性价比</p>
+                            </div>
+                            <div class="badge badge-emerald">轻量版</div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-3 border-b border-slate-800">
+                                <span class="text-slate-400">总参数</span>
+                                <span class="text-xl font-bold text-emerald-400">2840 亿</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-slate-800">
+                                <span class="text-slate-400">激活参数</span>
+                                <span class="text-xl font-bold">130 亿</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-slate-800">
+                                <span class="text-slate-400">训练 Token</span>
+                                <span class="text-xl font-bold">32 万亿</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3">
+                                <span class="text-slate-400">上下文窗口</span>
+                                <span class="text-xl font-bold text-emerald-400">1M</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+                            <div class="flex items-center gap-2 text-emerald-400 text-sm font-medium">
+                                <i class="fas fa-bolt"></i>
+                                价格仅为 Pro 版的 1/12
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Features -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-12 max-w-6xl mx-auto">
+                <div class="glass-card rounded-2xl p-5 text-center scroll-reveal">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-brain text-cyan-400 text-xl"></i>
+                    </div>
+                    <div class="text-sm font-semibold">三种推理模式</div>
+                    <div class="text-xs text-slate-500 mt-1">Non-think / Think High / Think Max</div>
+                </div>
+                <div class="glass-card rounded-2xl p-5 text-center scroll-reveal">
+                    <div class="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-images text-violet-400 text-xl"></i>
+                    </div>
+                    <div class="text-sm font-semibold">原生多模态</div>
+                    <div class="text-xs text-slate-500 mt-1">文字 + 图片 + 视频</div>
+                </div>
+                <div class="glass-card rounded-2xl p-5 text-center scroll-reveal">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-microchip text-amber-400 text-xl"></i>
+                    </div>
+                    <div class="text-sm font-semibold">昇腾 950</div>
+                    <div class="text-xs text-slate-500 mt-1">全栈训练与推理</div>
+                </div>
+                <div class="glass-card rounded-2xl p-5 text-center scroll-reveal">
+                    <div class="w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-compress-alt text-rose-400 text-xl"></i>
+                    </div>
+                    <div class="text-sm font-semibold">DSA2 稀疏注意力</div>
+                    <div class="text-xs text-slate-500 mt-1">算力需求降低 70%+</div>
+                </div>
+                <div class="glass-card rounded-2xl p-5 text-center scroll-reveal">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-code-branch text-emerald-400 text-xl"></i>
+                    </div>
+                    <div class="text-sm font-semibold">双接口兼容</div>
+                    <div class="text-xs text-slate-500 mt-1">OpenAI + Anthropic</div>
+                </div>
+                <div class="glass-card rounded-2xl p-5 text-center scroll-reveal">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-server text-blue-400 text-xl"></i>
+                    </div>
+                    <div class="text-sm font-semibold">可本地部署</div>
+                    <div class="text-xs text-slate-500 mt-1">百万上下文普惠</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="scroll-reveal text-center mb-16">
+                <span class="badge badge-emerald mb-4"><i class="fas fa-coins"></i>价格优势</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">API 价格对比</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">每百万 Token 价格，仅为海外同级别模型的 1/20 至 1/50</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto scroll-reveal">
+                <div class="glass-card rounded-3xl overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-slate-400 text-sm">
+                                    <th class="px-6 py-5 font-semibold">模型</th>
+                                    <th class="px-6 py-5 font-semibold text-center">输入（缓存命中）</th>
+                                    <th class="px-6 py-5 font-semibold text-center">输入（缓存未命中）</th>
+                                    <th class="px-6 py-5 font-semibold text-center">输出</th>
+                                    <th class="px-6 py-5 font-semibold text-center">相对价格</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr class="price-highlight">
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center gap-3">
+                                            <div class="model-icon bg-cyan-500/20 text-cyan-400">DS</div>
+                                            <div>
+                                                <div class="font-bold text-cyan-400">DeepSeek-V4-Flash</div>
+                                                <div class="text-xs text-slate-500">极致性价比</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 text-center price-tag text-emerald-400">¥0.2</td>
+                                    <td class="px-6 py-5 text-center price-tag">¥1</td>
+                                    <td class="px-6 py-5 text-center price-tag">¥2</td>
+                                    <td class="px-6 py-5 text-center"><span class="badge badge-emerald">1x</span></td>
+                                </tr>
+                                <tr class="price-highlight">
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center gap-3">
+                                            <div class="model-icon bg-cyan-500/20 text-cyan-400">DS</div>
+                                            <div>
+                                                <div class="font-bold text-cyan-400">DeepSeek-V4-Pro</div>
+                                                <div class="text-xs text-slate-500">旗舰版</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 text-center price-tag text-emerald-400">¥1</td>
+                                    <td class="px-6 py-5 text-center price-tag">¥12</td>
+                                    <td class="px-6 py-5 text-center price-tag">¥24</td>
+                                    <td class="px-6 py-5 text-center"><span class="badge badge-cyan">12x</span></td>
+                                </tr>
+                                <tr class="border-t border-slate-800">
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center gap-3">
+                                            <div class="model-icon bg-violet-500/20 text-violet-400">G</div>
+                                            <div>
+                                                <div class="font-bold">Gemini 3.1 Pro</div>
+                                                <div class="text-xs text-slate-500">Google</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 text-center price-tag text-slate-400">~¥14</td>
+                                    <td class="px-6 py-5 text-center price-tag text-slate-400">~¥14</td>
+                                    <td class="px-6 py-5 text-center price-tag text-slate-400">~¥84</td>
+                                    <td class="px-6 py-5 text-center"><span class="badge badge-violet">42x</span></td>
+                                </tr>
+                                <tr class="border-t border-slate-800">
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center gap-3">
+                                            <div class="model-icon bg-amber-500/20 text-amber-400">C</div>
+                                            <div>
+                                                <div class="font-bold">Claude Opus 4.6</div>
+                                                <div class="text-xs text-slate-500">Anthropic</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 text-center price-tag text-slate-400">~¥56</td>
+                                    <td class="px-6 py-5 text-center price-tag text-slate-400">~¥56</td>
+                                    <td class="px-6 py-5 text-center price-tag text-slate-400">~¥112</td>
+                                    <td class="px-6 py-5 text-center"><span class="badge badge-amber">56x</span></td>
+                                </tr>
+                                <tr class="border-t border-slate-800">
+                                    <td class="px-6 py-5">
+                                        <div class="flex items-center gap-3">
+                                            <div class="model-icon bg-emerald-500/20 text-emerald-400">O</div>
+                                            <div>
+                                                <div class="font-bold">GPT-5.4</div>
+                                                <div class="text-xs text-slate-500">OpenAI</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-5 text-center price-tag text-slate-400">~¥70</td>
+                                    <td class="px-6 py-5 text-center price-tag text-slate-400">~¥70</td>
+                                    <td class="px-6 py-5 text-center price-tag text-slate-400">~¥140</td>
+                                    <td class="px-6 py-5 text-center"><span class="badge badge-rose">70x</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex items-center justify-center gap-2 text-sm text-slate-500">
+                    <i class="fas fa-info-circle"></i>
+                    <span>价格单位：人民币/百万 Token · 数据截至 2026年4月24日</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- Benchmarks Section -->
+    <section id="benchmarks" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="scroll-reveal text-center mb-16">
+                <span class="badge badge-violet mb-4"><i class="fas fa-trophy"></i>能力评测</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">全方位能力对比</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">在数学推理、代码能力、综合知识、中文能力、长上下文等维度的详细对比</p>
+            </div>
+
+            <!-- Math & Reasoning -->
+            <div class="mb-16 scroll-reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
+                        <i class="fas fa-calculator text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">数学与竞赛推理</h3>
+                    <span class="badge badge-cyan ml-auto">DeepSeek 最强项</span>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="w-full text-left table-glass">
+                            <thead>
+                                <tr class="text-slate-400 text-sm">
+                                    <th class="px-6 py-4 font-semibold">评测项目</th>
+                                    <th class="px-6 py-4 font-semibold text-center text-cyan-400">DeepSeek V4-Pro</th>
+                                    <th class="px-6 py-4 font-semibold text-center">GPT-5.4</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Claude Opus 4.6</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Gemini 3.1 Pro</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Codeforces 评分</td>
+                                    <td class="px-6 py-4 text-center highlight-ds">3206 <span class="text-xs text-slate-500 block">全球人类第23</span></td>
+                                    <td class="px-6 py-4 text-center">3168</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                    <td class="px-6 py-4 text-center">3052</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Apex Shortlist 高难度推理</td>
+                                    <td class="px-6 py-4 text-center highlight-ds">90.2</td>
+                                    <td class="px-6 py-4 text-center">78.1</td>
+                                    <td class="px-6 py-4 text-center">85.9</td>
+                                    <td class="px-6 py-4 text-center">89.1</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Putnam 2025 数学竞赛</td>
+                                    <td class="px-6 py-4 text-center highlight-ds">120/120 <span class="text-xs text-emerald-400 block">满分</span></td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">IMO Answer Bench</td>
+                                    <td class="px-6 py-4 text-center">89.8</td>
+                                    <td class="px-6 py-4 text-center highlight-best">91.4</td>
+                                    <td class="px-6 py-4 text-center">75.3</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">HMMT 2026 数学竞赛</td>
+                                    <td class="px-6 py-4 text-center">95.2</td>
+                                    <td class="px-6 py-4 text-center highlight-best">97.7</td>
+                                    <td class="px-6 py-4 text-center">96.2</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code & Agent -->
+            <div class="mb-16 scroll-reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                        <i class="fas fa-code text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">代码与 Agent 能力</h3>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="w-full text-left table-glass">
+                            <thead>
+                                <tr class="text-slate-400 text-sm">
+                                    <th class="px-6 py-4 font-semibold">评测项目</th>
+                                    <th class="px-6 py-4 font-semibold text-center text-cyan-400">DeepSeek V4-Pro</th>
+                                    <th class="px-6 py-4 font-semibold text-center">GPT-5.4</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Claude Opus 4.6</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Gemini 3.1 Pro</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">SWE-bench Verified</td>
+                                    <td class="px-6 py-4 text-center">80.6</td>
+                                    <td class="px-6 py-4 text-center">80.0</td>
+                                    <td class="px-6 py-4 text-center highlight-best">80.8</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Toolathon 工具调用</td>
+                                    <td class="px-6 py-4 text-center">51.8</td>
+                                    <td class="px-6 py-4 text-center highlight-best">54.6</td>
+                                    <td class="px-6 py-4 text-center">47.2</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">LiveCodeBench</td>
+                                    <td class="px-6 py-4 text-center highlight-ds">93.5</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                    <td class="px-6 py-4 text-center">91.7</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">HumanEval</td>
+                                    <td class="px-6 py-4 text-center">90.0</td>
+                                    <td class="px-6 py-4 text-center highlight-best">90.2</td>
+                                    <td class="px-6 py-4 text-center">88.0</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-4 rounded-xl glass-card border-l-4 border-cyan-400">
+                    <p class="text-sm text-slate-300">
+                        <i class="fas fa-lightbulb text-cyan-400 mr-2"></i>
+                        <strong>实际体验：</strong>DeepSeek V4-Pro 已成为 DeepSeek 内部员工主力 Agentic Coding 工具，使用体验优于 Claude Sonnet 4.5，交付质量接近 Claude Opus 4.6 非思考模式，但仍与 Opus 4.6 思考模式存在差距。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Knowledge -->
+            <div class="mb-16 scroll-reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center">
+                        <i class="fas fa-book text-violet-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">综合知识</h3>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="w-full text-left table-glass">
+                            <thead>
+                                <tr class="text-slate-400 text-sm">
+                                    <th class="px-6 py-4 font-semibold">评测项目</th>
+                                    <th class="px-6 py-4 font-semibold text-center text-cyan-400">DeepSeek V4-Pro</th>
+                                    <th class="px-6 py-4 font-semibold text-center">GPT-5.4</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Claude Opus 4.6</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Gemini 3.1 Pro</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">MMLU-Pro</td>
+                                    <td class="px-6 py-4 text-center">87.5</td>
+                                    <td class="px-6 py-4 text-center">87.5</td>
+                                    <td class="px-6 py-4 text-center">89.1</td>
+                                    <td class="px-6 py-4 text-center highlight-best">91.0</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">Chinese-SimpleQA</td>
+                                    <td class="px-6 py-4 text-center highlight-ds">84.4</td>
+                                    <td class="px-6 py-4 text-center">76.8</td>
+                                    <td class="px-6 py-4 text-center">76.4</td>
+                                    <td class="px-6 py-4 text-center highlight-best">85.9</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">SimpleQA-Verified</td>
+                                    <td class="px-6 py-4 text-center">57.9</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                    <td class="px-6 py-4 text-center highlight-best">75.6</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chinese Ability -->
+            <div class="mb-16 scroll-reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center">
+                        <i class="fas fa-language text-rose-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">中文能力</h3>
+                    <span class="badge badge-rose ml-auto">DeepSeek 优势明显</span>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="glass-card rounded-2xl p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-sm text-slate-400">功能性写作</span>
+                            <span class="text-xs text-slate-500">胜率对比</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-cyan-400 font-semibold">DeepSeek V4-Pro</span>
+                                    <span class="text-cyan-400 font-bold">62.7%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-bar-fill" style="width: 62.7%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-slate-400">Gemini 3.1-Pro</span>
+                                    <span class="text-slate-400">34.1%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-bar-fill bg-slate-600" style="width: 34.1%; background: #475569;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-sm text-slate-400">创意写作质量</span>
+                            <span class="text-xs text-slate-500">胜率对比</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-cyan-400 font-semibold">DeepSeek V4-Pro</span>
+                                    <span class="text-cyan-400 font-bold">77.5%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-bar-fill" style="width: 77.5%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-slate-400">Gemini 3.1-Pro</span>
+                                    <span class="text-slate-400">22.5%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-bar-fill bg-slate-600" style="width: 22.5%; background: #475569;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-sm text-slate-400">创意写作指令跟随</span>
+                            <span class="text-xs text-slate-500">胜率对比</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-cyan-400 font-semibold">DeepSeek V4-Pro</span>
+                                    <span class="text-cyan-400 font-bold">60%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-bar-fill" style="width: 60%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-slate-400">Gemini 3.1-Pro</span>
+                                    <span class="text-slate-400">40%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-bar-fill bg-slate-600" style="width: 40%; background: #475569;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-sm text-slate-400">高复杂度约束多轮对话</span>
+                            <span class="text-xs text-slate-500">胜率对比</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-amber-400 font-semibold">Claude Opus 4.6</span>
+                                    <span class="text-amber-400 font-bold">52.0%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-bar-fill" style="width: 52%; background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-cyan-400">DeepSeek V4-Pro</span>
+                                    <span class="text-cyan-400">45.9%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-bar-fill" style="width: 45.9%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-4 rounded-xl glass-card border-l-4 border-rose-400">
+                    <p class="text-sm text-slate-300">
+                        <i class="fas fa-star text-rose-400 mr-2"></i>
+                        <strong>中文白领任务整体非输率：</strong>DeepSeek V4-Pro-Max 达到 <span class="text-rose-400 font-bold">63%</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Long Context -->
+            <div class="mb-16 scroll-reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                        <i class="fas fa-expand-arrows-alt text-amber-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">长上下文能力</h3>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="w-full text-left table-glass">
+                            <thead>
+                                <tr class="text-slate-400 text-sm">
+                                    <th class="px-6 py-4 font-semibold">评测项目</th>
+                                    <th class="px-6 py-4 font-semibold text-center text-cyan-400">DeepSeek V4-Pro</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Claude Opus 4.6</th>
+                                    <th class="px-6 py-4 font-semibold text-center">Gemini 3.1 Pro</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">MRCR 1M 长文本检索</td>
+                                    <td class="px-6 py-4 text-center">83.5</td>
+                                    <td class="px-6 py-4 text-center highlight-best">92+</td>
+                                    <td class="px-6 py-4 text-center">76.3</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium">CorpusQA 1M</td>
+                                    <td class="px-6 py-4 text-center highlight-ds">62.0%</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                    <td class="px-6 py-4 text-center text-slate-500">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-4 rounded-xl glass-card border-l-4 border-amber-400">
+                    <p class="text-sm text-slate-300">
+                        <i class="fas fa-bolt text-amber-400 mr-2"></i>
+                        <strong>优势：</strong>DeepSeek V4 长文本处理效率更高，普通高性能显卡即可本地部署百万上下文能力，而其他模型的百万上下文能力仅在云端提供且价格昂贵。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Multimodal -->
+            <div class="scroll-reveal">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                        <i class="fas fa-photo-video text-blue-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">多模态能力</h3>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="glass-card rounded-2xl p-6 text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-violet-500/10 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-video text-violet-400 text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">视频理解</h4>
+                        <div class="badge badge-violet mb-2">Gemini 领先</div>
+                        <p class="text-sm text-slate-400">Gemini 3.1 Pro 是唯一支持视频输入的旗舰模型</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-image text-cyan-400 text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">图像理解</h4>
+                        <div class="badge badge-cyan mb-2">旗鼓相当</div>
+                        <p class="text-sm text-slate-400">四大模型图像理解能力基本持平</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-closed-captioning text-emerald-400 text-2xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">DeepSeek V4</h4>
+                        <div class="badge badge-emerald mb-2">原生多模态</div>
+                        <p class="text-sm text-slate-400">支持图文混合推理，视频能力尚未完全开放</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- Scenarios Section -->
+    <section id="scenarios" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="scroll-reveal text-center mb-16">
+                <span class="badge badge-amber mb-4"><i class="fas fa-compass"></i>选型指南</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">模型定位与适用场景</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">根据不同需求选择最适合的模型</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                <!-- DeepSeek -->
+                <div class="glass-card rounded-3xl p-6 scroll-reveal border-t-4 border-cyan-400">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="model-icon bg-cyan-500/20 text-cyan-400">DS</div>
+                        <div>
+                            <h3 class="font-bold text-lg">DeepSeek V4</h3>
+                            <div class="text-xs text-slate-500">开源天花板</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>数学/代码最强</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>中文能力突出</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>价格极低</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>百万上下文普惠</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>可本地部署</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800">
+                        <div class="text-xs text-slate-500 mb-2">最佳适用</div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="badge badge-cyan text-xs">程序员开发</span>
+                            <span class="badge badge-cyan text-xs">算法竞赛</span>
+                            <span class="badge badge-cyan text-xs">中文写作</span>
+                            <span class="badge badge-cyan text-xs">长文档处理</span>
+                            <span class="badge badge-cyan text-xs">企业私有化</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GPT -->
+                <div class="glass-card rounded-3xl p-6 scroll-reveal border-t-4 border-emerald-400">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="model-icon bg-emerald-500/20 text-emerald-400">O</div>
+                        <div>
+                            <h3 class="font-bold text-lg">GPT-5.4</h3>
+                            <div class="text-xs text-slate-500">OpenAI</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>生态最成熟</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>工具调用最可靠</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>全能均衡</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800">
+                        <div class="text-xs text-slate-500 mb-2">最佳适用</div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="badge badge-emerald text-xs">日常办公</span>
+                            <span class="badge badge-emerald text-xs">插件使用</span>
+                            <span class="badge badge-emerald text-xs">智能体开发</span>
+                            <span class="badge badge-emerald text-xs">开箱即用</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Claude -->
+                <div class="glass-card rounded-3xl p-6 scroll-reveal border-t-4 border-amber-400">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="model-icon bg-amber-500/20 text-amber-400">C</div>
+                        <div>
+                            <h3 class="font-bold text-lg">Claude Opus 4.6</h3>
+                            <div class="text-xs text-slate-500">Anthropic</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>深度思考最强</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>低幻觉</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>长文本理解最好</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800">
+                        <div class="text-xs text-slate-500 mb-2">最佳适用</div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="badge badge-amber text-xs">法律/金融</span>
+                            <span class="badge badge-amber text-xs">学术研究</span>
+                            <span class="badge badge-amber text-xs">复杂逻辑分析</span>
+                            <span class="badge badge-amber text-xs">高准确性任务</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gemini -->
+                <div class="glass-card rounded-3xl p-6 scroll-reveal border-t-4 border-violet-400">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="model-icon bg-violet-500/20 text-violet-400">G</div>
+                        <div>
+                            <h3 class="font-bold text-lg">Gemini 3.1 Pro</h3>
+                            <div class="text-xs text-slate-500">Google</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>多模态全面领先</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-check text-emerald-400 text-xs"></i>
+                            <span>视频/3D理解独一档</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800">
+                        <div class="text-xs text-slate-500 mb-2">最佳适用</div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="badge badge-violet text-xs">多媒体处理</span>
+                            <span class="badge badge-violet text-xs">视频分析</span>
+                            <span class="badge badge-violet text-xs">空间推理</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Official Positioning -->
+            <div class="mt-16 scroll-reveal">
+                <div class="glass-card rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-emerald-400 to-violet-400"></div>
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-violet-500/10 rounded-full blur-3xl"></div>
+
+                    <div class="relative">
+                        <i class="fas fa-quote-left text-4xl text-slate-700 mb-6"></i>
+                        <p class="text-xl md:text-2xl text-slate-300 leading-relaxed max-w-4xl mx-auto mb-6">
+                            DeepSeek V4-Pro-Max 在最具挑战性的任务上仍落后于 GPT-5.4 和 Gemini-3.1-Pro 大约<span class="gradient-text font-bold">三到六个月</span>，但已经全面超越了 GPT-5.2 和 Gemini-3.0-Pro，成为<span class="gradient-text-2 font-bold">开源模型的绝对天花板</span>。
+                        </p>
+                        <div class="flex items-center justify-center gap-2 text-sm text-slate-500">
+                            <span class="w-8 h-px bg-slate-700"></span>
+                            <span>DeepSeek 官方自我定位</span>
+                            <span class="w-8 h-px bg-slate-700"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-sm"></i>
+                    </div>
+                    <span class="font-bold text-lg">DeepSeek <span class="text-cyan-400">V4</span></span>
+                </div>
+                <div class="text-sm text-slate-500">
+                    数据来源：DeepSeek 官方发布 · 截至 2026年4月24日
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="https://chat.deepseek.com" target="_blank" class="text-slate-400 hover:text-cyan-400 transition-colors">
+                        <i class="fas fa-external-link-alt"></i> 官网
+                    </a>
+                    <a href="https://huggingface.co" target="_blank" class="text-slate-400 hover:text-cyan-400 transition-colors">
+                        <i class="fab fa-github"></i> Hugging Face
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animate progress bars on scroll
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bars = entry.target.querySelectorAll('.progress-bar-fill');
+                    bars.forEach(bar => {
+                        const width = bar.style.width;
+                        bar.style.width = '0%';
+                        setTimeout(() => {
+                            bar.style.width = width;
+                        }, 100);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            progressObserver.observe(bar.parentElement);
+        });
+    </script>
+</body>
+</html>
