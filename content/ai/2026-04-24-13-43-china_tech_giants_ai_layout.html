@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国互联网三巨头AI布局全景 | BAT AI Ecosystem</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          serif: ['Noto Serif SC', 'serif'],
+          sans: ['Noto Sans SC', 'sans-serif'],
+          mono: ['JetBrains Mono', 'monospace'],
+        },
+        colors: {
+          byte: { DEFAULT: '#1a1a2e', light: '#16213e', accent: '#e94560', glow: '#ff6b6b' },
+          ali: { DEFAULT: '#ff6a00', dark: '#e65100', light: '#ff8f00', glow: '#ffb300' },
+          tencent: { DEFAULT: '#00a1d6', dark: '#0077b6', light: '#48cae4', glow: '#90e0ef' },
+          dark: { DEFAULT: '#0a0a0f', card: '#12121a', border: '#1e1e2e', text: '#e2e8f0' }
+        },
+        animation: {
+          'float': 'float 6s ease-in-out infinite',
+          'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          'gradient-x': 'gradientX 8s ease infinite',
+          'shimmer': 'shimmer 2.5s linear infinite',
+        },
+        keyframes: {
+          float: {
+            '0%, 100%': { transform: 'translateY(0px)' },
+            '50%': { transform: 'translateY(-20px)' },
+          },
+          gradientX: {
+            '0%, 100%': { backgroundPosition: '0% 50%' },
+            '50%': { backgroundPosition: '100% 50%' },
+          },
+          shimmer: {
+            '0%': { backgroundPosition: '-1000px 0' },
+            '100%': { backgroundPosition: '1000px 0' },
+          }
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background: #0a0a0f;
+    color: #e2e8f0;
+    font-family: 'Noto Sans SC', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a0f; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+  /* Hero canvas */
+  #hero-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* Glass morphism */
+  .glass {
+    background: rgba(18, 18, 26, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .glass-card {
+    background: rgba(18, 18, 26, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientX 8s ease infinite;
+  }
+
+  .gradient-text-byte {
+    background: linear-gradient(135deg, #e94560, #ff6b6b, #ffd93d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-text-ali {
+    background: linear-gradient(135deg, #ff6a00, #ff8f00, #ffb300);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-text-tencent {
+    background: linear-gradient(135deg, #00a1d6, #48cae4, #90e0ef);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Section reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Timeline */
+  .timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, #333, transparent);
+    transform: translateX(-50%);
+  }
+
+  /* Stats counter */
+  .stat-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  /* Tag pill */
+  .tag-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* Comparison table */
+  .compare-table th {
+    background: rgba(255,255,255,0.03);
+    font-weight: 600;
+    text-align: left;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .compare-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  .compare-table tr:hover td {
+    background: rgba(255,255,255,0.02);
+  }
+
+  /* DeepSeek section glow */
+  .ds-glow {
+    position: relative;
+  }
+  .ds-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+    opacity: 0.3;
+    filter: blur(20px);
+    z-index: -1;
+  }
+
+  /* Mobile nav */
+  @media (max-width: 768px) {
+    .stat-number { font-size: 1.75rem; }
+    .timeline-line { left: 20px; }
+  }
+
+  /* Particle effect container */
+  .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    animation: float 8s infinite ease-in-out;
+  }
+
+  /* Card accent borders */
+  .card-byte { border-top: 3px solid #e94560; }
+  .card-ali { border-top: 3px solid #ff6a00; }
+  .card-tencent { border-top: 3px solid #00a1d6; }
+
+  /* Smooth image loading */
+  img { opacity: 1; transition: opacity 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <span class="font-serif font-bold text-lg tracking-wide">AI 布局全景</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+      <a href="#overview" class="hover:text-white transition-colors">全景概览</a>
+      <a href="#byte" class="hover:text-white transition-colors">字节跳动</a>
+      <a href="#ali" class="hover:text-white transition-colors">阿里巴巴</a>
+      <a href="#tencent" class="hover:text-white transition-colors">腾讯</a>
+      <a href="#compare" class="hover:text-white transition-colors">战略对比</a>
+      <a href="#deepseek" class="hover:text-white transition-colors">DeepSeek</a>
+      <a href="#trends" class="hover:text-white transition-colors">未来展望</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+  <canvas id="hero-canvas"></canvas>
+  <div class="particles" id="particles"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+    <div class="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-mono text-gray-400 tracking-wider">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+      2026 中国 AI 产业深度报告
+    </div>
+
+    <h1 class="font-serif font-black text-5xl md:text-7xl lg:text-8xl leading-tight mb-8">
+      <span class="block text-white">中国互联网</span>
+      <span class="block gradient-text mt-2">三巨头 AI 布局</span>
+    </h1>
+
+    <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-12 font-light">
+      字节跳动、阿里巴巴、腾讯正以前所未有的力度在 AI 领域展开全面布局，<br class="hidden md:block">
+      标志着中国 AI 产业已从技术探索期进入<span class="text-white font-medium">生态竞争</span>与<span class="text-white font-medium">商业化落地</span>的关键阶段。
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-4 mb-16">
+      <a href="#overview" class="px-8 py-3 rounded-full bg-white text-black font-semibold text-sm hover:bg-gray-200 transition-all transform hover:scale-105">
+        探索全景
+      </a>
+      <a href="#deepseek" class="px-8 py-3 rounded-full glass text-white font-semibold text-sm hover:bg-white/10 transition-all">
+        DeepSeek × 华为
+      </a>
+    </div>
+
+    <!-- Key Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+      <div class="glass-card rounded-2xl p-6 text-center">
+        <div class="stat-number gradient-text-ali">3800<span class="text-lg">亿</span></div>
+        <div class="text-xs text-gray-500 mt-2 font-mono">阿里未来三年投入</div>
+      </div>
+      <div class="glass-card rounded-2xl p-6 text-center">
+        <div class="stat-number gradient-text-byte">1600<span class="text-lg">亿</span></div>
+        <div class="text-xs text-gray-500 mt-2 font-mono">字节 2026 年计划</div>
+      </div>
+      <div class="glass-card rounded-2xl p-6 text-center">
+        <div class="stat-number gradient-text-tencent">792<span class="text-lg">亿</span></div>
+        <div class="text-xs text-gray-500 mt-2 font-mono">腾讯 2025 资本开支</div>
+      </div>
+      <div class="glass-card rounded-2xl p-6 text-center">
+        <div class="stat-number text-white">3<span class="text-lg">亿+</span></div>
+        <div class="text-xs text-gray-500 mt-2 font-mono">千问 App 月活</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+  </div>
+</section>
+
+<!-- Overview Section -->
+<section id="overview" class="py-24 relative">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="reveal mb-16">
+      <h2 class="font-serif font-bold text-4xl md:text-5xl text-white mb-4">三巨头 AI 战略布局全景</h2>
+      <p class="text-gray-400 text-lg max-w-2xl">从内容生态到商业闭环，从社交渗透到算力基建，三大巨头正以截然不同的路径构建 AI 护城河。</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- ByteDance Card -->
+      <div id="byte" class="reveal glass-card rounded-3xl p-8 card-byte relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-byte-accent/10 rounded-full blur-3xl group-hover:bg-byte-accent/20 transition-all"></div>
+        <div class="relative z-10">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-byte-accent to-byte-glow flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+              <h3 class="font-serif font-bold text-xl text-white">字节跳动</h3>
+              <p class="text-xs text-byte-accent font-mono">ByteDance</p>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <span class="tag-pill bg-byte-accent/10 text-byte-accent mb-2">内容生态与视频生成</span>
+          </div>
+
+          <div class="space-y-4 text-sm text-gray-300 leading-relaxed">
+            <div class="flex gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-byte-accent mt-2 shrink-0"></div>
+              <p><strong class="text-white">核心投入：</strong>2025 年净利润同比下滑超 70%，源于 AI 领域巨额投入，2026 年计划投入 <span class="text-byte-accent font-mono">1600 亿元</span>，其中 850 亿用于 AI 芯片采购。</p>
+            </div>
+            <div class="flex gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-byte-accent mt-2 shrink-0"></div>
+              <p><strong class="text-white">技术亮点：</strong>推出 <span class="text-byte-accent">Seedance 2.0</span> 视频生成模型与 <span class="text-byte-accent">Seed3D 2.0</span> 3D 生成大模型，全面开放 API，支持多模态输入。</p>
+            </div>
+            <div class="flex gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-byte-accent mt-2 shrink-0"></div>
+              <p><strong class="text-white">生态布局：</strong>通过火山引擎提供 MaaS 业务，整合即梦、小云雀、剪映等工具链，构建覆盖 IP 开发到内容分发的完整闭环。</p>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-white/5">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-500">
+              <span>战略核心</span>
+              <span class="text-byte-accent">内容 + AI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alibaba Card -->
+      <div id="ali" class="reveal glass-card rounded-3xl p-8 card-ali relative overflow-hidden group" style="transition-delay: 0.1s">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-ali/10 rounded-full blur-3xl group-hover:bg-ali/20 transition-all"></div>
+        <div class="relative z-10">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-ali to-ali-light flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <div>
+              <h3 class="font-serif font-bold text-xl text-white">阿里巴巴</h3>
+              <p class="text-xs text-ali font-mono">Alibaba</p>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <span class="tag-pill bg-ali/10 text-ali mb-2">全栈 AI 与商业生态</span>
+          </div>
+
+          <div class="space-y-4 text-sm text-gray-300 leading-relaxed">
+            <div class="flex gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-ali mt-2 shrink-0"></div>
+              <p><strong class="text-white">核心投入：</strong>未来三年投入超 <span class="text-ali font-mono">3800 亿元</span>建设云和 AI 硬件基础设施，阿里云收入同比增长 34%，AI 产品收入连续 9 个季度三位数增长。</p>
+            </div>
+            <div class="flex gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-ali mt-2 shrink-0"></div>
+              <p><strong class="text-white">技术亮点：</strong>发布 <span class="text-ali">Qwen3.6-27B</span> 稠密多模态模型并开源；发布世界模型 <span class="text-ali">Happy Oyster</span>，实时构建可交互 AI 数字世界。</p>
+            </div>
+            <div class="flex gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-ali mt-2 shrink-0"></div>
+              <p><strong class="text-white">生态布局：</strong>成立通义大模型事业部与 ATH 事业群，千问 App 月活突破 <span class="text-ali font-mono">3 亿</span>，与淘宝、支付宝深度打通。</p>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-white/5">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-500">
+              <span>战略核心</span>
+              <span class="text-ali">算力基建 + 商业闭环</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tencent Card -->
+      <div id="tencent" class="reveal glass-card rounded-3xl p-8 card-tencent relative overflow-hidden group" style="transition-delay: 0.2s">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-tencent/10 rounded-full blur-3xl group-hover:bg-tencent/20 transition-all"></div>
+        <div class="relative z-10">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-tencent to-tencent-light flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
+            </div>
+            <div>
+              <h3 class="font-serif font-bold text-xl text-white">腾讯</h3>
+              <p class="text-xs text-tencent font-mono">Tencent</p>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <span class="tag-pill bg-tencent/10 text-tencent mb-2">社交基因与全栈渗透</span>
+          </div>
+
+          <div class="space-y-4 text-sm text-gray-300 leading-relaxed">
+            <div class="flex gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-tencent mt-2 shrink-0"></div>
+              <p><strong class="text-white">核心投入：</strong>2025 年资本性开支达 <span class="text-tencent font-mono">792 亿元</span>，AI 产品研发投入 180 亿元，2026 年将继续加码。</p>
+            </div>
+            <div class="flex gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-tencent mt-2 shrink-0"></div>
+              <p><strong class="text-white">技术亮点：</strong>开源 <span class="text-tencent">混元 3D 世界模型 2.0</span>，一年发布超 30 个新模型，在 LMArena 国际榜单中表现优异。</p>
+            </div>
+            <div class="flex gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-tencent mt-2 shrink-0"></div>
+              <p><strong class="text-white">生态布局：</strong>构建"全栈 AI 服务体系"，从能源供给、算力调度到智能体应用，形成端到端 AI 落地体系，依托微信 <span class="text-tencent font-mono">12 亿+</span> 月活。</p>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-white/5">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-500">
+              <span>战略核心</span>
+              <span class="text-tencent">社交连接 + 情感娱乐</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Comparison Section -->
+<section id="compare" class="py-24 relative bg-dark-card/50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="reveal mb-16 text-center">
+      <h2 class="font-serif font-bold text-4xl md:text-5xl text-white mb-4">战略共性与差异分析</h2>
+      <p class="text-gray-400 text-lg">三巨头在 AI 赛道上的竞合关系，决定了未来十年中国数字经济的全球版图。</p>
+    </div>
+
+    <!-- Common Features -->
+    <div class="reveal mb-16">
+      <h3 class="font-serif font-bold text-2xl text-white mb-8 flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </span>
+        共性特征
+      </h3>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass-card rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h4 class="font-bold text-white mb-2">巨额投入</h4>
+          <p class="text-sm text-gray-400 leading-relaxed">三巨头均将 AI 视为未来十年核心竞争力，不惜以短期利润下滑为代价，全力争夺 AI 时代入场券。</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <h4 class="font-bold text-white mb-2">生态融合</h4>
+          <p class="text-sm text-gray-400 leading-relaxed">字节依托内容生态、阿里依托电商生态、腾讯依托社交生态，实现 AI 技术的快速落地与商业化验证。</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h4 class="font-bold text-white mb-2">多模态与空间智能</h4>
+          <p class="text-sm text-gray-400 leading-relaxed">三家企业近期均密集发布多模态模型和世界模型，将 AI 能力从虚拟语言领域转向物理世界。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Strategic Differences Table -->
+    <div class="reveal">
+      <h3 class="font-serif font-bold text-2xl text-white mb-8 flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </span>
+        战略差异对比
+      </h3>
+      <div class="overflow-x-auto rounded-2xl border border-white/5">
+        <table class="compare-table w-full text-sm">
+          <thead>
+            <tr>
+              <th class="w-32">维度</th>
+              <th class="text-byte-accent">字节跳动</th>
+              <th class="text-ali">阿里巴巴</th>
+              <th class="text-tencent">腾讯</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-semibold text-white">核心定位</td>
+              <td>内容 + AI</td>
+              <td>算力基建 + 商业闭环</td>
+              <td>社交连接 + 情感娱乐</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-white">技术路径</td>
+              <td>视频生成 → 多模态内容生产全生命周期闭环控制</td>
+              <td>平头哥自研芯片 + 阿里云智算集群深度协同</td>
+              <td>微信生态无感渗透，AI 封装为"技能包"嵌入既有场景</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-white">数据壁垒</td>
+              <td>海量短视频内容数据 + 用户行为反馈</td>
+              <td>商业交易数据 + 云计算基础设施</td>
+              <td>12 亿+ 月活真实社交关系链 + 深度情感数据</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-white">飞轮效应</td>
+              <td>海量数据 → 快速迭代 → 极致产品 → 流量反哺</td>
+              <td>算力成本优势 → 模型训练效率 → 商业应用落地</td>
+              <td>社交关系链 → 场景渗透 → 用户粘性 → 数据沉淀</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-white">代表模型</td>
+              <td>Seedance 2.0、Seed3D 2.0</td>
+              <td>Qwen3.6-27B、Happy Oyster</td>
+              <td>混元 3D 世界模型 2.0、混元大模型系列</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DeepSeek Section -->
+<section id="deepseek" class="py-24 relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-indigo-900/10 via-purple-900/10 to-transparent"></div>
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="reveal mb-16">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-mono mb-6">
+        <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+        国产算力自主化里程碑
+      </div>
+      <h2 class="font-serif font-bold text-4xl md:text-5xl text-white mb-4">DeepSeek V4 × 华为昇腾</h2>
+      <p class="text-gray-400 text-lg max-w-3xl">全栈迁移而非简单适配，从英伟达 CUDA 到华为昇腾 950PR + CANN 框架的原生重构，标志着中国 AI 产业迈入"国产芯 + 国产模型"新阶段。</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8 mb-16">
+      <!-- Tech Breakthrough -->
+      <div class="reveal glass-card rounded-3xl p-8 ds-glow">
+        <h3 class="font-serif font-bold text-2xl text-white mb-6 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </span>
+          技术层面的实质性进展
+        </h3>
+        <div class="space-y-5">
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shrink-0">
+              <span class="font-mono font-bold text-white text-sm">01</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-white mb-1">全栈原生迁移</h4>
+              <p class="text-sm text-gray-400 leading-relaxed">重写 <span class="text-indigo-400 font-mono">200+</span> 核心算子，完成从 CUDA 到 CANN 的全链路深度重构，远超普通适配工作量。</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shrink-0">
+              <span class="font-mono font-bold text-white text-sm">02</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-white mb-1">性能突破</h4>
+              <p class="text-sm text-gray-400 leading-relaxed">推理速度较初期版本提升 <span class="text-purple-400 font-mono">35 倍</span>，单卡性能达英伟达 H20 的 <span class="text-purple-400 font-mono">2.87 倍</span>。</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shrink-0">
+              <span class="font-mono font-bold text-white text-sm">03</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-white mb-1">成本优势</h4>
+              <p class="text-sm text-gray-400 leading-relaxed">硬件采购成本较英伟达方案降低 <span class="text-pink-400 font-mono">40%</span>，推理成本仅为 GPT-4 的 <span class="text-pink-400 font-mono">1/70</span>。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ecosystem Impact -->
+      <div class="reveal glass-card rounded-3xl p-8" style="transition-delay: 0.15s">
+        <h3 class="font-serif font-bold text-2xl text-white mb-6 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+          </span>
+          产业生态连锁反应
+        </h3>
+        <div class="space-y-4">
+          <div class="p-4 rounded-xl bg-white/5 border border-white/5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-semibold text-white">巨头集体跟进</span>
+              <span class="tag-pill bg-emerald-500/10 text-emerald-400">进行中</span>
+            </div>
+            <p class="text-sm text-gray-400">阿里、字节、腾讯已批量订购数十万颗昇腾 950PR 芯片，华为 2026 年出货目标 75 万片。</p>
+          </div>
+          <div class="p-4 rounded-xl bg-white/5 border border-white/5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-semibold text-white">行业应用深化</span>
+              <span class="tag-pill bg-blue-500/10 text-blue-400">加速中</span>
+            </div>
+            <p class="text-sm text-gray-400">金融 30+ 机构、汽车 20+ 车企、消费电子华为/荣耀/OPPO 等品牌宣布接入。</p>
+          </div>
+          <div class="p-4 rounded-xl bg-white/5 border border-white/5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-semibold text-white">生态闭环成型</span>
+              <span class="tag-pill bg-amber-500/10 text-amber-400">里程碑</span>
+            </div>
+            <p class="text-sm text-gray-400">从"芯片-架构-模型-应用"完整产业链正在成型，破解"有芯片无生态"困境。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three Giants Role in DeepSeek Ecosystem -->
+    <div class="reveal">
+      <h3 class="font-serif font-bold text-2xl text-white mb-8 text-center">三巨头在国产 AI 生态中的真实角色</h3>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass-card rounded-2xl p-6 border-t-2 border-ali">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-3 h-3 rounded-full bg-ali"></div>
+            <h4 class="font-bold text-white">阿里巴巴</h4>
+          </div>
+          <p class="text-sm text-gray-400 leading-relaxed mb-4">采取"全栈垂直整合"策略，从平头哥芯片到阿里云基础设施，从通义千问到应用层，构建深度耦合技术生态。</p>
+          <div class="text-xs font-mono text-ali">双轨并行：支持 DeepSeek + 发展自身体系</div>
+        </div>
+        <div class="glass-card rounded-2xl p-6 border-t-2 border-byte-accent">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-3 h-3 rounded-full bg-byte-accent"></div>
+            <h4 class="font-bold text-white">字节跳动</h4>
+          </div>
+          <p class="text-sm text-gray-400 leading-relaxed mb-4">通过火山引擎提供 MaaS 业务，Seedance 2.0 与 DeepSeek V4 形成技术互补——前者擅内容生成，后者擅推理编程。</p>
+          <div class="text-xs font-mono text-byte-accent">互补生态位：内容生成 + 推理能力</div>
+        </div>
+        <div class="glass-card rounded-2xl p-6 border-t-2 border-tencent">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-3 h-3 rounded-full bg-tencent"></div>
+            <h4 class="font-bold text-white">腾讯</h4>
+          </div>
+          <p class="text-sm text-gray-400 leading-relaxed mb-4">以微信为超级底座，混元大模型与 DeepSeek 形成生态协同——DeepSeek 提供推理能力，腾讯提供社交场景与用户触达。</p>
+          <div class="text-xs font-mono text-tencent">场景协同：推理能力 + 社交触达</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Future Trends Section -->
+<section id="trends" class="py-24 relative">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="reveal mb-16">
+      <h2 class="font-serif font-bold text-4xl md:text-5xl text-white mb-4">行业趋势与未来展望</h2>
+      <p class="text-gray-400 text-lg">AI 竞赛焦点已从大语言模型参数内卷，转向空间智能这一全新赛道。</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Trend 1 -->
+      <div class="reveal glass-card rounded-3xl p-8 group hover:border-white/20 transition-all">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+        </div>
+        <h3 class="font-serif font-bold text-xl text-white mb-3">从虚拟到物理世界的跨越</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-4">2026 年 AI 竞争重心已从云端全面转向物理世界，三巨头密集发布世界模型与多模态产品，将 AI 交互能力从二维屏幕推向三维物理世界。</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag-pill bg-violet-500/10 text-violet-300">空间智能</span>
+          <span class="tag-pill bg-fuchsia-500/10 text-fuchsia-300">具身智能</span>
+        </div>
+      </div>
+
+      <!-- Trend 2 -->
+      <div class="reveal glass-card rounded-3xl p-8 group hover:border-white/20 transition-all" style="transition-delay: 0.1s">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        </div>
+        <h3 class="font-serif font-bold text-xl text-white mb-3">从技术竞争到生态竞争</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-4">单纯技术参数竞争已让位于场景化解决方案比拼。字节构建内容生态闭环，阿里依托商业数据构建全链路壁垒，腾讯以社交关系链打造情感连接壁垒。</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag-pill bg-cyan-500/10 text-cyan-300">生态壁垒</span>
+          <span class="tag-pill bg-blue-500/10 text-blue-300">场景落地</span>
+        </div>
+      </div>
+
+      <!-- Trend 3 -->
+      <div class="reveal glass-card rounded-3xl p-8 group hover:border-white/20 transition-all" style="transition-delay: 0.2s">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="font-serif font-bold text-xl text-white mb-3">三极格局的结构性优势</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-4">三极格局的真正稳固在于难以复制的生态护城河：阿里的算力硬实力 + 商业数据软实力，字节的内容全生命周期闭环，腾讯的不可迁移社交关系链。</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="tag-pill bg-amber-500/10 text-amber-300">结构性优势</span>
+          <span class="tag-pill bg-orange-500/10 text-orange-300">全球竞争力</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conclusion -->
+    <div class="reveal mt-16 glass-card rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5"></div>
+      <div class="relative z-10">
+        <h3 class="font-serif font-bold text-2xl md:text-3xl text-white mb-6">生态协同，而非单一引领</h3>
+        <p class="text-gray-400 leading-relaxed max-w-4xl mx-auto mb-8">
+          将 DeepSeek 与华为的合作简单概括为"火车头 + 软件"过于简化了复杂生态。<strong class="text-white">这是一场由多方共同推动的系统性变革</strong>：
+          华为提供硬件基础，DeepSeek 通过算法创新证明国产芯片承载顶级模型的可行性，阿里、字节、腾讯通过采购芯片、部署模型、开发应用场景形成完整生态闭环。
+        </p>
+        <p class="text-gray-400 leading-relaxed max-w-4xl mx-auto">
+          这种<strong class="text-white">多方协同、生态共建</strong>的模式，才是中国 AI 产业实现自主可控、突破"卡脖子"困境的关键路径。
+          随着国产 AI 生态从"可用"走向"好用"，中国 AI 产业正从技术跟随者转变为规则制定者。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-12 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <span class="font-serif font-bold text-lg text-white">AI 布局全景</span>
+      </div>
+      <div class="text-sm text-gray-500 font-mono">
+        数据来源：公开财报、技术发布会、行业研究报告 · 截至 2026 年 4 月
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+// Particle system
+const canvas = document.getElementById('hero-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let animationId;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.radius = Math.random() * 2 + 0.5;
+    this.opacity = Math.random() * 0.5 + 0.1;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(100, 120, 200, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(100, 120, 200, ${0.1 * (1 - dist / 150)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  animationId = requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// Scroll reveal
+const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Floating particles in DOM
+const particleContainer = document.getElementById('particles');
+for (let i = 0; i < 20; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.top = Math.random() * 100 + '%';
+  p.style.animationDelay = Math.random() * 8 + 's';
+  p.style.animationDuration = (6 + Math.random() * 6) + 's';
+  particleContainer.appendChild(p);
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Nav background on scroll
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 100) {
+    nav.style.background = 'rgba(10, 10, 15, 0.9)';
+  } else {
+    nav.style.background = 'rgba(18, 18, 26, 0.7)';
+  }
+});
+</script>
+</body>
+</html>

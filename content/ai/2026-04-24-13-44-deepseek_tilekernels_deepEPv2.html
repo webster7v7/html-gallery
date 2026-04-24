@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek TileKernels & DeepEP v2 — 技术突破全解析</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-deep: #0a0a0f;
+            --bg-card: #111118;
+            --bg-card-hover: #1a1a24;
+            --bg-elevated: #161620;
+            --accent-cyan: #00d4ff;
+            --accent-cyan-dim: rgba(0, 212, 255, 0.15);
+            --accent-purple: #a855f7;
+            --accent-purple-dim: rgba(168, 85, 247, 0.15);
+            --accent-orange: #f97316;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-primary: #f0f0f5;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border: rgba(255,255,255,0.06);
+            --border-hover: rgba(0, 212, 255, 0.25);
+            --gradient-hero: linear-gradient(135deg, #0a0a0f 0%, #111118 40%, #0f1629 100%);
+            --gradient-accent: linear-gradient(135deg, #00d4ff, #a855f7);
+            --glow-cyan: 0 0 40px rgba(0, 212, 255, 0.2), 0 0 80px rgba(0, 212, 255, 0.05);
+            --glow-purple: 0 0 40px rgba(168, 85, 247, 0.2), 0 0 80px rgba(168, 85, 247, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Sans SC', -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--gradient-hero);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(0,212,255,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(168,85,247,0.06) 0%, transparent 50%);
+            animation: heroPulse 8s ease-in-out infinite;
+        }
+        @keyframes heroPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: var(--accent-cyan-dim);
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-cyan);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeInDown 0.8s ease;
+        }
+        .hero-badge i { font-size: 0.75rem; }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+        .hero h1 .gradient-text {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-summary {
+            max-width: 800px;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        .hero-summary strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+        .hero-stat { text-align: center; }
+        .hero-stat .num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            animation: bounce 2s infinite;
+            z-index: 1;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
+        }
+
+        /* ============ SECTIONS ============ */
+        section {
+            padding: 5rem 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-tag {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            background: var(--accent-cyan-dim);
+            border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .section-title {
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+        .section-desc {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ============ CARDS ============ */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--gradient-accent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: var(--glow-cyan);
+        }
+        .card:hover::before { opacity: 1; }
+        .card-icon {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .card-icon.cyan { background: var(--accent-cyan-dim); color: var(--accent-cyan); }
+        .card-icon.purple { background: var(--accent-purple-dim); color: var(--accent-purple); }
+        .card-icon.orange { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+        .card-icon.green { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .card p, .card li {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.8;
+        }
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .card ul li {
+            padding-left: 1.25rem;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        .card ul li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        /* ============ COMPARISON TABLE ============ */
+        .compare-table-wrap {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+        .compare-table thead th {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-elevated);
+        }
+        .compare-table thead th:first-child { border-radius: 16px 0 0 0; }
+        .compare-table thead th:last-child { border-radius: 0 16px 0 0; }
+        .compare-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+        .compare-table tbody tr:hover { background: var(--bg-card-hover); }
+        .compare-table tbody td {
+            padding: 1.25rem 1.5rem;
+            font-size: 0.92rem;
+            vertical-align: top;
+        }
+        .compare-table tbody td:first-child {
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+        .compare-table .highlight {
+            color: var(--accent-cyan);
+            font-weight: 500;
+        }
+        .compare-table .dim { color: var(--text-muted); }
+        .compare-table .bad { color: var(--accent-red); }
+        .compare-table .good { color: var(--accent-green); }
+
+        /* ============ VALUE SECTION ============ */
+        .value-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .value-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+        }
+        .value-section.dev::before { background: var(--accent-cyan); }
+        .value-section.team::before { background: var(--accent-purple); }
+        .value-section.eco::before { background: var(--accent-green); }
+        .value-section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .value-section-header .icon-box {
+            width: 56px; height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .value-section.dev .icon-box { background: var(--accent-cyan-dim); color: var(--accent-cyan); }
+        .value-section.team .icon-box { background: var(--accent-purple-dim); color: var(--accent-purple); }
+        .value-section.eco .icon-box { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+        .value-section-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .value-section-header span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .value-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .value-item {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+        }
+        .value-item:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        .value-item .num-badge {
+            display: inline-block;
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            background: var(--accent-cyan-dim);
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+        .value-item h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .value-item p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ============ TIMELINE ============ */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0; bottom: 0;
+            width: 2px;
+            background: var(--gradient-accent);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2.5rem;
+        }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-dot {
+            position: absolute;
+            left: -2rem;
+            top: 0.25rem;
+            width: 1rem; height: 1rem;
+            border-radius: 50%;
+            background: var(--bg-deep);
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 0 4px var(--accent-cyan-dim);
+        }
+        .timeline-item.purple .timeline-dot { border-color: var(--accent-purple); box-shadow: 0 0 0 4px var(--accent-purple-dim); }
+        .timeline-item.orange .timeline-dot { border-color: var(--accent-orange); box-shadow: 0 0 0 4px rgba(249,115,22,0.15); }
+        .timeline-content h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-content p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.8;
+        }
+
+        /* ============ FINAL SUMMARY ============ */
+        .final-summary {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .final-summary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--gradient-accent);
+        }
+        .final-summary h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+        .summary-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            text-align: left;
+            margin-top: 2rem;
+        }
+        .summary-point {
+            background: var(--bg-elevated);
+            border-radius: 14px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .summary-point:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--glow-cyan);
+        }
+        .summary-point .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .summary-point h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .summary-point p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+        footer .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        footer .tech-stack span {
+            padding: 0.3rem 0.8rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ============ ANIMATIONS ============ */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+            .hero-stat .num { font-size: 1.5rem; }
+            section { padding: 3rem 1rem; }
+            .card { padding: 1.5rem; }
+            .value-section { padding: 1.5rem; }
+            .final-summary { padding: 2rem 1.5rem; }
+            .compare-table-wrap { border-radius: 12px; }
+        }
+
+        /* ============ CODE BLOCK ============ */
+        .code-block {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+        .code-block .comment { color: var(--text-muted); }
+        .code-block .keyword { color: var(--accent-purple); }
+        .code-block .string { color: var(--accent-green); }
+        .code-block .func { color: var(--accent-cyan); }
+
+        /* ============ TAG PILLS ============ */
+        .tag-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .tag-pill {
+            padding: 0.3rem 0.8rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .tag-pill.cyan { background: var(--accent-cyan-dim); color: var(--accent-cyan); border: 1px solid rgba(0,212,255,0.2); }
+        .tag-pill.purple { background: var(--accent-purple-dim); color: var(--accent-purple); border: 1px solid rgba(168,85,247,0.2); }
+        .tag-pill.orange { background: rgba(249,115,22,0.15); color: var(--accent-orange); border: 1px solid rgba(249,115,22,0.2); }
+    </style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+    <div class="hero-badge">
+        <i class="fas fa-code-branch"></i>
+        DeepSeek 开源技术栈重大更新 · 2026
+    </div>
+    <h1>
+        TileKernels & DeepEP v2<br>
+        <span class="gradient-text">万亿级 MoE 架构的底层革命</span>
+    </h1>
+    <p class="hero-summary">
+        这不是普通的代码更新，而是 DeepSeek 为<strong>下一代万亿级 MoE + Engram 混合架构模型</strong>做的底层工程预演。
+        核心技术栈从"依赖 CUDA C++"转向<strong>"Python + TileLang"</strong>的自主可控路线，大幅降低大模型开发门槛并提升训练推理效率。
+    </p>
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <div class="num">TileLang</div>
+            <div class="label">自研 Python DSL</div>
+        </div>
+        <div class="hero-stat">
+            <div class="num">0 SM</div>
+            <div class="label">实验性零占用通信</div>
+        </div>
+        <div class="hero-stat">
+            <div class="num">FP8/FP4</div>
+            <div class="label">多精度量化支持</div>
+        </div>
+    </div>
+    <div class="scroll-hint">
+        <i class="fas fa-chevron-down"></i> 向下滚动探索
+    </div>
+</section>
+
+<!-- ============ TILEKERNELS ============ -->
+<section class="reveal">
+    <div class="section-header">
+        <div class="section-tag">PART 01</div>
+        <h2 class="section-title">TileKernels：下一代模型的"生产级地基"</h2>
+        <p class="section-desc">基于 TileLang 编写，无需手写 CUDA C++，实现"Python 写代码，自动生成接近硬件极限的 GPU 内核"</p>
+    </div>
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon cyan"><i class="fas fa-route"></i></div>
+            <h3>技术路线重大转向</h3>
+            <p>全部基于 <strong>TileLang</strong>（DeepSeek 自研 Python DSL）编写，无需手写 CUDA C++。这是对英伟达 CUDA 生态的一次关键突破，解决了"GPU 算子人才稀缺、迭代慢、跨硬件难"的行业痛点。</p>
+            <div class="tag-pills">
+                <span class="tag-pill cyan">Python DSL</span>
+                <span class="tag-pill cyan">自动 Kernel 生成</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon purple"><i class="fas fa-memory"></i></div>
+            <h3>Engram 条件记忆模块</h3>
+            <p>通过 <strong>哈希查表以 O(1) 复杂度</strong> 检索静态知识，为模型主干卸载记忆负担，与 MoE 的条件计算形成完美互补。此前仅有论文和演示代码，现公开生产级内核。</p>
+            <div class="tag-pills">
+                <span class="tag-pill purple">O(1) 检索</span>
+                <span class="tag-pill purple">静态知识卸载</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon orange"><i class="fas fa-project-diagram"></i></div>
+            <h3>Manifold HyperConnection (mHC)</h3>
+            <p>改进了字节 Seed 团队的 HyperConnection，用<strong>双随机矩阵约束</strong>解决了大规模训练时的信号发散问题，是万亿级模型稳定训练的关键保障。</p>
+            <div class="tag-pills">
+                <span class="tag-pill orange">双随机矩阵</span>
+                <span class="tag-pill orange">信号稳定</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon green"><i class="fas fa-cubes"></i></div>
+            <h3>覆盖全链路核心算子</h3>
+            <ul>
+                <li>MoE 路由与门控</li>
+                <li>FP8 / FP4 / E5M6 多精度量化（融合 SwiGLU）</li>
+                <li>批量转置、RMSNorm 等</li>
+                <li>多数已在 DeepSeek-V3/R1 内部投入生产使用</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ============ DEEPEP V2 ============ -->
+<section class="reveal">
+    <div class="section-header">
+        <div class="section-tag">PART 02</div>
+        <h2 class="section-title">DeepEP v2：万亿级 MoE 训练的"通信高速公路"</h2>
+        <p class="section-desc">彻底重构专家并行框架，仅需几分之一的 SM 资源即可达到极致性能</p>
+    </div>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <h4>彻底重构专家并行 (EP) 框架</h4>
+                <p>解决了 V1 版本积累的历史包袱和性能问题，<strong>仅需几分之一的 SM 资源</strong>即可达到极致性能，让更多 GPU 资源能用于实际计算而非通信。</p>
+            </div>
+        </div>
+        <div class="timeline-item purple">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <h4>支持超大规模扩展</h4>
+                <p>大幅提升了单机 (Scale-up) 和跨机 (Scale-out) 能力，为训练<strong>万亿甚至十万亿参数级别</strong>的 MoE 模型扫清了通信瓶颈。</p>
+            </div>
+        </div>
+        <div class="timeline-item orange">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <h4>革命性的 "0 SM" 技术</h4>
+                <p>推出实验性的 <strong>0 SM Engram、0 SM 流水线并行 (PP)、0 SM 上下文并行 (CP)</strong> 的 All-gather 算子，实现了"通信不占用 GPU 计算资源"的理想状态。</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <h4>后端升级：NCCL Gin + Fully JIT</h4>
+                <p>从 NVSHMEM 切换为更轻量的 <strong>NCCL Gin 后端</strong>（仅头文件），同时支持<strong>全时即时编译 (Fully JIT)</strong>，部署更灵活。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SIGNIFICANCE FOR DEEPSEEK ============ -->
+<section class="reveal">
+    <div class="section-header">
+        <div class="section-tag">PART 03</div>
+        <h2 class="section-title">对 DeepSeek 自身的战略意义</h2>
+    </div>
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon cyan"><i class="fas fa-rocket"></i></div>
+            <h3>下一代模型已进入工程落地阶段</h3>
+            <p>Engram 和 mHC 此前只有论文和演示代码，现在公开生产级内核，说明 DeepSeek 已在为将这些组件集成到 <strong>DeepSeek-V4</strong> 做最后的工程准备。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon green"><i class="fas fa-chart-line"></i></div>
+            <h3>训练成本将进一步大幅下降</h3>
+            <p>结合之前开源的 DeepGEMM 和 FP4 Indexer，DeepSeek 已构建了完整的自主可控底层技术栈，在相同硬件条件下能实现比同行<strong>更高的训练效率</strong>。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon purple"><i class="fas fa-bolt"></i></div>
+            <h3>推理速度和长文本能力质变</h3>
+            <p>Engram 能显著提升模型处理静态知识的速度，而 DeepEP v2 的通信优化将让大规模 MoE 模型的<strong>推理延迟大幅降低</strong>。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ INDUSTRY IMPACT ============ -->
+<section class="reveal">
+    <div class="section-header">
+        <div class="section-tag">PART 04</div>
+        <h2 class="section-title">对整个 AI 行业的深远影响</h2>
+    </div>
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon cyan"><i class="fas fa-door-open"></i></div>
+            <h3>降低大模型开发技术门槛</h3>
+            <p>TileLang 和 TileKernels 的开源，让<strong>中小团队</strong>也能开发出接近硬件极限的 GPU 算子，无需再依赖英伟达的 CUTLASS 或手写 CUDA。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon purple"><i class="fas fa-brain"></i></div>
+            <h3>推动 MoE + 记忆架构普及</h3>
+            <p>DeepSeek 公开了经过生产验证的 Engram 和 mHC 实现，将加速整个行业从纯 MoE 向<strong>"MoE + 外部记忆"混合架构</strong>的演进。</p>
+        </div>
+        <div class="card">
+            <div class="card-icon orange"><i class="fas fa-fire"></i></div>
+            <h3>加剧国产大模型底层技术竞争</h3>
+            <p>DeepSeek 通过持续开源核心技术栈，正在建立一个<strong>开放的大模型生态</strong>，与其他国产大模型形成差异化竞争。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ COMPARISON TABLE ============ -->
+<section class="reveal">
+    <div class="section-header">
+        <div class="section-tag">COMPARE</div>
+        <h2 class="section-title">TileLang vs 传统 CUDA 开发</h2>
+        <p class="section-desc">五大维度直白对比，看清技术路线的本质差异</p>
+    </div>
+    <div class="compare-table-wrap">
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>维度</th>
+                    <th>传统 CUDA</th>
+                    <th>TileLang (DeepSeek 自研 DSL)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>开发门槛</td>
+                    <td class="bad">强依赖 C++/CUDA C、内存排布、SM/线程束、共享内存、流水线、手动显存复用。学习周期极长，顶尖算子工程师稀缺。</td>
+                    <td class="good highlight">纯 Python 风格语法，不用手写底层硬件调度。以「分块 Tile」为核心逻辑，上层写逻辑，框架自动生成高性能 GPU Kernel。普通算法/AI 工程师就能写量产级高速算子。</td>
+                </tr>
+                <tr>
+                    <td>迭代效率</td>
+                    <td class="bad">调试难、编译慢、跨卡适配改造成本高，改一行逻辑要大量底层适配。</td>
+                    <td class="good highlight">高层抽象，快速迭代、JIT 即时编译。量化、融合算子、矩阵计算改逻辑极快。</td>
+                </tr>
+                <tr>
+                    <td>硬件绑定</td>
+                    <td class="bad">强绑定英伟达，AMD、国产卡、昇腾/昆仑芯适配成本极高。</td>
+                    <td class="good highlight">架构解耦，理论上可跨 GPU 架构适配，弱化对 CUDA 生态强依赖，利于国产硬件适配。</td>
+                </tr>
+                <tr>
+                    <td>性能上限</td>
+                    <td class="dim">手写极致 CUDA/CUTLASS：理论天花板最高，但人力成本爆炸。</td>
+                    <td class="good highlight">自动调度 + 硬件优化，生产级性能对标工业级 CUDA 算子，足够大模型训练/推理落地，综合性价比更高。</td>
+                </tr>
+                <tr>
+                    <td>适用场景</td>
+                    <td class="dim">超极致定制、超大规模集群极限压榨、老旧存量项目。</td>
+                    <td class="good highlight">大模型 MoE 算子、量化、Norm、融合计算、新型架构算子（Engram/mHC）快速落地。</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ============ VALUE FOR DIFFERENT PEOPLE ============ -->
+<section class="reveal">
+    <div class="section-header">
+        <div class="section-tag">VALUE</div>
+        <h2 class="section-title">对三类人的实际价值</h2>
+        <p class="section-desc">无论你是个人开发者、创业团队还是行业观察者，这次开源都有直接收益</p>
+    </div>
+
+    <div class="value-section dev">
+        <div class="value-section-header">
+            <div class="icon-box"><i class="fas fa-user"></i></div>
+            <div>
+                <h3>普通 AI 开发者 / 个人玩家</h3>
+                <span>Personal Developer</span>
+            </div>
+        </div>
+        <div class="value-list">
+            <div class="value-item">
+                <div class="num-badge">1</div>
+                <h4>免费拿到一线大厂量产级 MoE 底层算子</h4>
+                <p>包含 FP8/FP4 量化、混合精度、MoE 路由、专家通信、RMSNorm、激活融合，直接开箱即用，不用自己造轮子。</p>
+            </div>
+            <div class="value-item">
+                <div class="num-badge">2</div>
+                <h4>低成本自定义算子</h4>
+                <p>不用学晦涩 CUDA，就能给自己本地部署模型（DeepSeek 全系、MoE 模型）加速，降低本地推理显存占用、提升速度。</p>
+            </div>
+            <div class="value-item">
+                <div class="num-badge">3</div>
+                <h4>学习前沿架构</h4>
+                <p>看懂 Engram 记忆模块、mHC 超连接、专家并行通信的工业实现，紧跟下一代大模型技术方向。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="value-section team">
+        <div class="value-section-header">
+            <div class="icon-box"><i class="fas fa-users"></i></div>
+            <div>
+                <h3>中小型 AI 创业 / 研发团队</h3>
+                <span>Startup & Research Team</span>
+            </div>
+        </div>
+        <div class="value-list">
+            <div class="value-item">
+                <div class="num-badge">1</div>
+                <h4>跳过底层基建内卷</h4>
+                <p>直接复用 DeepSeek 成熟底层栈，不用组建昂贵的 CUDA 算子团队，快速落地 MoE、长文本、低量化推理方案。</p>
+            </div>
+            <div class="value-item">
+                <div class="num-badge">2</div>
+                <h4>通信开销暴跌</h4>
+                <p>DeepEP v2 重构后，多卡分布式训练/微调成本下降，小集群也能跑更大规模 MoE 模型。</p>
+            </div>
+            <div class="value-item">
+                <div class="num-badge">3</div>
+                <h4>全链路开源闭环</h4>
+                <p>DeepGEMM + TileKernels + DeepEP v2，完整自研底层，摆脱闭源第三方算子依赖。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="value-section eco">
+        <div class="value-section-header">
+            <div class="icon-box"><i class="fas fa-globe"></i></div>
+            <div>
+                <h3>行业 & 国产 AI 生态</h3>
+                <span>Industry & Ecosystem</span>
+            </div>
+        </div>
+        <div class="value-list">
+            <div class="value-item">
+                <div class="num-badge">1</div>
+                <h4>打破 CUDA 垄断格局</h4>
+                <p>打破「大模型底层算子 = 英伟达 CUDA 垄断」的固化格局，推动算子开发范式多元化。</p>
+            </div>
+            <div class="value-item">
+                <div class="num-badge">2</div>
+                <h4>国产 GPU 适配友好</h4>
+                <p>为国产 GPU、异构计算提供轻量化、易移植的算子开发范式，降低国产硬件生态建设门槛。</p>
+            </div>
+            <div class="value-item">
+                <div class="num-badge">3</div>
+                <h4>倒逼硬核竞争</h4>
+                <p>持续开源核心底座，倒逼行业从「堆参数」转向「底层架构 + 通信 + 算子优化」的硬核竞争。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FINAL SUMMARY ============ -->
+<section class="reveal">
+    <div class="final-summary">
+        <h2>极简总结</h2>
+        <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;">对你我而言，最直接的收益是什么？</p>
+        <div class="summary-points">
+            <div class="summary-point">
+                <div class="icon">🧱</div>
+                <h4>TileKernels</h4>
+                <p>用 Python 化的 TileLang 干掉传统 CUDA 高门槛，开放下一代 MoE + 记忆架构的核心 GPU 算子。</p>
+            </div>
+            <div class="summary-point">
+                <div class="icon">🛣️</div>
+                <h4>DeepEP v2</h4>
+                <p>重做专家并行通信，压低多卡通信资源消耗，为超大规模 MoE 训练/推理铺路。</p>
+            </div>
+            <div class="summary-point">
+                <div class="icon">🎯</div>
+                <h4>对你我的收益</h4>
+                <p>本地模型加速、学习前沿底层、低成本魔改量化与分布式部署，是最直接的收益。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+    <p>DeepSeek TileKernels & DeepEP v2 技术解析 · 基于开源信息整理</p>
+    <div class="tech-stack">
+        <span>TileLang</span>
+        <span>MoE</span>
+        <span>Engram</span>
+        <span>DeepEP</span>
+        <span>FP8/FP4</span>
+        <span>NCCL</span>
+        <span>Python DSL</span>
+    </div>
+</footer>
+
+<script>
+    // Scroll reveal animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
