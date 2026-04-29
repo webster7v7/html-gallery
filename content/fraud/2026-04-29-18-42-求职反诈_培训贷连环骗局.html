@@ -1,0 +1,829 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>求职反诈：警惕「高薪招聘→付费培训→培训贷」连环骗局</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --danger: #dc2626;
+            --danger-light: #fef2f2;
+            --danger-dark: #991b1b;
+            --warning: #ea580c;
+            --warning-light: #fff7ed;
+            --gold: #d97706;
+            --dark: #1c1917;
+            --gray-50: #fafaf9;
+            --gray-100: #f5f5f4;
+            --gray-200: #e7e5e4;
+            --gray-300: #d6d3d1;
+            --gray-400: #a8a29e;
+            --gray-500: #78716c;
+            --gray-600: #57534e;
+            --gray-700: #44403c;
+            --gray-800: #292524;
+            --gray-900: #1c1917;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(220,38,38,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(217,119,6,0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(220,38,38,0.08) 0%, transparent 50%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(220,38,38,0.15);
+            border: 1px solid rgba(220,38,38,0.3);
+            color: #fca5a5;
+            padding: 0.5rem 1.25rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero h1 .highlight {
+            color: #fca5a5;
+            position: relative;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: rgba(220,38,38,0.4);
+            border-radius: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--gray-400);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .hero-stat-label {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-top: 0.25rem;
+            letter-spacing: 0.05em;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        .scroll-hint svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--danger);
+            margin-bottom: 1rem;
+            padding: 0.25rem 0;
+            border-bottom: 2px solid var(--danger);
+        }
+
+        .section-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--gray-900);
+            line-height: 1.3;
+        }
+
+        .section-desc {
+            color: var(--gray-500);
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            max-width: 600px;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--danger), var(--warning));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-100);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 2.5rem;
+            width: 16px;
+            height: 16px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 4px solid var(--gray-50);
+            box-shadow: 0 0 0 2px var(--danger);
+        }
+
+        .timeline-step {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--danger);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.35rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .timeline-item h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-item p {
+            color: var(--gray-600);
+            line-height: 1.9;
+        }
+
+        .timeline-item ul {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .timeline-item ul li {
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+            line-height: 1.8;
+        }
+
+        .timeline-item ul li::marker {
+            color: var(--danger);
+        }
+
+        .danger-box {
+            background: var(--danger-light);
+            border-left: 4px solid var(--danger);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1rem;
+        }
+
+        .danger-box p {
+            color: var(--danger-dark);
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* ===== CARDS ===== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-100);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            font-size: 1.5rem;
+        }
+
+        .card-icon.red { background: var(--danger-light); }
+        .card-icon.orange { background: var(--warning-light); }
+        .card-icon.gold { background: #fffbeb; }
+
+        .card h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.75rem;
+        }
+
+        .card p {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* ===== GUIDE ===== */
+        .guide-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .guide-item {
+            display: flex;
+            gap: 1.5rem;
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-100);
+            transition: all 0.3s ease;
+        }
+
+        .guide-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        .guide-number {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: var(--danger);
+            color: #fff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .guide-content h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .guide-content p {
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+
+        /* ===== ACTION CARDS ===== */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            border: 1px solid var(--gray-100);
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        .action-header {
+            padding: 1.5rem 2rem;
+            background: var(--dark);
+            color: #fff;
+        }
+
+        .action-header h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .action-body {
+            padding: 1.5rem 2rem;
+        }
+
+        .action-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .action-body ul li {
+            color: var(--gray-600);
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.8;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .action-body ul li:last-child {
+            border-bottom: none;
+        }
+
+        .action-body ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: var(--gray-400);
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .footer-quote {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #fff;
+            font-weight: 700;
+            max-width: 700px;
+            margin: 0 auto 1rem;
+            line-height: 1.5;
+        }
+
+        .footer-sub {
+            color: var(--gray-500);
+            font-size: 0.95rem;
+        }
+
+        /* ===== SCROLL REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .timeline {
+                padding-left: 0;
+            }
+            .timeline::before {
+                display: none;
+            }
+            .timeline-item::before {
+                display: none;
+            }
+            .guide-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero-stats {
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                公安部 · 人社部 多次点名通报
+            </div>
+            <h1>
+                求职反诈<br>
+                警惕<span class="highlight">「高薪招聘→付费培训→培训贷」</span>连环骗局
+            </h1>
+            <p class="hero-subtitle">
+                针对应届生、兼职求职者、转行零基础人群的高发诈骗套路。<br>
+                以"无门槛高薪"为诱饵，诱导求职者背负贷款、损失钱财，最终陷入"没找到工作，反而背上一身债"的困境。
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">4</div>
+                    <div class="hero-stat-label">连环步骤</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">3</div>
+                    <div class="hero-stat-label">核心坑点</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">5</div>
+                    <div class="hero-stat-label">防范铁律</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">4</div>
+                    <div class="hero-stat-label">维权渠道</div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <span>向下滚动了解详情</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 1: 骗局闭环 ===== -->
+    <section class="section">
+        <div class="section-header reveal">
+            <div class="section-tag">骗局拆解</div>
+            <h2 class="section-title">骗局完整闭环拆解</h2>
+            <p class="section-desc">全流程话术与操作，看清骗子每一步如何布局</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <div class="timeline-step">第一步</div>
+                <h3>广撒网，高薪低门槛精准邀约</h3>
+                <p>骗子通过招聘平台、兼职社群、短视频平台、校园渠道等发布虚假招聘信息，主打<strong>"无经验可做、零基础包教、月薪8k-15k、双休五险一金、应届生/在校生优先"</strong>，覆盖新媒体运营、UI设计、短视频剪辑、数据标注、IT技术、电商主播等热门岗位。</p>
+                <p style="margin-top:0.75rem">哪怕求职者没有主动投递，也会收到精准的面试邀约，同时营造正规企业假象：有固定办公场地、规范的面试流程、统一的工牌话术，彻底打消求职者的初步戒备。</p>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-step">第二步</div>
+                <h3>PUA式打压，以"能力不足"制造求职焦虑</h3>
+                <p>面试环节并非真正筛选人才，而是有预谋的心理打压。面试官会全盘否定求职者的简历、技能和工作经验，哪怕是相关专业出身，也会被判定为<strong>"实操能力不达标、不符合行业标准、无法胜任岗位"</strong>。</p>
+                <p style="margin-top:0.75rem">同时疯狂放大就业焦虑，渲染"当下就业难、无技能根本找不到高薪工作"的氛围，随即抛出"救命稻草"：公司有专属岗前实训通道，只要完成培训，就能直接入职本公司或签约合作企业，承诺保底薪资、转正福利，给求职者画下"零门槛逆袭高薪"的大饼。</p>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-step">第三步</div>
+                <h3>核心收割，诱导付费培训/办理培训贷</h3>
+                <p>这是骗局的核心环节，骗子会以"实训费、教材费、师资费、场地费"等名义，收取几千到数万元不等的培训费用。</p>
+                <ul>
+                    <li>若求职者表示无力一次性支付，会立刻推出"分期方案"，诱导办理<strong>培训贷/求职贷</strong>，声称"培训期无息、上岗后用工资还款、没入职不用还"；</li>
+                    <li>甚至主动对接合作的小额贷款公司、网贷平台，帮求职者<strong>伪造收入证明、银行流水</strong>，绕过风控完成贷款审批，贷款资金直接全额打入骗子公司账户，求职者在不知情的情况下，背上了长达1-3年的分期贷款。</li>
+                </ul>
+                <div class="danger-box">
+                    <p>⚠️ 贷款资金直接全额打入骗子公司账户，求职者未收到任何实际培训服务，却已背负债务。</p>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-step">第四步</div>
+                <h3>承诺作废，包就业完全不兑现</h3>
+                <p>所谓的"岗前培训"，要么是网上随处可找的免费录播课敷衍了事，要么是毫无实操价值的基础内容，与承诺的岗位技能完全脱节。</p>
+                <p style="margin-top:0.75rem">培训结束后，此前的"包入职、包转正、保底薪资"承诺全部作废：</p>
+                <ul>
+                    <li>要么以<strong>"考核不合格"</strong>为由，直接拒绝求职者入职；</li>
+                    <li>要么推荐一些薪资极低、与承诺完全不符的边缘岗位，逼迫求职者主动放弃；</li>
+                    <li>更有甚者，直接<strong>注销公司、人去楼空</strong>，彻底失联。</li>
+                </ul>
+                <div class="danger-box">
+                    <p>⚠️ 最终求职者不仅没找到工作，还背负了巨额贷款，一旦逾期，将面临暴力催收、征信受损，甚至被贷款平台起诉的风险。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 2: 核心坑点 ===== -->
+    <section class="section" style="background:#fff; margin:0; max-width:none; padding:5rem 2rem;">
+        <div style="max-width:900px; margin:0 auto;">
+            <div class="section-header reveal">
+                <div class="section-tag">法律红线</div>
+                <h2 class="section-title">骗局的3个核心坑点</h2>
+                <p class="section-desc">从法律、借贷、维权三个维度，看清骗局的致命陷阱</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card reveal">
+                    <div class="card-icon red">⚖️</div>
+                    <h3>法律层面：岗前收费本身就属于违法行为</h3>
+                    <p>《中华人民共和国劳动合同法》第九条明确规定：用人单位招用劳动者，<strong>不得要求劳动者提供担保或者以其他名义向劳动者收取财物</strong>。正规企业的岗前培训，是用人单位的法定义务，不得向劳动者收取任何费用，更无权强制要求劳动者付费培训才能入职。</p>
+                </div>
+
+                <div class="card reveal">
+                    <div class="card-icon orange">💳</div>
+                    <h3>借贷层面：培训贷的还款义务不会随公司跑路消失</h3>
+                    <p>一旦办理贷款，求职者与贷款平台形成的借贷关系受法律约束，哪怕骗子公司跑路、承诺作废，只要贷款合同合规，求职者依然需要<strong>按时足额还款</strong>。逾期不仅会产生高额罚息，还会影响个人征信，后续考公、贷款买房、办理信用卡都会受到直接限制。</p>
+                </div>
+
+                <div class="card reveal">
+                    <div class="card-icon gold">📄</div>
+                    <h3>维权层面：合同陷阱导致维权难度极大</h3>
+                    <p>骗子公司往往不会与求职者签订劳动合同，而是签署<strong>《培训服务协议》</strong>，把"招聘用工关系"偷换成"培训服务关系"，后续维权只能走民事诉讼流程。多数受害者发现被骗时，公司早已注销、负责人失联，证据链不完整，最终难以追回损失。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 3: 防范指南 ===== -->
+    <section class="section">
+        <div class="section-header reveal">
+            <div class="section-tag">硬核防范</div>
+            <h2 class="section-title">求职者硬核防范指南</h2>
+            <p class="section-desc">守住底线零踩坑，5条铁律护你周全</p>
+        </div>
+
+        <div class="guide-list">
+            <div class="guide-item reveal">
+                <div class="guide-number">1</div>
+                <div class="guide-content">
+                    <h3>牢记核心铁律：凡是入职前让先交钱的，全是骗局，没有例外</h3>
+                    <p>无论是培训费、押金、服装费、保证金、体检费、建档费，任何名义、任何金额的入职前收费，都属于违规行为，一律拒绝，立刻终止沟通。</p>
+                </div>
+            </div>
+
+            <div class="guide-item reveal">
+                <div class="guide-number">2</div>
+                <div class="guide-content">
+                    <h3>警惕"低门槛+高薪"的反常陷阱</h3>
+                    <p>正规企业的薪资与岗位要求、行业水平强挂钩，"无经验、无学历、零基础就能月薪过万"的招聘信息，本质上就是为了吸引急于找工作、找兼职的人群，遇到此类信息直接划走，不要抱有侥幸心理。</p>
+                </div>
+            </div>
+
+            <div class="guide-item reveal">
+                <div class="guide-number">3</div>
+                <div class="guide-content">
+                    <h3>坚决拒绝任何形式的求职相关贷款</h3>
+                    <p>招聘面试全流程中，只要对方提及"分期、贷款、借款、征信"等关键词，无论话术多诱人，都要立刻终止面试，拉黑相关联系人，这是培训贷骗局最明确的信号。</p>
+                </div>
+            </div>
+
+            <div class="guide-item reveal">
+                <div class="guide-number">4</div>
+                <div class="guide-content">
+                    <h3>面试前先核实企业正规资质</h3>
+                    <p>通过国家企业信用信息公示系统、企查查、天眼查等平台，核查企业工商信息：是否有经营异常、行政处罚、相关法律诉讼，经营范围是否包含人力资源服务、劳务派遣，正规招聘机构必须具备对应的人力资源服务许可证。</p>
+                </div>
+            </div>
+
+            <div class="guide-item reveal">
+                <div class="guide-number">5</div>
+                <div class="guide-content">
+                    <h3>全程留存证据，筑牢维权基础</h3>
+                    <p>面试邀约信息、聊天记录、通话录音、宣传材料、签署的所有合同文件、付款凭证，全部完整留存，一旦发现被骗，可第一时间作为维权证据。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 4: 维权渠道 ===== -->
+    <section class="section" style="background:#fff; margin:0; max-width:none; padding:5rem 2rem;">
+        <div style="max-width:900px; margin:0 auto;">
+            <div class="section-header reveal">
+                <div class="section-tag">紧急维权</div>
+                <h2 class="section-title">被骗后的紧急维权渠道</h2>
+                <p class="section-desc">发现被骗不要慌，按步骤行动，最大限度挽回损失</p>
+            </div>
+
+            <div class="action-grid">
+                <div class="action-card reveal">
+                    <div class="action-header">
+                        <h3>🚨 第一时间报警</h3>
+                    </div>
+                    <div class="action-body">
+                        <ul>
+                            <li>携带全部证据材料，到就近的派出所报案</li>
+                            <li>对方的行为涉嫌诈骗、非法经营</li>
+                            <li>符合立案条件的，警方会依法立案侦查</li>
+                            <li>冻结相关账户，追查涉案资金</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="action-card reveal">
+                    <div class="action-header">
+                        <h3>📢 向多部门同步投诉举报</h3>
+                    </div>
+                    <div class="action-body">
+                        <ul>
+                            <li>向当地人社局劳动保障监察大队投诉</li>
+                            <li>拨打12315向市场监督管理局投诉</li>
+                            <li>向招聘平台投诉举报，要求下架岗位</li>
+                            <li>冻结企业账号，配合平台维权</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="action-card reveal">
+                    <div class="action-header">
+                        <h3>💰 针对培训贷的专项处理</h3>
+                    </div>
+                    <div class="action-body">
+                        <ul>
+                            <li>第一时间与贷款平台沟通，说明被骗情况</li>
+                            <li>提交相关证据，要求终止借贷合同</li>
+                            <li>全程留存沟通记录</li>
+                            <li>向银保监会、当地金融监管局投诉举报</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="action-card reveal">
+                    <div class="action-header">
+                        <h3>⚖️ 法律诉讼维权</h3>
+                    </div>
+                    <div class="action-body">
+                        <ul>
+                            <li>掌握涉事企业完整信息的，可提起民事诉讼</li>
+                            <li>要求解除合同、退还全部费用</li>
+                            <li>经济困难的应届生、在校生</li>
+                            <li>可向当地法律援助中心申请免费法律援助</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p class="footer-quote">"正规的企业，永远是给劳动者发放薪酬，而非想方设法让求职者先掏钱。"</p>
+        <p class="footer-sub">守住"入职前不掏一分钱、不碰任何求职贷款"的底线，就能避开99%的招聘骗局。</p>
+    </footer>
+
+    <script>
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

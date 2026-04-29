@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全民反诈指南 | 常见诈骗模式与紧急止损</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'sans-serif'],
+                    },
+                    colors: {
+                        danger: '#ef4444',
+                        dangerDark: '#b91c1c',
+                        warning: '#f59e0b',
+                        safe: '#10b981',
+                        dark: '#1e293b',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'shake': 'shake 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '75%': { transform: 'translateX(5px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .gradient-text { background: linear-gradient(135deg, #f87171 0%, #fbbf24 50%, #f87171 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .count-down { font-variant-numeric: tabular-nums; }
+        .step-number { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .hero-bg { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%); }
+        .pattern-grid { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 40px 40px; }
+        .urgent-glow { box-shadow: 0 0 30px rgba(239, 68, 68, 0.3), inset 0 0 30px rgba(239, 68, 68, 0.05); }
+        .safe-glow { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+        .scroll-indicator { animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+        .type-badge { position: relative; overflow: hidden; }
+        .type-badge::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent); transform: rotate(45deg); animation: shimmer 3s infinite; }
+        @keyframes shimmer { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+        .tab-active { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .tab-inactive { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); }
+        .tab-inactive:hover { background: rgba(255,255,255,0.1); color: white; }
+        .emergency-card { border-left: 4px solid #ef4444; }
+        .rule-card { border-left: 4px solid #f59e0b; }
+        .safe-card { border-left: 4px solid #10b981; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-950 text-white font-sans min-h-screen overflow-x-hidden">
+
+    <!-- 顶部紧急横幅 -->
+    <div id="emergencyBanner" class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white py-2 px-4 text-center text-sm font-medium animate-pulse-slow">
+        <span class="inline-flex items-center gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            全国统一报警电话：<strong class="text-lg mx-1">110</strong> | 国家反诈中心专线：<strong class="text-lg mx-1">96110</strong>
+        </span>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="fixed top-10 left-0 right-0 z-40 glass px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+                <span class="text-xl font-bold tracking-tight">全民反诈指南</span>
+            </div>
+            <div class="hidden md:flex items-center gap-2">
+                <button onclick="scrollToSection('urgent')" class="px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/10 transition">紧急止损</button>
+                <button onclick="scrollToSection('patterns')" class="px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/10 transition">诈骗模式</button>
+                <button onclick="scrollToSection('rules')" class="px-4 py-2 rounded-lg text-sm font-medium hover:bg-white/10 transition">防骗铁律</button>
+                <button onclick="scrollToSection('new')" class="px-4 py-2 rounded-lg text-sm font-medium bg-red-500/20 text-red-400 hover:bg-red-500/30 transition">2025-2026新变种</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero区域 -->
+    <section class="hero-bg pattern-grid relative pt-32 pb-20 px-4 overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-red-500/10 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+        </div>
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium mb-6">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                2025-2026最新诈骗情报
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                <span class="gradient-text">守护钱包</span><br>
+                <span class="text-white">识破每一张</span><span class="text-red-500">面具</span>
+            </h1>
+            <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                覆盖90%以上重灾区的核心诈骗类型，附黄金30分钟紧急止损清单。<br class="hidden md:block">
+                <span class="text-red-400 font-semibold">记住一条就能保命。</span>
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="scrollToSection('urgent')" class="group px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-2xl font-bold text-lg shadow-xl shadow-red-500/25 hover:shadow-red-500/40 transition-all hover:scale-105 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    黄金30分钟止损
+                </button>
+                <button onclick="scrollToSection('patterns')" class="px-8 py-4 bg-white/5 border border-white/10 rounded-2xl font-bold text-lg hover:bg-white/10 transition-all hover:scale-105 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    八大诈骗模式
+                </button>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator">
+            <svg class="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </div>
+    </section>
+
+    <!-- 紧急计时器 -->
+    <section id="urgent" class="py-16 px-4 bg-slate-900/50">
+        <div class="max-w-4xl mx-auto">
+            <div class="urgent-glow bg-gradient-to-br from-red-950/80 to-slate-900/80 rounded-3xl p-8 md:p-12 border border-red-500/20 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
+                            <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-black text-white">黄金30分钟紧急止损</h2>
+                            <p class="text-red-400 text-sm">这几步比先报警更重要，能最大概率追回资金</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-slate-950/50 rounded-2xl p-4 text-center border border-red-500/10">
+                            <div class="text-3xl font-black text-red-500 count-down" id="timerM">30</div>
+                            <div class="text-xs text-slate-500 mt-1">分钟黄金时间</div>
+                        </div>
+                        <div class="bg-slate-950/50 rounded-2xl p-4 text-center border border-red-500/10">
+                            <div class="text-3xl font-black text-red-500 count-down" id="timerS">00</div>
+                            <div class="text-xs text-slate-500 mt-1">秒倒计时</div>
+                        </div>
+                        <div class="bg-slate-950/50 rounded-2xl p-4 text-center border border-red-500/10">
+                            <div class="text-3xl font-black text-red-500">5</div>
+                            <div class="text-xs text-slate-500 mt-1">个必做步骤</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="emergency-card bg-slate-950/40 rounded-2xl p-5 flex gap-4 items-start">
+                            <div class="step-number w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0">1</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white mb-1">立即断网</h3>
+                                <p class="text-slate-400 text-sm">关闭手机WiFi和移动数据，拔掉电脑网线，防止骗子远程操控设备、删除证据</p>
+                            </div>
+                        </div>
+                        <div class="emergency-card bg-slate-950/40 rounded-2xl p-5 flex gap-4 items-start">
+                            <div class="step-number w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0">2</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white mb-1">冻结所有资金通道</h3>
+                                <div class="text-slate-400 text-sm space-y-1">
+                                    <p>• 银行：拨打银行卡背面官方客服，冻结涉案银行卡+挂失网银/手机银行</p>
+                                    <p>• 微信：我→服务→账单→找到对应交易→投诉→涉嫌诈骗→申请冻结对方账户</p>
+                                    <p>• 支付宝：我的→账单→找到对应交易→投诉→举报中心→涉嫌诈骗</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="emergency-card bg-slate-950/40 rounded-2xl p-5 flex gap-4 items-start">
+                            <div class="step-number w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0">3</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white mb-1">完整保留证据</h3>
+                                <p class="text-slate-400 text-sm">不要删除任何聊天记录、转账凭证、对方账号、网址、APP安装包，不要拉黑骗子</p>
+                            </div>
+                        </div>
+                        <div class="emergency-card bg-slate-950/40 rounded-2xl p-5 flex gap-4 items-start">
+                            <div class="step-number w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0">4</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white mb-1">立即报警 + 紧急止付</h3>
+                                <p class="text-slate-400 text-sm">拨打110或就近派出所报案，索要《受案回执》；同时拨打<span class="text-red-400 font-bold">96110</span>申请全国紧急止付</p>
+                            </div>
+                        </div>
+                        <div class="emergency-card bg-slate-950/40 rounded-2xl p-5 flex gap-4 items-start">
+                            <div class="step-number w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0">5</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white mb-1">通知亲友</h3>
+                                <p class="text-slate-400 text-sm">告知你被骗的事，防止骗子冒充你向亲友借钱</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 绝对不能做 -->
+    <section class="py-12 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-gradient-to-br from-orange-950/60 to-slate-900/60 rounded-3xl p-8 border border-orange-500/20">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <h2 class="text-2xl font-black text-white">绝对不能做的事 <span class="text-orange-500 text-base font-normal">做了损失会翻倍</span></h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="flex items-start gap-3 bg-slate-950/40 rounded-xl p-4 border border-orange-500/10">
+                        <span class="text-red-500 text-xl font-bold shrink-0">❌</span>
+                        <p class="text-slate-300 text-sm">不要删除任何聊天记录、转账凭证、对方账号</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-950/40 rounded-xl p-4 border border-orange-500/10">
+                        <span class="text-red-500 text-xl font-bold shrink-0">❌</span>
+                        <p class="text-slate-300 text-sm">不要拉黑骗子，不要和骗子对骂</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-950/40 rounded-xl p-4 border border-orange-500/10">
+                        <span class="text-red-500 text-xl font-bold shrink-0">❌</span>
+                        <p class="text-slate-300 text-sm">不要相信任何"黑客、律师、内部人员"能帮你追回钱</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-950/40 rounded-xl p-4 border border-orange-500/10">
+                        <span class="text-red-500 text-xl font-bold shrink-0">❌</span>
+                        <p class="text-slate-300 text-sm">不要给任何人转"解冻金、手续费、保证金"</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-950/40 rounded-xl p-4 border border-orange-500/10">
+                        <span class="text-red-500 text-xl font-bold shrink-0">❌</span>
+                        <p class="text-slate-300 text-sm">不要继续往平台充钱"凑流水、提现"</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-950/40 rounded-xl p-4 border border-orange-500/10">
+                        <span class="text-red-500 text-xl font-bold shrink-0">❌</span>
+                        <p class="text-slate-300 text-sm">不要按照骗子要求"保密、不告诉家人"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2025-2026新变种 -->
+    <section id="new" class="py-16 px-4 bg-slate-900/30">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-medium mb-4">
+                    <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                    2025-2026 最新情报
+                </div>
+                <h2 class="text-4xl font-black text-white mb-4">骗子已全面升级</h2>
+                <p class="text-slate-400">这4类是造成50万以上大额损失的核心诈骗类型，覆盖90%以上重灾区</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 杀猪盘2.0 -->
+                <div class="card-hover bg-gradient-to-br from-pink-950/40 to-slate-900/60 rounded-3xl p-6 border border-pink-500/20 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 rounded-full blur-2xl"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-2xl">💔</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">杀猪盘 2.0</h3>
+                            <p class="text-pink-400 text-xs">最易赔光积蓄+借贷</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <p class="flex items-start gap-2"><span class="text-pink-500 font-bold">▸</span>新增<strong class="text-white">AI数字人恋爱</strong>：全程AI生成语音、视频、朋友圈，无真人出镜</p>
+                        <p class="flex items-start gap-2"><span class="text-pink-500 font-bold">▸</span>新外衣：<strong class="text-white">跨境电商代运营</strong>、<strong class="text-white">数字藏品/虚拟币代炒</strong>、<strong class="text-white">海外房产托管</strong></p>
+                        <p class="flex items-start gap-2"><span class="text-pink-500 font-bold">▸</span>组合拳：3-6个月感情→诱导小额盈利→怂恿借网贷、抵押房产→平台关服</p>
+                        <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-3 mt-3">
+                            <p class="text-red-400 font-semibold text-xs">⚠️ 新增"二次杀猪"</p>
+                            <p class="text-slate-400 text-xs mt-1">骗子消失后，自称"反诈中心/律师/黑客"的人联系你，说能追回损失，再骗一笔"手续费/保证金"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 冒充公检法3.0 -->
+                <div class="card-hover bg-gradient-to-br from-blue-950/40 to-slate-900/60 rounded-3xl p-6 border border-blue-500/20 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-2xl">👮</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">冒充公检法 3.0</h3>
+                            <p class="text-blue-400 text-xs">最易造成恐慌性转账</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <p class="flex items-start gap-2"><span class="text-blue-500 font-bold">▸</span>改用<strong class="text-white">腾讯会议/钉钉视频</strong>，展示穿制服的AI换脸人像和伪造"电子通缉令"</p>
+                        <p class="flex items-start gap-2"><span class="text-blue-500 font-bold">▸</span>强制要求<strong class="text-white">共享屏幕</strong>，远程操控手机/电脑，直接转走所有余额，甚至帮你申请所有网贷</p>
+                        <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-3 mt-3">
+                            <p class="text-red-400 font-semibold text-xs">⚠️ 新增"冒充反诈中心"</p>
+                            <p class="text-slate-400 text-xs mt-1">谎称你之前被骗的钱已被冻结，需要你先转"解冻金"才能返还</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI裸聊敲诈 -->
+                <div class="card-hover bg-gradient-to-br from-purple-950/40 to-slate-900/60 rounded-3xl p-6 border border-purple-500/20 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center text-2xl">📹</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">AI裸聊敲诈</h3>
+                            <p class="text-purple-400 text-xs">最无底线，可榨干至负债</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <p class="flex items-start gap-2"><span class="text-purple-500 font-bold">▸</span><strong class="text-white">无需你真的裸聊</strong>：骗子用你朋友圈/抖音的照片，AI一键生成你的裸聊视频</p>
+                        <p class="flex items-start gap-2"><span class="text-purple-500 font-bold">▸</span><strong class="text-white">无需下载APP</strong>：通过微信/QQ小程序、短链接就能窃取你的通讯录和相册</p>
+                        <p class="flex items-start gap-2"><span class="text-purple-500 font-bold">▸</span>敲诈升级：不仅要钱，还会诱导你去贷款、卖车卖房，甚至逼迫你参与其他诈骗活动</p>
+                    </div>
+                </div>
+
+                <!-- 政策型虚假项目 -->
+                <div class="card-hover bg-gradient-to-br from-emerald-950/40 to-slate-900/60 rounded-3xl p-6 border border-emerald-500/20 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-2xl">🏛️</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">政策型虚假项目</h3>
+                            <p class="text-emerald-400 text-xs">最易让中老年人上当</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 font-bold">▸</span>打着<strong class="text-white">国家乡村振兴、养老产业、新能源充电桩、光伏电站</strong>等政策旗号</p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 font-bold">▸</span>伪造政府文件和公章，极具迷惑性</p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 font-bold">▸</span>套路：先投几千块试水，按时返息→推出"VIP大额套餐"，承诺年化30%以上→卷款跑路</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 八大诈骗模式 -->
+    <section id="patterns" class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black text-white mb-4">八大常见诈骗模式</h2>
+                <p class="text-slate-400">覆盖90%以上诈骗案件的核心类型，每一条都值得仔细阅读</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="card-hover bg-slate-900/60 rounded-2xl p-5 border border-slate-700/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-pink-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">💔</div>
+                    <h3 class="font-bold text-white mb-2">杀猪盘</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">网恋交友、塑造完美人设，先聊感情再带你做虚假投资、博彩、虚拟币。小额能提现，大额平台跑路。</p>
+                </div>
+                <div class="card-hover bg-slate-900/60 rounded-2xl p-5 border border-slate-700/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">👮</div>
+                    <h3 class="font-bold text-white mb-2">冒充公检法</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">冒充公安、检察院、法院，谎称涉嫌洗钱、犯罪，伪造通缉令制造恐慌，诱导转账到"安全账户"。</p>
+                </div>
+                <div class="card-hover bg-slate-900/60 rounded-2xl p-5 border border-slate-700/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">📹</div>
+                    <h3 class="font-bold text-white mb-2">裸聊敲诈</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">引诱下载APP或点木马链接，盗取通讯录；诱导裸聊或AI合成不雅视频，威胁群发亲友，连环敲诈。</p>
+                </div>
+                <div class="card-hover bg-slate-900/60 rounded-2xl p-5 border border-slate-700/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">🏗️</div>
+                    <h3 class="font-bold text-white mb-2">虚假项目/工程</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">虚构工程、乡村振兴、光伏、养老项目，以保证金、疏通费、启动资金为名，层层收费骗钱。</p>
+                </div>
+                <div class="card-hover bg-slate-900/60 rounded-2xl p-5 border border-slate-700/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">🛒</div>
+                    <h3 class="font-bold text-white mb-2">刷单返利</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">先小额返利获取信任，后续做连单、垫单、任务单，越投越大，最后以任务未完成为由拒绝返现跑路。</p>
+                </div>
+                <div class="card-hover bg-slate-900/60 rounded-2xl p-5 border border-slate-700/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">💳</div>
+                    <h3 class="font-bold text-white mb-2">网贷征信</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">谎称征信有问题、贷款额度不足，以刷流水、保证金、解冻金为由诱导转账，还套取信息借网贷。</p>
+                </div>
+                <div class="card-hover bg-slate-900/60 rounded-2xl p-5 border border-slate-700/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">📦</div>
+                    <h3 class="font-bold text-white mb-2">冒充客服退款</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">冒充电商、快递、平台客服，谎称订单异常、包裹丢失，发钓鱼链接、套取验证码、银行卡信息。</p>
+                </div>
+                <div class="card-hover bg-slate-900/60 rounded-2xl p-5 border border-slate-700/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">📈</div>
+                    <h3 class="font-bold text-white mb-2">虚假投资理财</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">陌生好友、直播间拉群，荐股、带单理财、内部渠道，诱导进虚假APP，全程人为操控涨跌。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 100%是诈骗的铁律 -->
+    <section id="rules" class="py-16 px-4 bg-slate-900/30">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-black text-white mb-4">100%是诈骗的铁律</h2>
+                <p class="text-slate-400">记住一条就能保命</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="rule-card bg-slate-900/60 rounded-2xl p-6 flex items-start gap-4 border border-slate-700/50">
+                    <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold text-lg">凡是让你"保密、不要告诉家人朋友"的</p>
+                        <p class="text-slate-500 text-sm mt-1">骗子最怕你清醒，最怕你找人商量</p>
+                    </div>
+                </div>
+                <div class="rule-card bg-slate-900/60 rounded-2xl p-6 flex items-start gap-4 border border-slate-700/50">
+                    <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold text-lg">凡是要求你"下载陌生APP、点击陌生链接、共享屏幕"的</p>
+                        <p class="text-slate-500 text-sm mt-1">这些都是窃取你信息的直接通道</p>
+                    </div>
+                </div>
+                <div class="rule-card bg-slate-900/60 rounded-2xl p-6 flex items-start gap-4 border border-slate-700/50">
+                    <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold text-lg">凡是声称"高回报、稳赚不赔、躺着赚钱"的投资</p>
+                        <p class="text-slate-500 text-sm mt-1">天上不会掉馅饼，只会掉陷阱</p>
+                    </div>
+                </div>
+                <div class="rule-card bg-slate-900/60 rounded-2xl p-6 flex items-start gap-4 border border-slate-700/50">
+                    <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold text-lg">凡是自称"公检法、反诈中心"让你转"安全账户"的</p>
+                        <p class="text-slate-500 text-sm mt-1">公检法从不电话办案，没有安全账户</p>
+                    </div>
+                </div>
+                <div class="rule-card bg-slate-900/60 rounded-2xl p-6 flex items-start gap-4 border border-slate-700/50">
+                    <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold text-lg">凡是陌生人加你好友，聊几天就跟你谈钱、谈投资的</p>
+                        <p class="text-slate-500 text-sm mt-1">感情是手段，骗钱才是目的</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 通用防骗口诀 -->
+    <section class="py-12 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="safe-glow bg-gradient-to-br from-emerald-950/60 to-slate-900/60 rounded-3xl p-8 border border-emerald-500/20 text-center">
+                <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <h2 class="text-3xl font-black text-white mb-6">通用防骗口诀</h2>
+                <div class="space-y-3 text-lg">
+                    <p class="text-emerald-400 font-medium">陌生链接不乱点、陌生APP不乱装</p>
+                    <p class="text-emerald-400 font-medium">网恋不谈钱、投资不跟风</p>
+                    <p class="text-emerald-400 font-medium">公检法从不电话办案、没有安全账户</p>
+                    <p class="text-emerald-400 font-medium">凡是高回报稳赚不赔，全是诈骗</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部紧急联系 -->
+    <section class="py-16 px-4 bg-slate-900/50">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <a href="tel:110" class="group bg-gradient-to-br from-red-600 to-red-700 rounded-3xl p-8 border border-red-500/30 hover:shadow-2xl hover:shadow-red-500/20 transition-all hover:scale-105">
+                    <div class="text-5xl font-black text-white mb-2">110</div>
+                    <div class="text-red-200 font-medium">全国统一报警电话</div>
+                    <div class="mt-4 text-red-300 text-sm">点击直接拨打</div>
+                </a>
+                <a href="tel:96110" class="group bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-8 border border-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/20 transition-all hover:scale-105">
+                    <div class="text-5xl font-black text-white mb-2">96110</div>
+                    <div class="text-blue-200 font-medium">国家反诈中心专线</div>
+                    <div class="mt-4 text-blue-300 text-sm">点击直接拨打</div>
+                </a>
+            </div>
+            <p class="text-slate-500 text-sm">被骗不是你的错，及时止损最重要！请转发给身边的老人、孩子和朋友</p>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-8 px-4 text-center text-slate-600 text-sm border-t border-slate-800">
+        <p>全民反诈指南 · 守护财产安全</p>
+        <p class="mt-2">信息来源：国家反诈中心 | 内容仅供参考，请以官方信息为准</p>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 30分钟倒计时
+        let timeLeft = 30 * 60;
+        function updateTimer() {
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            document.getElementById('timerM').textContent = m.toString().padStart(2, '0');
+            document.getElementById('timerS').textContent = s.toString().padStart(2, '0');
+            if (timeLeft > 0) timeLeft--;
+            else timeLeft = 30 * 60;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // 滚动时导航栏效果
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > 100) {
+                nav.classList.add('bg-slate-950/90');
+            } else {
+                nav.classList.remove('bg-slate-950/90');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // 卡片入场动画
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
