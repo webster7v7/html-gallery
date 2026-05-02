@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>万物工具箱 - Windows 必备软件精选</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0a0e1a',
+                            800: '#111827',
+                            700: '#1f2937',
+                            600: '#374151',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: #0a0e1a;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 
+                        0 0 20px rgba(59, 130, 246, 0.15);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5),
+                         0 0 40px rgba(59, 130, 246, 0.3);
+        }
+
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .icon-box {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .glass-card:hover .icon-box::before {
+            transform: translateX(100%);
+        }
+
+        .tag-pill {
+            transition: all 0.3s ease;
+        }
+
+        .tag-pill:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .category-badge {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .tool-icon {
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        @media (max-width: 640px) {
+            .glass-card:hover {
+                transform: translateY(-4px);
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-200 font-sans antialiased">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+    <!-- Hero Section -->
+    <header class="relative z-10 pt-20 pb-16 px-4 hero-gradient">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm mb-8 animate-fade-in-up">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Windows 平台精选 · 无广告 · 轻量 · 高效
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight">
+                <span class="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent glow-text">
+                    万物工具箱
+                </span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-4">
+                口碑极佳的 Windows 必备软件与资源站点
+            </p>
+            <p class="text-gray-500 max-w-xl mx-auto">
+                从安全防护到影音娱乐，从效率提升到资源获取，一站式解决你的软件需求
+            </p>
+
+            <div class="mt-10 flex flex-wrap justify-center gap-4 text-sm text-gray-500">
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-400"></span>无广告骚扰</span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-blue-400"></span>轻量高效</span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-purple-400"></span>纯净安全</span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-orange-400"></span>免费实用</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative z-10 max-w-7xl mx-auto px-4 pb-24">
+
+        <!-- Category 1 -->
+        <section class="mb-20">
+            <div class="flex items-center gap-4 mb-10 scroll-reveal">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white">桌面工具类软件</h2>
+                    <p class="text-gray-500 mt-1">装机必备，提升日常使用体验</p>
+                </div>
+                <div class="flex-1 h-px bg-gradient-to-r from-gray-700 to-transparent ml-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 火绒安全 -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-xs font-medium border border-orange-500/20">安全防护</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">火绒安全软件</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">Windows 平台轻量纯净的安全防护软件，主打无广告、无捆绑、低资源占用。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">病毒查杀</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">弹窗拦截</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">垃圾清理</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">启动项管理</span>
+                    </div>
+                </div>
+
+                <!-- PotPlayer -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group" style="transition-delay: 0.1s;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center shadow-lg shadow-yellow-500/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-400 text-xs font-medium border border-yellow-500/20">影音播放</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-yellow-400 transition-colors">PotPlayer</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">全能型本地音视频播放器，免费无广告，支持几乎所有格式，解码能力极强。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">4K/8K 高清</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">倍速播放</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">字幕加载</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">直播源</span>
+                    </div>
+                </div>
+
+                <!-- Catsxp -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group" style="transition-delay: 0.2s;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-medium border border-blue-500/20">浏览器</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Catsxp 猫眼浏览器</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">基于 Chromium 内核的轻量化安全浏览器，砍掉冗余组件，启动更快、内存更低。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">广告拦截</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">鼠标手势</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">隐私保护</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">超级拖拽</span>
+                    </div>
+                </div>
+
+                <!-- Bandizip -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-600/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-medium border border-blue-500/20">压缩工具</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Bandizip</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">跨平台全能压缩/解压缩工具，支持几乎所有格式，解压速度快，界面清爽。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">ZIP/7Z/RAR</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">智能解压</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">加密压缩</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">图片预览</span>
+                    </div>
+                </div>
+
+                <!-- Honeyview -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group" style="transition-delay: 0.1s;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-medium border border-amber-500/20">图片查看</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">Honeyview 蜂蜜浏览器</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">高速图片查看器，轻量无广告，打开速度极快，支持几乎所有图片格式。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">RAW/PSD</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">GIF/WebP</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">批量转换</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">压缩包直看</span>
+                    </div>
+                </div>
+
+                <!-- PixPin -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group" style="transition-delay: 0.2s;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-medium border border-emerald-500/20">截图录屏</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">PixPin</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">全能型截图/标注/录屏工具，功能远超系统自带截图，轻量无广告。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">滚动长截图</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">OCR 识别</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">屏幕贴图</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">GIF 录制</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category 2 -->
+        <section>
+            <div class="flex items-center gap-4 mb-10 scroll-reveal">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white">效率工具 + 资源站点</h2>
+                    <p class="text-gray-500 mt-1">提升效率，获取纯净软件资源</p>
+                </div>
+                <div class="flex-1 h-px bg-gradient-to-r from-gray-700 to-transparent ml-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 优效日历 -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-medium border border-purple-500/20">日程管理</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">优效日历</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">桌面日历/日程管理工具，与系统时间栏深度整合，完美替代系统自带日历。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">公历/农历</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">节假日标注</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">日程提醒</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">多平台同步</span>
+                    </div>
+                </div>
+
+                <!-- mefcl -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group" style="transition-delay: 0.1s;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-lg shadow-pink-500/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-pink-500/10 text-pink-400 text-xs font-medium border border-pink-500/20">音乐播放</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-pink-400 transition-colors">mefcl</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">轻量无广告的音乐播放与资源工具，支持本地无损播放，可解析多平台资源。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">无损播放</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">在线解析</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">无损下载</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">极简界面</span>
+                    </div>
+                </div>
+
+                <!-- 果核剥壳 -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-medium border border-cyan-500/20">资源站点</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">果核剥壳</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">国内知名纯净软件资源分享网站，主打绿色免安装、去广告、无捆绑的电脑软件。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">绿色软件</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">免安装版</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">使用教程</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">安全检测</span>
+                    </div>
+                </div>
+
+                <!-- 423Down -->
+                <div class="glass-card rounded-2xl p-6 scroll-reveal group" style="transition-delay: 0.1s;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/20">
+                            <svg class="w-7 h-7 text-white tool-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        </div>
+                        <span class="category-badge px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-medium border border-green-500/20">资源站点</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-green-400 transition-colors">423Down</h3>
+                    <p class="text-sm text-gray-400 mb-3 leading-relaxed">国内口碑顶尖的纯净软件分享网站，所有软件经人工检测，去除捆绑和弹窗。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">官方原版</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">便携版</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">去广告版</span>
+                        <span class="tag-pill px-2.5 py-1 rounded-md bg-gray-700/50 text-gray-300 text-xs">安装教程</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="mt-20 scroll-reveal">
+            <div class="glass-card rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5"></div>
+                <div class="relative z-10">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/20">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">精选原则</h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto leading-relaxed mb-8">
+                        以上所有软件/网站均经过严格筛选，确保<span class="text-blue-400">无广告</span>、<span class="text-green-400">无捆绑</span>、<span class="text-purple-400">轻量高效</span>。
+                        覆盖安全防护、影音娱乐、文件处理、截图录屏、日程管理、音乐播放及软件资源获取等全场景需求，
+                        是 Windows 用户装机配置与日常使用的首选方案。
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+                        <div class="flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-lg">🛡️</span>
+                            <span>安全可信</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-lg">🚀</span>
+                            <span>轻量快速</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-lg">🎯</span>
+                            <span>纯净无扰</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-lg">💎</span>
+                            <span>免费实用</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-gray-800/50 py-8 text-center text-gray-600 text-sm">
+        <p>万物工具箱 · Windows 必备软件精选</p>
+    </footer>
+
+    <script>
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Mouse follow glow effect on cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+</html>
