@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国内外广告营销投放管理平台汇总</title>
+<style>
+  :root {
+    --bg: #0b0e1a;
+    --bg-card: #141830;
+    --bg-card-hover: #1a2040;
+    --text: #e8eaf6;
+    --text-dim: #9aa3c7;
+    --accent-1: #ff5e7d;  /* 粉红 - 种草/社交 */
+    --accent-2: #ffb84d;  /* 橙金 - 电商 */
+    --accent-3: #4dffb8;  /* 青绿 - 效果广告 */
+    --accent-4: #6e8bff;  /* 蓝紫 - 搜索 */
+    --accent-5: #b56eff;  /* 紫 - 出海 */
+    --radius: 16px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ===== 背景动态光斑 ===== */
+  .glow { position: fixed; border-radius: 50%; filter: blur(120px); opacity: .18; z-index: 0; pointer-events: none; }
+  .glow-1 { width: 500px; height: 500px; background: var(--accent-4); top: -150px; left: -100px; animation: float1 14s ease-in-out infinite; }
+  .glow-2 { width: 420px; height: 420px; background: var(--accent-1); top: 30%; right: -150px; animation: float2 18s ease-in-out infinite; }
+  .glow-3 { width: 460px; height: 460px; background: var(--accent-5); bottom: -150px; left: 30%; animation: float1 20s ease-in-out infinite reverse; }
+  @keyframes float1 { 50% { transform: translate(60px, 40px) scale(1.1); } }
+  @keyframes float2 { 50% { transform: translate(-50px, -60px) scale(.92); } }
+
+  .wrap { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== Hero ===== */
+  header { padding: 90px 0 40px; text-align: center; }
+  .badge {
+    display: inline-block; padding: 6px 18px; border-radius: 999px;
+    background: rgba(110,139,255,.12); border: 1px solid rgba(110,139,255,.35);
+    color: var(--accent-4); font-size: 13px; letter-spacing: 2px; margin-bottom: 22px;
+  }
+  h1 {
+    font-size: clamp(30px, 5vw, 52px); font-weight: 800; line-height: 1.25;
+    background: linear-gradient(100deg, #fff 20%, var(--accent-4) 45%, var(--accent-1) 70%, var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    background-size: 200% auto; animation: shine 6s linear infinite;
+  }
+  @keyframes shine { to { background-position: 200% center; } }
+  .subtitle { color: var(--text-dim); margin-top: 16px; font-size: 16px; }
+  .stats { display: flex; justify-content: center; gap: 48px; margin-top: 36px; flex-wrap: wrap; }
+  .stat b { font-size: 30px; display: block; }
+  .stat:nth-child(1) b { color: var(--accent-4); }
+  .stat:nth-child(2) b { color: var(--accent-3); }
+  .stat:nth-child(3) b { color: var(--accent-1); }
+  .stat span { font-size: 13px; color: var(--text-dim); }
+
+  /* ===== 搜索 & 筛选 ===== */
+  .toolbar { position: sticky; top: 0; z-index: 50; padding: 16px 0; backdrop-filter: blur(14px); background: rgba(11,14,26,.8); border-bottom: 1px solid rgba(255,255,255,.06); }
+  .search-box { max-width: 520px; margin: 0 auto 14px; position: relative; }
+  .search-box input {
+    width: 100%; padding: 12px 18px 12px 44px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12);
+    background: var(--bg-card); color: var(--text); font-size: 14px; outline: none; transition: .3s;
+  }
+  .search-box input:focus { border-color: var(--accent-4); box-shadow: 0 0 0 4px rgba(110,139,255,.15); }
+  .search-box::before { content: "🔍"; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 14px; }
+  .filters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 8px 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14);
+    background: transparent; color: var(--text-dim); cursor: pointer; font-size: 14px; transition: .25s;
+  }
+  .filter-btn:hover { color: #fff; border-color: rgba(255,255,255,.4); transform: translateY(-1px); }
+  .filter-btn.active { background: linear-gradient(90deg, var(--accent-4), var(--accent-5)); color: #fff; border-color: transparent; box-shadow: 0 4px 18px rgba(110,139,255,.35); }
+
+  /* ===== 分区标题 ===== */
+  section { padding: 56px 0 10px; }
+  .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+  .sec-head .icon { font-size: 26px; }
+  .sec-head h2 { font-size: 24px; }
+  .sec-head .line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.2), transparent); }
+
+  /* ===== 卡片网格 ===== */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--bg-card); border: 1px solid rgba(255,255,255,.07); border-radius: var(--radius);
+    padding: 24px; position: relative; overflow: hidden; cursor: default;
+    transition: transform .35s cubic-bezier(.2,.8,.3,1), box-shadow .35s, border-color .35s, background .35s;
+    opacity: 0; transform: translateY(28px);
+  }
+  .card.show { opacity: 1; transform: translateY(0); }
+  .card::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+    background: var(--bar, linear-gradient(90deg, var(--accent-4), var(--accent-5)));
+  }
+  .card:hover { transform: translateY(-6px); background: var(--bg-card-hover); border-color: rgba(255,255,255,.18); box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+  .card h3 { font-size: 18px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tag { font-size: 11px; padding: 2px 10px; border-radius: 999px; font-weight: normal; }
+  .tag-owner { background: rgba(255,255,255,.1); color: var(--text-dim); }
+  .card .cover { color: var(--text-dim); font-size: 13.5px; margin: 10px 0; }
+  .card .pos { font-size: 13.5px; }
+  .card .pos b { color: #fff; }
+  .sub { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-size: 12px; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: var(--text-dim); transition: .25s; }
+  .card:hover .chip { border-color: rgba(255,255,255,.3); color: #fff; }
+
+  /* 类别色 */
+  .c-search  { --bar: linear-gradient(90deg, var(--accent-4), #9db4ff); }  .c-search  h3 { color: var(--accent-4); }
+  .c-feed    { --bar: linear-gradient(90deg, var(--accent-3), #2dd4a8); }  .c-feed    h3 { color: var(--accent-3); }
+  .c-social  { --bar: linear-gradient(90deg, var(--accent-1), #ff8fa8); }  .c-social  h3 { color: var(--accent-1); }
+  .c-device  { --bar: linear-gradient(90deg, #4dd0ff, #7ce0ff); }          .c-device  h3 { color: #4dd0ff; }
+  .c-ecom    { --bar: linear-gradient(90deg, var(--accent-2), #ffd48a); }  .c-ecom    h3 { color: var(--accent-2); }
+  .c-overseas{ --bar: linear-gradient(90deg, var(--accent-5), #d9a8ff); }  .c-overseas h3 { color: var(--accent-5); }
+
+  /* ===== 选型参考 ===== */
+  .reference { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+  .ref-card {
+    padding: 22px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,.1);
+    background: linear-gradient(145deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
+    transition: .3s; position: relative;
+  }
+  .ref-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 14px 34px rgba(0,0,0,.4); }
+  .ref-card .scene { font-size: 13px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 8px; }
+  .ref-card .sol { font-size: 17px; font-weight: 700; }
+  .ref-card::after { content: "→"; position: absolute; right: 20px; top: 22px; opacity: 0; transition: .3s; }
+  .ref-card:hover::after { opacity: 1; right: 14px; }
+  .r1 { border-left: 3px solid var(--accent-4); } .r1 .sol { color: var(--accent-4); }
+  .r2 { border-left: 3px solid var(--accent-2); } .r2 .sol { color: var(--accent-2); }
+  .r3 { border-left: 3px solid var(--accent-1); } .r3 .sol { color: var(--accent-1); }
+  .r4 { border-left: 3px solid var(--accent-5); } .r4 .sol { color: var(--accent-5); }
+  .r5 { border-left: 3px solid #4dd0ff; }         .r5 .sol { color: #4dd0ff; }
+  .r6 { border-left: 3px solid var(--accent-3); } .r6 .sol { color: var(--accent-3); }
+
+  /* ===== 页脚 ===== */
+  footer { text-align: center; padding: 60px 0 40px; color: var(--text-dim); font-size: 13px; }
+  .note { margin-top: 8px; opacity: .6; }
+  .empty { text-align: center; color: var(--text-dim); padding: 60px 0; display: none; }
+
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
+    .stats { gap: 28px; }
+  }
+
+  /* ===== 官方后台跳转按钮 ===== */
+  .admin-btns { display: inline-flex; gap: 6px; margin-left: auto; }
+  .admin-btn {
+    font-size: 11.5px; padding: 4px 12px; border-radius: 999px;
+    border: 1px solid currentColor; color: inherit; text-decoration: none;
+    opacity: .75; transition: .25s; white-space: nowrap;
+  }
+  .admin-btn:hover {
+    opacity: 1; transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0,0,0,.35);
+    -webkit-text-fill-color: var(--bg); color: var(--bg);
+  }
+  /* 悬停底色需按分类显式指定：currentColor 会跟随 color 一起解析成深色，导致按钮整体变纯黑 */
+  .c-search   .admin-btn:hover { background: var(--accent-4); }
+  .c-feed     .admin-btn:hover { background: var(--accent-3); }
+  .c-social   .admin-btn:hover { background: var(--accent-1); }
+  .c-device   .admin-btn:hover { background: #4dd0ff; }
+  .c-ecom     .admin-btn:hover { background: var(--accent-2); }
+  .c-overseas .admin-btn:hover { background: var(--accent-5); }
+  .card h3 { display: flex; align-items: center; gap: 8px; width: 100%; }
+
+  /* ===== 图标按钮（一键复制 / 书签勾选）===== */
+  .admin-btn.icon-btn { cursor: pointer; font-family: inherit; background: transparent; padding: 4px 9px; }
+  .admin-btn.icon-btn:hover {
+    background: rgba(255,255,255,.14); color: inherit; -webkit-text-fill-color: currentColor;
+  }
+  .admin-btn.star.on {
+    opacity: 1; color: var(--accent-2); -webkit-text-fill-color: var(--accent-2);
+    border-color: rgba(255,184,77,.6);
+  }
+
+  /* ===== 开户资质 / 计费模式折叠面板（P3）===== */
+  .card .qual {
+    margin-top: 14px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,.12);
+    font-size: 12.5px; color: var(--text-dim);
+  }
+  .card .qual summary { cursor: pointer; list-style: none; user-select: none; transition: .25s; }
+  .card .qual summary::-webkit-details-marker { display: none; }
+  .card .qual summary::before { content: "▸"; display: inline-block; margin-right: 6px; transition: transform .2s; }
+  .card .qual[open] summary::before { transform: rotate(90deg); }
+  .card .qual summary:hover { color: #fff; }
+  .card .qual p { margin-top: 6px; line-height: 1.6; }
+  .card .qual p b { color: var(--text); font-weight: 600; }
+
+  /* ===== 导出书签按钮 ===== */
+  .export-btn {
+    padding: 8px 20px; border-radius: 999px; cursor: pointer; font-size: 14px; transition: .25s;
+    border: 1px solid rgba(181,110,255,.5); background: rgba(181,110,255,.12); color: var(--accent-5);
+    font-family: inherit;
+  }
+  .export-btn:hover {
+    background: rgba(181,110,255,.22); transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(181,110,255,.3);
+  }
+
+  /* ===== Toast 提示 ===== */
+  #toast {
+    position: fixed; left: 50%; bottom: 36px; transform: translateX(-50%) translateY(12px);
+    background: rgba(26,32,64,.95); border: 1px solid rgba(110,139,255,.4); color: var(--text);
+    padding: 10px 22px; border-radius: 999px; font-size: 13.5px; z-index: 99;
+    opacity: 0; pointer-events: none; transition: .3s; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  }
+  #toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+<div class="glow glow-3"></div>
+
+<div class="wrap">
+
+  <!-- Hero -->
+  <header>
+    <span class="badge">AD PLATFORM GUIDE</span>
+    <h1>国内外广告营销投放管理平台汇总</h1>
+    <p class="subtitle">搜索 · 信息流短视频 · 垂直社区 · 手机厂商 · 电商站内 · 海外出海 · 一站式导航</p>
+    <div class="stats">
+      <div class="stat"><b data-count="20">0</b><span>收录平台</span></div>
+      <div class="stat"><b data-count="9">0</b><span>分类场景</span></div>
+      <div class="stat"><b data-count="6">0</b><span>选型方案</span></div>
+    </div>
+  </header>
+
+  <!-- 工具栏 -->
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="搜索平台，如：巨量引擎 / Google / 小红书 …">
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" data-f="all">全部</button>
+      <button class="filter-btn" data-f="search">🔍 搜索类</button>
+      <button class="filter-btn" data-f="feed">🎬 信息流短视频</button>
+      <button class="filter-btn" data-f="social">✨ 垂直社区</button>
+      <button class="filter-btn" data-f="device">📱 手机厂商</button>
+      <button class="filter-btn" data-f="ecom">🛒 电商站内</button>
+      <button class="filter-btn" data-f="overseas">🌍 海外出海</button>
+      <button id="export-btn" title="点击卡片右上角 ☆ 勾选平台后，按分类导出书签文件">🔖 导出书签</button>
+    </div>
+  </div>
+
+  <!-- 国内 · 搜索类 -->
+  <section data-cat="search">
+    <div class="sec-head"><span class="icon">🔍</span><h2>国内 · 搜索类广告</h2><span class="line"></span></div>
+    <div class="grid">
+      <div class="card c-search">
+        <h3>百度营销（百度推广）<span class="tag tag-owner">百度</span></h3>
+        <div class="cover">覆盖：百度搜索 / 百度信息流 / 百青藤联盟</div>
+        <div class="pos"><b>核心定位：</b>关键词搜索 + 信息流，B2B、高客单、线索获客首选。</div>
+      </div>
+      <div class="card c-search">
+        <h3>神马搜索（UC 广告）<span class="tag tag-owner">阿里</span></h3>
+        <div class="cover">覆盖：UC 浏览器 / 夸克搜索</div>
+        <div class="pos"><b>核心定位：</b>移动端搜索流量。</div>
+      </div>
+      <div class="card c-search">
+        <h3>360 智慧商业（360 推广）<span class="tag tag-owner">360</span></h3>
+        <div class="cover">覆盖：360 浏览器 / PC + 移动端搜索 / 信息流</div>
+        <div class="pos"><b>核心定位：</b>PC 搜索补充流量。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 国内 · 短视频 & 信息流 -->
+  <section data-cat="feed">
+    <div class="sec-head"><span class="icon">🎬</span><h2>国内 · 短视频 & 综合信息流</h2><span class="line"></span></div>
+    <div class="grid">
+      <div class="card c-feed">
+        <h3>巨量引擎<span class="tag tag-owner">字节跳动</span></h3>
+        <div class="cover">覆盖：抖音 / 头条 / 西瓜 / 番茄小说 / 穿山甲联盟</div>
+        <div class="pos"><b>核心定位：</b>效果广告主流首选，内容生态最全。</div>
+        <div class="sub"><span class="chip">巨量广告 AD</span><span class="chip">巨量千川 · 电商投流</span><span class="chip">巨量本地推</span><span class="chip">DOU+ 内容加热</span></div>
+      </div>
+      <div class="card c-feed">
+        <h3>磁力智投<span class="tag tag-owner">快手 · 磁力引擎</span></h3>
+        <div class="cover">覆盖：快手 / 快手极速版 / 快手联盟</div>
+        <div class="pos"><b>核心定位：</b>下沉市场优势明显。</div>
+        <div class="sub"><span class="chip">磁力金牛 · 电商</span><span class="chip">磁力本地推</span></div>
+      </div>
+      <div class="card c-feed">
+        <h3>腾讯广告<span class="tag tag-owner">腾讯 · 原广点通 ADQ</span></h3>
+        <div class="cover">覆盖：朋友圈 / 视频号 / 公众号 / QQ / 小程序 / 腾讯新闻 / 优量联盟</div>
+        <div class="pos"><b>核心定位：</b>社交生态，私域 / 小程序链路强，适合本地、品牌、线索。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 国内 · 垂直社区 -->
+  <section data-cat="social">
+    <div class="sec-head"><span class="icon">✨</span><h2>国内 · 垂直社区平台</h2><span class="line"></span></div>
+    <div class="grid">
+      <div class="card c-social">
+        <h3>小红书聚光平台<span class="tag tag-owner">小红书</span></h3>
+        <div class="cover">覆盖：小红书信息流 / 搜索广告</div>
+        <div class="pos"><b>核心定位：</b>一二线年轻群体，美妆、家居、消费品种草转化，搜索广告效果突出。</div>
+      </div>
+      <div class="card c-social">
+        <h3>知乎商业投放平台（知+）<span class="tag tag-owner">知乎</span></h3>
+        <div class="cover">覆盖：知乎信息流 / 知+</div>
+        <div class="pos"><b>核心定位：</b>高知人群，B2B、教育、SaaS、专业服务，长内容种草。</div>
+      </div>
+      <div class="card c-social">
+        <h3>B 站花火 + 效果广告<span class="tag tag-owner">哔哩哔哩</span></h3>
+        <div class="cover">覆盖：B 站全站</div>
+        <div class="pos"><b>核心定位：</b>Z 世代，数码、游戏、潮品、年轻向品牌。</div>
+      </div>
+      <div class="card c-social">
+        <h3>微博营销平台<span class="tag tag-owner">微博</span></h3>
+        <div class="cover">覆盖：微博信息流 / 热搜广告</div>
+        <div class="pos"><b>核心定位：</b>品牌曝光、热点营销。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 国内 · 手机厂商 -->
+  <section data-cat="device">
+    <div class="sec-head"><span class="icon">📱</span><h2>国内 · 手机厂商广告</h2><span class="line"></span></div>
+    <div class="grid">
+      <div class="card c-device">
+        <h3>华为广告（HUAWEI Ads）<span class="tag tag-owner">华为</span></h3>
+        <div class="cover">覆盖：华为手机系统 / 应用市场</div>
+      </div>
+      <div class="card c-device">
+        <h3>OPPO 营销平台（OPPO Ads）<span class="tag tag-owner">OPPO</span></h3>
+        <div class="cover">覆盖：OPPO / realme</div>
+      </div>
+      <div class="card c-device">
+        <h3>vivo 营销平台（vivo Ads）<span class="tag tag-owner">vivo</span></h3>
+        <div class="cover">覆盖：vivo / iQOO</div>
+      </div>
+    </div>
+    <p style="color:var(--text-dim);font-size:13.5px;margin-top:14px;border-left:3px solid #4dd0ff;padding-left:12px;">
+      💡 优势：应用分发、APP 下载、工具场景流量。
+    </p>
+  </section>
+
+  <!-- 国内 · 电商站内 -->
+  <section data-cat="ecom">
+    <div class="sec-head"><span class="icon">🛒</span><h2>国内 · 电商站内广告</h2><span class="line"></span></div>
+    <div class="grid">
+      <div class="card c-ecom">
+        <h3>万相台 / 直通车 / 引力魔方<span class="tag tag-owner">阿里 · 淘天</span></h3>
+        <div class="cover">覆盖：淘宝 / 天猫站内</div>
+        <div class="pos"><b>核心定位：</b>电商商家成交投流。</div>
+      </div>
+      <div class="card c-ecom">
+        <h3>京东京准通<span class="tag tag-owner">京东</span></h3>
+        <div class="cover">覆盖：京东商城站内广告</div>
+        <div class="pos"><b>核心定位：</b>京东生态商家投放。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 海外主流 -->
+  <section data-cat="overseas">
+    <div class="sec-head"><span class="icon">🌍</span><h2>海外主流广告投放平台（出海）</h2><span class="line"></span></div>
+    <div class="grid">
+      <div class="card c-overseas">
+        <h3>Google Ads<span class="tag tag-owner">谷歌</span></h3>
+        <div class="cover">覆盖：Google 搜索 / YouTube / 谷歌展示网络</div>
+        <div class="pos"><b>核心定位：</b>全球搜索意图流量，出海基础盘。</div>
+      </div>
+      <div class="card c-overseas">
+        <h3>Microsoft Advertising<span class="tag tag-owner">必应</span></h3>
+        <div class="cover">覆盖：Bing 必应搜索</div>
+        <div class="pos"><b>核心定位：</b>北美 B2B 性价比，可直接导入 Google 广告计划。</div>
+      </div>
+      <div class="card c-overseas">
+        <h3>Meta Ads<span class="tag tag-owner">Meta 商务后台</span></h3>
+        <div class="cover">覆盖：Facebook / Instagram / Reels / Messenger</div>
+        <div class="pos"><b>核心定位：</b>全球最大社交广告，DTC 电商、APP 安装、再营销，Lookalike 相似人群能力强。</div>
+      </div>
+      <div class="card c-overseas">
+        <h3>TikTok Ads<span class="tag tag-owner">TikTok Business Center</span></h3>
+        <div class="cover">覆盖：海外版抖音</div>
+        <div class="pos"><b>核心定位：</b>短视频流量，Z 世代，消费品、独立站爆量，Spark Ads 加热原生内容。</div>
+      </div>
+      <div class="card c-overseas">
+        <h3>LinkedIn Ads<span class="tag tag-owner">领英</span></h3>
+        <div class="cover">覆盖：LinkedIn 全站</div>
+        <div class="pos"><b>核心定位：</b>B2B 出海专属，可定向职位、公司规模，适合 SaaS、企业服务、招聘，单价偏高。</div>
+      </div>
+      <div class="card c-overseas">
+        <h3>Pinterest Ads<span class="tag tag-owner">Pinterest</span></h3>
+        <div class="cover">覆盖：Pinterest 图片流</div>
+        <div class="pos"><b>核心定位：</b>图片种草，家居、美妆、时尚；用户处于购买规划阶段。</div>
+      </div>
+      <div class="card c-overseas">
+        <h3>Snapchat Ads<span class="tag tag-owner">Snap</span></h3>
+        <div class="cover">覆盖：Snapchat</div>
+        <div class="pos"><b>核心定位：</b>欧美年轻 Z 世代。</div>
+      </div>
+      <div class="card c-overseas">
+        <h3>Amazon Ads<span class="tag tag-owner">亚马逊</span></h3>
+        <div class="cover">覆盖：亚马逊站内（SP / SB / SD 广告）</div>
+        <div class="pos"><b>核心定位：</b>购物意向极高，亚马逊卖家必投，核心看 ACOS 指标。</div>
+      </div>
+      <div class="card c-overseas">
+        <h3>Taboola / Outbrain<span class="tag tag-owner">开放网络联盟</span></h3>
+        <div class="cover">覆盖：海外资讯网站原生信息流</div>
+        <div class="pos"><b>核心定位：</b>非围墙花园，扩大品牌触达，适合内容营销引流。</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="empty" id="empty">😕 未找到匹配的平台，试试其他关键词～</div>
+
+  <!-- 选型参考 -->
+  <section id="reference">
+    <div class="sec-head"><span class="icon">🧭</span><h2>简易选型参考</h2><span class="line"></span></div>
+    <div class="reference">
+      <div class="ref-card r1"><div class="scene">国内线索获客</div><div class="sol">百度营销 + 腾讯广告 + 巨量引擎</div></div>
+      <div class="ref-card r2"><div class="scene">国内电商带货</div><div class="sol">巨量千川 + 磁力金牛 + 万相台</div></div>
+      <div class="ref-card r3"><div class="scene">国内种草心智</div><div class="sol">小红书聚光 + 知乎知+</div></div>
+      <div class="ref-card r4"><div class="scene">出海独立站 DTC</div><div class="sol">Meta Ads + TikTok Ads + Google Ads</div></div>
+      <div class="ref-card r5"><div class="scene">出海 B2B</div><div class="sol">Google Ads + LinkedIn Ads</div></div>
+      <div class="ref-card r6"><div class="scene">亚马逊卖家</div><div class="sol">Amazon Ads</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>国内外广告营销投放管理平台汇总 · 搜索 / 信息流 / 垂直社区 / 电商 / 出海</p>
+  </footer>
+<div id="toast"></div>
+
+<script>
+  /* ===== 官方后台链接配置（已核实） ===== */
+  const LINKS = {
+    // 单入口
+    '百度营销':       'https://tuiguang.baidu.com/',
+    '神马搜索':       'https://sso.uc.cn/',
+    '360 智慧商业':   'https://e.360.cn/',
+    '小红书聚光平台': 'https://ad.xiaohongshu.com/',
+    '京东京准通':     'https://jzt.jd.com/',
+    'Google Ads':     'https://ads.google.com',
+    'Microsoft Advertising': 'https://ads.microsoft.com',
+    'Meta Ads':       'https://business.facebook.com',
+    'LinkedIn Ads':   'https://www.linkedin.com/campaignmanager',
+    'Pinterest Ads':  'https://ads.pinterest.com',
+    'Snapchat Ads':   'https://ads.snapchat.com',
+    'Amazon Ads':     'https://advertising.amazon.com',
+    'Taboola / Outbrain': 'https://backstage.taboola.com',
+    // 多入口（数组）
+    '巨量引擎': [
+      {name:'AD 平台',  url:'https://ad.oceanengine.com/pages/login/index.html'},
+      {name:'工作台',   url:'https://e.oceanengine.com/'}
+    ],
+    '磁力智投': [
+      {name:'投放后台', url:'https://ad.e.kuaishou.com/'},
+      {name:'磁力金牛', url:'https://niu.e.kuaishou.com/'},
+      {name:'磁力本地推', url:'https://local.e.kuaishou.com/'}
+    ],
+    '腾讯广告': [{name:'投放管理', url:'https://e.qq.com/ads/'}],
+    '万相台 / 直通车 / 引力魔方': [{name:'万相台无界', url:'https://one.alimama.com/'}],
+    '华为广告（HUAWEI Ads）': [{name:'鲸鸿动能', url:'https://ads.huawei.com/'}],
+    'OPPO 营销平台（OPPO Ads）': [
+      {name:'广告官网', url:'https://e.oppo.com/'},
+      {name:'投放后台', url:'https://e.oppomobile.com/'}
+    ],
+    'vivo 营销平台（vivo Ads）': [{name:'营销平台', url:'https://ad.vivo.com.cn/home'}],
+    '知乎商业投放平台（知+）': [{name:'营销平台', url:'https://xg.zhihu.com/'}],
+    'B 站花火 + 效果广告': [{name:'花火平台', url:'https://huahuo.bilibili.com/'}],
+    '微博营销平台': [{name:'超级粉丝通', url:'https://tui.weibo.com/'}],
+    'TikTok Ads': [{name:'Ads Manager', url:'https://ads.tiktok.com'}]
+  };
+
+  /* ===== 开户资质 / 计费模式（P3 折叠面板数据，按公开通行规则整理） ===== */
+  const QUALIF = {
+    '百度营销': { zizhi:'营业执照开户，医疗、金融、教育等特殊行业需补充行业资质', jifei:'搜索广告 CPC 竞价为主，信息流支持 oCPC / CPM', yusuan:'预存充值模式，首充金额以官方与代理商最新政策为准' },
+    '神马搜索': { zizhi:'营业执照开户', jifei:'CPC 竞价为主', yusuan:'预存充值模式' },
+    '360 智慧商业': { zizhi:'营业执照开户，特殊行业需资质审核', jifei:'CPC / CPM 竞价', yusuan:'预存充值模式' },
+    '巨量引擎': { zizhi:'企业营业执照开户，特殊行业需资质审核；自助开户支持在线提交', jifei:'oCPM / CPC / CPM 竞价，支持按转化目标出价', yusuan:'预存充值，计划日预算 / 总预算自设' },
+    '磁力智投': { zizhi:'企业资质开户，磁力金牛需快手小店等电商资质', jifei:'oCPM / CPC 竞价', yusuan:'预存充值模式' },
+    '腾讯广告': { zizhi:'企业营业执照开户，朋友圈、公众号类目有行业准入限制', jifei:'oCPM / CPC / CPM 竞价', yusuan:'预存充值，预算自设' },
+    '小红书聚光平台': { zizhi:'营业执照 + 行业资质，医美、教育等类目准入较严格', jifei:'信息流 / 搜索广告 CPC 竞价为主', yusuan:'预存充值模式' },
+    '知乎商业投放平台（知+）': { zizhi:'企业资质开户', jifei:'CPC / oCPM 竞价', yusuan:'预存充值模式' },
+    'B 站花火 + 效果广告': { zizhi:'花火为 UP 主商单平台，品牌方需资质审核；效果广告需企业资质', jifei:'花火按商单报价结算，效果广告 CPC / CPM 竞价', yusuan:'商单按单结算，效果广告预存充值' },
+    '微博营销平台': { zizhi:'企业资质开户（超级粉丝通）', jifei:'CPM / CPC 竞价', yusuan:'预存充值模式' },
+    '华为广告（HUAWEI Ads）': { zizhi:'企业资质开户，应用分发需开发者主体', jifei:'CPC / CPM 竞价', yusuan:'预存充值模式' },
+    'OPPO 营销平台（OPPO Ads）': { zizhi:'企业资质开户', jifei:'CPC / CPM 竞价', yusuan:'预存充值模式' },
+    'vivo 营销平台（vivo Ads）': { zizhi:'企业资质开户，CPD 合作按 vivo 官方流程', jifei:'CPC / CPM 竞价', yusuan:'预存充值模式' },
+    '万相台 / 直通车 / 引力魔方': { zizhi:'淘宝 / 天猫店铺资质（营业执照 + 保证金）', jifei:'CPC 竞价扣费为主', yusuan:'账户充值，计划日预算自设' },
+    '京东京准通': { zizhi:'京东入驻店铺资质', jifei:'CPC 竞价扣费为主', yusuan:'账户预存充值' },
+    'Google Ads': { zizhi:'自助开户，绑定信用卡 / 银行扣款；部分地区需广告主身份验证', jifei:'CPC / CPM 竞价', yusuan:'无强制预存，日预算自设' },
+    'Microsoft Advertising': { zizhi:'自助开户，信用卡扣款', jifei:'CPC / CPM 竞价', yusuan:'无强制预存，日预算自设' },
+    'Meta Ads': { zizhi:'绑定 Business Manager 主页与支付方式，特殊类目受限', jifei:'CPM / CPC / oCPM 竞价', yusuan:'无强制预存，日预算自设' },
+    'TikTok Ads': { zizhi:'企业资质开户（部分市场支持自助），需绑定支付方式', jifei:'CPM / CPC / oCPM 竞价', yusuan:'日预算有最低要求，以官方最新公示为准' },
+    'LinkedIn Ads': { zizhi:'需公司 LinkedIn 主页 + 支付方式', jifei:'CPC / CPM，单价偏高', yusuan:'日预算有最低要求，以官方最新公示为准' },
+    'Pinterest Ads': { zizhi:'企业账号 + 支付方式', jifei:'CPC / CPM 竞价', yusuan:'无强制预存，日预算自设' },
+    'Snapchat Ads': { zizhi:'企业账号 + 支付方式', jifei:'CPM / CPC 竞价', yusuan:'无强制预存，日预算自设' },
+    'Amazon Ads': { zizhi:'需亚马逊卖家账号（专业销售计划）或供应商身份', jifei:'SP / SB 按 CPC 竞价，SD 按 CPM，核心看 ACOS', yusuan:'广告费随店铺结算扣款' },
+    'Taboola / Outbrain': { zizhi:'自助开户 + 信用卡，或账户托管制', jifei:'CPC 竞价为主', yusuan:'日预算自设，大客户另议' }
+  };
+
+  /* ===== Toast 提示 ===== */
+  const showToast = msg => {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('on');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('on'), 2200);
+  };
+  const fallbackCopy = (text, done) => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { showToast('复制失败，请手动复制'); }
+    ta.remove();
+  };
+
+  /* ===== 注入"进入后台"按钮 + 一键复制 + 书签勾选 + 资质面板 ===== */
+  document.querySelectorAll('.card h3').forEach(h3 => {
+    // 取 h3 内第一个文本节点作为平台名（去掉子产品 tag）
+    const raw = h3.childNodes[0]?.textContent.trim();
+    const name = Object.keys(LINKS).find(k => raw?.startsWith(k));
+    if (!name) return;
+    const val = LINKS[name];
+    const entries = Array.isArray(val) ? val : [{ name: '进入后台', url: val }];
+    const btns = document.createElement('span');
+    btns.className = 'admin-btns';
+    const makeBtn = (label, url) => {
+      const a = document.createElement('a');
+      a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.className = 'admin-btn';
+      a.innerHTML = `⚡ ${label}`;
+      a.onclick = e => e.stopPropagation(); // 不触发 3D 倾斜
+      return a;
+    };
+    entries.forEach(v => btns.appendChild(makeBtn(v.name, v.url)));
+
+    // 一键复制后台地址
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'admin-btn icon-btn';
+    copyBtn.title = '复制后台地址';
+    copyBtn.textContent = '📋';
+    copyBtn.onclick = e => {
+      e.stopPropagation();
+      const text = entries.map(v => `${name} · ${v.name}：${v.url}`).join('\n');
+      const done = () => showToast(`已复制「${name}」后台地址`);
+      if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text, done));
+      else fallbackCopy(text, done);
+    };
+    btns.appendChild(copyBtn);
+
+    // 书签导出勾选
+    const star = document.createElement('button');
+    star.className = 'admin-btn icon-btn star';
+    star.title = '加入书签导出';
+    star.textContent = '☆';
+    star.onclick = e => {
+      e.stopPropagation();
+      star.classList.toggle('on');
+      star.textContent = star.classList.contains('on') ? '★' : '☆';
+      showToast(star.classList.contains('on') ? `已勾选「${name}」` : `已取消「${name}」`);
+    };
+    btns.appendChild(star);
+    h3.appendChild(btns);
+
+    // 开户资质 / 计费模式折叠面板（<details> 原生展开，零依赖）
+    const q = QUALIF[name];
+    if (q) {
+      const d = document.createElement('details');
+      d.className = 'qual';
+      d.innerHTML = '<summary>开户资质 / 计费模式</summary>' +
+        (q.zizhi ? `<p><b>开户资质：</b>${q.zizhi}</p>` : '') +
+        (q.jifei ? `<p><b>计费模式：</b>${q.jifei}</p>` : '') +
+        (q.yusuan ? `<p><b>预算方式：</b>${q.yusuan}</p>` : '');
+      d.querySelector('summary').onclick = e => e.stopPropagation();
+      h3.parentElement.appendChild(d);
+    }
+  });
+
+  /* ===== 收藏夹分组导出（P2） ===== */
+  document.getElementById('export-btn').addEventListener('click', () => {
+    const picked = [...document.querySelectorAll('.card')].filter(c => c.querySelector('.star.on'));
+    if (!picked.length) { showToast('请先点击卡片右上角 ☆ 勾选要导出的平台'); return; }
+    const groups = new Map();
+    picked.forEach(card => {
+      const raw = card.querySelector('h3')?.childNodes[0]?.textContent.trim();
+      const name = Object.keys(LINKS).find(k => raw?.startsWith(k));
+      if (!name) return;
+      const cat = card.closest('section')?.querySelector('.sec-head h2')?.textContent || '其他';
+      if (!groups.has(cat)) groups.set(cat, []);
+      const items = groups.get(cat);
+      (Array.isArray(LINKS[name]) ? LINKS[name] : [{ name: '', url: LINKS[name] }])
+        .forEach(v => items.push({ title: v.name ? `${name} · ${v.name}` : name, url: v.url }));
+    });
+    let out = '<!DOCTYPE NETSCAPE-Bookmark-file-1>\n<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">\n<TITLE>广告投放平台后台书签</TITLE>\n<H1>广告投放平台后台</H1>\n<DL><p>\n';
+    groups.forEach((items, cat) => {
+      out += `    <DT><H3>${cat}</H3>\n    <DL><p>\n`;
+      items.forEach(it => { out += `        <DT><A HREF="${it.url}">${it.title}</A>\n`; });
+      out += '    </DL><p>\n';
+    });
+    out += '</DL><p>\n';
+    const blob = new Blob([out], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '广告平台后台书签.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    showToast(`已导出 ${picked.length} 个平台的书签文件`);
+  });
+
+  /* ===== 滚动入场动效 ===== */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+  }, { threshold: .12 });
+  document.querySelectorAll('.card').forEach((c, i) => { c.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(c); });
+
+  /* ===== 数字滚动 ===== */
+  const cio = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, target = +el.dataset.count, t0 = performance.now();
+      (function tick(t) {
+        const p = Math.min((t - t0) / 1200, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+      cio.unobserve(el);
+    });
+  }, { threshold: .5 });
+  document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
+
+  /* ===== 分类筛选 ===== */
+  const btns = document.querySelectorAll('.filter-btn');
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    applyFilter(b.dataset.f, document.getElementById('search').value);
+  }));
+
+  /* ===== 关键词搜索 ===== */
+  document.getElementById('search').addEventListener('input', e => {
+    const f = document.querySelector('.filter-btn.active').dataset.f;
+    applyFilter(f, e.target.value);
+  });
+
+  function applyFilter(cat, kw) {
+    kw = (kw || '').trim().toLowerCase();
+    let visibleTotal = 0;
+    document.querySelectorAll('section[data-cat]').forEach(sec => {
+      const catMatch = cat === 'all' || sec.dataset.cat === cat;
+      let visibleInSec = 0;
+      sec.querySelectorAll('.card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const show = catMatch && (!kw || text.includes(kw));
+        card.style.display = show ? '' : 'none';
+        if (show) visibleInSec++;
+      });
+      sec.style.display = visibleInSec ? '' : 'none';
+      visibleTotal += visibleInSec;
+    });
+    document.getElementById('empty').style.display = visibleTotal ? 'none' : 'block';
+    document.getElementById('reference').style.display = (kw || cat !== 'all') ? 'none' : '';
+  }
+
+  /* ===== 卡片 3D 倾斜互动 ===== */
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      card.style.transform = `translateY(-6px) perspective(800px) rotateX(${-y * 5}deg) rotateY(${x * 5}deg)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+</script>
+</body>
+</html>

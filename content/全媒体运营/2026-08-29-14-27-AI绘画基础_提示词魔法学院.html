@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI绘画提示词魔法学院 · 七件套记忆手册</title>
+<style>
+:root{
+  --bg:#0b0e1a; --card:rgba(255,255,255,.045); --card2:rgba(255,255,255,.07);
+  --line:rgba(255,255,255,.1); --tx:#eef1ff; --tx2:#a7aecf;
+  --c1:#c084fc; --c2:#38bdf8; --c3:#f472b6; --c4:#34d399; --c5:#fb923c; --c6:#fbbf24; --c7:#f87171;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; color:var(--tx); line-height:1.75;
+  font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;
+  background:
+    radial-gradient(1100px 560px at 85% -10%, rgba(76,29,149,.45) 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 15%, rgba(8,51,68,.55) 0%, transparent 55%),
+    radial-gradient(700px 500px at 55% 110%, rgba(157,23,77,.28) 0%, transparent 60%),
+    var(--bg);
+}
+h1,h2,h3{line-height:1.35; margin:0 0 .4em}
+h2{font-size:1.45rem; display:flex; align-items:center; gap:.5em}
+h3{font-size:1.05rem}
+p{margin:.3em 0}
+.wrap{max-width:1060px; margin:0 auto; padding:0 18px}
+a{color:var(--c2)}
+
+/* ---------- Hero ---------- */
+.hero{padding:52px 0 26px; text-align:center}
+.badge{display:inline-block; font-size:.8rem; letter-spacing:.12em; color:#ffd9ec;
+  border:1px solid rgba(244,114,182,.45); background:rgba(244,114,182,.1);
+  padding:4px 14px; border-radius:999px; margin-bottom:16px}
+.hero h1{font-size:clamp(1.9rem,4.5vw,3rem); margin-bottom:.15em}
+.hero h1 .grad{background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c5),var(--c6));
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.sub{color:var(--tx2); font-size:.98rem; max-width:640px; margin:0 auto}
+.formula-bar{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:22px 0 8px}
+.fb-item{cursor:pointer; border:1px solid var(--line); background:var(--card); border-radius:12px;
+  padding:8px 13px; display:flex; align-items:center; gap:7px; transition:.2s; font-size:.92rem}
+.fb-item:hover{transform:translateY(-3px); background:var(--card2)}
+.fb-item .num{font-weight:700; font-size:.75rem; width:20px; height:20px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center; color:#0b0e1a}
+.fb-item .plus{color:var(--tx2); font-weight:700; margin-left:2px}
+.chant-card{max-width:660px; margin:18px auto 0; background:var(--card); border:1px solid var(--line);
+  border-radius:16px; padding:16px 20px; text-align:left}
+.chant-card .t{font-size:.85rem; color:var(--tx2); letter-spacing:.08em}
+.chant{font-size:1.06rem; font-weight:700; margin:.35em 0}
+.chant em{font-style:normal; color:var(--c6)}
+.chant-card .movie{color:var(--tx2); font-size:.88rem}
+.speak-btn{margin-top:10px; cursor:pointer; border:1px solid rgba(251,191,36,.5); color:var(--c6);
+  background:rgba(251,191,36,.08); border-radius:10px; padding:6px 14px; font-size:.88rem; transition:.2s}
+.speak-btn:hover{background:rgba(251,191,36,.18)}
+
+/* ---------- Tabs ---------- */
+.tabs{position:sticky; top:0; z-index:60; display:flex; gap:6px; overflow-x:auto; padding:10px 14px;
+  background:rgba(11,14,26,.82); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{white-space:nowrap; cursor:pointer; border:1px solid transparent; background:transparent;
+  color:var(--tx2); font-size:.92rem; padding:7px 14px; border-radius:10px; transition:.2s; font-family:inherit}
+.tabs button:hover{color:var(--tx); background:var(--card2)}
+.tabs button.on{color:#0b0e1a; font-weight:700; background:linear-gradient(90deg,#a5b4fc,#67e8f9)}
+main{padding:30px 0 70px}
+section{display:none; animation:fadein .35s ease}
+section.on{display:block}
+@keyframes fadein{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+
+/* ---------- Cards / grids ---------- */
+.card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px}
+.grid2{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; margin-top:14px}
+.grid3{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin-top:14px}
+.sec-note{color:var(--tx2); font-size:.92rem; margin-top:2px}
+.tag{display:inline-block; font-size:.75rem; padding:1px 9px; border-radius:999px; margin:2px 3px 2px 0;
+  border:1px solid var(--line); color:var(--tx2)}
+.hl{font-weight:700}
+details{margin-top:8px; font-size:.86rem; color:var(--tx2)}
+summary{cursor:pointer; color:var(--c2); user-select:none}
+details p{background:rgba(56,189,248,.07); border-left:3px solid var(--c2); padding:8px 10px; border-radius:0 8px 8px 0; margin-top:6px}
+
+/* ---------- Overview: cake ---------- */
+.cake{max-width:560px; margin:18px auto 0}
+.layer{display:flex; align-items:center; gap:12px; border-radius:12px; padding:11px 16px; margin:7px 0;
+  cursor:pointer; transition:.2s; border:1px solid var(--line); position:relative}
+.layer:hover{transform:translateX(6px)}
+.layer .no{font-size:.72rem; font-weight:700; color:#0b0e1a; width:22px; height:22px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; flex:none}
+.layer .nm{font-weight:700}
+.layer .mv{color:var(--tx2); font-size:.85rem; margin-left:auto; text-align:right}
+.layer .mv b{color:var(--tx)}
+.cake-plate{text-align:center; color:var(--tx2); font-size:.88rem; margin-top:6px; letter-spacing:.2em}
+.legend{display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:12px; font-size:.84rem}
+.legend span{display:inline-flex; align-items:center; gap:6px; color:var(--tx2)}
+.legend i{width:12px; height:12px; border-radius:3px; display:inline-block}
+
+/* example dissection */
+.exa{font-size:1.02rem; line-height:2.15; margin-top:10px}
+.exa span{border-radius:6px; padding:2px 5px; cursor:default; transition:.25s; opacity:.35}
+.exa span.lit{opacity:1; box-shadow:0 0 0 1px currentColor}
+.exa-tip{min-height:1.6em; color:var(--tx2); font-size:.9rem; margin-top:8px}
+.btn{cursor:pointer; border:1px solid var(--line); background:var(--card2); color:var(--tx);
+  border-radius:10px; padding:7px 16px; font-size:.9rem; transition:.2s; font-family:inherit}
+.btn:hover{transform:translateY(-2px); border-color:var(--c2); color:var(--c2)}
+.btn.pri{background:linear-gradient(90deg,#a5b4fc,#67e8f9); color:#0b0e1a; font-weight:700; border:none}
+.map li{list-style:none; display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px dashed var(--line)}
+.map ul{margin:0; padding:0}
+.map .box{width:18px; height:18px; border-radius:5px; border:1.5px solid var(--tx2); flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:.8rem; color:#0b0e1a}
+.map .done .box{background:var(--c4); border-color:var(--c4)}
+.map .done{color:var(--tx2); text-decoration:line-through}
+
+/* ---------- style cards ---------- */
+.st-card{border-radius:16px; border:1px solid var(--line); background:var(--card); overflow:hidden; transition:.25s}
+.st-card:hover{transform:translateY(-4px)}
+.st-head{display:flex; align-items:center; gap:10px; padding:12px 16px 4px}
+.st-ico{font-size:1.5rem; width:44px; height:44px; border-radius:12px; display:flex; align-items:center;
+  justify-content:center; background:var(--card2); flex:none}
+.st-body{padding:2px 16px 14px; color:var(--tx2); font-size:.88rem}
+.st-kw{margin-top:6px}
+.st-kw .tag{color:var(--tx)}
+
+/* ---------- view items ---------- */
+.v-item{display:flex; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 15px; transition:.2s}
+.v-item:hover{background:var(--card2)}
+.v-ico{font-size:1.4rem; width:42px; height:42px; border-radius:50%; display:flex; align-items:center;
+  justify-content:center; background:rgba(56,189,248,.12); border:1px solid rgba(56,189,248,.35); flex:none}
+.v-item .nm{font-weight:700}
+.v-item .emo{font-size:.78rem; color:var(--c6); border:1px solid rgba(251,191,36,.4); padding:0 8px; border-radius:999px; margin-left:6px}
+.v-item .ds{color:var(--tx2); font-size:.85rem; margin-top:2px}
+.v-item .eg{font-size:.8rem; color:var(--tx2); margin-top:4px; opacity:.9}
+.v-item .eg b{color:var(--c4); font-weight:600}
+.gp-title{margin-top:30px; font-size:1.12rem}
+.gp-title small{color:var(--tx2); font-weight:400; font-size:.82rem; margin-left:8px}
+
+/* ---------- composition ---------- */
+.cp-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; transition:.25s}
+.cp-card:hover{transform:translateY(-4px); background:var(--card2)}
+.cp-card svg{width:100%; height:auto; border-radius:10px; display:block}
+.cp-card .nm{font-weight:700; margin-top:10px}
+.cp-card .nm .mood{font-size:.75rem; font-weight:400; color:var(--c6); margin-left:8px}
+.cp-card .ds{color:var(--tx2); font-size:.85rem; margin-top:2px}
+
+/* ---------- light ---------- */
+.lt-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:14px; margin-top:14px}
+.lt-card{display:flex; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px}
+.lt-card svg{width:110px; height:auto; flex:none}
+.lt-card .nm{font-weight:700}
+.lt-card .use{font-size:.78rem; color:var(--c4); margin-left:6px}
+.lt-card .ds{color:var(--tx2); font-size:.84rem}
+.formula-pill{display:flex; flex-wrap:wrap; align-items:center; gap:8px; background:var(--card);
+  border:1px solid rgba(251,191,36,.35); border-radius:12px; padding:10px 14px; margin:8px 0; font-size:.92rem}
+.formula-pill .eq{color:var(--c6); font-weight:700}
+.formula-pill .res{color:var(--tx); font-weight:700}
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px}
+@media(max-width:640px){.duo{grid-template-columns:1fr}}
+
+/* ---------- tone ---------- */
+.tn-card{border-radius:16px; overflow:hidden; border:1px solid var(--line); background:var(--card)}
+.tn-sw{height:74px}
+.tn-body{padding:12px 16px 16px}
+.tn-body .nm{font-weight:700; font-size:1.02rem}
+.tn-body .feel{font-size:.85rem; color:var(--c6); margin:2px 0}
+.tn-body p{color:var(--tx2); font-size:.86rem}
+.tn-body .art{font-size:.8rem; color:var(--tx2); border-top:1px dashed var(--line); padding-top:6px; margin-top:8px}
+.tn-body .art b{color:var(--tx)}
+
+/* ---------- lab ---------- */
+.lab-slot{margin-bottom:16px}
+.lab-slot .lb{font-size:.88rem; font-weight:700; display:flex; align-items:center; gap:8px; margin-bottom:7px}
+.lab-slot .lb i{width:10px; height:10px; border-radius:3px; display:inline-block}
+.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chip{cursor:pointer; font-size:.84rem; padding:4px 12px; border-radius:999px; border:1px solid var(--line);
+  color:var(--tx2); background:var(--card); transition:.15s; font-family:inherit; user-select:none}
+.chip:hover{color:var(--tx); border-color:var(--tx2)}
+.chip.on{color:#0b0e1a; font-weight:700; border-color:transparent}
+.prompt-out{background:#080a14; border:1px solid var(--line); border-radius:14px; padding:18px 20px;
+  font-size:1.02rem; line-height:2.1; min-height:88px; margin-top:18px; position:relative}
+.prompt-out .ph{color:var(--tx2); border:1px dashed var(--tx2); border-radius:6px; padding:1px 7px; font-size:.9rem; opacity:.75}
+.prompt-out .seg{border-radius:6px; padding:1px 5px}
+.lab-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; align-items:center}
+.complete-badge{display:none; color:var(--c4); font-weight:700; font-size:.92rem}
+.complete-badge.show{display:inline; animation:pop .4s ease}
+@keyframes pop{0%{transform:scale(.5)} 70%{transform:scale(1.15)} 100%{transform:scale(1)}}
+.toast{position:fixed; left:50%; bottom:34px; transform:translateX(-50%) translateY(20px); opacity:0;
+  background:#1c2340; border:1px solid var(--c4); color:var(--tx); padding:9px 20px; border-radius:12px;
+  transition:.3s; z-index:99; pointer-events:none}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+/* ---------- quiz ---------- */
+.quiz-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px}
+.quiz-prog{color:var(--tx2); font-size:.88rem}
+.qz-q{font-size:1.12rem; font-weight:700; margin:14px 0 16px}
+.qz-opt{display:block; width:100%; text-align:left; cursor:pointer; margin:9px 0; padding:11px 16px;
+  border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--tx);
+  font-size:.95rem; transition:.18s; font-family:inherit}
+.qz-opt:hover:not(:disabled){border-color:var(--c2); transform:translateX(4px)}
+.qz-opt:disabled{cursor:default; opacity:.85}
+.qz-opt.right{border-color:var(--c4); background:rgba(52,211,153,.16); opacity:1; font-weight:700}
+.qz-opt.wrong{border-color:var(--c7); background:rgba(248,113,113,.14); opacity:1; animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-5px)} 75%{transform:translateX(5px)}}
+.qz-exp{display:none; margin-top:12px; font-size:.88rem; color:var(--tx2);
+  background:rgba(56,189,248,.07); border-left:3px solid var(--c2); padding:9px 13px; border-radius:0 10px 10px 0}
+.qz-exp.show{display:block}
+.qz-foot{display:flex; justify-content:space-between; align-items:center; margin-top:18px}
+.result{text-align:center; padding:34px 10px}
+.result .big{font-size:2.6rem}
+.result h3{font-size:1.3rem; margin:.2em 0}
+.result p{color:var(--tx2)}
+
+footer{border-top:1px solid var(--line); padding:22px 0 30px; text-align:center; color:var(--tx2); font-size:.84rem}
+.rv{opacity:0; transform:translateY(16px); transition:.5s ease}
+.rv.in{opacity:1; transform:none}
+.confetti{position:fixed; top:-12px; width:9px; height:14px; z-index:999; pointer-events:none; border-radius:2px; animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg); opacity:.2}}
+@media(max-width:560px){.layer .mv{display:none}.hero{padding-top:34px}}
+</style>
+</head>
+<body>
+
+<header class="hero wrap">
+  <div class="badge">🎬 6 节课浓缩 · 交互式记忆手册</div>
+  <h1>AI绘画提示词<span class="grad">魔法学院</span></h1>
+  <p class="sub">一句话公式记一生：</p>
+  <div class="formula-bar" id="formulaBar"></div>
+  <div class="chant-card">
+    <div class="t">🎯 一分钟口诀 · 写提示词就像拍电影</div>
+    <div class="chant">「片种机位选<em>主演</em>，布景道具灯光全，最后质量喊一声，七层叠完出好片！」</div>
+    <div class="movie">定片种(风格) → 架机位(视角构图) → 选主演(主体) → 搭布景(背景) → 摆道具(细节) → 打灯调色(光影色调) → 验收喊咔(质量词)</div>
+    <button class="speak-btn" id="speakBtn">🔊 跟我念一遍口诀</button>
+  </div>
+</header>
+
+<nav class="tabs wrap" id="tabs">
+  <button data-tab="overview" class="on">📖 公式总览</button>
+  <button data-tab="style">🎭 风格限定</button>
+  <button data-tab="view">🎥 视角</button>
+  <button data-tab="comp">🖼️ 构图</button>
+  <button data-tab="light">💡 光影</button>
+  <button data-tab="tone">🎨 色调</button>
+  <button data-tab="lab">🧪 实验室</button>
+  <button data-tab="quiz">🏆 闯关测验</button>
+</nav>
+
+<main class="wrap">
+
+<!-- ============ 1 总览 ============ -->
+<section id="tab-overview" class="on">
+  <h2>🎂 一条公式，七层蛋糕</h2>
+  <p class="sec-note">点每一层，直达对应课程。顺序不能乱——先穿外衣定片种，最后喊质量验收。</p>
+  <div class="cake" id="cake"></div>
+  <div class="cake-plate">🖼️ —— 一 张 好 图 ——</div>
+
+  <div class="card rv" style="margin-top:28px">
+    <h2 style="font-size:1.15rem">🔍 例句逐层拆解 <small style="font-weight:400;color:var(--tx2);font-size:.82rem">（来自第一节课的示范提示词）</small></h2>
+    <div class="legend" id="exaLegend"></div>
+    <p class="exa" id="exaText"></p>
+    <div class="exa-tip" id="exaTip">点击「逐层点亮」，看一句话如何按公式七层叠出来 →</div>
+    <button class="btn pri" id="exaBtn">▶ 逐层点亮</button>
+  </div>
+
+  <div class="card rv" style="margin-top:16px">
+    <h2 style="font-size:1.15rem">🗺️ 学习地图 <small style="font-weight:400;color:var(--tx2);font-size:.82rem">（自动打卡，进度已保存）</small></h2>
+    <ul class="map" id="mapList"></ul>
+  </div>
+</section>
+
+<!-- ============ 2 风格 ============ -->
+<section id="tab-style">
+  <h2>🎭 第二层 · 风格限定 <span class="tag" style="color:var(--c1);border-color:var(--c1)">定片种：这部"电影"是什么画风</span></h2>
+  <p class="sec-note">风格决定画面的整体观感。不同风格，观感截然不同——先定风格，AI才知道往哪儿画。</p>
+  <div class="grid2">
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">📷</div><h3>写实风格</h3></div>
+      <div class="st-body">追求真实、准确地再现客观事物，以真实客观的方式描绘现实与自然景观。
+      <div class="st-kw"><span class="tag">真实感</span><span class="tag">客观描绘</span><span class="tag">自然还原</span></div></div></div>
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">🏰</div><h3>卡通风格 <small style="color:var(--tx2);font-weight:400">（如迪士尼）</small></h3></div>
+      <div class="st-body">浪漫、魔幻、童话色彩：可爱的卡通角色、温馨故事、充满想象力的世界观，梦幻场景与人物。
+      <div class="st-kw"><span class="tag">可爱角色</span><span class="tag">梦幻场景</span><span class="tag">想象力</span>
+      <div style="margin-top:6px;font-size:.82rem">细分：<span class="tag">迪士尼</span><span class="tag">皮克斯</span><span class="tag">梦工厂</span><span class="tag">日式动漫</span><span class="tag">Q版动漫</span><span class="tag">DC动漫</span></div></div></div></div>
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">💧</div><h3>水彩画风格</h3></div>
+      <div class="st-body">水与颜料交融，清新灵动：轻盈的色彩层次与透明感，清新脱俗、自然流畅。
+      <div class="st-kw"><span class="tag">透明感</span><span class="tag">轻盈层次</span><span class="tag">清新灵动</span></div></div></div>
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">🎪</div><h3>波普艺术风格</h3></div>
+      <div class="st-body">起源于20世纪50年代英国，以大众文化为灵感：鲜艳色彩、简单构图、大胆图案，视觉冲击力强，自带幽默感。
+      <div class="st-kw"><span class="tag">鲜艳</span><span class="tag">大胆图案</span><span class="tag">视觉冲击</span></div></div></div>
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">🌃</div><h3>赛博朋克风格</h3></div>
+      <div class="st-body"><b class="hl">高科技、低生活</b>的未来主义：黑暗背景 + 霓虹灯 + 机械增强 + 独特时尚，复杂城市景观，未来感拉满。
+      <div class="st-kw"><span class="tag">霓虹灯</span><span class="tag">黑暗背景</span><span class="tag">机械增强</span><span class="tag">未来都市</span></div></div></div>
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">⬜</div><h3>极简主义风格</h3></div>
+      <div class="st-body">极致简约：简洁的线条、形状和色彩，去除多余装饰，呈现最本质的美感——简洁、清晰、宁静。
+      <div class="st-kw"><span class="tag">简洁线条</span><span class="tag">去除装饰</span><span class="tag">宁静</span></div></div></div>
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">🖌️</div><h3>中国水墨画风格</h3></div>
+      <div class="st-body">传统水墨山水构图，<b class="hl">留白与虚实相生</b>；水墨为主、可点缀淡彩，疏密有致，笔触有书法式流畅感，优雅含蓄、意境悠远。
+      <div class="st-kw"><span class="tag">留白</span><span class="tag">虚实相生</span><span class="tag">书法笔触</span><span class="tag">意境悠远</span></div></div></div>
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">🎨</div><h3>工笔重彩风格</h3></div>
+      <div class="st-body">线条精准流畅、勾勒细腻；设色浓艳华贵不俗艳，层层渲染，肌理质感细致入微，体现<b class="hl">传统矿物颜料</b>效果。
+      <div class="st-kw"><span class="tag">精勾细染</span><span class="tag">层层渲染</span><span class="tag">矿物颜料</span></div></div></div>
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">🏯</div><h3>敦煌壁画风格</h3></div>
+      <div class="st-body">色彩绚丽斑斓、线条流畅圆润、构图庄重对称；<b class="hl">飞天纹饰</b> + 斑驳质感，人物丰满圆润、服饰纹样繁复华丽，庄重祥和。
+      <div class="st-kw"><span class="tag">飞天纹饰</span><span class="tag">斑驳质感</span><span class="tag">矿物色</span><span class="tag">庄重祥和</span></div></div></div>
+    <div class="st-card rv"><div class="st-head"><div class="st-ico">🌈</div><h3>全息色彩风格</h3></div>
+      <div class="st-body">未来感+科技感，灵感来自光学现象：彩虹色调、光泽表面、立体感、抽象图案与动态元素，梦幻视觉效果。
+      <div class="st-kw"><span class="tag">彩虹色调</span><span class="tag">光泽表面</span><span class="tag">梦幻未来</span></div></div></div>
+  </div>
+</section>
+
+<!-- ============ 3 视角 ============ -->
+<section id="tab-view">
+  <h2>🎥 第三层(上) · 视角 <span class="tag" style="color:var(--c2);border-color:var(--c2)">架机位：你站在哪里看</span></h2>
+  <p class="sec-note">视角 = 观察位置与角度，为画面奠定情绪与观察维度；它和构图（元素排布）相辅相成。</p>
+
+  <h3 class="gp-title">📏 按空间距离 <small>决定取景范围：局部细节 or 整体场景</small></h3>
+  <div class="grid3">
+    <div class="v-item rv"><div class="v-ico">🔍</div><div><div class="nm">特写<span class="emo">张力</span></div>
+      <div class="ds">聚焦主体局部（脸、手、物品），背景极弱，强化细节与张力。</div>
+      <div class="eg">例：<b>画"发光的魔法戒指"，特写突出戒指纹理与光泽</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">🤳</div><div><div class="nm">近景<span class="emo">神态</span></div>
+      <div class="ds">主体上半身（头到腰），细节+少量环境，适合表情与动作。</div>
+      <div class="eg">例：<b>画"喝咖啡的人"，呈现握杯姿势与面部神态</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">🧍</div><div><div class="nm">中景<span class="emo">互动</span></div>
+      <div class="ds">全身+部分环境，平衡主体与场景，适合人物互动。</div>
+      <div class="eg">例：<b>画"两人对话"，呈现肢体动作与小环境</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">🌄</div><div><div class="nm">远景<span class="emo">宏大</span></div>
+      <div class="ds">主体小、环境占比大，展现场景的宏大与空旷。</div>
+      <div class="eg">例：<b>画"沙漠旅人"，突出沙漠辽阔与人物渺小</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">🗺️</div><div><div class="nm">全景<span class="emo">全局</span></div>
+      <div class="ds">完整场景+全部主体，无明显裁剪，全局视角。</div>
+      <div class="eg">例：<b>画"中世纪城堡全景"，含护城河与森林</b></div></div></div>
+  </div>
+
+  <h3 class="gp-title">📐 按观察角度 <small>决定情感倾向：威严、渺小、平和……</small></h3>
+  <div class="grid3">
+    <div class="v-item rv"><div class="v-ico">👀</div><div><div class="nm">平视<span class="emo">真实感</span></div>
+      <div class="ds">视线与主体平齐，自然客观，贴近日常视觉习惯。</div>
+      <div class="eg">例：<b>街头便利店，还原日常购物场景</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">⬆️</div><div><div class="nm">仰视<span class="emo">力量感</span></div>
+      <div class="ds">从低处向上看，主体高大、威严，甚至带压迫感。</div>
+      <div class="eg">例：<b>超级英雄落地，突出强大气场</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">⬇️</div><div><div class="nm">俯视<span class="emo">全局感</span></div>
+      <div class="ds">从高处向下看，主体小巧、整体，可传达孤独感。</div>
+      <div class="eg">例：<b>迷路小孩在公园，突出渺小与空旷</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">🦅</div><div><div class="nm">鸟瞰<span class="emo">宏观感</span></div>
+      <div class="ds">极高俯角（飞机/无人机），完全展现大面积场景。</div>
+      <div class="eg">例：<b>傍晚沿海城市，城市与海岸线整体布局</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">📐</div><div><div class="nm">斜视<span class="emo">张力</span></div>
+      <div class="ds">相机向一侧倾斜（荷兰角度），与水平线成15°~30°，扭曲空间比例增强张力。</div></div></div>
+    <div class="v-item rv"><div class="v-ico">↗️</div><div><div class="nm">3/4视角<span class="emo">立体亲和</span></div>
+      <div class="ds">介于正面与侧面之间，兼顾正面细节与侧面轮廓，常用于肖像与角色设计。</div></div></div>
+    <div class="v-item rv"><div class="v-ico">😀</div><div><div class="nm">前视<span class="emo">庄重</span></div>
+      <div class="ds">正面直视主体，对称感与庄重感，突出表情、服饰细节。</div></div></div>
+    <div class="v-item rv"><div class="v-ico">🔙</div><div><div class="nm">后视<span class="emo">叙事感</span></div>
+      <div class="ds">隐藏正面、突出背影与环境，用背影传递情绪，引导视线看向主体所注视的场景。</div></div></div>
+    <div class="v-item rv"><div class="v-ico">👤</div><div><div class="nm">侧视<span class="emo">轮廓</span></div>
+      <div class="ds">从正侧面（约90°）观察，绘画、摄影、影视中应用广泛。</div></div></div>
+  </div>
+
+  <h3 class="gp-title">✨ 特殊视角 <small>强化沉浸感 / 叙事感</small></h3>
+  <div class="grid3">
+    <div class="v-item rv"><div class="v-ico">🏍️</div><div><div class="nm">第一人称视角<span class="emo">沉浸感</span></div>
+      <div class="ds">以主体（角色）的眼睛看世界，观众直接代入。</div>
+      <div class="eg">例：<b>摩托车手视角，在街道上疾驰</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">🎥</div><div><div class="nm">第三人称视角<span class="emo">叙事</span></div>
+      <div class="ds">旁观者角度，平衡主体与环境，适合叙事。</div>
+      <div class="eg">例：<b>镜头在车手侧后方跟随</b></div></div></div>
+    <div class="v-item rv"><div class="v-ico">🐟</div><div><div class="nm">鱼眼视角<span class="emo">夸张奇幻</span></div>
+      <div class="ds">边缘严重畸变、视野极广，营造夸张、奇幻风格。</div>
+      <div class="eg">例：<b>黄昏草原上橘猫与狮子并肩合影</b></div></div></div>
+  </div>
+</section>
+
+<!-- ============ 4 构图 ============ -->
+<section id="tab-comp">
+  <h2>🖼️ 第三层(下) · 构图 <span class="tag" style="color:var(--c2);border-color:var(--c2)">排阵型：元素怎么摆</span></h2>
+  <p class="sec-note">构图 = 对线条、形状、色彩、光影、空间等元素的有目的的组织安排。十种常见构图，先看图记住"长相"。</p>
+  <div class="grid2">
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><line x1="60" y1="8" x2="60" y2="82" stroke="#4a5480" stroke-dasharray="3 3"/><line x1="11" y1="45" x2="109" y2="45" stroke="#4a5480" stroke-dasharray="3 3"/><circle cx="60" cy="45" r="12" fill="#fbbf24"/></svg>
+      <div class="nm">1. 中心构图<span class="mood">庄重 · 稳定</span></div>
+      <div class="ds">主体放正中心，对称感+视觉聚焦，视线瞬间集中在主体上。</div>
+      <details><summary>课程提示词示例</summary><p>赛博朋克风格，平视角拍摄中景，中心构图，人物站在街道中心位置，突出人物主体，背景店铺霓虹灯广告牌"七色光短视频课堂"</p></details>
+    </div>
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><line x1="60" y1="8" x2="60" y2="82" stroke="#f472b6" stroke-dasharray="3 3"/><rect x="18" y="30" width="24" height="40" rx="3" fill="rgba(244,114,182,.35)"/><rect x="78" y="30" width="24" height="40" rx="3" fill="rgba(244,114,182,.35)"/><path d="M60 18 L70 70 L50 70 Z" fill="#f472b6"/></svg>
+      <div class="nm">2. 对称构图<span class="mood">平衡 · 庄严</span></div>
+      <div class="ds">以一条轴线为中心，两侧镜像或近似对称，平衡、和谐、庄严。</div>
+      <details><summary>课程提示词示例</summary><p>一座古色古香的中式庭院，平视角拍摄中景，对称构图，对称的建筑物，女子手持团扇站立在对称的位置，背景为对称的庭院。中间牌匾"七色光短视频课堂"</p></details>
+    </div>
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><circle cx="85" cy="50" r="10" fill="#fb923c"/><rect x="4" y="50" width="112" height="36" fill="rgba(251,146,60,.12)"/><line x1="6" y1="50" x2="114" y2="50" stroke="#fb923c" stroke-dasharray="4 3" stroke-width="1.5"/></svg>
+      <div class="nm">3. 水平线构图<span class="mood">宁静 · 开阔</span></div>
+      <div class="ds">用地平线、海平面等水平线条构建平衡，适合横向延伸的场景。</div>
+      <details><summary>课程提示词示例</summary><p>写实风格，俯视远景拍摄，水平线构图，主体人物站在沙滩边面向大海，沙滩上写着"七色光短视频课堂"，背景为夕阳海景。</p></details>
+    </div>
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><line x1="41" y1="6" x2="41" y2="84" stroke="#4a5480" stroke-dasharray="3 3"/><line x1="79" y1="6" x2="79" y2="84" stroke="#4a5480" stroke-dasharray="3 3"/><line x1="6" y1="32" x2="114" y2="32" stroke="#4a5480" stroke-dasharray="3 3"/><line x1="6" y1="58" x2="114" y2="58" stroke="#4a5480" stroke-dasharray="3 3"/><circle cx="41" cy="32" r="3" fill="#7e88b8"/><circle cx="41" cy="58" r="3" fill="#7e88b8"/><circle cx="79" cy="32" r="3" fill="#7e88b8"/><circle cx="79" cy="58" r="6" fill="#fbbf24"/></svg>
+      <div class="nm">4. 三分法构图<span class="mood">灵动 · 不呆板</span></div>
+      <div class="ds">九宫格分割，主体放在<b>线条交点或线条上</b>（非正中心），符合人眼的"非对称平衡"偏好。</div>
+      <details><summary>课程提示词示例</summary><p>写实风格，远景平视，三分法构图，夕阳下的河岸场景，沙滩上有一对人物背影，处于画面右下交叉点，突出构图美感。</p></details>
+    </div>
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><path d="M18 84 L110 22" stroke="rgba(251,191,36,.35)" stroke-width="2"/><path d="M10 78 L102 16" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/><path d="M96 12 L106 14 L100 24 Z" fill="#fbbf24"/></svg>
+      <div class="nm">5. 对角线构图<span class="mood">动态 · 活力</span></div>
+      <div class="ds">用倾斜的对角线（道路、河流、桥梁）引导视线流动，打破平稳，适合有方向感、运动趋势的场景。</div>
+      <details><summary>课程提示词示例</summary><p>写实风格，鸟瞰视角，对角线构图，桥梁横跨一片蓝色水域，桥上有多条车道的车流。桥梁在画面中形成对角线，创造出动态的构图。</p></details>
+    </div>
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><line x1="8" y1="86" x2="58" y2="40" stroke="#38bdf8" stroke-width="2" opacity=".75"/><line x1="112" y1="86" x2="62" y2="40" stroke="#38bdf8" stroke-width="2" opacity=".75"/><line x1="30" y1="88" x2="59" y2="52" stroke="#38bdf8" stroke-width="1.4" opacity=".4"/><line x1="90" y1="88" x2="61" y2="52" stroke="#38bdf8" stroke-width="1.4" opacity=".4"/><circle cx="60" cy="38" r="6" fill="#fbbf24"/></svg>
+      <div class="nm">6. 引导线构图<span class="mood">纵深 · 故事感</span></div>
+      <div class="ds">用线条元素从画面边缘向主体延伸，视线沿线聚焦，增强纵深感与故事性。</div>
+      <details><summary>课程提示词示例</summary><p>写实风格，第三人称视角，引导线构图，远景俯拍后视摩托车骑手沿着蜿蜒的小路骑行，背景为金灿灿的油菜花田，花组成的文字"七色光短视频课堂"</p></details>
+    </div>
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><rect x="24" y="16" width="72" height="58" fill="none" stroke="#34d399" stroke-width="3"/><circle cx="60" cy="45" r="8" fill="#fbbf24"/><path d="M8 82 Q60 74 112 82" stroke="rgba(52,211,153,.4)" stroke-width="2" fill="none"/></svg>
+      <div class="nm">7. 框架构图<span class="mood">层次 · 代入感</span></div>
+      <div class="ds">用门框、窗户、拱门等"自然/人工框架"框住主体，画中画效果，突出主体又增强层次与代入感。</div>
+      <details><summary>课程提示词示例</summary><p>写实风格，平视视角，框架构图拍摄中式园林门洞景观，框后方绿意盎然的石阶小径，绿植茂密鲜活，营造清幽宁静的中式园林意境。门框上方题字"七色光短视频课堂"</p></details>
+    </div>
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><circle cx="34" cy="62" r="4" fill="#38bdf8"/><path d="M26 68 L42 68 L38 73 L30 73 Z" fill="#38bdf8" opacity=".8"/><path d="M10 78 Q40 76 70 78 T110 77" stroke="rgba(56,189,248,.35)" stroke-width="1.2" fill="none"/></svg>
+      <div class="nm">8. 留白构图<span class="mood">意境 · 想象空间</span></div>
+      <div class="ds">刻意保留大面积"空白"（天空、水面、纯色墙等简洁区域），以空白衬托主体，赋予想象空间与情感氛围。</div>
+      <details><summary>课程提示词示例</summary><p>写实风格，俯视远景，留白构图，画面偏左位置有一艘黑色小型渔船行驶在一望无际海面上，呈现细腻的波纹肌理，营造出清晨或傍晚的静谧氛围。</p></details>
+    </div>
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><path d="M60 16 L100 74 L20 74 Z" fill="none" stroke="#f472b6" stroke-width="3"/><circle cx="60" cy="16" r="4" fill="#fbbf24"/><circle cx="20" cy="74" r="3" fill="#7e88b8"/><circle cx="100" cy="74" r="3" fill="#7e88b8"/></svg>
+      <div class="nm">9. 三角构图<span class="mood">稳定 · 指向性</span></div>
+      <div class="ds">用元素构建三角形结构：稳定、锐利、有指向性，强化层次感与焦点。</div>
+      <details><summary>课程提示词示例</summary><p>写实风格，三角构图，建筑内部仰拍视角，画面中心是由多层白色石膏线条勾勒的嵌套三角形穹顶结构，最内层三角形天窗镶嵌蓝色玻璃网格，透过玻璃可见晴朗天空。</p></details>
+    </div>
+
+    <div class="cp-card rv">
+      <svg viewBox="0 0 120 90"><rect x="3" y="3" width="114" height="84" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.18)"/><path d="M6 62 Q30 38 54 58 Q80 38 114 58 L114 84 L6 84 Z" fill="rgba(56,189,248,.25)"/><circle cx="74" cy="50" r="6" fill="#fbbf24"/><rect x="70" y="56" width="8" height="14" rx="3" fill="#fbbf24"/><circle cx="20" cy="82" r="15" fill="#f472b6" opacity=".55"/><circle cx="45" cy="90" r="12" fill="#fb7185" opacity=".45"/></svg>
+      <div class="nm">10. 前景构图<span class="mood">层次 · 纵深</span></div>
+      <div class="ds">设置前景元素（近大远小），增强画面的层次感、纵深感和视觉吸引力。</div>
+      <details><summary>课程提示词示例</summary><p>写实风格，平视摄影，前景构图，前景是镜头前左边的玫红色蔷薇花，中景是主体美女五官精致，站在向日葵花中，远景淡蓝色山脉绵延，蓝天白云。</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 光影 ============ -->
+<section id="tab-light">
+  <h2>💡 第四层(上) · 光影 <span class="tag" style="color:var(--c6);border-color:var(--c6)">打灯：方向定立体，材质定软硬，来源定氛围</span></h2>
+
+  <h3 class="gp-title">🧭 按光源方向 <small>决定光影结构与立体感</small></h3>
+  <div class="lt-grid">
+    <div class="lt-card rv">
+      <svg viewBox="0 0 120 90"><circle cx="62" cy="48" r="13" fill="#fde68a" stroke="#f59e0b"/><path d="M16 76 L40 62" stroke="#fde047" stroke-width="4" stroke-linecap="round"/><path d="M48 57 L36 62 L42 71 Z" fill="#fde047"/></svg>
+      <div><div class="nm">顺光（正面光）<span class="use">清新日常</span></div>
+      <div class="ds">光线直射主体正面：明亮均匀、色彩还原高，但立体感较弱。<br>适用：清新肖像、静物摆拍、扁平插画。</div></div>
+    </div>
+    <div class="lt-card rv">
+      <svg viewBox="0 0 120 90"><circle cx="62" cy="48" r="13" fill="#fde68a" stroke="#f59e0b"/><path d="M62 35 A13 13 0 0 1 62 61 Z" fill="rgba(15,18,35,.55)"/><path d="M14 48 L40 48" stroke="#fde047" stroke-width="4" stroke-linecap="round"/><path d="M48 48 L38 42 L38 54 Z" fill="#fde047"/></svg>
+      <div><div class="nm">侧光 45°/90°<span class="use">立体肖像</span></div>
+      <div class="ds">45°即<b class="hl">伦勃朗光</b>经典角度：明暗对比强，皮肤毛孔、布料褶皱等纹理清晰。<br>适用：人物肖像、雕塑机械、戏剧张力场景。</div></div>
+    </div>
+    <div class="lt-card rv">
+      <svg viewBox="0 0 120 90"><circle cx="62" cy="50" r="13" fill="#3b3f5c" stroke="#fde047" stroke-width="2.5"/><path d="M62 12 L62 28" stroke="#fde047" stroke-width="4" stroke-linecap="round"/><path d="M62 36 L56 26 L68 26 Z" fill="#fde047"/></svg>
+      <div><div class="nm">逆光（背面光）<span class="use">剪影史诗</span></div>
+      <div class="ds">光从背后穿透/勾勒，主体边缘形成<b class="hl">金边轮廓光</b>，纵深感强（正面需补光）。<br>适用：浪漫剪影、史诗场景、透明材质（婚纱、玻璃）。</div></div>
+    </div>
+    <div class="lt-card rv">
+      <svg viewBox="0 0 120 90"><circle cx="60" cy="48" r="13" fill="#fde68a" stroke="#f59e0b"/><path d="M47 52 A13 13 0 0 0 73 52 L73 48 A13 13 0 0 1 47 48 Z" fill="rgba(15,18,35,.5)"/><path d="M60 10 L60 26" stroke="#fde047" stroke-width="4" stroke-linecap="round"/><path d="M60 34 L54 24 L66 24 Z" fill="#fde047"/></svg>
+      <div><div class="nm">顶光（垂直顶光）<span class="use">庄重/压迫</span></div>
+      <div class="ds">正午太阳、天花板射灯：顶部亮，眼窝鼻下、下巴处深阴影，易产生压迫感或庄重感。<br>适用：反派特写、宗教圣像、简约静物。</div></div>
+    </div>
+    <div class="lt-card rv">
+      <svg viewBox="0 0 120 90"><circle cx="60" cy="42" r="13" fill="#fde68a" stroke="#f59e0b"/><path d="M47 40 A13 13 0 0 1 73 40 L73 42 A13 13 0 0 0 47 42 Z" fill="rgba(15,18,35,.55)"/><path d="M60 84 L60 66" stroke="#fde047" stroke-width="4" stroke-linecap="round"/><path d="M60 56 L54 66 L66 66 Z" fill="#fde047"/></svg>
+      <div><div class="nm">底光（垂直底光）<span class="use">诡异惊悚</span></div>
+      <div class="ds">地面反光、手电筒仰照：底部亮、阴影向上蔓延，扭曲形态，自带诡异惊悚感。<br>适用：恐怖题材（幽灵恶魔）、奇幻魔法阵。</div></div>
+    </div>
+  </div>
+
+  <h3 class="gp-title">🔦 按光源材质 <small>决定光线的软硬与扩散（集中度）</small></h3>
+  <div class="duo">
+    <div class="card rv"><h3>⚡ 硬光 <span class="tag" style="color:var(--c7);border-color:var(--c7)">小而集中</span></h3>
+      <p style="color:var(--tx2);font-size:.88rem">点光源直射（手电筒、聚光灯、正午阳光、窄束射灯）：阴影边缘<b class="hl">清晰锐利</b>，明暗对比强烈，突出棱角与纹理（金属、粗糙表面）。<br><b style="color:var(--tx)">AI应用：</b>硬朗写实风——机械零件、男性肖像、户外强光。</p></div>
+    <div class="card rv"><h3>☁️ 软光 <span class="tag" style="color:var(--c2);border-color:var(--c2)">大而分散</span></h3>
+      <p style="color:var(--tx2);font-size:.88rem">面光源扩散/反射（柔光箱、阴天天空、白色窗帘过滤的阳光）：阴影边缘<b class="hl">模糊自然</b>，画面柔和、色彩细腻，减少皮肤瑕疵。<br><b style="color:var(--tx)">AI应用：</b>温馨唯美风——女性肖像、儿童写真、室内家居。</p></div>
+    <div class="card rv" style="grid-column:1/-1"><h3>🎛️ 混合光 <span class="tag" style="color:var(--c6);border-color:var(--c6)">主光+补光</span></h3>
+      <p style="color:var(--tx2);font-size:.88rem">硬光+软光结合：一种为<b class="hl">主光</b>（定调）、另一种为<b class="hl">补光</b>（平衡阴影）。典型组合：侧方硬光（塑立体）+ 正面软光（弱化阴影）。兼顾立体与柔和，避免"过硬显生硬、过软显扁平"。<br><b style="color:var(--tx)">AI应用：</b>大部分写实类创作——电影海报、商业插画。</p></div>
+  </div>
+
+  <h3 class="gp-title">🌤️ 按光源来源 <small>决定氛围与场景逻辑</small></h3>
+  <div class="duo">
+    <div class="card rv"><h3>🌿 自然光源</h3>
+      <p style="color:var(--tx2);font-size:.88rem">
+      <b style="color:var(--tx)">☀️ 日光</b>（随时间变化，自带场景代入感）：<span class="tag">晨光·柔和暖黄</span><span class="tag">正午·强烈硬光</span><span class="tag">黄昏·暖橙柔光</span><span class="tag">阴天·均匀冷调软光</span><br>
+      <b style="color:var(--tx)">🌙 月光</b>：亮度低、偏冷调（蓝/青），多为软光或弱硬光——月夜森林、湖边夜景、神秘氛围。<br>
+      <b style="color:var(--tx)">🪞 环境反光</b>：自然光照射物体后的二次光（雪地偏白、红叶偏红），柔和——雪地面部补光、水下光线折射。</p></div>
+    <div class="card rv"><h3>💡 人工光源</h3>
+      <p style="color:var(--tx2);font-size:.88rem">
+      <b style="color:var(--tx)">🔆 主光源</b>：亮度最高，决定光影方向和基调——摄影棚、舞台、室内人像主光。<br>
+      <b style="color:var(--tx)">🩹 补光源</b>：弱化主光硬阴影（反光板、小功率柔光灯），柔和不产生新阴影。<br>
+      <b style="color:var(--tx)">🕯️ 轮廓光源</b>：主体后方窄束光，勾勒<b class="hl">金边</b>、分离主体与背景——商业插画、超级英雄海报。</p></div>
+  </div>
+
+  <h3 class="gp-title">🧪 灯光组合技巧 <small>实际创作很少单打独斗</small></h3>
+  <div class="rv">
+    <div class="formula-pill"><span>45°侧光（方向）</span><span class="eq">+</span><span>硬光（材质）</span><span class="eq">=</span><span class="res">伦勃朗光 · 塑造人物立体感</span></div>
+    <div class="formula-pill"><span>月光（来源）</span><span class="eq">+</span><span>逆光（方向）</span><span class="eq">=</span><span class="res">月夜人物剪影</span></div>
+    <div class="formula-pill"><span>主光·侧方硬光</span><span class="eq">+</span><span>补光·正面软光</span><span class="eq">+</span><span>轮廓光·后方硬光</span><span class="eq">=</span><span class="res">商业级写实人像</span></div>
+  </div>
+  <div class="card rv" style="margin-top:14px">
+    <b>📌 课程小结：</b><span style="color:var(--tx2)">① 灯光按「方向、材质、来源」三个维度划分；② 不同灯光类型各有特性与适用场景；③ 实际创作用「组合技」精准控制三个维度。</span>
+  </div>
+</section>
+
+<!-- ============ 6 色调 ============ -->
+<section id="tab-tone">
+  <h2>🎨 第四层(下) · 色调 <span class="tag" style="color:var(--c6);border-color:var(--c6)">调色：整幅画的情绪基调</span></h2>
+  <p class="sec-note">色调不是单一颜色，而是作品"整体的颜色感觉"（这幅画偏暖 / 这张照片很清冷）。按色相倾向 + 冷暖属性分四大类：</p>
+  <div class="grid2">
+    <div class="tn-card rv">
+      <div class="tn-sw" style="background:linear-gradient(120deg,#ff9a3c,#ff5e3a,#d43a02)"></div>
+      <div class="tn-body"><div class="nm">🔥 暖色调 <span class="tag" style="color:#ff9a3c;border-color:#ff9a3c">前进感</span></div>
+        <div class="feel">温暖 · 热烈 · 活力 · 激情 · 温馨（也可能躁动、炽热）</div>
+        <p>以红橙黄为主要倾向，源于太阳、火焰的联想，视觉上让人感觉"靠近"。</p>
+        <div><span class="tag">朱红</span><span class="tag">橘黄</span><span class="tag">土黄</span><span class="tag">赭石</span><span class="tag">熟褐</span></div>
+        <div class="art"><b>应用：</b>落日/火焰/节日照片；餐饮品牌（刺激食欲）、儿童产品。<b>名画：</b>莫奈《日出·印象》橙黄朝阳与水面倒影。</div>
+      </div>
+    </div>
+    <div class="tn-card rv">
+      <div class="tn-sw" style="background:linear-gradient(120deg,#3ec6ff,#2f6bff,#3b2f8f)"></div>
+      <div class="tn-body"><div class="nm">❄️ 冷色调 <span class="tag" style="color:#3ec6ff;border-color:#3ec6ff">后退感</span></div>
+        <div class="feel">清冷 · 宁静 · 理性 · 深远 · 清新（也可能孤独、忧郁）</div>
+        <p>以蓝绿紫（蓝紫）为主，源于天空、海洋、冰雪的联想，视觉上让人感觉"疏远"。</p>
+        <div><span class="tag">群青</span><span class="tag">钴蓝</span><span class="tag">湖蓝</span><span class="tag">翠绿</span><span class="tag">紫罗兰(偏蓝)</span></div>
+        <div class="art"><b>应用：</b>深海/雪景/夜景照片；科技产品（理性）、护肤品（清爽）。<b>名画：</b>梵高《星夜》深蓝夜空与旋转星云。</div>
+      </div>
+    </div>
+    <div class="tn-card rv">
+      <div class="tn-sw" style="background:linear-gradient(120deg,#f5f5f0,#b9b9b9,#3a3a3a,#111)"></div>
+      <div class="tn-body"><div class="nm">⚫ 中间色调 <span class="tag" style="color:#b9b9b9;border-color:#b9b9b9">明度对比</span></div>
+        <div class="feel">简洁 · 庄重 · 理性 · 高级 · 百搭（黑多则压抑）</div>
+        <p>又称"无彩色调"：黑白灰为主 + 少量低纯度色（米白、浅灰、深灰、褐），关键是<b class="hl">明度对比</b>而非色相。</p>
+        <div><span class="tag">纯白</span><span class="tag">浅灰</span><span class="tag">中灰</span><span class="tag">深灰</span><span class="tag">纯黑</span><span class="tag">米黄</span><span class="tag">浅褐</span></div>
+        <div class="art"><b>应用：</b>黑白人像、纪实摄影（突出光影质感）；极简家居、高端LOGO。<b>名画：</b>素描、黑白版画全靠明暗分层。</div>
+      </div>
+    </div>
+    <div class="tn-card rv">
+      <div class="tn-sw" style="background:linear-gradient(120deg,#ff4757 0 25%,#2ed573 25% 50%,#ffa502 50% 75%,#70a1ff 75%)"></div>
+      <div class="tn-body"><div class="nm">⚡ 对比色调 <span class="tag" style="color:#ff6b81;border-color:#ff6b81">冲突与平衡</span></div>
+        <div class="feel">强烈 · 醒目 · 动感 · 张力十足（处理不当会杂乱）</div>
+        <p>用色相/明度/纯度的强烈反差构建，最典型是<b class="hl">互补色对比</b>：红与绿、黄与紫、蓝与橙。</p>
+        <div><span class="tag">红配绿</span><span class="tag">黄配紫</span><span class="tag">蓝配橙</span><span class="tag">黑白明度对比</span></div>
+        <div class="art"><b>应用：</b>街头摄影红蓝对比；广告海报、警示标志。<b>名画：</b>蒙克《呐喊》红色天空×蓝色河流强化焦虑；民间年画红配绿传递喜庆。</div>
+      </div>
+    </div>
+  </div>
+  <div class="card rv" style="margin-top:14px">
+    <b>📌 补充维度：</b><span style="color:var(--tx2)">色调还可按「明度、纯度」细分——</span>
+    <span class="tag">高明度(浅调)·轻盈明快</span><span class="tag">低明度(深调)·厚重神秘</span><span class="tag">高纯度(鲜艳)·活泼强烈</span><span class="tag">低纯度(灰调)·柔和高级</span>
+    <span style="color:var(--tx2)">实际作品是"冷暖×明度×纯度"的综合，如"高明度冷色调""低纯度暖色调"。</span>
+  </div>
+</section>
+
+<!-- ============ 7 实验室 ============ -->
+<section id="tab-lab">
+  <h2>🧪 提示词实验室 <span class="tag" style="color:var(--c4);border-color:var(--c4)">像点菜一样，七层叠出一条提示词</span></h2>
+  <p class="sec-note">每层点一个词，下方会实时拼出完整提示词；颜色对应公式的七层——选满七层，配方即完成。</p>
+  <div id="labSlots"></div>
+  <div class="prompt-out" id="promptOut"></div>
+  <div class="lab-actions">
+    <button class="btn pri" id="copyBtn">📋 一键复制提示词</button>
+    <button class="btn" id="randBtn">🎲 随机来一杯</button>
+    <button class="btn" id="clearBtn">🧹 清空重配</button>
+    <span class="complete-badge" id="completeBadge">🎉 配方完整！这就是一条专业提示词</span>
+  </div>
+</section>
+
+<!-- ============ 8 测验 ============ -->
+<section id="tab-quiz">
+  <h2>🏆 闯关测验 <span class="tag" style="color:var(--c7);border-color:var(--c7)">13 题 · 六节课全考点</span></h2>
+  <div class="card" id="quizBox"></div>
+</section>
+
+</main>
+
+<footer>
+  依据本文件夹 6 节课笔记制作 · 单文件离线页面，双击即开 · 记不住时回来点一杯「随机来一杯」🎲
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= 数据 ================= */
+const SLOTS=[
+ {n:'风格限定',e:'🎬',c:'var(--c1)',m:'<b>定片种</b>——这部"电影"是动画、水墨还是赛博朋克?',k:'画风外衣',tab:'style'},
+ {n:'视角构图',e:'🎥',c:'var(--c2)',m:'<b>架机位</b>——站在哪看(视角)？元素怎么摆(构图)？',k:'机位阵型',tab:'view'},
+ {n:'主体描述',e:'🧍',c:'var(--c3)',m:'<b>选主演</b>——谁在演？长啥样？穿啥？干啥？',k:'主角登场',tab:'view'},
+ {n:'背景设定',e:'🏞️',c:'var(--c4)',m:'<b>搭布景</b>——故事发生在哪个环境里？',k:'舞台布景',tab:'comp'},
+ {n:'细节修饰',e:'💍',c:'var(--c5)',m:'<b>摆道具</b>——配饰、道具、纹理、图案……让画面有戏',k:'道具戏份',tab:'comp'},
+ {n:'光影色调',e:'💡',c:'var(--c6)',m:'<b>打灯调色</b>——什么光线？什么情绪基调？',k:'灯光情绪',tab:'light'},
+ {n:'质量词',e:'✅',c:'var(--c7)',m:'<b>验收喊咔</b>——高清！细腻！唯美！',k:'导演验收',tab:'tone'}
+];
+const EXAMPLE=[
+ {t:'数字绘画风格里的日系插画风格',s:0},
+ {t:'平视角摄影中心构图',s:1},
+ {t:'一位长发飘逸黑发的年轻女子，穿着紫色针织毛衣、白色飘逸长裙和白色帆布鞋，带着专注的神情看书',s:2},
+ {t:'坐在一个秋日公园长椅上，一排排树木展现出橙色和黄色的鲜艳秋叶，长椅旁是一条铺砌的小路',s:3},
+ {t:'地上散落着秋天的落叶',s:4},
+ {t:'柔和温暖的阳光透过树木，在地面和女子身上投下轻柔的影子，营造出光影氛围',s:5},
+ {t:'高清细腻唯美',s:6}
+];
+const BUILDER=[
+ {label:'风格限定',c:'var(--c1)',slot:0,opts:['写实风格','日系动漫风格','迪士尼卡通风格','水彩画风格','波普艺术风格','赛博朋克风格','极简主义风格','中国水墨画风格','工笔重彩风格','敦煌壁画风格','全息色彩风格']},
+ {label:'距离',c:'var(--c2)',slot:1,opts:['特写','近景','中景','远景','全景']},
+ {label:'视角',c:'var(--c2)',slot:1,opts:['平视','仰视','俯视','鸟瞰','斜视','3/4视角','第一人称','鱼眼']},
+ {label:'构图',c:'var(--c2)',slot:1,opts:['中心构图','对称构图','水平线构图','三分法构图','对角线构图','引导线构图','框架构图','留白构图','三角构图','前景构图']},
+ {label:'主体描述',c:'var(--c3)',slot:2,opts:['一位黑发年轻女子，穿紫色毛衣配白色长裙，坐在长椅上看书','一位赛博朋克机械少女，站在霓虹街头','一位白衣古装侠客，仗剑立于山巅','一只橘猫与一头狮子并肩而立','超级英雄披风猎猎，落地屈膝','一位老渔夫独自划着小船']},
+ {label:'背景设定',c:'var(--c4)',slot:3,opts:['秋日公园，橙黄树叶铺满小路','霓虹闪烁的未来都市街道','云海翻腾的雪山之巅','夕阳下的金色海滩','古色古香的中式庭院','一望无际的金黄油菜花田','星空下的静谧湖面']},
+ {label:'细节修饰',c:'var(--c5)',slot:4,opts:['地上散落着秋叶','空中飘着樱花花瓣','墙面霓虹广告牌倒映在积水里','萤火虫在草丛间飞舞','水面泛起细腻波纹','云雾缭绕在山间']},
+ {label:'光影',c:'var(--c6)',slot:5,opts:['柔和温暖的阳光透过树叶','45°侧光塑造立体轮廓','逆光勾勒出金边轮廓光','顶光营造庄重压迫感','月光洒下清冷冷辉','霓虹灯光五彩斑斓']},
+ {label:'色调',c:'var(--c6)',slot:5,opts:['暖色调','冷色调','中间色调','对比色调']},
+ {label:'质量词',c:'var(--c7)',slot:6,opts:['高清细腻唯美','8K超高清，电影级质感','大师级构图，细节丰富','柔和流畅，富有质感']}
+];
+const QUIZ=[
+ {q:'提示词公式的正确顺序是？',opts:['风格限定→视角构图→主体→背景→细节→光影色调→质量词','主体→背景→风格→视角→质量词→细节→光影','质量词放最前面，风格放最后','顺序随便，AI都能看懂'],a:0,exp:'口诀：定片种→架机位→选主演→搭布景→摆道具→打灯调色→验收喊咔。'},
+ {q:'45°侧光在摄影中的经典名称是？',opts:['伦勃朗光','蝴蝶光','底光','环闪光'],a:0,exp:'45°侧光=伦勃朗光：明暗对比强烈，皮肤毛孔、布料褶皱等纹理清晰。'},
+ {q:'想表现"超级英雄落地的强大气场"，选哪个视角？',opts:['仰视','俯视','平视','全景'],a:0,exp:'仰视让主体显得高大、威严甚至带压迫感，适合塑造力量感。'},
+ {q:'三分法构图中，主体应该放在？',opts:['线条交点或线条上','画面正中心','任意位置','画面边缘外'],a:0,exp:'九宫格的交点/线上，符合人眼"非对称平衡"的偏好，避免呆板。'},
+ {q:'蒙克《呐喊》中红色天空与蓝色河流，属于哪种色调？',opts:['对比色调（互补色对比）','暖色调','中间色调','低纯度色调'],a:0,exp:'红与蓝形成互补色反差，强化焦虑感——对比色调的核心是"冲突与平衡"。'},
+ {q:'底光自带什么感觉？适合什么题材？',opts:['诡异惊悚——恐怖、奇幻题材','温馨柔和——儿童写真','庄重祥和——宗教圣像','清新自然——日常街拍'],a:0,exp:'底光阴影向上蔓延，视觉上扭曲形态，自带诡异、惊悚感。'},
+ {q:'逆光的标志性效果是？',opts:['金边轮廓光','画面全黑','阴影完全消失','色彩全部失真'],a:0,exp:'光从背后勾勒主体边缘，形成"金边轮廓光"，纵深感强；正面需补光避免全黑。'},
+ {q:'手电筒、聚光灯、正午阳光属于？',opts:['硬光','软光','环境反光','轮廓光'],a:0,exp:'体积小、光线集中直射=硬光：阴影边缘清晰锐利，突出棱角与纹理。'},
+ {q:'想突出"魔法戒指的纹理与光泽"，取景范围选？',opts:['特写','远景','全景','鸟瞰'],a:0,exp:'特写聚焦主体局部、背景极弱，最能强化细节与张力。'},
+ {q:'阴天的光有什么特点？',opts:['均匀的冷调软光','强烈的硬光','暖橙柔光','点光源直射'],a:0,exp:'日光细分：晨光柔和暖黄、正午强烈硬光、黄昏暖橙柔光、阴天均匀冷调软光。'},
+ {q:'赛博朋克风格的典型元素是？',opts:['霓虹灯+黑暗背景+机械增强','留白与虚实相生','矿物颜料层层渲染','彩虹色调与光泽表面'],a:0,exp:'赛博朋克=高科技低生活：黑暗背景、霓虹灯、机械增强、未来都市景观。'},
+ {q:'"主光(侧方硬光)+补光(正面软光)+轮廓光(后方硬光)"组合出什么效果？',opts:['商业级写实人像','恐怖片效果','极简海报','水墨画意境'],a:0,exp:'多光源组合：主光塑形、补光平衡阴影、轮廓光分离背景=商业级写实人像。'},
+ {q:'留白构图中的"空白"是指？',opts:['无明确主体、元素简洁的区域（天空/水面/纯色墙面）','必须涂成白色','必须在画面右侧','面积越小越好'],a:0,exp:'"空白"≠白色：指视觉元素简洁或单一的区域，用空白衬托主体、赋予想象空间。'}
+];
+const MAP=['📖 公式总览 · 七件套','🎭 风格限定 · 10种画风','🎥 视角 · 17个机位','🖼️ 构图 · 10种阵型','💡 光影 · 方向/材质/来源','🎨 色调 · 4大基调','🧪 实验室 · 拼一条提示词','🏆 闯关测验 · 13题'];
+const TABS=['overview','style','view','comp','light','tone','lab','quiz'];
+
+/* ================= 工具 ================= */
+const $=s=>document.querySelector(s);
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1800)}
+function confetti(n){const cs=['#c084fc','#38bdf8','#f472b6','#34d399','#fb923c','#fbbf24','#f87171'];
+ for(let i=0;i<n;i++){const d=document.createElement('div');d.className='confetti';
+ d.style.left=Math.random()*100+'vw';d.style.background=cs[i%7];
+ d.style.animationDuration=(2+Math.random()*2)+'s';d.style.animationDelay=(Math.random()*.6)+'s';
+ d.style.transform='rotate('+Math.random()*360+'deg)';
+ document.body.appendChild(d);setTimeout(()=>d.remove(),4600)}}
+
+/* ================= Hero 公式条 & 蛋糕 ================= */
+const fb=$('#formulaBar');
+SLOTS.forEach((s,i)=>{
+ const b=document.createElement('div');b.className='fb-item';
+ b.innerHTML='<span class="num" style="background:'+s.c+'">'+(i+1)+'</span>'+s.n+(i<6?'<span class="plus">+</span>':'');
+ b.onclick=()=>go(s.tab);fb.appendChild(b);
+});
+const cake=$('#cake');
+SLOTS.forEach((s,i)=>{
+ const d=document.createElement('div');d.className='layer';d.style.borderLeft='5px solid '+s.c;
+ d.innerHTML='<span class="no" style="background:'+s.c+'">'+(i+1)+'</span><span class="nm">'+s.e+' '+s.n+'</span><span class="mv">'+s.m+'</span>';
+ d.onclick=()=>go(s.tab);cake.appendChild(d);
+});
+
+/* ================= 例句拆解 ================= */
+const exa=$('#exaText'),legend=$('#exaLegend');
+EXAMPLE.forEach((seg,i)=>{
+ if(i>0)exa.appendChild(document.createTextNode('，'));
+ const sp=document.createElement('span');sp.textContent=seg.t;
+ sp.style.background=SLOTS[seg.s].c+'26';sp.style.color=SLOTS[seg.s].c;
+ sp.dataset.s=seg.s;exa.appendChild(sp);
+});
+SLOTS.forEach((s,i)=>{
+ const l=document.createElement('span');l.innerHTML='<i style="background:'+s.c+'"></i>'+(i+1)+' '+s.n;legend.appendChild(l);
+});
+let exaStep=-1,exaTimer=null;
+$('#exaBtn').onclick=function(){
+ clearInterval(exaTimer);
+ if(exaStep>=6){exaStep=-1;exa.querySelectorAll('span').forEach(s=>s.classList.remove('lit'));
+  this.textContent='▶ 逐层点亮';$('#exaTip').textContent='点击「逐层点亮」，看一句话如何按公式七层叠出来 →';return}
+ exaStep=-1;exa.querySelectorAll('span').forEach(s=>s.classList.remove('lit'));
+ this.textContent='⏸ 再点一次重新播放';
+ exaTimer=setInterval(()=>{
+  exaStep++;
+  if(exaStep>6){clearInterval(exaTimer);$('#exaTip').innerHTML='✅ 七层叠完，一条专业提示词诞生！点按钮可重新播放。';return}
+  const spans=exa.querySelectorAll('span');
+  for(let i=0;i<=exaStep;i++)spans[i].classList.add('lit');
+  $('#exaTip').innerHTML='<b style="color:'+SLOTS[EXAMPLE[exaStep].s].c+'">第'+(exaStep+1)+'层 · '+SLOTS[EXAMPLE[exaStep].s].e+' '+SLOTS[EXAMPLE[exaStep].s].n+'：</b>'+SLOTS[EXAMPLE[exaStep].s].m;
+ },1400);
+};
+
+/* ================= 学习地图 ================= */
+let prog=load('aiart-progress',{visited:['overview'],quiz:false});
+function renderMap(){
+ const ul=$('#mapList');ul.innerHTML='';
+ MAP.forEach((m,i)=>{
+  const done=prog.visited.includes(TABS[i])||(TABS[i]==='quiz'&&prog.quiz);
+  const li=document.createElement('li');if(done)li.className='done';
+  li.innerHTML='<span class="box">'+(done?'✓':'')+'</span>'+m;ul.appendChild(li);
+ });
+}
+renderMap();
+
+/* ================= Tab 切换 ================= */
+function go(tab){
+ document.querySelectorAll('main section').forEach(s=>s.classList.remove('on'));
+ document.getElementById('tab-'+tab).classList.add('on');
+ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+ if(!prog.visited.includes(tab)){prog.visited.push(tab);store('aiart-progress',prog)}
+ renderMap();
+ window.scrollTo({top:0,behavior:'smooth'});
+ revealScan();
+}
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>go(b.dataset.tab));
+
+/* ================= 实验室 ================= */
+const lab=$('#labSlots');
+const sel=new Array(BUILDER.length).fill(null);
+BUILDER.forEach((g,gi)=>{
+ const d=document.createElement('div');d.className='lab-slot';
+ let html='<div class="lb"><i style="background:'+g.c+'"></i>'+g.label+'<span style="color:var(--tx2);font-weight:400;font-size:.78rem">（对应公式第'+(g.slot+1)+'层 · '+SLOTS[g.slot].n+'）</span></div><div class="chips" data-g="'+gi+'">';
+ g.opts.forEach((o,oi)=>{html+='<span class="chip" data-o="'+oi+'">'+o+'</span>'});
+ d.innerHTML=html+'</div>';lab.appendChild(d);
+});
+lab.addEventListener('click',e=>{
+ const c=e.target.closest('.chip');if(!c)return;
+ const gi=+c.parentElement.dataset.g,oi=+c.dataset.o;
+ sel[gi]=sel[gi]===oi?null:oi;
+ c.parentElement.querySelectorAll('.chip').forEach((x,i)=>x.classList.toggle('on',sel[gi]===i));
+ renderPrompt();
+});
+function renderPrompt(){
+ const out=$('#promptOut');out.innerHTML='';
+ const parts=[];
+ const P=(gi)=>sel[gi]==null?null:BUILDER[gi].opts[sel[gi]];
+ const order=[[0,0],[2,1],[1,1],[3,1],[4,2],[5,3],[6,4],[7,5],[8,5],[9,6]];
+ order.forEach(([gi,slot])=>{
+  const v=P(gi);
+  const sp=document.createElement('span');
+  if(v==null){sp.className='ph';sp.textContent='【'+BUILDER[gi].label+'】'}
+  else{sp.className='seg';sp.textContent=v;sp.style.background=SLOTS[slot].c+'22';sp.style.color=SLOTS[slot].c;sp.style.boxShadow='inset 0 -2px 0 '+SLOTS[slot].c}
+  parts.push(sp);
+ });
+ const sep=['，','、','视角，','构图。','，','，','。','，整体','。','。'];
+ parts.forEach((sp,i)=>{out.appendChild(sp);if(i<parts.length-1)out.appendChild(document.createTextNode(sep[i]))});
+ const full=sel.every(x=>x!=null);
+ $('#completeBadge').classList.toggle('show',full);
+ if(full&&!window._confettiDone){confetti(90);window._confettiDone=true;toast('🎉 七层全部点亮！')}
+ if(!full)window._confettiDone=false;
+}
+renderPrompt();
+$('#randBtn').onclick=()=>{
+ BUILDER.forEach((g,gi)=>{sel[gi]=Math.floor(Math.random()*g.opts.length);
+  lab.querySelector('.chips[data-g="'+gi+'"]').querySelectorAll('.chip').forEach((x,i)=>x.classList.toggle('on',sel[gi]===i))});
+ renderPrompt();toast('🎲 已随机搭配，不满意再摇一次');
+};
+$('#clearBtn').onclick=()=>{
+ sel.fill(null);document.querySelectorAll('#labSlots .chip').forEach(c=>c.classList.remove('on'));renderPrompt();
+};
+$('#copyBtn').onclick=()=>{
+ const P=gi=>sel[gi]==null?'【'+BUILDER[gi].label+'】':BUILDER[gi].opts[sel[gi]];
+ const txt=P(0)+'，'+P(2)+'、'+P(1)+'视角，'+P(3)+'构图。'+P(4)+'，'+P(5)+'，'+P(6)+'。'+P(7)+'，整体'+P(8)+'。'+P(9)+'。';
+ const done=()=>toast('📋 已复制，去AI绘画工具里粘贴试试');
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(()=>fallbackCopy(txt,done))}
+ else fallbackCopy(txt,done);
+};
+function fallbackCopy(txt,done){
+ const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';
+ document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){toast('复制失败，请手动选中复制')}ta.remove();
+}
+
+/* ================= 语音口诀 ================= */
+const CHANT='写提示词，就像拍一部电影。第一步，风格限定，定片种。第二步，视角构图，架机位。第三步，主体描述，选主演。第四步，背景设定，搭布景。第五步，细节修饰，摆道具。第六步，光影色调，打灯调色。第七步，质量词，验收喊咔！片种、机位、主演、布景、道具、灯色、验收——一句话，出一张片！';
+const speakBtn=$('#speakBtn');
+if(!('speechSynthesis' in window)){speakBtn.style.display='none'}
+speakBtn.onclick=()=>{
+ const ss=window.speechSynthesis;
+ if(ss.speaking){ss.cancel();speakBtn.textContent='🔊 跟我念一遍口诀';return}
+ const u=new SpeechSynthesisUtterance(CHANT);u.lang='zh-CN';u.rate=.95;
+ const v=ss.getVoices().find(v=>/zh|中文|Chinese/i.test(v.lang+v.name));if(v)u.voice=v;
+ u.onend=()=>speakBtn.textContent='🔊 跟我念一遍口诀';
+ ss.speak(u);speakBtn.textContent='⏹ 停止朗读';
+};
+
+/* ================= 闯关测验 ================= */
+let qi=0,score=0;
+const qbox=$('#quizBox');
+function renderQuiz(){
+ if(qi>=QUIZ.length){
+  const grade=score>=12?['🎓','提示词大师','公式已刻进DNA，去画出你的第一张大师之作吧！']
+   :score>=9?['🎨','老练画师','就差几道题，回对应章节再逛一圈就满分了！']
+   :score>=6?['✏️','进阶学徒','基础框架有了，重点复习「构图」和「光影」两章。']
+   :['🖼️','画廊新人','别灰心！从「公式总览」重新出发，逐层点亮再来一次。'];
+  if(score>=9){confetti(110);prog.quiz=true;store('aiart-progress',prog);renderMap()}
+  qbox.innerHTML='<div class="result"><div class="big">'+grade[0]+'</div><h3>段位：'+grade[1]+'</h3>'
+   +'<p>得分 <b style="color:var(--c6);font-size:1.3rem">'+score+'</b> / '+QUIZ.length+'</p><p>'+grade[2]+'</p>'
+   +'<button class="btn pri" id="redoBtn" style="margin-top:10px">🔄 再闯一次</button></div>';
+  $('#redoBtn').onclick=()=>{qi=0;score=0;renderQuiz()};
+  return;
+ }
+ const q=QUIZ[qi];
+ let html='<div class="quiz-head"><b>第 '+(qi+1)+' / '+QUIZ.length+' 题</b><span class="quiz-prog">当前得分：'+score+'</span></div>'
+  +'<div class="qz-q">'+q.q+'</div>';
+ q.opts.forEach((o,i)=>{html+='<button class="qz-opt" data-i="'+i+'">'+String.fromCharCode(65+i)+'. '+o+'</button>'});
+ html+='<div class="qz-exp" id="qzExp">💡 '+q.exp+'</div>'
+  +'<div class="qz-foot"><span class="quiz-prog" id="qzFb"></span><button class="btn pri" id="nextBtn" style="display:none">'+(qi===QUIZ.length-1?'查看结果 →':'下一题 →')+'</button></div>';
+ qbox.innerHTML=html;
+ qbox.querySelectorAll('.qz-opt').forEach(btn=>btn.onclick=()=>{
+  const pick=+btn.dataset.i;
+  qbox.querySelectorAll('.qz-opt').forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add('right')});
+  if(pick===q.a){score++;$('#qzFb').textContent='✅ 答对了！'}
+  else{btn.classList.add('wrong');$('#qzFb').textContent='❌ 再看一眼解析'}
+  $('#qzExp').classList.add('show');$('#nextBtn').style.display='inline-block';
+ });
+ $('#nextBtn').onclick=()=>{qi++;renderQuiz()};
+}
+renderQuiz();
+
+/* ================= 滚动显现 ================= */
+const io=('IntersectionObserver' in window)?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08}):null;
+function revealScan(){document.querySelectorAll('.rv:not(.in)').forEach(el=>{io?io.observe(el):el.classList.add('in')})}
+revealScan();
+</script>
+</body>
+</html>

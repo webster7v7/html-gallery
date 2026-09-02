@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全媒体运营面试速查版(一页纸)</title>
+<style>
+  :root{
+    --accent:#d97706; --accent-deep:#92400e; --accent-soft:#fffbeb; --accent-mid:#fde68a;
+    --ink:#292524; --ink-2:#57534e; --ink-3:#a8a29e;
+    --bg:#fafaf9; --card:#ffffff; --line:#e7e5e4;
+    --danger:#b91c1c; --danger-bg:#fef2f2; --danger-line:#fecaca;
+    --ok:#15803d; --ok-bg:#f0fdf4;
+    --radius:12px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.7; font-size:15px;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px 60px;}
+
+  /* ===== Hero ===== */
+  .hero{
+    background:linear-gradient(135deg,#78350f 0%,#b45309 50%,#d97706 100%);
+    color:#fff; padding:42px 20px 38px; text-align:center; position:relative; overflow:hidden;
+  }
+  .hero::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 12% 25%,rgba(255,255,255,.15) 0,transparent 42%),
+               radial-gradient(circle at 88% 75%,rgba(255,255,255,.10) 0,transparent 42%);
+    pointer-events:none;
+  }
+  .hero .kicker{
+    display:inline-block; font-size:12.5px; letter-spacing:.3em; text-indent:.3em;
+    background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.32);
+    padding:4px 14px; border-radius:999px; margin-bottom:16px;
+  }
+  .hero h1{font-size:clamp(26px,4.5vw,38px); font-weight:800; margin-bottom:12px;}
+  .hero .core{
+    display:inline-block; max-width:620px; margin-top:2px;
+    background:rgba(255,255,255,.13); border:1px dashed rgba(255,255,255,.45);
+    border-radius:10px; padding:10px 22px; font-size:16px; font-weight:700; letter-spacing:.02em;
+  }
+  .hero .core em{font-style:normal; color:#fde68a;}
+
+  /* ===== Sections ===== */
+  section.box{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    margin-top:22px; padding:24px 28px; box-shadow:0 1px 3px rgba(41,37,36,.06);
+  }
+  h2{
+    display:flex; align-items:center; gap:12px;
+    font-size:19px; font-weight:800; margin-bottom:16px;
+  }
+  h2 .num{
+    flex:none; width:30px; height:30px; border-radius:9px; background:var(--accent);
+    color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800;
+    box-shadow:0 2px 6px rgba(217,119,6,.35);
+  }
+  h3{font-size:15.5px; font-weight:700; margin:18px 0 8px; color:var(--accent-deep);}
+  p{margin:8px 0; color:var(--ink-2);}
+  strong{color:var(--ink);}
+
+  /* ===== Template block ===== */
+  pre.tmpl{
+    background:#1c1917; color:#fde68a; border-radius:10px; padding:20px 24px;
+    font-family:"Cascadia Code",Consolas,"Courier New",monospace; font-size:13.5px; line-height:2;
+    overflow-x:auto; margin:12px 0; white-space:pre-wrap;
+  }
+  .key{
+    background:var(--accent-soft); border:1px solid var(--accent-mid); border-radius:10px;
+    padding:10px 16px; margin:12px 0; font-size:14.5px; color:var(--accent-deep);
+  }
+  .key strong{color:var(--accent-deep);}
+
+  /* ===== Tables ===== */
+  .tbl{overflow-x:auto; margin:12px 0; border-radius:10px; border:1px solid var(--line);}
+  table{width:100%; border-collapse:collapse; font-size:13.5px; background:#fff;}
+  thead th{
+    background:var(--accent-soft); color:var(--accent-deep); font-weight:700; text-align:left;
+    padding:9px 14px; border-bottom:2px solid var(--accent-mid); white-space:nowrap;
+  }
+  tbody td{padding:9px 14px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:#fefdfb;}
+  tbody td:first-child{color:var(--ink); font-weight:600;}
+  td .say{color:#78716c;}
+  td .say::before{content:"“"; }
+  td .say::after{content:"”"; }
+
+  /* ===== Numbered flow ===== */
+  ol.flow{list-style:none; counter-reset:f; padding:0; margin:10px 0;}
+  ol.flow li{
+    counter-increment:f; position:relative; padding:8px 0 8px 44px; color:var(--ink-2);
+  }
+  ol.flow li::before{
+    content:counter(f); position:absolute; left:0; top:7px;
+    width:28px; height:28px; border-radius:8px; background:var(--accent-soft);
+    border:1.5px solid var(--accent); color:var(--accent-deep);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13.5px;
+  }
+  ol.flow li strong{color:var(--ink);}
+
+  /* ===== Lists ===== */
+  ul{padding-left:22px; color:var(--ink-2); margin:8px 0;}
+  li{margin:5px 0;}
+  li::marker{color:var(--accent); font-weight:700;}
+
+  /* ===== Danger table ===== */
+  .danger .tbl{border-color:var(--danger-line);}
+  .danger thead th{background:var(--danger-bg); color:var(--danger); border-bottom-color:var(--danger-line);}
+  .danger tbody td:first-child{color:var(--danger);}
+  .danger tbody td:last-child{font-weight:700; color:var(--ink); white-space:nowrap;}
+
+  /* ===== Verdict strip ===== */
+  .verdict{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0;}
+  .verdict .col{border-radius:10px; padding:14px 18px; font-size:14px;}
+  .verdict .good{background:var(--ok-bg); border:1px solid #bbf7d0; color:#166534;}
+  .verdict .bad{background:var(--danger-bg); border:1px solid var(--danger-line); color:#991b1b;}
+  .verdict .col b{display:block; margin-bottom:6px; font-size:14.5px;}
+
+  /* ===== Footer ===== */
+  footer{
+    margin-top:36px; text-align:center; color:var(--ink-3); font-size:13px;
+    border-top:1px solid var(--line); padding-top:24px; line-height:1.9;
+  }
+  footer strong{color:var(--ink-2);}
+
+  @media (max-width:640px){
+    section.box{padding:20px 16px;}
+    .verdict{grid-template-columns:1fr;}
+  }
+  @media print{
+    body{background:#fff; font-size:12.5px;}
+    section.box{box-shadow:none; break-inside:avoid; margin-top:14px; padding:16px 20px;}
+    .hero{padding:26px 16px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker">INTERVIEW CHEAT SHEET · 面试前 30 分钟</div>
+  <h1>全媒体运营面试速查版</h1>
+  <div class="core">核心逻辑:所有答案都要落到 <em>数据 + 归因 + 下一步</em></div>
+</header>
+
+<div class="wrap">
+
+<!-- ============ 一 ============ -->
+<section class="box">
+  <h2><span class="num">一</span>30 秒自我介绍模板</h2>
+  <pre class="tmpl">我叫___,运营账号/项目___(有数据就说数据)。
+我擅长___(1-2 个核心能力:文案/剪辑/投放/私域)。
+我做内容的方法论是:先定位→对标拆解→测试迭代→数据复盘。
+上份工作/项目我做到的最高结果是___,把其中一条数据涨得最快的说清楚。</pre>
+  <div class="key">🔑 <strong>关键</strong>:一句话点出能力 → 一句话给出方法论 → 一个数字证明结果。<strong>不要背简历。</strong></div>
+</section>
+
+<!-- ============ 二 ============ -->
+<section class="box">
+  <h2><span class="num">二</span>高频问题速答表(背话术,别背台词)</h2>
+  <div class="tbl"><table>
+    <thead><tr><th style="width:22%">问题</th><th style="width:26%">应答骨架</th><th>示例话术</th></tr></thead>
+    <tbody>
+      <tr><td>你运营过账号吗?</td><td>数据 + 为什么涨 + 我做了什么</td><td><span class="say">运营小红书 3 个月,粉丝 200→5000,原因是封面统一风格+追了 2 个热点,完播率从 15% 提到 28%</span></td></tr>
+      <tr><td>给一个 0 粉新号,你怎么做?</td><td>定位→对标→内容规划→冷启动→复盘</td><td><span class="say">先定人设和垂直领域,找 5 个对标账号拆选题,前 30 条内容按"成本最低、最容易爆"的方向做,每周看数据砍掉表现差的选题</span></td></tr>
+      <tr><td>这个账号数据不好,怎么办?</td><td>先归因,再 A/B 测试,不推翻重来</td><td><span class="say">先看是选题、封面还是发布时间的问题,同题材换 3 种封面做 A/B,留 7 天数据再决定,不直接删号重做</span></td></tr>
+      <tr><td>最近有什么热点?你怎么看?</td><td>热点是什么 + 能不能跟 + 跟的话怎么切</td><td><span class="say">XX 事件很有话题度,但我们账号是 XX 垂类,不能硬蹭,可以换成"职场人怎么看"这个角度切入</span></td></tr>
+      <tr><td>你平时刷什么平台、看哪些博主?</td><td>展示网感 + 能说出拆解</td><td><span class="say">常刷抖音和小红书,最近在看 XX 博主,他厉害在开头 3 秒的钩子,我会拆他的选题逻辑</span></td></tr>
+      <tr><td>怎么选题?</td><td>用户痛点 + 数据验证 + 对标参考</td><td><span class="say">从评论区、搜索下拉词、对标账号高赞里找选题,先发低成本的验证,数据好再加大投入</span></td></tr>
+      <tr><td>会剪辑吗?用什么软件?</td><td>工具 + 熟练程度 + 代表作品</td><td><span class="say">剪映熟练、PR 基础,上份工作日更短视频,一条从脚本到成片 2 小时能完成</span></td></tr>
+      <tr><td>你能接受加班/节假日直播吗?</td><td>诚实 + 给底线</td><td><span class="say">大促和直播档期我可以配合,但希望能提前排期,日常我习惯高效完成不留尾巴</span></td></tr>
+      <tr><td>期望薪资多少?</td><td>先问绩效再报价</td><td><span class="say">想问下这个岗位的薪资结构?底薪和绩效各占多少、考核什么?按这个结构我期望综合 xx k</span></td></tr>
+      <tr><td>你最大的缺点是什么?</td><td>真缺点 + 已在改 + 不影响核心工作</td><td><span class="say">我前期比较追求完美导致效率低,现在会用"先完成再优化"给自己设限,短视频反而更新更快了</span></td></tr>
+      <tr><td>为什么离开上一家?</td><td>正向 + 不踩前东家</td><td><span class="say">想从单平台转到多平台矩阵,上家业务比较单一,成长空间有限</span></td></tr>
+      <tr><td>还有什么要问我的吗?</td><td>问 KPI / 资源 / 团队 / 晋升</td><td><span class="say">这个岗位的 KPI 是什么、考核周期多长?账号现在什么量级、我有投放预算吗?</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ 三 ============ -->
+<section class="box">
+  <h2><span class="num">三</span>账号/作品讲解 2 分钟结构(必考)</h2>
+  <ol class="flow">
+    <li><strong>一句话定位</strong>:这是什么账号,面向谁</li>
+    <li><strong>一条代表作</strong>:给出数据(播放/涨粉/转化)</li>
+    <li><strong>复盘归因</strong>:这条为什么能跑起来?(钩子、选题、时机)</li>
+    <li><strong>我做了什么</strong>:你具体执行的环节(别全归功于运气)</li>
+    <li><strong>下一步假设</strong>:如果再来一次,我会怎么优化</li>
+  </ol>
+  <div class="key">💡 哪怕只有几百粉,讲清这套逻辑 &gt; 讲一个十几万粉但讲不清的号。</div>
+</section>
+
+<!-- ============ 四 ============ -->
+<section class="box">
+  <h2><span class="num">四</span>谈薪 &amp; 谈 offer 要点</h2>
+  <ul>
+    <li><strong>先问结构再报价</strong>:底薪/绩效/提成各占多少,考核周期,提成发放方式(按月?按季?)</li>
+    <li><strong>警惕话术</strong>:「综合薪资 8k-15k」「三个月后涨薪」「转正后调整」——<strong>写进 offer 才算数</strong></li>
+    <li><strong>报价策略</strong>:给区间,强调更看重成长;带数据的跳槽可以报上份薪资的 <strong>+20%~40%</strong></li>
+    <li><strong>必问的隐性项</strong>:五险一金基数、试用期时长与折扣、是否大小周/单休、加班有无补贴</li>
+    <li><strong>反问福利时机的礼貌说法</strong>:<span class="say" style="color:#78716c">我想确认下五险一金的缴纳基数和公积金比例,方便我核算下生活成本</span></li>
+  </ul>
+</section>
+
+<!-- ============ 五 ============ -->
+<section class="box danger">
+  <h2><span class="num" style="background:var(--danger); box-shadow:0 2px 6px rgba(185,28,28,.3)">五</span>红线避坑清单(面试当场就能筛掉烂公司)</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>红线</th><th>处理</th></tr></thead>
+    <tbody>
+      <tr><td>先无偿"试岗"3-7 天还不签合同</td><td>直接拒绝</td></tr>
+      <tr><td>岗位名是运营,实际是销售/客服/纯剪辑</td><td>面试时确认职责占比</td></tr>
+      <tr><td>让你先交培训费/买课程</td><td>转身走</td></tr>
+      <tr><td>团队 0 人、账号 0 粉、还要你做全媒体总监</td><td>问清资源和预算再决定</td></tr>
+      <tr><td>薪资只谈综合不谈底薪</td><td>追根问底,含糊就放弃</td></tr>
+      <tr><td>一人干五岗(文案+剪辑+设计+运营+投放)只发一份工资</td><td>评估工作量是否匹配</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ 六 ============ -->
+<section class="box">
+  <h2><span class="num">六</span>反问话术三连(面试结尾必用)</h2>
+  <ol class="flow">
+    <li>"这个岗位的 <strong>KPI 和考核周期</strong>是什么?"——判断是不是背锅岗</li>
+    <li>"账号现在什么<strong>量级</strong>,我接手后有哪些<strong>权限和预算</strong>?"——判断是不是空头支票</li>
+    <li>"团队目前几个人,我的<strong>晋升路径</strong>是什么?"——判断有没有成长空间</li>
+  </ol>
+  <div class="verdict">
+    <div class="col good"><b>✅ 好公司的表现</b>KPI 清晰、资源真实、能说清账号现状</div>
+    <div class="col bad"><b>🚩 烂公司的表现</b>含糊其辞、画饼、全是"看表现"</div>
+  </div>
+</section>
+
+<footer>
+  配合<strong>《全媒体运营岗位就业指南》</strong>与<strong>《全媒体运营四大方向求职攻略》</strong>使用<br>
+  面试前:背熟速答表 → 准备好 1 个账号讲解 → 带打印版作品数据
+</footer>
+
+</div>
+</body>
+</html>

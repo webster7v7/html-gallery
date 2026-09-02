@@ -1,0 +1,3579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="搜索推广背诵整合版 - 涵盖账户搭建、关键词、质量度、数据分析、OCPC优化、面试题库等SEM核心知识">
+    <meta name="author" content="全媒体运营知识库">
+    <title>搜索推广背诵整合版 · SEM 知识库</title>
+        <style>
+/* ============================================================
+   搜索推广背诵整合版 - 样式表
+   设计理念：现代、专业、易读、响应式
+   ============================================================ */
+
+/* ---------- 1. 设计变量（主题） ---------- */
+:root {
+    /* 主色调 - SEM 专业蓝 */
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #3b82f6;
+    --primary-soft: #dbeafe;
+
+    /* 辅助色 */
+    --accent: #f59e0b;
+    --accent-dark: #d97706;
+    --accent-soft: #fef3c7;
+
+    --success: #10b981;
+    --success-soft: #d1fae5;
+    --danger: #ef4444;
+    --danger-soft: #fee2e2;
+    --info: #06b6d4;
+    --info-soft: #cffafe;
+
+    /* 中性色 */
+    --bg: #f5f7fb;
+    --bg-elevated: #ffffff;
+    --bg-soft: #eef2f7;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+
+    --text: #1f2937;
+    --text-soft: #4b5563;
+    --text-muted: #6b7280;
+    --text-light: #9ca3af;
+
+    /* 阴影 */
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+    --shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.10);
+    --shadow-lg: 0 16px 48px rgba(15, 23, 42, 0.14);
+
+    /* 圆角 */
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+
+    /* 布局 */
+    --topbar-h: 64px;
+    --sidebar-w: 280px;
+    --content-max: 920px;
+
+    /* 字体 */
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Roboto, Helvetica, Arial, sans-serif;
+
+    /* 渐变 */
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    --gradient-hero: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #7c3aed 100%);
+}
+
+/* 暗色主题 */
+body.dark {
+    --primary: #60a5fa;
+    --primary-dark: #3b82f6;
+    --primary-light: #93c5fd;
+    --primary-soft: #1e3a5f;
+
+    --accent: #fbbf24;
+    --accent-soft: #422006;
+
+    --bg: #0f172a;
+    --bg-elevated: #1e293b;
+    --bg-soft: #1a2332;
+    --border: #334155;
+    --border-strong: #475569;
+
+    --text: #e2e8f0;
+    --text-soft: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-light: #64748b;
+
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+
+    --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #5b21b6 100%);
+}
+
+/* ---------- 2. 基础重置 ---------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--topbar-h) + 16px);
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-soft);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 8px;
+    border: 2px solid var(--bg-soft);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-light);
+}
+
+/* 选中文本 */
+::selection {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+}
+
+/* ---------- 3. 阅读进度条 ---------- */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--gradient-primary);
+    z-index: 1000;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
+}
+
+/* ---------- 4. 顶部导航栏 ---------- */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--topbar-h);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+body.dark .topbar {
+    background: rgba(15, 23, 42, 0.85);
+}
+
+.topbar.scrolled {
+    box-shadow: var(--shadow);
+}
+
+.topbar-inner {
+    max-width: 1600px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.brand-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--gradient-primary);
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    flex-shrink: 0;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.brand-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.brand-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    border: none;
+    background: transparent;
+    color: var(--text-soft);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+    background: var(--bg-soft);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+/* 汉堡菜单 */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+.menu-toggle:hover {
+    background: var(--bg-soft);
+}
+
+.menu-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    margin: 0 auto;
+    background: var(--text-soft);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+.menu-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------- 5. 搜索浮层 ---------- */
+.search-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 200;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 12vh;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.search-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.search-box {
+    width: 90%;
+    max-width: 640px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    transform: translateY(-12px);
+    transition: transform 0.2s ease;
+}
+
+.search-overlay.active .search-box {
+    transform: translateY(0);
+}
+
+#searchInput {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 20px 24px;
+    font-size: 16px;
+    background: transparent;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    font-family: inherit;
+}
+
+#searchInput::placeholder {
+    color: var(--text-light);
+}
+
+.search-results {
+    list-style: none;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.search-results li {
+    padding: 12px 24px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    font-size: 14px;
+}
+
+.search-results li:last-child {
+    border-bottom: none;
+}
+
+.search-results li:hover,
+.search-results li.active {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+}
+
+.search-results li mark {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    padding: 0 2px;
+    border-radius: 3px;
+}
+
+.search-results .empty {
+    color: var(--text-muted);
+    text-align: center;
+    padding: 28px;
+    cursor: default;
+}
+
+.search-hint {
+    padding: 12px 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--bg-soft);
+}
+
+.search-hint kbd {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-family: ui-monospace, monospace;
+    margin: 0 2px;
+}
+
+/* ---------- 6. 布局 ---------- */
+.layout {
+    display: flex;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding-top: var(--topbar-h);
+}
+
+/* ---------- 7. 侧边栏 ---------- */
+.sidebar {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    position: sticky;
+    top: var(--topbar-h);
+    height: calc(100vh - var(--topbar-h));
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    background: var(--bg-elevated);
+    padding: 24px 16px;
+}
+
+.toc-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    padding: 0 12px 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+}
+
+.toc-list {
+    list-style: none;
+}
+
+.toc-list > li {
+    margin-bottom: 2px;
+}
+
+.toc-link {
+    display: block;
+    padding: 9px 12px;
+    color: var(--text-soft);
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    line-height: 1.5;
+}
+
+.toc-link:hover {
+    background: var(--bg-soft);
+    color: var(--primary);
+    padding-left: 16px;
+}
+
+.toc-link.active {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    font-weight: 600;
+    border-left-color: var(--primary);
+}
+
+.toc-sub {
+    list-style: none;
+    margin: 4px 0 4px 12px;
+    padding-left: 12px;
+    border-left: 1px dashed var(--border);
+}
+
+.toc-sub li a {
+    padding: 6px 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.toc-sub li a:hover {
+    color: var(--primary);
+    background: transparent;
+    padding-left: 14px;
+}
+
+.toc-sub li a.active {
+    color: var(--primary);
+    background: transparent;
+    font-weight: 500;
+}
+
+/* ---------- 8. 主内容区 ---------- */
+.content {
+    flex: 1;
+    min-width: 0;
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 32px 48px 80px;
+}
+
+/* ---------- 9. Hero 封面 ---------- */
+.hero {
+    background: var(--gradient-hero);
+    border-radius: var(--radius-lg);
+    padding: 56px 48px;
+    color: #fff;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 18px;
+    letter-spacing: -0.5px;
+}
+
+.hero-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    max-width: 720px;
+    color: rgba(255, 255, 255, 0.92);
+    margin-bottom: 24px;
+}
+
+.hero-desc strong {
+    color: #fde68a;
+    font-weight: 700;
+}
+
+.hero-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 36px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.meta-dot {
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 560px;
+}
+
+.stat {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius);
+    padding: 16px 12px;
+    text-align: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.stat:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.stat-num {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+}
+
+/* ---------- 10. 章节(part) ---------- */
+.part {
+    margin-bottom: 56px;
+    scroll-margin-top: calc(var(--topbar-h) + 16px);
+}
+
+.part-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+    position: relative;
+}
+
+.part-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 80px;
+    height: 2px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+}
+
+.part-num {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--primary);
+    background: var(--primary-soft);
+    padding: 4px 10px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.part-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+}
+
+/* ---------- 11. 卡片(card) ---------- */
+.card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: var(--shadow);
+}
+
+.card-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border);
+    position: relative;
+    padding-left: 14px;
+}
+
+.card-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 14px;
+    width: 4px;
+    background: var(--gradient-primary);
+    border-radius: 4px;
+}
+
+.sub-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin: 22px 0 10px;
+    padding-left: 10px;
+    border-left: 3px solid var(--primary);
+}
+
+body.dark .sub-title {
+    color: var(--primary-light);
+}
+
+/* ---------- 12. 文本元素 ---------- */
+p {
+    margin-bottom: 12px;
+    color: var(--text-soft);
+}
+
+p strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+ul, ol {
+    margin: 10px 0 14px;
+    padding-left: 24px;
+    color: var(--text-soft);
+}
+
+li {
+    margin-bottom: 6px;
+    line-height: 1.75;
+}
+
+li strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+ul ul, ol ol, ul ol, ol ul {
+    margin: 6px 0;
+}
+
+em {
+    color: var(--text-muted);
+    font-style: normal;
+    font-size: 0.92em;
+}
+
+mark {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+body.dark mark {
+    background: rgba(251, 191, 36, 0.2);
+    color: var(--accent);
+}
+
+.muted {
+    color: var(--text-muted);
+    font-size: 0.92em;
+}
+
+/* ---------- 13. 表格 ---------- */
+.table-wrap {
+    overflow-x: auto;
+    margin: 16px 0 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-elevated);
+    min-width: 480px;
+}
+
+thead {
+    background: var(--gradient-primary);
+}
+
+th {
+    padding: 12px 16px;
+    text-align: left;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background: var(--primary-soft);
+}
+
+body.dark tbody tr:hover {
+    background: rgba(96, 165, 250, 0.08);
+}
+
+td {
+    padding: 11px 16px;
+    color: var(--text-soft);
+    font-size: 14px;
+    vertical-align: top;
+}
+
+td strong {
+    color: var(--primary-dark);
+}
+
+body.dark td strong {
+    color: var(--primary-light);
+}
+
+/* ---------- 14. 引用块 ---------- */
+blockquote {
+    margin: 16px 0;
+    padding: 14px 18px 14px 20px;
+    background: var(--bg-soft);
+    border-left: 4px solid var(--primary);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--text-soft);
+    position: relative;
+    font-size: 14.5px;
+}
+
+blockquote strong {
+    color: var(--text);
+}
+
+blockquote.tip {
+    background: var(--primary-soft);
+    border-left-color: var(--primary);
+    color: var(--text);
+}
+
+body.dark blockquote.tip {
+    background: rgba(37, 99, 235, 0.12);
+}
+
+blockquote.tip-amber {
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+}
+
+body.dark blockquote.tip-amber {
+    background: rgba(245, 158, 11, 0.12);
+}
+
+blockquote.tip-blue {
+    background: var(--info-soft);
+    border-left-color: var(--info);
+}
+
+body.dark blockquote.tip-blue {
+    background: rgba(6, 182, 212, 0.12);
+}
+
+blockquote.small {
+    padding: 10px 14px;
+    font-size: 13px;
+    margin: 10px 0;
+}
+
+.tip-icon {
+    margin-right: 6px;
+}
+
+/* ---------- 15. 步骤列表 ---------- */
+.step-list {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.step {
+    background: var(--bg-soft);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    border-left: 3px solid var(--primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-sm);
+}
+
+.step-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.step-no {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.step-head h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.step p, .step ul, .step ol {
+    margin-bottom: 8px;
+}
+
+/* ---------- 16. 流程链 ---------- */
+.flow-chain {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0;
+    padding: 16px;
+    background: var(--bg-soft);
+    border-radius: var(--radius);
+}
+
+.flow-chain span {
+    padding: 8px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    box-shadow: var(--shadow-sm);
+}
+
+body.dark .flow-chain span {
+    color: var(--primary-light);
+}
+
+.flow-chain i {
+    color: var(--text-light);
+    font-style: normal;
+    font-weight: 700;
+}
+
+/* ---------- 17. 网格布局 ---------- */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 14px 0;
+}
+
+.mini-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mini-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.mini-card strong {
+    color: var(--primary-dark);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+body.dark .mini-card strong {
+    color: var(--primary-light);
+}
+
+.mini-card p {
+    margin: 0;
+    font-size: 13.5px;
+}
+
+.mini-num {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- 18. 标签(tags) ---------- */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.tag {
+    padding: 5px 12px;
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+body.dark .tag {
+    background: rgba(96, 165, 250, 0.15);
+    color: var(--primary-light);
+}
+
+.tag:hover {
+    background: var(--primary);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ---------- 19. 链式列表 ---------- */
+.link-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.link-list > li {
+    padding: 8px 12px;
+    background: var(--bg-soft);
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+    border-left: 3px solid var(--primary-light);
+    font-size: 14px;
+}
+
+.link-list > li ul {
+    margin-top: 6px;
+    padding-left: 20px;
+}
+
+/* ---------- 20. 折叠面板 ---------- */
+.accordion {
+    margin: 16px 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-elevated);
+}
+
+.acc-item {
+    border-bottom: 1px solid var(--border);
+}
+
+.acc-item:last-child {
+    border-bottom: none;
+}
+
+.acc-head {
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--bg-soft);
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+    font-family: inherit;
+    text-align: left;
+}
+
+.acc-head:hover {
+    background: var(--primary-soft);
+}
+
+.acc-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 400;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.acc-item.open .acc-icon {
+    transform: rotate(45deg);
+}
+
+.acc-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    padding: 0 18px;
+}
+
+.acc-item.open .acc-body {
+    max-height: 2000px;
+    padding: 14px 18px 18px;
+}
+
+.acc-body p, .acc-body ul {
+    margin-bottom: 8px;
+}
+
+/* ---------- 21. 对比卡片 ---------- */
+.compare-card {
+    background: var(--bg-soft);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    border-top: 3px solid var(--primary);
+}
+
+.compare-label {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.compare-label.process {
+    background: var(--info-soft);
+    color: var(--info);
+}
+
+.compare-label.result {
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+body.dark .compare-label.process {
+    background: rgba(6, 182, 212, 0.15);
+}
+body.dark .compare-label.result {
+    background: rgba(16, 185, 129, 0.15);
+}
+
+.compare-card p {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+/* ---------- 22. 类比 ---------- */
+.analogy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 18px 0;
+    padding: 20px;
+    background: var(--bg-soft);
+    border-radius: var(--radius);
+    flex-wrap: wrap;
+}
+
+.analogy-item {
+    text-align: center;
+    flex: 1;
+    min-width: 180px;
+}
+
+.analogy-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.analogy-item p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-soft);
+}
+
+.analogy-eq {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--accent);
+}
+
+/* ---------- 23. 三角卡片(质量/成本/转化) ---------- */
+.triangle-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.t-card {
+    background: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    padding: 22px 18px;
+    border-top: 4px solid;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.t-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+}
+
+.t-quality { border-top-color: var(--success); }
+.t-convert { border-top-color: var(--primary); }
+.t-cost { border-top-color: var(--danger); }
+
+.t-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.t-quality .t-icon { background: var(--success); }
+.t-convert .t-icon { background: var(--primary); }
+.t-cost .t-icon { background: var(--danger); }
+
+.t-card h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+.t-card p {
+    font-size: 13.5px;
+    margin-bottom: 8px;
+}
+
+/* ---------- 24. 状态盒 ---------- */
+.status-box {
+    display: flex;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: var(--radius);
+    margin: 12px 0;
+    align-items: flex-start;
+}
+
+.status-good {
+    background: var(--success-soft);
+    border-left: 4px solid var(--success);
+}
+
+body.dark .status-good {
+    background: rgba(16, 185, 129, 0.12);
+}
+
+.status-warn {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+}
+
+body.dark .status-warn {
+    background: rgba(245, 158, 11, 0.12);
+}
+
+.status-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    line-height: 1.2;
+}
+
+.status-box strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: var(--text);
+}
+
+.status-box p, .status-box ol {
+    font-size: 13.5px;
+    margin: 0;
+    color: var(--text-soft);
+}
+
+.status-box ol {
+    padding-left: 20px;
+    margin-top: 4px;
+}
+
+/* ---------- 25. 自检三问 ---------- */
+.qa-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 16px 0;
+}
+
+.qa-card {
+    background: var(--bg-soft);
+    border-radius: var(--radius);
+    padding: 18px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    position: relative;
+}
+
+.qa-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+}
+
+.qa-q {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--gradient-primary);
+    color: #fff;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.qa-card h4 {
+    font-size: 15px;
+    margin-bottom: 6px;
+    color: var(--text);
+}
+
+.qa-card p {
+    font-size: 13.5px;
+    margin: 0;
+}
+
+/* ---------- 26. 推广效果突降 - 原因卡片 ---------- */
+.reason-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.reason-card {
+    background: var(--bg-elevated);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.reason-head {
+    margin-bottom: 12px;
+}
+
+.reason-tag {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.reason-self .reason-tag { background: var(--primary); }
+.reason-rival .reason-tag { background: var(--accent); }
+.reason-industry .reason-tag { background: var(--info); }
+
+.reason-card p {
+    font-size: 13.5px;
+}
+
+/* ---------- 27. OCPC 模式卡片 ---------- */
+.mode-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.mode-card {
+    background: var(--bg-soft);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    transition: all 0.25s;
+}
+
+.mode-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.mode-ai {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(37, 99, 235, 0.08));
+    border-color: rgba(124, 58, 237, 0.3);
+}
+
+.mode-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.mode-no {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--gradient-primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mode-head h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.mode-card p {
+    font-size: 13.5px;
+    margin-bottom: 6px;
+}
+
+/* ---------- 28. 面试题 ---------- */
+.exam-card {
+    background: var(--bg-soft);
+    border-radius: var(--radius-md);
+    padding: 24px 28px;
+    border: 1px solid var(--border);
+    margin: 16px 0;
+}
+
+.exam-org {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary-soft);
+}
+
+body.dark .exam-org {
+    color: var(--primary-light);
+}
+
+.exam-name {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+}
+
+.exam-list {
+    counter-reset: exam;
+    list-style: none;
+    padding-left: 0;
+}
+
+.exam-list > li {
+    padding: 14px 16px 14px 48px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    position: relative;
+    border-left: 3px solid var(--primary);
+    counter-increment: exam;
+    font-size: 14px;
+}
+
+.exam-list > li::before {
+    content: counter(exam);
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 24px;
+    height: 24px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* ---------- 29. 问题/方案卡片 ---------- */
+.problem-card {
+    background: var(--danger-soft);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 10px 0;
+    border-left: 4px solid var(--danger);
+}
+
+body.dark .problem-card {
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.problem-card h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--danger);
+    margin-bottom: 8px;
+}
+
+.problem-card ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.problem-card li {
+    font-size: 13.5px;
+}
+
+.solution-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 16px 0;
+}
+
+.solution-card {
+    background: var(--bg-soft);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    border-top: 3px solid var(--success);
+    transition: all 0.2s;
+}
+
+.solution-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+}
+
+.sol-no {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--success);
+    color: #fff;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.solution-card h5 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.solution-card p {
+    font-size: 13.5px;
+    margin: 0;
+}
+
+/* ---------- 30. 层级列表 ---------- */
+.layer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 18px 0;
+}
+
+.layer {
+    background: var(--bg-soft);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    border-left: 4px solid var(--primary);
+}
+
+.layer-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.layer-no {
+    padding: 3px 10px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.layer-head h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.layer ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.layer li {
+    font-size: 13.5px;
+}
+
+/* ---------- 31. 分隔线 ---------- */
+.divider {
+    border: none;
+    border-top: 1px dashed var(--border-strong);
+    margin: 28px 0;
+}
+
+/* ---------- 32. 页脚 ---------- */
+.footer {
+    margin-top: 60px;
+    padding: 32px 24px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    border-top: 3px solid var(--primary);
+    text-align: center;
+}
+
+.footer-source {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 720px;
+    margin: 0 auto 12px;
+    line-height: 1.7;
+}
+
+.footer-copy {
+    font-size: 12px;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+}
+
+/* ---------- 33. 返回顶部 ---------- */
+.back-to-top {
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--gradient-primary);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 90;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(37, 99, 235, 0.5);
+}
+
+/* ---------- 34. 滚动动画 ---------- */
+.fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---------- 35. 响应式 ---------- */
+@media (max-width: 1100px) {
+    :root {
+        --sidebar-w: 240px;
+    }
+    .content {
+        padding: 28px 32px 60px;
+    }
+    .hero {
+        padding: 44px 32px;
+    }
+}
+
+@media (max-width: 900px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: var(--topbar-h);
+        left: 0;
+        width: 280px;
+        height: calc(100vh - var(--topbar-h));
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 90;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .content {
+        padding: 24px 20px 60px;
+    }
+
+    .hero {
+        padding: 36px 24px;
+    }
+
+    .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .triangle-cards,
+    .reason-grid,
+    .qa-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-2,
+    .mode-grid,
+    .solution-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 22px 18px;
+    }
+
+    .part-title {
+        font-size: 22px;
+    }
+
+    .back-to-top {
+        right: 20px;
+        bottom: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .topbar-inner {
+        padding: 0 16px;
+    }
+
+    .brand-sub {
+        display: none;
+    }
+
+    .brand-title {
+        font-size: 14px;
+    }
+
+    .hero-title {
+        font-size: 26px;
+    }
+
+    .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .stat-num {
+        font-size: 22px;
+    }
+
+    .card {
+        padding: 18px 16px;
+    }
+
+    .card-title {
+        font-size: 17px;
+    }
+
+    .analogy {
+        flex-direction: column;
+    }
+
+    .analogy-eq {
+        transform: rotate(90deg);
+    }
+}
+
+/* ---------- 36. 打印样式 ---------- */
+@media print {
+    .topbar,
+    .sidebar,
+    .back-to-top,
+    .reading-progress,
+    .search-overlay,
+    .menu-toggle,
+    .topbar-actions {
+        display: none !important;
+    }
+
+    .layout {
+        display: block;
+    }
+
+    .content {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .hero {
+        background: #1e3a8a !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .card {
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- 阅读进度条 -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- 顶部导航栏 -->
+    <header class="topbar" id="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <span class="brand-logo">SEM</span>
+                <div class="brand-text">
+                    <span class="brand-title">搜索推广背诵整合版</span>
+                    <span class="brand-sub">SEM · 全媒体运营知识库</span>
+                </div>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="切换导航菜单">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="topbar-actions">
+                <button class="icon-btn" id="themeToggle" title="切换主题" aria-label="切换主题">
+                    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zM12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+                </button>
+                <button class="icon-btn" id="searchToggle" title="搜索内容" aria-label="搜索内容">
+                    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16zM21 21l-4.35-4.35"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 搜索浮层 -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="输入关键词搜索章节内容…" autocomplete="off">
+            <ul class="search-results" id="searchResults"></ul>
+            <div class="search-hint">按 <kbd>Esc</kbd> 关闭 · <kbd>↑</kbd> <kbd>↓</kbd> 选择</div>
+        </div>
+    </div>
+
+    <div class="layout">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="toc">
+                <div class="toc-title">目录导航</div>
+                <ul class="toc-list" id="tocList">
+                    <li><a href="#intro" class="toc-link">前言</a></li>
+                    <li><a href="#part1" class="toc-link">一、账户搭建与关键词</a>
+                        <ul class="toc-sub">
+                            <li><a href="#sec-1-1">新账户搭建全流程</a></li>
+                            <li><a href="#sec-1-2">账户结构搭建</a></li>
+                            <li><a href="#sec-1-3">关键词体系</a></li>
+                            <li><a href="#sec-1-4">关键词出价策略</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#part2" class="toc-link">二、质量度</a>
+                        <ul class="toc-sub">
+                            <li><a href="#sec-2-1">影响质量度的因素</a></li>
+                            <li><a href="#sec-2-2">关键词质量度优化</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#part3" class="toc-link">三、数据分析与数据报告</a>
+                        <ul class="toc-sub">
+                            <li><a href="#sec-3-1">数据报告</a></li>
+                            <li><a href="#sec-3-2">数据分析所需数据</a></li>
+                            <li><a href="#sec-3-3">数据分析问题排查</a></li>
+                            <li><a href="#sec-3-4">数据报告与数据分析区别</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#part4" class="toc-link">四、质量、成本、转化三者关系</a></li>
+                    <li><a href="#part5" class="toc-link">五、老账户接手</a></li>
+                    <li><a href="#part6" class="toc-link">六、账户优化与降本</a></li>
+                    <li><a href="#part7" class="toc-link">七、每日工作流程</a></li>
+                    <li><a href="#part8" class="toc-link">八、推广效果突降排查</a></li>
+                    <li><a href="#part9" class="toc-link">九、OCPC 智能出价指南</a></li>
+                    <li><a href="#part10" class="toc-link">十、面试应聘题库</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="content" id="content">
+
+            <!-- 封面/Hero -->
+            <section class="hero" id="intro">
+                <div class="hero-tag">SEM · 搜索推广</div>
+                <h1 class="hero-title">搜索推广背诵整合版</h1>
+                <p class="hero-desc">
+                    本文件将「搜索推广·背诵」文件夹前 <strong>7 个子目录</strong>的全部文档
+                    （关键词阶段、质量度、数据报告、SEM账户搭建、质量成本转化、数据分析、
+                    老账户接手、账户优化、每日工作流程、效果突降、OCPC指南、面试应聘）
+                    整合重组而成，按知识主题编排，内容全部忠实于原文。
+                </p>
+                <div class="hero-meta">
+                    <span class="meta-item">10 个知识模块</span>
+                    <span class="meta-dot"></span>
+                    <span class="meta-item">5 道面试实战题</span>
+                    <span class="meta-dot"></span>
+                    <span class="meta-item">OCPC 深度优化</span>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat"><span class="stat-num">10</span><span class="stat-label">章节</span></div>
+                    <div class="stat"><span class="stat-num">6</span><span class="stat-label">大流程</span></div>
+                    <div class="stat"><span class="stat-num">4</span><span class="stat-label">核心表格</span></div>
+                    <div class="stat"><span class="stat-num">5</span><span class="stat-label">面试题</span></div>
+                </div>
+            </section>
+
+            <!-- 第一部分 -->
+            <section class="part" id="part1" data-part="1">
+                <div class="part-header">
+                    <span class="part-num">PART 01</span>
+                    <h2 class="part-title">账户搭建与关键词</h2>
+                </div>
+
+                <article class="card" id="sec-1-1">
+                    <h3 class="card-title">一、新账户搭建全流程</h3>
+                    <blockquote class="tip">
+                        面对一个新建账户的任务，不能立刻着手搭建，建议按照以下五大步骤进行。
+                    </blockquote>
+
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">1</span><h4>项目分析（谋定而后动）</h4></div>
+                            <p>新建账户前，要从四个方面进行详细的项目分析，根据分析结果来制定账户策略：</p>
+                            <ul>
+                                <li><strong>人群分析</strong>：明确目标用户是谁，有什么特性。可以从九要素入手：性别、年龄、爱好、学历、职业、收入、地区、上网设备、上网时段。</li>
+                                <li><strong>需求分析</strong>：每一个关键词背后都代表一个需求，需要根据访客搜索的关键词，推断出他背后隐藏的需求。</li>
+                                <li><strong>产品分析</strong>：知己知彼，百战不殆。足够了解自己的产品，才能更好地把它推销出去；足够了解竞争对手的产品，才能找对方法反击。</li>
+                                <li><strong>预算分析</strong>：预算直接决定了用什么样的武器和战术来打仗。不同的预算决定了不同的账户策略和不同的账户结构。</li>
+                            </ul>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">2</span><h4>制定账户策略（可进可退，利于掌控）</h4></div>
+                            <p>账户搭建的意义是为了让钱花得更有效，操作更简单，思维更明晰，数据分析更清楚。账户策略的制定需要合理有据，主要分为两个方面：</p>
+                            <div class="grid-2">
+                                <div class="mini-card"><strong>外层策略</strong><p>预算分配、投放时段、投放地区、投放设备。</p></div>
+                                <div class="mini-card"><strong>内层结构</strong><p>账户结构搭建、关键词选择、关键词出价、关键词匹配、创意撰写。</p></div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">3</span><h4>合理搭配关键词（扩而有序，杂而有章）</h4></div>
+                            <p>搜索不同关键词的人，有不同的属性和需求。要合理搭配不同的关键词以覆盖相应的人群（如：目标人群、核心人群、竞争对手的目标人群）。</p>
+                            <ul>
+                                <li><strong>扩而有序</strong>：随着营销目标的阶段性变化，需要不断调整关键词的投放组合。不要盲目扩词，要理性筛选出适合自己的词。</li>
+                                <li><strong>杂而有章</strong>：关键词分类要有迹可循。例如：
+                                    <ul>
+                                        <li>多产品的，可按产品种类分类；</li>
+                                        <li>单产品的，可按购买需求的阶段分类；</li>
+                                        <li>多地域的，可按地区区分；</li>
+                                        <li>也可按热门词和长尾词来划分；</li>
+                                        <li>只要分析合理、一目了然，利于后期分析和调整即可。</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">4</span><h4>创意文案与着陆页撰写（先声夺人，后续有力）</h4></div>
+                            <ul>
+                                <li><strong>创意撰写（先声夺人）</strong>：创意要吸引注意力，传达的信息要完整，卖点突出。要想写出一条好的创意，必须先把自己代入到产品的使用环境中去，然后把产品卖点和客户的需求点一一对照。</li>
+                                <li><strong>着陆页设置（后续有力）</strong>：着陆页的内容要对应创意的内容，跟关键词要有一定的相关性。否则引来再多的流量，也无法实现转化。</li>
+                            </ul>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">5</span><h4>数据分析与动态调整（持续优化）</h4></div>
+                            <p>做好数据分析，密切关注行业动态，将外在和内在的反馈相结合，根据营销目标和账户结构进行动态调整。要形成系统性的良性循环：</p>
+                            <div class="flow-chain">
+                                <span>系统分析</span><i>→</i>
+                                <span>策略调整</span><i>→</i>
+                                <span>智能优化</span><i>→</i>
+                                <span>结果检验</span><i>→</i>
+                                <span>问题反馈</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <blockquote class="tip tip-amber">
+                        <span class="tip-icon">💡</span>
+                        友情提示：如果这是用于面试的总结，建议在回答之前先了解目标公司的业务资料，回答时以该公司业务或同行业作为例子展开，会大大增加好感度。
+                    </blockquote>
+                </article>
+
+                <article class="card" id="sec-1-2">
+                    <h3 class="card-title">二、账户结构搭建</h3>
+                    <blockquote class="tip">好的账户结构应该便于分配预算，设置推广地域，设置出价，写创意，分层级查看数据。</blockquote>
+                    <ol>
+                        <li><strong>划分计划</strong>：可根据关键词词根、关键词类别、业务板块、推广地区等综合因素划分计划。
+                            <ul>
+                                <li>品牌词、重点业务产品建议单独划分计划，关键词数量要多，便于多分配预算。</li>
+                            </ul>
+                        </li>
+                        <li><strong>计划 / 单元数量</strong>：计划数建议保持 <mark>2‑30 个之间</mark>，单元内关键词保持 <mark>5‑15 个之间</mark>，创意至少 <mark>2 条</mark>。</li>
+                        <li><strong>命名</strong>：计划单元命名要贴切，看见名称即可判断出具体有哪些关键词。</li>
+                    </ol>
+
+                    <h4 class="sub-title">批量添加关键词</h4>
+                    <ol>
+                        <li>准备 Excel：分 3 列，关键词不能加粗和带有特殊字符。</li>
+                        <li>两种导入方式：
+                            <ul>
+                                <li>选择文件（CSV 格式，有风险）；</li>
+                                <li>点击关键词，批量添加，包含计划单元名称选项 → 复制粘贴（<strong>安全可靠，常采用</strong>）。</li>
+                            </ul>
+                        </li>
+                        <li>营销客户端（每次打开下载更新）。</li>
+                        <li>上传问题：上传时会有部分物料无法上传，若失败物料较多要点击查看原因，整改后重新上传。</li>
+                        <li>添加后设置：
+                            <ul>
+                                <li><strong>计划层级</strong>：推广业务、出价、出价模式、推广设备；</li>
+                                <li><strong>单元层级</strong>：推广链接（自建站需要创建转化追踪；基木鱼直接使用）。</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </article>
+
+                <article class="card" id="sec-1-3">
+                    <h3 class="card-title">三、关键词体系</h3>
+
+                    <h4 class="sub-title">1. 找核心关键词</h4>
+                    <p><strong>筛选条件：</strong></p>
+                    <ul>
+                        <li>与公司业务 / 产品密切相关；</li>
+                        <li>有一定搜索量；</li>
+                        <li>有一定转化意向；</li>
+                        <li>要覆盖公司全部推广业务。</li>
+                    </ul>
+
+                    <h4 class="sub-title">2. 扩词</h4>
+                    <ol>
+                        <li><strong>关键词规划师</strong>：用核心词扩词，需要筛选；遇见好词添加，选择合适计划单元即可。</li>
+                        <li><strong>搜索词报告</strong>（每天必看，代表流量质量）：
+                            <ul>
+                                <li>判断搜索词不相关的部分 → <strong>添否词</strong>；</li>
+                                <li>添否词优先考虑单个字，再考虑多个字；建议添加到否词包或计划里。</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h4 class="sub-title">3. 关键词类别</h4>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>类别</th><th>搜索量</th><th>转化意向</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>品牌词</td><td>搜索量小</td><td>转化意向强（部分大品牌和常见产品流量也大）</td></tr>
+                                <tr><td>产品词</td><td>搜索量一般</td><td>转化意向强</td></tr>
+                                <tr><td>通用词</td><td>搜索量大</td><td>转化意向一般</td></tr>
+                                <tr><td>人群词</td><td>搜索量特大</td><td>转化意向差</td></tr>
+                                <tr><td>行业词</td><td>搜索量一般</td><td>转化意向一般</td></tr>
+                                <tr><td>活动词</td><td>—</td><td>平时可暂停，效果较好</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="sub-title">4. 匹配模式</h4>
+                    <blockquote class="tip">关键词的匹配模式会影响账户的流量数量和质量，要结合账户预算去酌情调整。</blockquote>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>匹配模式</th><th>适用</th><th>特点</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>精确匹配</strong></td><td>高价核心词</td><td>流量精准节省预算</td></tr>
+                                <tr><td><strong>短语匹配</strong></td><td>全部关键词</td><td>可匹配到较多优质流量，会有个别垃圾流量</td></tr>
+                                <tr><td><strong>智能匹配</strong></td><td>低价长尾词</td><td>流量大，会有较多垃圾流量，可手动圈出关键词需匹配部分来提高流量质量</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p><strong>否的关键词</strong>（屏蔽不相关的搜索词，来优化流量质量）：短语否定、精确否定。</p>
+                </article>
+
+                <article class="card" id="sec-1-4">
+                    <h3 class="card-title">四、关键词出价策略</h3>
+
+                    <h4 class="sub-title">1. 常见的出价误区</h4>
+                    <ul>
+                        <li><strong>误区一：高价抢第一就是好</strong>。花了高价钱抢了第一的关键词，不一定是账户中转化率最高的词。</li>
+                        <li><strong>误区二：凭感觉认为意向词就该买</strong>。你觉得有意向的那批词，不一定给你带来了你期待中的流量。</li>
+                        <li><strong>误区三：短期无效果立即降价</strong>。跑了三天没出效果的关键词，如果不由分说就判了死刑，可能并不具备继续投放的价值，轻易放弃可能会错失良机。</li>
+                    </ul>
+
+                    <h4 class="sub-title">2. 正确的出价逻辑</h4>
+                    <p>关键词出价应该遵循<strong>账户预算、业务价值、关键词转化意向、关键词匹配、推广效果和行业规律</strong>六大原则。</p>
+                    <p>出价的高低决定着关键词有没有展现，如果广告不能被访客看见，也就没有了后续发展的可能性。</p>
+                    <blockquote class="tip tip-amber">
+                        出价没有一个明确的衡量标准。<strong>出价过高，烧钱；出价过低，没效果。</strong> 竞价其实就是花钱抢流量，但并不是所有的流量都值得抢。要根据关键词<strong>转化意向的强弱</strong>来判断这个关键词背后的需求<strong>有没有值得出高价或抢排名的价值</strong>。
+                    </blockquote>
+
+                    <h4 class="sub-title">3. 出价操作要点</h4>
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">①</span><h4>单元出价</h4></div>
+                            <p>单元分组需精准，账户初期采用；选个别词测试排名得到合适出价，均价作为单元出价。</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">②</span><h4>关键词出价（有展现排名后根据排名调整）</h4></div>
+                            <ul>
+                                <li>实际转化效果较好的关键词、重点业务和意向较强的关键词 → 都争取好的排名；</li>
+                                <li>转化效果一般的关键词可批量调整出价，根据预算控制排名，偶尔调整。</li>
+                            </ul>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">③</span><h4>根据不同预算设置出价</h4></div>
+                            <ul>
+                                <li>预算充足：保证品牌词、产品词、通用词都有好的排名，其他词保持有展现机会；</li>
+                                <li>预算不足：只保证平时经常带来转化的词，和意向较强的重点词有好的排名。</li>
+                            </ul>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">④</span><h4>分地域时段出价</h4></div>
+                            <ul>
+                                <li>地域（账户层级、计划层级）：高消费大城市出价系数 <mark>≥1</mark>；低消费小城市出价系数 <mark>≤1</mark>。<em>提示：多地域投放时不建议使用，易造成管理混乱。</em></li>
+                                <li>时段（计划层级）：高转化时段出价系数 <mark>≥1</mark>；低转化时段出价系数 <mark>≤1 或不投放</mark>。<em>提示：出价系数不能设置太多，不便于管理。</em></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h4 class="sub-title">4. 影响消费速度因素</h4>
+                    <div class="tags">
+                        <span class="tag">关键词数量</span>
+                        <span class="tag">关键词匹配模式</span>
+                        <span class="tag">关键词出价</span>
+                        <span class="tag">投放地域时段</span>
+                    </div>
+
+                    <h4 class="sub-title">5. 影响流量质量数量因素</h4>
+                    <div class="tags">
+                        <span class="tag">关键词选择</span>
+                        <span class="tag">关键词匹配模式</span>
+                        <span class="tag">否词</span>
+                    </div>
+                </article>
+            </section>
+
+            <!-- 第二部分 -->
+            <section class="part" id="part2" data-part="2">
+                <div class="part-header">
+                    <span class="part-num">PART 02</span>
+                    <h2 class="part-title">质量度</h2>
+                </div>
+
+                <article class="card" id="sec-2-1">
+                    <h3 class="card-title">一、影响质量度的因素</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>因素</th><th>细分</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>点击率</strong></td><td>出价、排名、创意高级样式</td></tr>
+                                <tr><td><strong>相关性</strong></td><td>关键词与企业产品/服务、关键词与创意、关键词与目标页面</td></tr>
+                                <tr><td><strong>创意</strong></td><td>通顺度、飘红</td></tr>
+                                <tr><td><strong>账户整体表现</strong></td><td>账户生效时间、账户历史表现、账户内生效关键词比例、账户内同一单元内关键词质量</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="card" id="sec-2-2">
+                    <h3 class="card-title">二、关键词质量度优化</h3>
+                    <div class="grid-2">
+                        <div class="mini-card"><span class="mini-num">1</span>提高关键词点击率</div>
+                        <div class="mini-card"><span class="mini-num">2</span>优化关键词与创意与落地页的相关性</div>
+                        <div class="mini-card"><span class="mini-num">3</span>优化广告创意</div>
+                        <div class="mini-card"><span class="mini-num">4</span>精细划分账户结构</div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- 第三部分 -->
+            <section class="part" id="part3" data-part="3">
+                <div class="part-header">
+                    <span class="part-num">PART 03</span>
+                    <h2 class="part-title">数据分析与数据报告</h2>
+                </div>
+
+                <article class="card" id="sec-3-1">
+                    <h3 class="card-title">一、数据报告（自定义里筛选主要数据）</h3>
+
+                    <h4 class="sub-title">账户报告</h4>
+                    <ul>
+                        <li><strong>多日数据</strong>（一段时间的效果）；</li>
+                        <li><strong>单日数据</strong>，某天效果（几乎每天都要下载整理提交给领导）；</li>
+                        <li><strong>分时段数据</strong>（每天查找数据）：
+                            <ul>
+                                <li>好时段：转化量充足，成本低 → 可适当提高出价，增加竞争力，获取更多转化；</li>
+                                <li>差时段：空耗较多转化较少且成本高 → 适当降低出价 / 只开启部分重点计划 / 不投放。</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4 class="sub-title">计划报告</h4>
+                    <ul>
+                        <li>按消费排序，保证高消费计划是重点计划即可；</li>
+                        <li>重点消费少，检查该计划内关键词出价、匹配模式、创意；</li>
+                        <li>非重点计划高消费，同上调整。</li>
+                    </ul>
+
+                    <h4 class="sub-title">关键词报告（每天必看，按消费排序）</h4>
+                    <ul>
+                        <li><strong>高消费，无转化或转化成本太高的词，控制消费</strong>：
+                            <ul>
+                                <li>降价（参考排名，小于2要降价）；</li>
+                                <li>改匹配（词短，展现量较大）。</li>
+                            </ul>
+                        </li>
+                        <li><strong>低消费 / 无消费 好词，增加消费</strong>：
+                            <ul>
+                                <li>提价（平均排名2.5以后）；</li>
+                                <li>扩匹配（出价正常，展现量低）；</li>
+                                <li>匹配出价都没问题的关键词展现少，针对该词添加创意。</li>
+                            </ul>
+                        </li>
+                        <li>账户效果理想的情况下重点关注高消费关键词即可；</li>
+                        <li>账户效果较差时，要在高消费词上省钱花给到低消费好词。</li>
+                    </ul>
+
+                    <h4 class="sub-title">创意报告</h4>
+                    <ul>
+                        <li>点击率低（展现量较大时点击率才准确）：
+                            <ul>
+                                <li>先检查单元内：有展现的关键词排名；</li>
+                                <li>有展现的词的排名没问题时考虑添加新创意。</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+
+                <article class="card" id="sec-3-2">
+                    <h3 class="card-title">二、数据分析所需数据（各转化页面指标链路）</h3>
+
+                    <h4 class="sub-title">咨询页</h4>
+                    <p class="muted"><em>员工统计计划上门，领导需统计计划成交</em></p>
+                    <ul class="link-list">
+                        <li>展现量 → 点击量 → 点击率 → 点击成本 <em>（来源：账户后台下载）</em></li>
+                        <li>消费 <em>（来源：账户后台下载）</em></li>
+                        <li>咨询量 → 咨询率 → 咨询成本</li>
+                        <li>有效咨询量 → 有效咨询率 → 有效咨询成本</li>
+                        <li>留电量 → 留电率 → 留电成本 <em>（来源：客服工作台下载）</em></li>
+                        <li>有效留电量 → 有效留电率 → 有效留电成本</li>
+                        <li>所有商机企业都适用：
+                            <ul>
+                                <li>预约量 → 预约率 → 预约成本</li>
+                                <li>上门量/咨询量 → 上门率/咨询率 → 上门成本/咨询成本 <em>（来源：表格统计/系统查看）</em></li>
+                            </ul>
+                        </li>
+                        <li>成交量 <em>（部门领导需统计）</em> → 客服转化率 → 客服转化成本</li>
+                    </ul>
+
+                    <h4 class="sub-title">表单页</h4>
+                    <p class="muted"><em>大部分公司不用电销统计约上门</em></p>
+                    <ul class="link-list">
+                        <li>展现量 → 点击量 → 点击率 → 点击成本 <em>（来源：账户后台下载）</em></li>
+                        <li>消费 <em>（来源：账户后台下载）</em></li>
+                        <li>表单量/留电量 → 留电率 → 留电成本</li>
+                        <li>有效表单量 → 有效率 → 有效成本 <em>（来源：客服统计）</em></li>
+                    </ul>
+
+                    <h4 class="sub-title">微信页</h4>
+                    <p class="muted"><em>有公司只统计复制，有公司统计实际添加</em></p>
+                    <ul class="link-list">
+                        <li>展现量 → 点击量 → 点击率 → 点击成本 <em>（来源：账户后台下载）</em></li>
+                        <li>消费 <em>（来源：账户后台下载）</em></li>
+                        <li>微信号加粉量 → 微信号加粉率 → 微信号加粉成本</li>
+                        <li>加粉量 → 加粉率 → 加粉成本 <em>（来源：微信客服实时汇总 / 1小时/微信客服多时）</em></li>
+                    </ul>
+                </article>
+
+                <article class="card" id="sec-3-3">
+                    <h3 class="card-title">三、数据分析问题排查大全</h3>
+
+                    <div class="accordion">
+                        <div class="acc-item">
+                            <button class="acc-head">展现量低 <span class="acc-icon">+</span></button>
+                            <div class="acc-body">
+                                <p><strong>账户设置方面</strong>：预算少；推广地域时段少；账户结构不合理。</p>
+                                <p><strong>关键词方面</strong>：关键词数量少；关键词匹配模式精准；关键词出价低；关键词搜索量低/生僻词。</p>
+                                <p><strong>创意方面</strong>：创意数量少；创意与关键词相关性差/不通顺。</p>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <button class="acc-head">点击率低 <span class="acc-icon">+</span></button>
+                            <div class="acc-body">
+                                <p><strong>排名差</strong> → 提高出价；</p>
+                                <p><strong>创意质量差</strong> → 优化关键词质量度、添加创意、添加高级样式。</p>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <button class="acc-head">落地页线索转化率少 <span class="acc-icon">+</span></button>
+                            <div class="acc-body">
+                                <p><strong>咨询少</strong>：</p>
+                                <ul>
+                                    <li>落地页质量差，流量质量差，恶意点击（小概率事件）；</li>
+                                    <li>客服沟通技巧太差；</li>
+                                    <li>客服回复信息不及时；</li>
+                                    <li>客服系统与网站绑定异常（小概率事件，每天早上要测试）。</li>
+                                </ul>
+                                <p><strong>表单少</strong>：</p>
+                                <ul>
+                                    <li>落地页质量差，流量质量差，恶意点击（小概率事件）；</li>
+                                    <li>表单按钮设置不合理；</li>
+                                    <li>表单选项过多。</li>
+                                </ul>
+                                <p><strong>微信复制/加粉少</strong>：</p>
+                                <ul>
+                                    <li>落地页质量差，流量质量差，恶意点击（小概率事件）；</li>
+                                    <li>微信号出现次数少；</li>
+                                    <li>微信号不够醒目（加粗、红色、前后空格）；</li>
+                                    <li>1天内加入较多有微信提示，时刻关注不同微信号一天内加粉情况；</li>
+                                    <li>微信是否设置可通过微信号搜索。</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <button class="acc-head">客服转化率低 <span class="acc-icon">+</span></button>
+                            <div class="acc-body">
+                                <p class="muted"><em>部门领导需统计</em></p>
+                                <p><strong>客服能力问题</strong>：对方问于线索问题就能无需提出客服问题；</p>
+                                <p><strong>线索质量差</strong>：线索质量越高成本越低；通过专项内容吸引来的线索质量较差，获量大，成本低（需自己在意平衡好线索量和成本）。</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card" id="sec-3-4">
+                    <h3 class="card-title">四、数据报告与数据分析区别</h3>
+
+                    <h4 class="sub-title">一句话区分</h4>
+                    <blockquote class="tip tip-blue">
+                        <strong>数据分析是挖掘、推导结论的思考过程；数据报告是承载分析结果、面向他人输出的书面载体。</strong>
+                    </blockquote>
+
+                    <h4 class="sub-title">详细对比</h4>
+                    <div class="grid-2">
+                        <div class="compare-card">
+                            <div class="compare-label process">数据分析（动作/过程）</div>
+                            <p><strong>核心</strong>：处理数据、清洗、计算、对比、找规律、定位问题、推导原因。</p>
+                            <p><strong>产出</strong>：观点、逻辑、洞察、待验证猜想，不一定成文，服务于自己理清事实。</p>
+                        </div>
+                        <div class="compare-card">
+                            <div class="compare-label result">数据报告（成果/文档）</div>
+                            <p><strong>核心</strong>：把分析的结论、数据依据、建议整理成结构化内容，排版输出，给管理者/同事阅读、决策参考。</p>
+                            <p><strong>包含</strong>：指标、图表、分析结论、落地行动建议。</p>
+                        </div>
+                    </div>
+
+                    <h4 class="sub-title">极简类比</h4>
+                    <div class="analogy">
+                        <div class="analogy-item">
+                            <span class="analogy-tag">数据分析</span>
+                            <p>侦探调查取证、推理真相</p>
+                        </div>
+                        <span class="analogy-eq">=</span>
+                        <div class="analogy-item">
+                            <span class="analogy-tag">数据报告</span>
+                            <p>侦探写完的结案卷宗</p>
+                        </div>
+                    </div>
+
+                    <h4 class="sub-title">补充边界</h4>
+                    <p>一份好的数据报告，<strong>必须建立在充分数据分析之上</strong>；但完成数据分析，不一定需要写成报告。</p>
+                </article>
+            </section>
+
+            <!-- 第四部分 -->
+            <section class="part" id="part4" data-part="4">
+                <div class="part-header">
+                    <span class="part-num">PART 04</span>
+                    <h2 class="part-title">质量、成本、转化三者关系</h2>
+                </div>
+
+                <article class="card">
+                    <h3 class="card-title">核心底层逻辑</h3>
+                    <blockquote class="tip tip-blue">
+                        <strong>质量决定转化上限；成本决定转化收益；三者相互制衡，构成投放盈亏三角。</strong>
+                    </blockquote>
+
+                    <h3 class="sub-title">逐条拆解</h3>
+                    <div class="triangle-cards">
+                        <div class="t-card t-quality">
+                            <div class="t-icon">Q</div>
+                            <h4>质量</h4>
+                            <p class="muted">素材质量、产品品质、落地页、服务、流量精准度</p>
+                            <p>质量越高，同等投入下<strong>转化率越高</strong>；质量短板，再多预算也很难拉高转化。</p>
+                        </div>
+                        <div class="t-card t-convert">
+                            <div class="t-icon">C</div>
+                            <h4>转化</h4>
+                            <p class="muted">咨询、下单、表单提交等目标行为</p>
+                            <p>转化越高，<strong>单位转化成本越低</strong>；转化率下滑，直接推高获客成本。</p>
+                        </div>
+                        <div class="t-card t-cost">
+                            <div class="t-icon">¥</div>
+                            <h4>成本</h4>
+                            <p class="muted">广告费、生产、运营支出</p>
+                            <p>成本持续拉高，如果转化、质量不跟进，利润被压缩，最终亏损。</p>
+                        </div>
+                    </div>
+
+                    <h3 class="sub-title">三角制衡关系</h3>
+                    <div class="status-box status-good">
+                        <span class="status-icon">✅</span>
+                        <div>
+                            <strong>理想正向循环</strong>
+                            <p>提升质量 → 转化率上涨 → 平均转化成本下降 → 利润提升</p>
+                        </div>
+                    </div>
+                    <div class="status-box status-warn">
+                        <span class="status-icon">⚠️</span>
+                        <div>
+                            <strong>常见矛盾</strong>
+                            <ol>
+                                <li>盲目压缩成本 → 缩减品质/素材投入 → 质量下滑 → 转化率降低 → <strong>转化成本反向上涨</strong>；</li>
+                                <li>一味追求极致高质量 → 成本大幅增加，哪怕转化上升，最终利润不一定增长。</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <h3 class="sub-title">一句话总结</h3>
+                    <blockquote class="tip tip-amber">质量是转化的基础，转化影响成本高低；单纯压低成本容易损害质量、拖累转化，三者需要找到利润平衡点。</blockquote>
+
+                    <h3 class="sub-title">SEM/千川投放极简考题版本</h3>
+                    <p>提升流量与素材质量能够提高转化率，有效降低转化成本；片面削减投入压缩成本，会造成质量下降、转化率走低，推高转化成本。</p>
+                </article>
+            </section>
+
+            <!-- 第五部分 -->
+            <section class="part" id="part5" data-part="5">
+                <div class="part-header">
+                    <span class="part-num">PART 05</span>
+                    <h2 class="part-title">老账户接手</h2>
+                </div>
+
+                <article class="card">
+                    <blockquote class="tip tip-amber">
+                        新接手一个老账户，切忌上来就大刀阔斧地进行调整，或者干脆按照自己的想法和思路重新建立一个新账户替代。如果贸然行动，就是自乱阵脚，会导致推广效果在一段时期内的混乱。要<strong>循序渐进，稳中求升，逐步地去印证自己的想法</strong>。
+                    </blockquote>
+
+                    <h3 class="card-title">一、现状分析，知己知彼</h3>
+                    <h4 class="sub-title">行业现状分析</h4>
+                    <p>按照搭建一个新账户的思路，做好产品卖点分析，需求分析，人群画像分析，行业分析，竞争对手分析，然后根据这些情况整理出自己的账户搭建策略。</p>
+
+                    <h4 class="sub-title">效果现状分析</h4>
+                    <p>对现有账户的推广效果进行分析，根据现在的推广效果来制定优化方案：</p>
+                    <ul>
+                        <li>如果效果很满意，就不要轻易动结构；</li>
+                        <li>如果推广效果还可以，就在原有账户的基础上进行优化；</li>
+                        <li>如果推广效果实在太差，就按照自己的思路重新搭建账户；</li>
+                        <li><strong>注意</strong>：新账户搭建完上传以后再停掉老账户，新老账户交替时要留一个过渡期。</li>
+                    </ul>
+
+                    <h4 class="sub-title">新旧账户分析</h4>
+                    <p>每个竞价员的思维方向和性格特点不同，决定了他的账户搭建和推广方案也各有不同。如果要在原有的账户基础上优化账户的话，建议先详细分析一下前辈留下的足迹，然后再跟自己搭建账户的思路进行比较，做到心中有数，也对未来的工作有了一个方向。</p>
+
+                    <h3 class="card-title">二、详细分析，纠错补缺</h3>
+                    <p>有时候，数据是最能说明问题的：</p>
+                    <div class="grid-2">
+                        <div class="mini-card">
+                            <strong>历史数据与流量分析</strong>
+                            <p>保留账户的历史数据，并详细进行分析，找到转化较好的时段和地区以及平台的流量占比，看老账户的结构方向是否有问题，这也有利于你尽快掌控账户。</p>
+                        </div>
+                        <div class="mini-card">
+                            <strong>搜索词分析</strong>
+                            <p>分析流量的质量和数量，看当前的关键词匹配出来的搜索词是否有问题。再看各个阶段的关键词的点击和消费占比如何，是不是合理。</p>
+                        </div>
+                        <div class="mini-card">
+                            <strong>转化词分析</strong>
+                            <p>统计账户的转化数据。看一下有转化的关键词是不是流量的主要方向和主要消费词。<strong>有转化量的关键词，不要随便降价。</strong></p>
+                        </div>
+                        <div class="mini-card">
+                            <strong>落地页承载分析</strong>
+                            <p>看页面的承载能力，它能够承载的流量是否是现在转化率较高和消费较高的流量。如果是，看是否有继续优化创意的必要；如果不是，就增加能够承载的页面。</p>
+                        </div>
+                        <div class="mini-card">
+                            <strong>客服咨询分析</strong>
+                            <p>分析营销流程表或咨询工具的对话情况，查看线索率，如果线索率过低则优化客服话术。</p>
+                        </div>
+                    </div>
+
+                    <h3 class="card-title">三、按部就班，逐步过渡</h3>
+                    <p>优化账户，一般会先从消费少的计划开始进行优化，慢慢地调整账户结构。这样避免引起大的波动。调整以后进行效果监控，当你觉得你自己的想法和方向得到了印证，再进行下一步的操作。优化的同时要关注新账户结构的质量度。</p>
+
+                    <h3 class="card-title">四、替换结构，完成蜕变</h3>
+                    <p>等新结构有了展现和点击之后，老账户的结构先做暂停处理。然后根据新老结构效果的对比和分析再决定调整的方向。更换账户结构很容易出现流量波动，这属于正常现象，不要太过惊慌。</p>
+
+                    <blockquote class="tip tip-amber">
+                        <span class="tip-icon">💡</span>
+                        <strong>总结与核心操作建议</strong>：
+                        做好产品卖点分析、用户需求分析、人群画像分析、行业分析、竞争对手分析，然后下载并分析老账户的数据效果。
+                        <ul style="margin-top:8px">
+                            <li>如果老账户效果好，则继续优化；</li>
+                            <li>如果老账户因为账户结构太差而导致转化效果差，则根据自己的想法整理出新计划搭建策略；</li>
+                            <li>操作上，挑转化效果最差的计划，重新搭建新计划，等新计划效果稳定了再删除老计划，逐步完成过渡替换。</li>
+                        </ul>
+                    </blockquote>
+                </article>
+            </section>
+
+            <!-- 第六部分 -->
+            <section class="part" id="part6" data-part="6">
+                <div class="part-header">
+                    <span class="part-num">PART 06</span>
+                    <h2 class="part-title">账户优化与降本</h2>
+                </div>
+
+                <article class="card">
+                    <blockquote class="tip">我们进行数据分析是为了什么？为了转化。我们优化账户是为了什么？为了转化。做竞价是为了挣钱，那挣钱的方法之一便是"多出单"。换句话说就是让流量尽可能地转化。</blockquote>
+
+                    <h3 class="card-title">一、优化账户结构</h3>
+                    <h4 class="sub-title">1. 优化时段</h4>
+                    <p>优化时段，并不是让你对时段进行细分化，而是找出高转化时段，对关键词优化之。</p>
+                    <ul>
+                        <li>找到高转化时段进行加词，增加流量基数；</li>
+                        <li>对于高转化时段的关键词，进行适当增加预算，提升排名；</li>
+                        <li>对于高转化时段的关键词，进行优化创意，提升流量基数或控制流量基数、增强意向程度（该项操作利用的手法是利用需求控制流量）。</li>
+                    </ul>
+
+                    <h4 class="sub-title">2. 优化地区</h4>
+                    <p>找到高转化地区，一方面根据该地区的人群属性增大投放区域，另一方面重新进行预算分配，强则使它更强！</p>
+
+                    <h4 class="sub-title">3. 优化设备</h4>
+                    <p>找到高意向设备，按设备转化成本进行设备预算调整。</p>
+
+                    <h3 class="card-title">二、优化页面（自检三问）</h3>
+                    <div class="qa-grid">
+                        <div class="qa-card">
+                            <div class="qa-q">Q1</div>
+                            <h4>页面承载</h4>
+                            <p>找到账户中流量较大的关键词，查看着陆页是否能承载这部分的流量。</p>
+                        </div>
+                        <div class="qa-card">
+                            <div class="qa-q">Q2</div>
+                            <h4>用户体验</h4>
+                            <p>页面中是否能够很好地满足用户需求，能使用户在购买过程中产生一种愉悦的体验。</p>
+                        </div>
+                        <div class="qa-card">
+                            <div class="qa-q">Q3</div>
+                            <h4>转化通道</h4>
+                            <p>竞价是一个用户主动搜索的广告形式。所以，竞价的套路就是简单粗暴，我们要保证页面能够很好地引导用户产生对话、留取线索，以最快程度形成转化。</p>
+                        </div>
+                    </div>
+
+                    <h3 class="card-title">三、少花钱（降预算保对话）</h3>
+                    <p>竞价赚钱的另一方法之一，便是少花钱，以最低的成本获得最大的转化，也属赢家。那如何在降预算情况下保证对话？</p>
+                    <ul>
+                        <li><strong>控制转化时段</strong>：找出低转化时段，进行降预算、删词、暂停、否词、降价、收匹配等操作，避免不必要的浪费。</li>
+                        <li><strong>控制转化地区</strong>：对于高转化地区，增加投放区域和预算；对于低转化地区，控制消费。</li>
+                        <li><strong>控制设备消费</strong>：对于设备进行详细的预算分配，可按照转化时段的不同进行相关设备预算分配。</li>
+                        <li><strong>控制关键词</strong>：找出低转化关键词进行降预算、删词、暂停、否词、降价、收匹配等操作以达到控制预算降低消费的效果。</li>
+                    </ul>
+
+                    <blockquote class="tip tip-amber">
+                        <span class="tip-icon">💡</span>
+                        <strong>总结</strong>：找出高转化时段高转化地区，对关键词进行优化，增加流量基数，高意向设备增加预算，保证高转化关键词排名。加强相关着陆页的承载能力，加强着陆页的用户体验。找到低转化时段、低转化地区，可适当降预算、降价、收匹配，低转化关键词可进行降价收匹配等操作避免不必要的浪费。<strong>把钱花在该花的地方即可。</strong>
+                    </blockquote>
+                </article>
+            </section>
+
+            <!-- 第七部分 -->
+            <section class="part" id="part7" data-part="7">
+                <div class="part-header">
+                    <span class="part-num">PART 07</span>
+                    <h2 class="part-title">每日工作流程</h2>
+                </div>
+
+                <article class="card">
+                    <h3 class="card-title">一、数据下载与账户优化</h3>
+                    <ol>
+                        <li>下载数据（百度推广后台消费数据、商务通数据）；</li>
+                        <li>重点关注：展现量、点击量、点击率，关键词对话量、预约量、对话成本、关键词点击成本；</li>
+                        <li>核对数据进行昨日同时段对比，分析数据有无异常，找出问题。依据数据结果优化账户。重点关注：高展现、高转化、高点击、高消费的词；</li>
+                        <li>下载分析搜索词报告进行加好词、做否词和匹配模式调整；</li>
+                        <li>对高转化、高消费的词保证排名一定情况下进行调整和扩词；</li>
+                        <li>对高消费、低转化的词进行降价和匹配模式修改；</li>
+                        <li>保证品牌词要有好的排名；</li>
+                        <li>分析有效对话关键词整理归纳，做一份有效关键词报表，将有效关键词重点监控管理。</li>
+                    </ol>
+
+                    <h3 class="card-title">二、实时监控与数据汇报</h3>
+                    <ol>
+                        <li>时刻关注商务通留电情况，针对恶意点击进行IP排除和黑名单添加；</li>
+                        <li>时刻关注对手着陆页、创意、排名，对自己不足地方进行优化调整；</li>
+                        <li>做一个分时段数据报告，保证预算正常下线。实时了解排名新情况，控制成本；</li>
+                        <li>每天做日报，参加每天工作总结会议。每周做周报。每月做月报。</li>
+                    </ol>
+                </article>
+            </section>
+
+            <!-- 第八部分 -->
+            <section class="part" id="part8" data-part="8">
+                <div class="part-header">
+                    <span class="part-num">PART 08</span>
+                    <h2 class="part-title">推广效果突降排查</h2>
+                </div>
+
+                <article class="card">
+                    <blockquote class="tip">先分析效果下降的原因，然后确认问题所在，最后找出解决问题的方法。解决任何问题之前，都要先学会分析问题，抽丝剥茧，一点一点把自己的思路理清，从混乱到清晰，试着把问题简单化。</blockquote>
+                    <p>效果下降的分析，主要有三个方面：<strong>自身原因、对手原因、行业原因</strong>。</p>
+
+                    <div class="reason-grid">
+                        <div class="reason-card reason-self">
+                            <div class="reason-head"><span class="reason-tag">自身原因</span></div>
+                            <ul>
+                                <li>最近有没有动过账户？有没有做过哪些调整？</li>
+                                <li>页面有没有问题？试试看能不能正常打开。</li>
+                                <li>咨询工具是不是又出现什么 bug？丢没丢对话？</li>
+                                <li>引导按钮和转化通道是不是正常？</li>
+                            </ul>
+                            <blockquote class="tip tip-blue small"><strong>注</strong>：推广过程是一个系统，牵一发而动全身。看似小而不经意的操作或者细节，有时候反而会引发你想象不到的后果。</blockquote>
+                        </div>
+
+                        <div class="reason-card reason-rival">
+                            <div class="reason-head"><span class="reason-tag">对手原因</span></div>
+                            <p>如果你近期没有对账户做过任何调整，那么就要考虑是不是竞争对手有了什么动作：</p>
+                            <ul>
+                                <li>他有没有针对某个词抢排名？</li>
+                                <li>有没有加强了某个时段的投放力度？</li>
+                                <li>找出两份相同时段的搜索词报告进行对比，找出流量变化的关键所在。</li>
+                            </ul>
+                        </div>
+
+                        <div class="reason-card reason-industry">
+                            <div class="reason-head"><span class="reason-tag">行业原因</span></div>
+                            <p>除了以上两种可能性，还有一种可能就是行业的原因：</p>
+                            <ul>
+                                <li>是不是遇到了行业的淡旺季？</li>
+                                <li>或者是不是到了月底或者季末搜索引擎平台大姨妈的时刻？</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <blockquote class="tip tip-amber">
+                        <span class="tip-icon">💡</span>
+                        <strong>总结与操作建议</strong>：
+                        <ol style="margin-top:8px">
+                            <li>看看自己最近有没有动过账户？有没有做过哪些调整？</li>
+                            <li>页面有没有问题？试试看能不能正常打开。</li>
+                            <li>咨询工具是不是有问题，有没有丢对话。</li>
+                            <li>排查一下有没有新竞争对手出现或者竞争对手有了什么动作（对手加强对某些重点词抢排名）。</li>
+                            <li>下载搜索词报告排查一下流量质量。</li>
+                            <li>是不是特殊时期流量波动，或者竞价平台异常？</li>
+                            <li>再有针对性地进行优化。</li>
+                        </ol>
+                    </blockquote>
+                </article>
+            </section>
+
+            <!-- 第九部分 -->
+            <section class="part" id="part9" data-part="9">
+                <div class="part-header">
+                    <span class="part-num">PART 09</span>
+                    <h2 class="part-title">OCPC 智能出价全方位优化指南</h2>
+                </div>
+
+                <article class="card">
+                    <h3 class="card-title">一、投放模式及适用范围</h3>
+                    <p>OCPC 投放主要分为<strong>自定义模式</strong>和 <strong>AI 模式</strong>，其中自定义模式包含三种主流出价策略，需根据账户实际情况进行选择：</p>
+
+                    <div class="mode-grid">
+                        <div class="mode-card">
+                            <div class="mode-head"><span class="mode-no">1</span><h4>增强模式</h4></div>
+                            <p><strong>机制</strong>：百度会根据流量质量微调出价和匹配。</p>
+                            <p><strong>适用场景</strong>：<strong>转化数据较少</strong>、成本波动较大、效果不太理想的账户。转化量较少、成本波动大、账户流量少时优先选择此模式。</p>
+                            <p><strong>操作</strong>：需设置"愿意为一个转化花多少钱"（出价）。</p>
+                        </div>
+                        <div class="mode-card">
+                            <div class="mode-head"><span class="mode-no">2</span><h4>目标转化成本出价</h4></div>
+                            <p><strong>机制</strong>：系统根据流量质量微调出价，并尽量将转化成本控制在您设定的目标值附近。</p>
+                            <p><strong>适用场景</strong>：<strong>转化数据充足</strong>、成本较稳定的账户。</p>
+                            <p><strong>操作</strong>：出价建议参考平时转化成本，出价不能过低，否则会导致效果差。</p>
+                        </div>
+                        <div class="mode-card">
+                            <div class="mode-head"><span class="mode-no">3</span><h4>最大转化（nobid）</h4></div>
+                            <p><strong>机制</strong>：系统根据预算，尽量优先探索更多流量。</p>
+                            <p><strong>适用场景</strong>：<strong>流量较小</strong>、起量困难的账户。建议设置小预算进行尝试。</p>
+                        </div>
+                        <div class="mode-card mode-ai">
+                            <div class="mode-head"><span class="mode-no">4</span><h4>AI 模式</h4></div>
+                            <p>由系统进行全自动托管，适合对算法信任度高、追求效率的投放场景。<em>（注：百度智能投放下的子模式）</em></p>
+                        </div>
+                    </div>
+
+                    <h3 class="card-title">二、投放范围选择</h3>
+                    <ul>
+                        <li><strong>业务较单一、预算不大的账户</strong>：可以一次性开启 OCPC；</li>
+                        <li><strong>业务较多、预算较大的账户</strong>：建议<strong>分批开启</strong>（如按计划或按业务线），防止同时开启导致整体效果失控。</li>
+                    </ul>
+
+                    <h3 class="card-title">三、核心机制与实际效果</h3>
+                    <ul>
+                        <li><strong>账户基础</strong>：基础较好、转化效果相对稳定的账户，开启 OCPC 后大概率<strong>转化量会变多</strong>；</li>
+                        <li><strong>账户薄弱</strong>：基础较差、转化不稳定的账户，开启 OCPC 后变好的概率较低；</li>
+                        <li><strong>核心逻辑</strong>：OCPC 的出发点是"先优化好 CPC 的效果，把转化成本控制在合理范围内"，之后再开启智能出价，系统才能更好地学习。</li>
+                    </ul>
+
+                    <h3 class="card-title">四、投放流程与准备工作</h3>
+                    <ol>
+                        <li><strong>设置转化追踪</strong>：如果使用自建站，需先创建转化追踪，让百度统计页面转化，方便系统进行数据学习和建模；</li>
+                        <li><strong>CPC 前置优化</strong>：<strong>先优化好 CPC 账户</strong>。确保传统出价模式下基础数据稳定，再开启 OCPC；</li>
+                        <li><strong>选择出价模式</strong>：根据账户的实际效果，选择合适的出价模式（增强、目标转化、最大转化等）；</li>
+                        <li><strong>确定转化目标</strong>：明确转化动作（如留表单、加微信、咨询等）。<em>注意：增强模式和最大转化没有出价，由系统自动控制出价。</em></li>
+                    </ol>
+
+                    <h3 class="card-title">五、核心要点与注意事项（避坑指南）</h3>
+                    <ol>
+                        <li><strong>成本变高与搜索词变乱</strong>：由于大部分时候系统会根据流量质量微调出价和匹配，点击成本可能会变高，搜索词也可能会变乱。此时需<strong>增加否词</strong>（"有时一样加否词"）来把控流量质量。</li>
+                        <li><strong>学习期的波动</strong>：开启 OCPC 后短时间内有小波动是正常现象，<strong>无需过度调整账户</strong>，以免影响系统学习。</li>
+                        <li><strong>账户异常处理</strong>：
+                            <ul>
+                                <li>如果连续几天出现效果下降：也可以正常调整账户，进行出价、匹配、否词等常规操作；</li>
+                                <li>如果调整后效果无改善，或者效果一直较差：可以<strong>删除投放包，重新创建 OCPC 投放包</strong>，让系统重新学习。</li>
+                            </ul>
+                        </li>
+                        <li><strong>只看结果</strong>：开启 OCPC 后，只需关注<strong>结果</strong>，即"转化量"和"转化成本"是否在合理范围内即可，不用过度纠结中间的细节波动。</li>
+                    </ol>
+
+                    <h3 class="card-title">六、深度优化方向（策略实战指南）</h3>
+
+                    <h4 class="sub-title">6.1 出价策略优化</h4>
+                    <ul>
+                        <li><strong>出价调整幅度</strong>：单次调整幅度控制在 5%-10%。优先测试 10%-20% 的降幅，需连续 3 天观察效果。</li>
+                        <li><strong>调整频率</strong>：
+                            <ul>
+                                <li><strong>学习期（0-7天）</strong>：禁止调价操作；</li>
+                                <li><strong>模型优化期（7-15天）</strong>：单次调整间隔 ≥3天；</li>
+                                <li><strong>稳定期（15天后）</strong>：每周调整 1 次。</li>
+                            </ul>
+                        </li>
+                        <li><strong>超成本处理</strong>：先检查转化数据质量，而非直接降价。若线索量充足但成本超标，应收缩投放范围（如暂停部分低质计划）而非直接降价。</li>
+                        <li><strong>出价过低风险</strong>：学习期出价应不低于系统推荐值的 80%，否则可能导致流量不足，影响模型学习。</li>
+                        <li><strong>新账户起步</strong>：建议从行业基准出价的 70% 开始测试，通过 5-7 天数据积累逐步上调至目标值。</li>
+                    </ul>
+
+                    <h4 class="sub-title">6.2 关键词与匹配模式优化</h4>
+                    <ul>
+                        <li><strong>关键词分层管理</strong>：核心词（40%预算）+ 长尾词（30%预算）+ 品牌词（20%预算）组合投放，长尾词可降低单次转化成本 35%。</li>
+                        <li><strong>匹配模式选择</strong>：优先选择<strong>短语匹配-同义包含</strong>，平衡精准性与流量覆盖。</li>
+                        <li><strong>拓词策略</strong>：单次拓词不超过账户总量的 10%，周期建议 7-10 天。建议每周拓词量 ≥50 个，保持流量池活性。</li>
+                        <li><strong>高成本词处理</strong>：直接删除长期无转化关键词（建议保留 7 天数据观察期），避免影响整体模型稳定性。</li>
+                        <li><strong>核心词出价</strong>：高转化潜力词出价高于行业均值 10%-20%，匹配模式收窄至短语或精确匹配。</li>
+                    </ul>
+
+                    <h4 class="sub-title">6.3 搜索词与否定词管理</h4>
+                    <ul>
+                        <li><strong>搜索词报告分析</strong>：每周分析搜索词报告，通过"分触发模式"筛选「智能匹配-oCPC」流量，评估自动定向带来的搜索词相关性和转化效果。</li>
+                        <li><strong>否词策略</strong>：每周清理否词库，优先使用<strong>精确否定</strong>（如否定"seo培训"而非"seo"）；建立行业否词库，如教育行业预存 400 个精确否词。</li>
+                        <li><strong>无效流量过滤</strong>：OCPC 模式下常规否词可能失效，需通过智能否词或"圈词"功能控制流量质量。过滤"免费教程"类低质搜索词。</li>
+                        <li><strong>精确消费占比</strong>：精确消费占比需 &gt;30%，否则需收窄匹配模式或优化关键词。</li>
+                        <li><strong>释放流量空间</strong>：清理无效否词（如过度否定的长尾词），避免流量探索范围过窄导致成本上升。</li>
+                    </ul>
+
+                    <h4 class="sub-title">6.4 创意与落地页优化</h4>
+                    <ul>
+                        <li><strong>创意优化</strong>：突出核心卖点，使用动态创意提升点击率（CTR），定期更新创意（<strong>每 2 周一次</strong>），避免点击率衰减。</li>
+                        <li><strong>落地页加载速度</strong>：首屏加载时间 ≤1.5 秒，否则需进行页面压缩及优化。</li>
+                        <li><strong>转化路径简化</strong>：减少表单字段，进行 A/B 测试优化转化率。</li>
+                        <li><strong>移动端适配</strong>：移动端需单独设置创意组件，避免显示不全。</li>
+                        <li><strong>多页面策略</strong>：根据搜索词需求创建多个着陆页，确保内容与用户需求强相关。</li>
+                    </ul>
+
+                    <h4 class="sub-title">6.5 数据监控与模型维护</h4>
+                    <ul>
+                        <li><strong>核心监控指标</strong>：转化成本波动（≤目标值±15%）、时段分布（高峰时段占比 ≥60%）、搜索词精准度（无效词 ≤5%）。</li>
+                        <li><strong>转化数据门槛</strong>：单日转化量建议 ≥15 个，7 天累计 ≥90 个高质量转化，模型才能稳定学习。</li>
+                        <li><strong>ECPM 值监控</strong>：ECPM = 出价 × CTR × CVR × 1000，优化中应优先提升点击率（CTR）与转化率（CVR）。</li>
+                        <li><strong>学习期管理</strong>：7 天内避免调整出价、否词或创意，确保系统稳定积累转化数据建模。</li>
+                        <li><strong>衰退期应对</strong>：转化量持续下降时可提价 2%-5% 或重建 OCPC 包；若长期无效，可<strong>切换为 eCPC 模式过渡</strong>，积累数据后再切回 OCPC。</li>
+                        <li><strong>拆包重建</strong>：对效果下滑的 OCPC 包拆包，<strong>保留高转化计划重新建包</strong>，新建包时降低出价 5%-10%，观察 3-5 天再调整。</li>
+                    </ul>
+                </article>
+            </section>
+
+            <!-- 第十部分 -->
+            <section class="part" id="part10" data-part="10">
+                <div class="part-header">
+                    <span class="part-num">PART 10</span>
+                    <h2 class="part-title">面试应聘题库（博源医疗）</h2>
+                </div>
+
+                <article class="card">
+                    <h3 class="card-title">一、竞价专员应聘测试（题目）</h3>
+                    <div class="exam-card">
+                        <div class="exam-org">深圳市博源医疗投资有限公司 · 竞价专员应聘测试</div>
+                        <div class="exam-name">姓名：__________________</div>
+                        <ol class="exam-list">
+                            <li>目前有3个百度账户在你手中，为新项目胃肠科。地区深圳，每日预算5000。前期你会如何投放，简述下你的思路：</li>
+                            <li>如果让你接手一个有历史消费的账户项目，首先你怎么安排工作进展，简述你的工作流程：</li>
+                            <li>当发现咨询量降低后，应该从哪几个方面做检查？</li>
+                            <li>如商务通搜索词为：东站到国防医院怎么走，匹配关键词为：国防医院，着陆页为：首页，这时候存在什么问题，需要怎么调整？</li>
+                            <li>账户推广中，要求合理的降低消费，在保持现有的转化情况压低消费，你会从哪里开始呢？</li>
+                        </ol>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">二、应聘测试参考答案</h3>
+
+                    <h4 class="sub-title">第一题：新项目胃肠科，3个百度账户，地区深圳，日预算5000，前期如何投放？</h4>
+                    <p><strong>一、账户分工与预算分配（3个账户）</strong></p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>账户</th><th>角色定位</th><th>预算占比</th><th>投放重点</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>主账户</strong></td><td>核心转化账户</td><td>60%（3000元）</td><td>品牌词 + 核心症状词 + OCPC标准模式</td></tr>
+                                <tr><td><strong>辅助账户</strong></td><td>流量拓展账户</td><td>30%（1500元）</td><td>高意向词 + 竞品词 + CPC/OCPC混合模式</td></tr>
+                                <tr><td><strong>测试账户</strong></td><td>长尾探索账户</td><td>10%（500元）</td><td>长尾词 + 场景词 + 小预算测试</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>分计划设置预算，避免一个计划把整个账户预算消耗完。核心计划分配60%-70%总预算，剩余用于长尾词和场景词测试。</p>
+
+                    <p><strong>二、关键词策略（胃肠科）</strong></p>
+                    <p>按意图分层：</p>
+                    <ul>
+                        <li><strong>品牌词</strong>（如"深圳胃肠科医院""博源胃肠科"）：精准匹配，守护已有需求；</li>
+                        <li><strong>症状词</strong>（如"胃痛怎么办""长期腹胀原因"）：低价广泛匹配，增加曝光；</li>
+                        <li><strong>病因/病种词</strong>（如"慢性胃炎治疗""肠息肉切除"）：短语匹配，精准获客；</li>
+                        <li><strong>竞品词</strong>（如"XX医院胃肠科"）：短语匹配，截流竞品流量；</li>
+                        <li><strong>长尾词</strong>（如"深圳龙岗哪里看胃病好"）：智能匹配+否词过滤。</li>
+                    </ul>
+
+                    <p><strong>三、地域与时段设置</strong></p>
+                    <ul>
+                        <li><strong>地域</strong>：深圳全市，重点投放福田、罗湖、南山等核心区域；</li>
+                        <li><strong>时段</strong>：早8:00-晚22:00（医疗咨询高峰），根据7天数据调整高转化时段出价。</li>
+                    </ul>
+
+                    <p><strong>四、冷启动期策略</strong></p>
+                    <p>新账户首日预算建议500-800元，测试期总预算控制在1万元以内。前7-14天跑CPC积累至少50个有效转化数据，再转入OCPC学习期。学习期内不做大幅调整。</p>
+
+                    <p><strong>五、创意与落地页</strong></p>
+                    <ul>
+                        <li>创意突出"专业胃肠科""35年专注""微创无痛"等卖点；</li>
+                        <li>落地页与关键词、创意高度匹配，首屏加载时间≤1.5秒；</li>
+                        <li>移动端与PC端预算建议7:3比例投放。</li>
+                    </ul>
+
+                    <hr class="divider">
+
+                    <h4 class="sub-title">第二题：接手有历史消费的老账户，工作流程如何安排？</h4>
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">1</span><h4>完整备份（第1天）</h4></div>
+                            <p>备份整个账户所有计划、单元、关键词、创意、否定词、出价策略、时段地域设置。</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">2</span><h4>数据拉取与分析（第1-3天）</h4></div>
+                            <p>拉取过去3个月的完整数据报表：</p>
+                            <ul>
+                                <li>关键词的展现、点击、转化、消费；</li>
+                                <li>创意的点击率、转化率；</li>
+                                <li>落地页停留时间、跳出率；</li>
+                                <li>分地域、分时段的转化数据。</li>
+                            </ul>
+                            <blockquote class="tip tip-blue small"><strong>核心原则：前3天不操作，只观察</strong>。找出占总消费80%的那20%的计划和关键词。</blockquote>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">3</span><h4>账户诊断（第3-5天）</h4></div>
+                            <p>按四个维度分析：</p>
+                            <ol>
+                                <li><strong>时段维度</strong>：哪些时段消费高转化好；</li>
+                                <li><strong>地域维度</strong>：哪些区域转化效率高；</li>
+                                <li><strong>设备维度</strong>：移动端 vs PC端表现；</li>
+                                <li><strong>关键词维度</strong>：核心词 vs 长尾词贡献。</li>
+                            </ol>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">4</span><h4>制定优化方案（第5-7天）</h4></div>
+                            <p>以书面形式整理账户优化方案，明确：</p>
+                            <ul>
+                                <li>保留：高转化计划/关键词；</li>
+                                <li>优化：中等转化但成本偏高的；</li>
+                                <li>暂停/删除：长期无转化的。</li>
+                            </ul>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">5</span><h4>分阶段执行</h4></div>
+                            <p><strong>原则：新旧交替需有过渡，不可一次性变动太大。</strong></p>
+                            <ul>
+                                <li><strong>第1-2周</strong>：微调（否词、出价微调、创意更新）；</li>
+                                <li><strong>第3-4周</strong>：结构优化（计划重组、关键词分层）；</li>
+                                <li><strong>第5周起</strong>：策略升级（OCPC接入、预算重分配）。</li>
+                            </ul>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">6</span><h4>持续监控</h4></div>
+                            <p>观察周期3-7天，不能今天改明天看效果。关注7-14天转化趋势。</p>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <h4 class="sub-title">第三题：咨询量降低后，应从哪几个方面检查？</h4>
+                    <div class="layer-list">
+                        <div class="layer">
+                            <div class="layer-head"><span class="layer-no">第一层</span><h4>账户基础状态（1分钟快速排查）</h4></div>
+                            <ul>
+                                <li>账户余额是否充足（余额不足会限量）；</li>
+                                <li>计划是否在投放时段内；</li>
+                                <li>预算是否提前撞线；</li>
+                                <li>关键词/创意是否被拒审下线；</li>
+                                <li>网站能否正常打开。</li>
+                            </ul>
+                            <p class="muted">这些低级问题占效果异常的30%。</p>
+                        </div>
+                        <div class="layer">
+                            <div class="layer-head"><span class="layer-no">第二层</span><h4>流量质量排查</h4></div>
+                            <ul>
+                                <li>拉取最近7天完整搜索词报告；</li>
+                                <li>检查触发广告的搜索词是否与业务相关；</li>
+                                <li>查看精确消费占比是否&gt;30%；</li>
+                                <li>检查OCPC自动定向是否带来大量无关流量。</li>
+                            </ul>
+                        </div>
+                        <div class="layer">
+                            <div class="layer-head"><span class="layer-no">第三层</span><h4>转化链路检查</h4></div>
+                            <ul>
+                                <li>网站咨询入口是否能正常咨询；</li>
+                                <li>400电话是否能正常接通；</li>
+                                <li>落地页是否有异常变动；</li>
+                                <li>跳出率是否突然升高。</li>
+                            </ul>
+                        </div>
+                        <div class="layer">
+                            <div class="layer-head"><span class="layer-no">第四层</span><h4>数据波动分析</h4></div>
+                            <ul>
+                                <li>定位波动对象：账户维度/计划维度/出价策略维度；</li>
+                                <li>查看近7天CTR/CVR变化趋势；</li>
+                                <li>查看历史操作记录；</li>
+                                <li>查看百度指数（行业搜索量是否下降）。</li>
+                            </ul>
+                        </div>
+                        <div class="layer">
+                            <div class="layer-head"><span class="layer-no">第五层</span><h4>OCPC模型问题</h4></div>
+                            <ul>
+                                <li>OCPC转化目标是否设置错误；</li>
+                                <li>转化数据是否足够（单日≥15个转化）；</li>
+                                <li>是否有无效线索干扰模型。</li>
+                            </ul>
+                        </div>
+                        <div class="layer">
+                            <div class="layer-head"><span class="layer-no">第六层</span><h4>外部因素</h4></div>
+                            <ul>
+                                <li>竞争对手是否突然提高出价；</li>
+                                <li>行业淡旺季变化；</li>
+                                <li>平台算法调整。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <h4 class="sub-title">第四题：搜索词"东站到国防医院怎么走"，匹配关键词"国防医院"，着陆页为首页，存在什么问题？如何调整？</h4>
+                    <p><strong>存在的问题：</strong></p>
+
+                    <div class="problem-card">
+                        <h5>1. 搜索词与关键词匹配错位</h5>
+                        <ul>
+                            <li>用户搜索的是<strong>路线导航需求</strong>（怎么走），而非医疗需求；</li>
+                            <li>关键词"国防医院"是<strong>品牌词</strong>，但用户意图是<strong>交通查询</strong>；</li>
+                            <li>匹配模式可能过宽（广泛匹配或短语匹配），导致不相关搜索词触发广告。</li>
+                        </ul>
+                    </div>
+                    <div class="problem-card">
+                        <h5>2. 关键词与着陆页不匹配</h5>
+                        <ul>
+                            <li>用户点击后进入的是<strong>首页</strong>，但首页通常是大而全的介绍；</li>
+                            <li>用户想看的是"怎么走"，首页没有路线信息，用户立即跳出；</li>
+                            <li>落地页与关键词、创意的匹配度低。</li>
+                        </ul>
+                    </div>
+                    <div class="problem-card">
+                        <h5>3. 转化路径断裂</h5>
+                        <ul>
+                            <li>用户意图是导航，进入首页后找不到想要的信息；</li>
+                            <li>跳出率高，浪费广告预算；</li>
+                            <li>百度质量度评分中落地页相关性权重已提升至42%，这种不匹配会严重拉低质量度。</li>
+                        </ul>
+                    </div>
+
+                    <p><strong>调整方案：</strong></p>
+                    <div class="solution-grid">
+                        <div class="solution-card">
+                            <div class="sol-no">方案一</div>
+                            <h5>否词（最直接）</h5>
+                            <p>将"怎么走""路线""导航"等交通类词加入否定关键词，过滤无效流量，避免预算浪费。</p>
+                        </div>
+                        <div class="solution-card">
+                            <div class="sol-no">方案二</div>
+                            <h5>优化匹配模式</h5>
+                            <p>将"国防医院"从广泛/短语匹配收窄为<strong>精确匹配</strong>或<strong>短语核心匹配</strong>，避免品牌词触发不相关搜索词。</p>
+                        </div>
+                        <div class="solution-card">
+                            <div class="sol-no">方案三</div>
+                            <h5>保留此类流量</h5>
+                            <p>单独建立"路线咨询"单元，关键词改为"深圳胃肠科医院怎么走""博源医院地址"等，落地页设置为<strong>联系我们/路线导航页</strong>（含地图、公交路线、自驾指引），创意写"深圳博源胃肠科丨地址导航"。</p>
+                        </div>
+                        <div class="solution-card">
+                            <div class="sol-no">方案四</div>
+                            <h5>提升质量度</h5>
+                            <p>优化创意与关键词、落地页三者的相关性（落地页相关性与转化承接能力权重占42%，必须高度重视）。</p>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <h4 class="sub-title">第五题：要求合理降低消费、保持现有转化，从哪里开始？</h4>
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">1</span><h4>砍高消费低转化词（1周见效）</h4></div>
+                            <ul>
+                                <li>拉取最近7-30天关键词报表；</li>
+                                <li>找出<strong>高消费低转化/无转化</strong>的关键词；</li>
+                                <li>处理方式：降价让排名靠后（不直接暂停）或直接暂停；</li>
+                                <li>这三招通常能降成本20%-30%。</li>
+                            </ul>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">2</span><h4>优化否定关键词（同步进行）</h4></div>
+                            <ul>
+                                <li>很多账户无效消耗有30%-50%来自不相关搜索词；</li>
+                                <li>通过搜索词报告添加否词；</li>
+                                <li>按周维度更新否词库。</li>
+                            </ul>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">3</span><h4>时段优化</h4></div>
+                            <ul>
+                                <li>分析7天分时段转化数据；</li>
+                                <li>转化率最高时段：出价上浮30-50%；</li>
+                                <li>转化率最低时段：降低出价50%或直接暂停；</li>
+                                <li>错误调整时段导致转化量下降的账户占54%。</li>
+                            </ul>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">4</span><h4>地域优化</h4></div>
+                            <p>分析分地域转化数据，暂停或降低低转化地域投放，集中预算在高转化地域。</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">5</span><h4>设备优化</h4></div>
+                            <p>对比移动端与PC端转化成本，转化成本高的设备降低出价或暂停。</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">6</span><h4>关键词质量度优化</h4></div>
+                            <p>百度CPC公式中质量度直接影响点击价格，优化创意相关性、落地页相关性提升质量度，质量度提升可降低单次点击成本。</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-head"><span class="step-no">7</span><h4>OCPC出价调整（如已开通）</h4></div>
+                            <p>适当降低目标转化出价（幅度5%-10%），观察3-5天效果后再调整。</p>
+                        </div>
+                    </div>
+
+                    <p><strong>操作原则：</strong></p>
+                    <ul>
+                        <li>先做<strong>减法</strong>（砍无效花费），再做<strong>优化</strong>（提升转化效率）；</li>
+                        <li>每次调整后观察3-7天；</li>
+                        <li>关注7-14天转化数据趋势；</li>
+                        <li>正确操作可在降低消费20%-30%的同时保持转化量不变。</li>
+                    </ul>
+                </article>
+            </section>
+
+            <!-- 页脚 -->
+            <footer class="footer">
+                <p class="footer-source">
+                    来源：全媒体运营知识库「搜索推广·背诵」前7个文件夹
+                    （1关键词阶段、2质量度与数据报告、3质量成本转化与数据分析、
+                    4老账户接手与账户优化、5每日工作与效果突降、6 OCPC指南、7面试应聘）。
+                    原文为图片的素材（png/jpg）未收录。
+                </p>
+                <p class="footer-copy">© 全媒体运营知识库 · 搜索推广背诵整合版</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- 返回顶部 -->
+    <button class="back-to-top" id="backToTop" aria-label="返回顶部" title="返回顶部">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+
+        <script>
+/* ============================================================
+   搜索推广背诵整合版 - 交互脚本
+   功能：导航高亮、阅读进度、返回顶部、折叠面板、
+        主题切换、内容搜索、平滑滚动、入场动画
+   ============================================================ */
+
+(function () {
+    "use strict";
+
+    /* ---------- 工具函数 ---------- */
+    const $ = (selector, ctx = document) => ctx.querySelector(selector);
+    const $$ = (selector, ctx = document) => Array.from(ctx.querySelectorAll(selector));
+    const debounce = (fn, delay = 200) => {
+        let timer;
+        return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+    };
+
+    /* ---------- 1. 顶部导航栏滚动效果 ---------- */
+    const topbar = $("#topbar");
+    const handleTopbarScroll = () => {
+        if (window.scrollY > 8) {
+            topbar.classList.add("scrolled");
+        } else {
+            topbar.classList.remove("scrolled");
+        }
+    };
+    window.addEventListener("scroll", handleTopbarScroll, { passive: true });
+    handleTopbarScroll();
+
+    /* ---------- 2. 阅读进度条 ---------- */
+    const progressBar = $("#readingProgress");
+    const updateProgress = () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = Math.min(percent, 100) + "%";
+    };
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+
+    /* ---------- 3. 返回顶部按钮 ---------- */
+    const backToTop = $("#backToTop");
+    const toggleBackToTop = () => {
+        if (window.scrollY > 400) {
+            backToTop.classList.add("visible");
+        } else {
+            backToTop.classList.remove("visible");
+        }
+    };
+    window.addEventListener("scroll", toggleBackToTop, { passive: true });
+
+    backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    /* ---------- 4. 移动端侧边栏切换 ---------- */
+    const menuToggle = $("#menuToggle");
+    const sidebar = $("#sidebar");
+
+    const toggleSidebar = (force) => {
+        const willOpen = force !== undefined ? force : !sidebar.classList.contains("open");
+        sidebar.classList.toggle("open", willOpen);
+        menuToggle.classList.toggle("active", willOpen);
+        document.body.style.overflow = willOpen && window.innerWidth <= 900 ? "hidden" : "";
+    };
+
+    menuToggle.addEventListener("click", () => toggleSidebar());
+
+    // 点击侧边栏链接后自动收起（仅移动端）
+    $$(".toc a").forEach((link) => {
+        link.addEventListener("click", () => {
+            if (window.innerWidth <= 900) {
+                toggleSidebar(false);
+            }
+        });
+    });
+
+    // 点击遮罩关闭
+    document.addEventListener("click", (e) => {
+        if (
+            sidebar.classList.contains("open") &&
+            !sidebar.contains(e.target) &&
+            !menuToggle.contains(e.target) &&
+            window.innerWidth <= 900
+        ) {
+            toggleSidebar(false);
+        }
+    });
+
+    /* ---------- 5. 侧边栏导航高亮（IntersectionObserver） ---------- */
+    const tocLinks = $$(".toc-link");
+    const sections = $$("main .part, main .hero, main .card");
+
+    // 收集所有需要追踪的目标元素
+    const trackIds = new Set();
+    $$(".toc a[href^='#']").forEach((a) => {
+        const id = a.getAttribute("href").slice(1);
+        if (id) trackIds.add(id);
+    });
+
+    const trackElements = Array.from(trackIds)
+        .map((id) => document.getElementById(id))
+        .filter(Boolean);
+
+    const setActiveLink = (id) => {
+        tocLinks.forEach((link) => {
+            const href = link.getAttribute("href").slice(1);
+            link.classList.toggle("active", href === id);
+        });
+        // 子目录
+        $$(".toc-sub a").forEach((link) => {
+            const href = link.getAttribute("href").slice(1);
+            link.classList.toggle("active", href === id);
+        });
+    };
+
+    if ("IntersectionObserver" in window && trackElements.length) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                // 找到当前最靠近顶部的可见 section
+                const visible = entries
+                    .filter((e) => e.isIntersecting)
+                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+                if (visible.length) {
+                    setActiveLink(visible[0].target.id);
+                }
+            },
+            {
+                rootMargin: `-${getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")} 0px -60% 0px`,
+                threshold: [0, 0.1, 0.5, 1],
+            }
+        );
+        trackElements.forEach((el) => observer.observe(el));
+    }
+
+    /* ---------- 6. 折叠面板（手风琴） ---------- */
+    $$(".acc-head").forEach((head) => {
+        head.addEventListener("click", () => {
+            const item = head.parentElement;
+            const isOpen = item.classList.contains("open");
+
+            // 关闭同级其他面板
+            const accordion = item.closest(".accordion");
+            if (accordion) {
+                $$(".acc-item.open", accordion).forEach((other) => {
+                    if (other !== item) other.classList.remove("open");
+                });
+            }
+            item.classList.toggle("open", !isOpen);
+        });
+    });
+
+    /* ---------- 7. 主题切换（明/暗） ---------- */
+    const themeToggle = $("#themeToggle");
+    const STORAGE_KEY = "sem-theme";
+
+    const applyTheme = (theme) => {
+        document.body.classList.toggle("dark", theme === "dark");
+    };
+
+    // 初始化主题
+    const savedTheme = localStorage.getItem(STORAGE_KEY);
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(savedTheme || (prefersDark ? "dark" : "light"));
+
+    themeToggle.addEventListener("click", () => {
+        const isDark = document.body.classList.contains("dark");
+        const next = isDark ? "light" : "dark";
+        applyTheme(next);
+        localStorage.setItem(STORAGE_KEY, next);
+    });
+
+    /* ---------- 8. 内容搜索 ---------- */
+    const searchToggle = $("#searchToggle");
+    const searchOverlay = $("#searchOverlay");
+    const searchInput = $("#searchInput");
+    const searchResults = $("#searchResults");
+
+    // 构建搜索索引（基于所有 card / part 标题及列表项文本）
+    const buildIndex = () => {
+        const index = [];
+        const blocks = $$("main .part, main .card");
+        blocks.forEach((block) => {
+            const id = block.id || block.closest("[id]")?.id || "";
+            const titleEl = $(".part-title, .card-title", block);
+            const title = titleEl ? titleEl.textContent.trim() : "";
+            const text = block.textContent.replace(/\s+/g, " ").trim().slice(0, 600);
+            index.push({ id, title, text });
+        });
+        return index;
+    };
+    const searchIndex = buildIndex();
+
+    const openSearch = () => {
+        searchOverlay.classList.add("active");
+        setTimeout(() => searchInput.focus(), 50);
+    };
+
+    const closeSearch = () => {
+        searchOverlay.classList.remove("active");
+        searchInput.value = "";
+        searchResults.innerHTML = "";
+    };
+
+    searchToggle.addEventListener("click", openSearch);
+
+    searchOverlay.addEventListener("click", (e) => {
+        if (e.target === searchOverlay) closeSearch();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && searchOverlay.classList.contains("active")) {
+            closeSearch();
+        }
+        // Ctrl/Cmd + K 快捷打开
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+            e.preventDefault();
+            openSearch();
+        }
+    });
+
+    // 高亮关键词
+    const highlight = (text, query) => {
+        if (!query) return text;
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        return text.replace(new RegExp(escaped, "gi"), (m) => `<mark>${m}</mark>`);
+    };
+
+    // 执行搜索
+    const doSearch = (query) => {
+        const q = query.trim().toLowerCase();
+        if (!q) {
+            searchResults.innerHTML = "";
+            return;
+        }
+        const matches = searchIndex
+            .filter((item) => item.title.toLowerCase().includes(q) || item.text.toLowerCase().includes(q))
+            .slice(0, 10);
+
+        if (matches.length === 0) {
+            searchResults.innerHTML = `<li class="empty">未找到与「${query}」相关的内容</li>`;
+            return;
+        }
+
+        searchResults.innerHTML = matches
+            .map((item, idx) => {
+                const snippet = (() => {
+                    const lower = item.text.toLowerCase();
+                    const pos = lower.indexOf(q);
+                    if (pos < 0) return item.text.slice(0, 80);
+                    const start = Math.max(0, pos - 30);
+                    const end = Math.min(item.text.length, pos + 80);
+                    return (start > 0 ? "…" : "") + item.text.slice(start, end) + (end < item.text.length ? "…" : "");
+                })();
+                return `<li data-id="${item.id}" data-idx="${idx}">
+                    <div style="font-weight:600;margin-bottom:4px">${highlight(item.title, query)}</div>
+                    <div style="color:var(--text-muted);font-size:12.5px">${highlight(snippet, query)}</div>
+                </li>`;
+            })
+            .join("");
+
+        // 绑定点击跳转
+        $$("li", searchResults).forEach((li) => {
+            li.addEventListener("click", () => {
+                const id = li.dataset.id;
+                closeSearch();
+                if (id) {
+                    const target = document.getElementById(id);
+                    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            });
+        });
+    };
+
+    searchInput.addEventListener("input", debounce((e) => doSearch(e.target.value), 150));
+
+    // ↑↓ 选择
+    searchInput.addEventListener("keydown", (e) => {
+        const items = $$("li:not(.empty)", searchResults);
+        if (!items.length) return;
+        const current = $(".active", searchResults);
+        let idx = current ? items.indexOf(current) : -1;
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            idx = (idx + 1) % items.length;
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            idx = (idx - 1 + items.length) % items.length;
+        } else if (e.key === "Enter") {
+            if (current) current.click();
+            return;
+        } else {
+            return;
+        }
+        items.forEach((li) => li.classList.remove("active"));
+        items[idx].classList.add("active");
+        items[idx].scrollIntoView({ block: "nearest" });
+    });
+
+    /* ---------- 9. 平滑滚动（处理锚点点击） ---------- */
+    $$('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", (e) => {
+            const targetId = anchor.getAttribute("href").slice(1);
+            if (!targetId) return;
+            const target = document.getElementById(targetId);
+            if (target) {
+                e.preventDefault();
+                const topbarHeight = parseInt(
+                    getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")
+                ) || 64;
+                const rect = target.getBoundingClientRect();
+                const top = rect.top + window.scrollY - topbarHeight - 12;
+                window.scrollTo({ top, behavior: "smooth" });
+                history.replaceState(null, "", "#" + targetId);
+            }
+        });
+    });
+
+    /* ---------- 10. 入场动画（IntersectionObserver） ---------- */
+    // 为卡片和章节标题添加淡入
+    const fadeTargets = $$(".part, .card");
+    fadeTargets.forEach((el) => el.classList.add("fade-in"));
+
+    if ("IntersectionObserver" in window) {
+        const fadeObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        fadeObserver.unobserve(entry.target);
+                    }
+                });
+            },
+            { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+        );
+        fadeTargets.forEach((el) => fadeObserver.observe(el));
+    } else {
+        // 不支持时直接显示
+        fadeTargets.forEach((el) => el.classList.add("visible"));
+    }
+
+    /* ---------- 11. 表格响应式提示 ---------- */
+    $$(".table-wrap").forEach((wrap) => {
+        const table = $("table", wrap);
+        if (table && table.offsetWidth > wrap.offsetWidth) {
+            wrap.title = "左右滑动查看完整内容";
+        }
+    });
+
+    /* ---------- 12. 启动后定位到 hash ---------- */
+    if (location.hash) {
+        const target = document.getElementById(location.hash.slice(1));
+        if (target) {
+            setTimeout(() => {
+                const topbarHeight = parseInt(
+                    getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")
+                ) || 64;
+                const top = target.getBoundingClientRect().top + window.scrollY - topbarHeight - 12;
+                window.scrollTo({ top });
+            }, 100);
+        }
+    }
+
+    /* ---------- 13. 调试信息（控制台） ---------- */
+    console.log(
+        "%c SEM 搜索推广背诵整合版 %c v1.0 ",
+        "background:#2563eb;color:#fff;padding:4px 8px;border-radius:4px 0 0 4px;font-weight:bold",
+        "background:#f59e0b;color:#fff;padding:4px 8px;border-radius:0 4px 4px 0;font-weight:bold"
+    );
+    console.log("📚 共索引 " + searchIndex.length + " 个内容块");
+    console.log("⌨️  快捷键：Ctrl/Cmd + K 打开搜索");
+})();
+    </script>
+</body>
+</html>
